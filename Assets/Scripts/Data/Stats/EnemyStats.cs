@@ -3,7 +3,9 @@
  * Decsription: A class to hold stats for enemies
  */
 
-[System.Serializable]
+using UnityEngine;
+
+[CreateAssetMenuAttribute]
 public class EnemyStats : GenericStats {
 
 }

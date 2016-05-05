@@ -3,7 +3,9 @@
  * Decsription: A class to hold stats for defensive towers
  */
 
-[System.Serializable]
+using UnityEngine;
+
+[CreateAssetMenuAttribute]
 public class DefensiveTowerStats : TowerStats {
 
 }

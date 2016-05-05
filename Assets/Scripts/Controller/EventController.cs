@@ -17,6 +17,9 @@ public static class EventController {
 	public delegate void NamedFloatAction (string valueKey, float key);
 	public static event NamedFloatAction OnNamedFloatEvent;
 
+    public delegate void AudioEventAction(AudioActionType actionType, AudioType audioType);
+    public static event AudioEventAction OnAudioEvent;
+
 	static bool _debug = false;
 
 	static EventController () {
@@ -36,6 +39,12 @@ public static class EventController {
 		}
 	}
 
+    public static void Event(AudioActionType actionType, AudioType audioType) {
+        if (OnAudioEvent != null)
+        {
+            OnAudioEvent(actionType, audioType);
+        }
+    }
 
 	static void Init() {
 		if (_debug) {

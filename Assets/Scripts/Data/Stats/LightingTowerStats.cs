@@ -3,7 +3,9 @@
  * Decsription: A class to hold stats for light emitting towers
  */
 
-[System.Serializable]
+using UnityEngine;
+
+[CreateAssetMenuAttribute]
 public class LightingTowerStats : TowerStats {
 	public int LightRadius;
 }
