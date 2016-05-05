@@ -35,4 +35,8 @@ public class EnemyBehaviour : MobileAgentBehaviour {
         throw new System.NotImplementedException();
     }
 
+    public override void MoveTo(BoardLocation location)
+    {
+        throw new System.NotImplementedException();
+    }
 }
