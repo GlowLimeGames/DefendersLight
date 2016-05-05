@@ -21,6 +21,45 @@ public abstract class MannBehaviour : MonoBehaviour {
 		UnusbscribeEvents();
 	}
 
+    // Value should only be null if you're setting a trigger
+    public bool QueryAnimator (AnimParam param, string key, object value = null) {
+        Animator animator = GetComponent<Animator>();
+        if (animator == null) {
+            return false;
+        } else {
+            try {
+                switch (param) {
+                    case AnimParam.Bool:
+                        animator.SetBool(key, (bool)value);
+                        return true;
+                    case AnimParam.Float:
+                        animator.SetFloat(key, (float)value);
+                        return true;
+                    case AnimParam.Int:
+                        animator.SetInteger(key, (int)value);
+                        return true;
+                    case AnimParam.Trigger:
+                        animator.SetTrigger(key);
+                        return true;
+                    default:
+                        return false;
+                }
+            } catch {
+                return false;
+            }
+        }
+    }
+
+    public bool QuerySpriteRenderer (Sprite sprite) {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        if (renderer == null) {
+            return false;
+        } else {
+            renderer.sprite = sprite;
+            return true;
+        }
+    }
+
 	protected virtual void SubscribeEvents () {
 		EventController.OnNamedEvent += HandleNamedEvent;
 	}
