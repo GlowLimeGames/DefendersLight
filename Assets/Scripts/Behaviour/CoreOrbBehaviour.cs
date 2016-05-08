@@ -2,14 +2,12 @@
 using System.Collections;
 
 public class CoreOrbBehaviour : TowerBehaviour {
-    protected override void SetReferences()
-    {
-        throw new System.NotImplementedException();
+    
+	protected override void SetReferences() {
+
     }
 
-    protected override void FetchReferences()
-    {
-        throw new System.NotImplementedException();
+    protected override void FetchReferences() {
     }
 
     protected override void HandleNamedEvent(string eventName)
