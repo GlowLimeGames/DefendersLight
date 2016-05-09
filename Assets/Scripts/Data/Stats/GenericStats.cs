@@ -15,5 +15,11 @@ public class GenericStats : ScriptableObject {
 	public int Range;
 	public int Damage;
 	public int Health;
-	public int AttackSpeed;
+	public int MaxHealth;
+	public float AttackDelay;
+
+	// Restores stats to default
+	public void ResetStats () {
+		Health = MaxHealth;
+	}
 }

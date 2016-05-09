@@ -8,14 +8,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a87e42f242dec45beb2b16c157098b53, type: 3}
-  m_Name: CoreOrbBaseStats
+  m_Script: {fileID: 11500000, guid: c006891a4e7cd400cbdf3a37f39bef08, type: 3}
+  m_Name: GruntBaseStats
   m_EditorClassIdentifier: 
-  Name: Core Orb
+  Name: Grunt
   Level: 0
-  Range: 3
-  Damage: 10
-  Health: 1000
-  MaxHealth: 1000
-  AttackDelay: 1
-  LightRadius: 3
+  Range: 1
+  Damage: 5
+  Health: 100
+  MaxHealth: 100
+  AttackDelay: 5

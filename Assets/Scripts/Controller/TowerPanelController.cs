@@ -44,4 +44,8 @@ public class TowerPanelController : MannBehaviour {
 
 	}
 
+	protected override void CleanupReferences () {
+
+	}
+
 }

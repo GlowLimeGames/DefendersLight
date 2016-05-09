@@ -5,17 +5,69 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	[SerializeField]
 	GenericStats _stats;
 
+	[SerializeField]
+	protected bool HasAttack;
 
-    public abstract void Attack();
+	[SerializeField]
+	protected HealthBarBehaviour HealthBar;
 
-    public abstract void Damage();
+	bool _attackCooldownActive = false;
+
+	[SerializeField]
+	bool debugging;
+
+	void Update () {
+		CheckForAttack();
+	}
+
+	protected virtual void CheckForAttack () {
+		if (HasAttack && !_attackCooldownActive) {
+			ActiveObjectBehaviour target = SelectTarget();
+
+			if (target != null) {
+				Attack(target);
+			}
+		}
+	}
+
+	public virtual void Attack(ActiveObjectBehaviour activeAgent) {
+		StartCoroutine(AttackCooldown());
+		activeAgent.Damage(_stats.Damage);
+	}
+
+	public abstract ActiveObjectBehaviour SelectTarget();
+
+	public virtual void Damage(int damage) {
+		_stats.Health -= damage;
+		HealthBar.SetHealthDisplay(
+			(float) _stats.Health /
+			(float) _stats.MaxHealth
+		);
+
+		if (_stats.Health <= 0) {
+			Destroy();
+		}
+	}
     
-    public abstract void Heal();
+	public virtual void Heal(int healthPoints) {
+		_stats.Health += healthPoints;
+	}
     
-    public abstract void Destroy();
+	public virtual void Destroy() {
+		DestroyObject(gameObject);
+	}
 
+	public virtual bool InRange(ActiveObjectBehaviour activeAgent) {
+		return (_stats.Range >= BoardLocation.Distance(Location, activeAgent.Location));
+	}
 
 	public GenericStats GetStats () {
 		return _stats;
+	}
+
+	IEnumerator AttackCooldown () {
+		_attackCooldownActive = true;
+		yield return new WaitForSeconds(_stats.AttackDelay);
+		_attackCooldownActive = false;
 	}
 }

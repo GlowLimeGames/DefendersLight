@@ -4,9 +4,6 @@ using System.Collections;
 public class BoardTileBehaviour : EnvironmentalObjectBehaviour {
 
 	[SerializeField]
-	BoardLocation Location;
-
-	[SerializeField]
 	StaticAgentBehaviour containedAgent;
 
 	public StaticAgentBehaviour GetCurrentAgent () {
@@ -21,11 +18,6 @@ public class BoardTileBehaviour : EnvironmentalObjectBehaviour {
 
 	}
 
-	public void SetLocation (int x, int y) {
-		Location.X = x;
-		Location.Y = y;
-	}
-
 	protected override void FetchReferences () {
 
     }
@@ -34,6 +26,9 @@ public class BoardTileBehaviour : EnvironmentalObjectBehaviour {
 
     }
 
+	protected override void CleanupReferences () {
+
+	}
     protected override void HandleNamedEvent (string eventName) {
 
     }

@@ -19,6 +19,10 @@ public class HealthBarBehaviour : MannBehaviour {
 
 	}
 
+	protected override void CleanupReferences () {
+
+	}
+
 	protected override void HandleNamedEvent(string eventName) {
 
 	}

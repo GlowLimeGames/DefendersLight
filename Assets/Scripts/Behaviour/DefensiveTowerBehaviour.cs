@@ -3,9 +3,8 @@ using System.Collections;
 
 public class DefensiveTowerBehaviour : TowerBehaviour {
 
-    protected override void SetReferences()
-    {
-        throw new System.NotImplementedException();
+    protected override void SetReferences() {
+		HasAttack = false;
     }
 
     protected override void FetchReferences()
@@ -18,23 +17,19 @@ public class DefensiveTowerBehaviour : TowerBehaviour {
         throw new System.NotImplementedException();
     }
 
-    public override void Attack()
-    {
-        throw new System.NotImplementedException();
-    }
+	public override void Attack(ActiveObjectBehaviour activeAgent) {
+		base.Attack(activeAgent);
+	}
 
-    public override void Damage()
-    {
-        throw new System.NotImplementedException();
-    }
+	public override void Damage(int damage) {
+		base.Damage(damage);
+	}
 
-    public override void Destroy()
-    {
-        throw new System.NotImplementedException();
-    }
+	public override void Destroy() {
+		base.Destroy();
+	}
 
-    public override void Heal()
-    {
-        throw new System.NotImplementedException();
-    }
+	public override void Heal(int healthPoints) {
+		base.Heal(healthPoints);
+	}
 }

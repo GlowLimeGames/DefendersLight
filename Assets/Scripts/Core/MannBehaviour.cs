@@ -18,6 +18,7 @@ public abstract class MannBehaviour : MonoBehaviour {
 	}
 
 	void OnDestroy () {
+		CleanupReferences();
 		UnusbscribeEvents();
 	}
 
@@ -71,6 +72,8 @@ public abstract class MannBehaviour : MonoBehaviour {
 	protected abstract void SetReferences ();
 
 	protected abstract void FetchReferences ();
+
+	protected abstract void CleanupReferences ();
 
 	protected abstract void HandleNamedEvent (string eventName);
 }

@@ -47,4 +47,8 @@ public class BoardController : MannBehaviour {
 	protected override void HandleNamedEvent (string eventName) {
 		
 	}
+
+	protected override void CleanupReferences () {
+
+	}
 }
