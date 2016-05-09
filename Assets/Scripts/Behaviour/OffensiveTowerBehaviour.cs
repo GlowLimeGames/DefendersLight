@@ -3,14 +3,13 @@ using System.Collections;
 
 public class OffensiveTowerBehaviour : TowerBehaviour {
 
-    protected override void SetReferences()
-    {
-        throw new System.NotImplementedException();
+	protected override void SetReferences() {
+		base.SetReferences();
     }
 
     protected override void FetchReferences()
     {
-        throw new System.NotImplementedException();
+		base.FetchReferences();
     }
 
     protected override void HandleNamedEvent(string eventName)

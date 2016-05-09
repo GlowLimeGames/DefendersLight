@@ -20,6 +20,15 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		CheckForAttack();
 	}
 
+	void SetStats () {
+		// Code from: http://answers.unity3d.com/questions/39130/cloning-of-scriptableobject.html
+		_stats = Object.Instantiate(_stats) as GenericStats;
+	}
+
+	protected override void SetReferences () {
+		SetStats();
+	}
+
 	protected virtual void CheckForAttack () {
 		if (HasAttack && !_attackCooldownActive) {
 			ActiveObjectBehaviour target = SelectTarget();

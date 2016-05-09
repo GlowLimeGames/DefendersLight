@@ -3,18 +3,17 @@ using System.Collections;
 
 public class DefensiveTowerBehaviour : TowerBehaviour {
 
-    protected override void SetReferences() {
+	protected override void SetReferences() {
+		base.SetReferences();
 		HasAttack = false;
     }
 
-    protected override void FetchReferences()
-    {
-        throw new System.NotImplementedException();
+    protected override void FetchReferences() {
+		base.FetchReferences();
     }
 
-    protected override void HandleNamedEvent(string eventName)
-    {
-        throw new System.NotImplementedException();
+    protected override void HandleNamedEvent(string eventName) {
+        
     }
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {

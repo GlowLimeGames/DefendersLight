@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyBehaviour : MobileAgentBehaviour {
 
     protected override void SetReferences() {
-    	 
+		base.SetReferences();
     }
 
     protected override void FetchReferences() {
