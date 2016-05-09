@@ -2,8 +2,6 @@
 using System.Collections;
 
 public abstract class TowerBehaviour : StaticAgentBehaviour {
-    [SerializeField]
-    GenericStats _stats;
 
 	void OnMouseDown () {
 		SelectTower();
@@ -17,7 +15,4 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	}
 
-	public GenericStats GetStats () {
-		return _stats;
-	}
 }
