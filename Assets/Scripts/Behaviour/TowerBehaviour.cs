@@ -3,6 +3,9 @@ using System.Collections;
 
 public abstract class TowerBehaviour : StaticAgentBehaviour {
 
+	[SerializeField]
+	GameObject MissilePrefab;
+
 	protected override void FetchReferences () {
 		TowerController.Instance.Units.Add(this);
 	}
@@ -35,6 +38,10 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {
 		base.Attack(activeAgent);
+		GameObject missile = (GameObject) Instantiate(MissilePrefab, transform.position, Quaternion.identity);
+
+		MissileBehaviour missileBehavior = missile.GetComponent<MissileBehaviour>();
+		missileBehavior.SetTarget(activeAgent);
 	}
 
 }

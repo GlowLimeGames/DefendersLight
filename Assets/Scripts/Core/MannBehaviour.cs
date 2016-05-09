@@ -5,9 +5,9 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class MannBehaviour : MonoBehaviour {
-
 	void Awake () {
 		SetReferences();
 		SubscribeEvents();
@@ -20,6 +20,7 @@ public abstract class MannBehaviour : MonoBehaviour {
 	void OnDestroy () {
 		CleanupReferences();
 		UnusbscribeEvents();
+		StopAllCoroutines();
 	}
 
     // Value should only be null if you're setting a trigger
@@ -76,4 +77,5 @@ public abstract class MannBehaviour : MonoBehaviour {
 	protected abstract void CleanupReferences ();
 
 	protected abstract void HandleNamedEvent (string eventName);
+
 }
