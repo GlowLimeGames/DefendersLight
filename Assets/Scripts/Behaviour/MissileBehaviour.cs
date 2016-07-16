@@ -29,7 +29,7 @@ public class MissileBehaviour : MobileAgentBehaviour {
 		return this._target;
 	}
 
-	public override void MoveTo (BoardLocation location) {
+	public override void MoveTo (MapLocation location) {
 		
 	}
 		

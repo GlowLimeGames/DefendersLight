@@ -32,6 +32,10 @@ public class TowerPanelController : MannBehaviour {
 		gameObject.SetActive(false);
 	}
 		
+	public TowerBehaviour GetSelectedTower () {
+		return selectedTower;
+	}
+
 	protected override void FetchReferences () {
 
 	}
