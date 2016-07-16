@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyController : UnitController {
+public class EnemyController : UnitController, IEnemyController {
 
 	public static EnemyController Instance;
 
@@ -10,4 +10,21 @@ public class EnemyController : UnitController {
 			Destroy(gameObject);
 		}
 	}
+
+	public void Create(IEnemy unit) {
+		throw new System.NotImplementedException();
+	}
+
+     public void Destroy(IEnemy unit) {
+		throw new System.NotImplementedException();
+	}
+
+     public IEnemy[] GetAll() {
+		throw new System.NotImplementedException();
+	}
+
+     public IEnemyWave GetWave(int waveNumber) {
+		throw new System.NotImplementedException();
+	}
+
 }

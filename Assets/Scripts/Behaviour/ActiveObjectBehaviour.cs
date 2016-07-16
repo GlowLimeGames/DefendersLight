@@ -69,7 +69,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	public virtual bool InRange(ActiveObjectBehaviour activeAgent) {
-		return (_stats.Range >= BoardLocation.Distance(Location, activeAgent.Location));
+		return (_stats.Range >= MapLocation.Distance(Location, activeAgent.Location));
 	}
 
 	public GenericStats GetStats () {
