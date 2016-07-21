@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyController : UnitController, IEnemyController {
+public class EnemyController : UnitController {
 
 	public static EnemyController Instance;
 

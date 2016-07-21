@@ -1,3 +1,3 @@
-﻿public interface ITower {
+﻿public interface ITower : IUnit {
 
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TowerController : UnitController, ITowerController {
+public class TowerController : UnitController {
 	public static TowerController Instance;
 
 	public void Create(ITower unit) {

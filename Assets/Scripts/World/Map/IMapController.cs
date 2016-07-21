@@ -1,5 +1,5 @@
 
-public interface IMapController {
+public interface IMapController : IController {
      void Place(IWorldObject element, IMapLocation location);
      void MoveTo(IWorldObject element, IMapLocation location);
      bool TryGetPath(IWorldObject element,

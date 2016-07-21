@@ -1,6 +1,3 @@
-﻿public interface IEnemyController {
-     void Create(IEnemy unit);
-     void Destroy(IEnemy unit);
-     IEnemy[] GetAll();
+﻿public interface IEnemyController : IUnitController {
      IEnemyWave GetWave(int waveNumber);
 }
