@@ -1,3 +1,8 @@
+/*
+ * Author: Isaiah Mann
+ * Description: A single enemy wave (or level)
+ */
+
 using System.Collections.Generic;
 
 public interface IEnemyWave {
