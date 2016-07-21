@@ -1,5 +1,5 @@
 ﻿/*
- * Author(s): Isaiah Mann 
+ * Author(s): Isaiah Mann
  * Description: Used to control the audio in the game
  * Is a Singleton (only one instance can exist at once)
  * Attached to a GameObject that stores all AudioSources and AudioListeners for the game
@@ -10,7 +10,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class AudioController : MonoBehaviour {
+public class AudioController : Controller, IAudioController {
 	public bool isAudioListener = true;
 
 	// Singleton implementation
@@ -19,7 +19,6 @@ public class AudioController : MonoBehaviour {
 	const string path = "Audio/AudioList";
 	AudioList fileList;
 	AudioLoader loader;
-
 
 	// Stores all the audio sources and files inside dictionaries
 	Dictionary<int, AudioSource> channels = new Dictionary<int, AudioSource>();
@@ -54,9 +53,9 @@ public class AudioController : MonoBehaviour {
 		// Garbage collection: otherwise events will produce null reference errors when called
 		UnsubscribeEvents();
 	}
-		
+
 	public void Play (AudioFile file) {
-	
+
 		AudioSource source = GetChannel(file.Channel);
 
 		CheckMute(file, source);
@@ -96,7 +95,7 @@ public class AudioController : MonoBehaviour {
 			!SettingsUtil.MusicMuted
 		);
 	}
-		
+
 	void CheckMute (AudioFile file, AudioSource source) {
 		source.mute = AudioUtil.IsMuted(file.typeAsEnum);
 	}
@@ -105,10 +104,10 @@ public class AudioController : MonoBehaviour {
 	bool ChannelExists (int channelNumber) {
 		return channels.ContainsKey(channelNumber);
 	}
-	
+
 	AudioSource GetChannel (int channelNumber) {
 		if (channels.ContainsKey(channelNumber)) {
-		
+
 			return channels[channelNumber];
 
 		} else {
@@ -127,7 +126,7 @@ public class AudioController : MonoBehaviour {
 
 		// Singleton method returns a bool depending on whether this object is the instance of the class
 		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
-				
+
 			loader = new AudioLoader(path);
 			fileList = loader.Load();
 
@@ -143,7 +142,7 @@ public class AudioController : MonoBehaviour {
 
 			// TODO: Enable after tracks have been delivered
 			// initCyclingAudio();
-	
+
 		}
 	}
 
@@ -155,7 +154,7 @@ public class AudioController : MonoBehaviour {
 			);
 		}
 	}
-		
+
 	void AddAudioEvents () {
 
 		for (int i = 0; i < fileList.Length; i++) {
@@ -168,7 +167,7 @@ public class AudioController : MonoBehaviour {
 	}
 
 	void AddPlayEvents (AudioFile file) {
-		
+
 		for (int j = 0; j < file.EventNames.Length; j++) {
 
 			if (playEvents.ContainsKey(file.EventNames[j])) {
@@ -241,7 +240,7 @@ public class AudioController : MonoBehaviour {
 				stopEvents[eventName]
 			);
 		}
-				
+
 	}
 
 	void HandleEvent (AudioActionType actionType, AudioType audioType) {
@@ -309,7 +308,7 @@ public class AudioController : MonoBehaviour {
 
 	// Plays audio files back to back
 	IEnumerator cycleTracksContinuous (RandomizedQueue<AudioFile> files) {
-		while (_coroutinesActive) {	
+		while (_coroutinesActive) {
 			AudioFile nextTrack = files.Cycle();
 			Play(nextTrack);
 			yield return new WaitForSeconds(nextTrack.Clip.length);
@@ -331,7 +330,7 @@ public class AudioController : MonoBehaviour {
 
 			yield return new WaitForSeconds(
 				UnityEngine.Random.Range(
-					minFrequency, 
+					minFrequency,
 					maxFrequency
 				)
 			);

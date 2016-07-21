@@ -35,7 +35,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		base.Heal(healthPoints);
 	}
 
-    public override void MoveTo(BoardLocation location)
+    public override void MoveTo(MapLocation location)
     {
         throw new System.NotImplementedException();
     }
