@@ -18,7 +18,6 @@ ExportedObj/
 *.booproj
 *.svd
 
-
 # Unity3D generated meta files
 *.pidb.meta
 
@@ -27,3 +26,6 @@ sysinfo.txt
 
 # Mac Meta Files
 *.DS_Store
+
+# Windows Meta Files
+*.lnk
