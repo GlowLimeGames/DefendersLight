@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static class EventController {
+	public delegate void Action();
 
 	public delegate void NamedEventAction (string nameOfEvent);
 	public static event NamedEventAction OnNamedEvent;
