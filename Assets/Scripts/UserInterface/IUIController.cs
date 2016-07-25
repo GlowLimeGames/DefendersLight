@@ -1,4 +1,4 @@
-public interface IUserIntefaceController {
+public interface IUserIntefaceController : IController {
     void AddElement(IUIElement element);
     void RemoveElement(IUIElement element);
     void ShowElement(IUIElement element);

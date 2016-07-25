@@ -1,5 +1,8 @@
-﻿public interface ITowerController {
-     void Create(ITower unit);
-     void Destroy(ITower unit);
-     ITower[] GetAll();
+/*
+ * Author: Isaiah Mann
+ * Description: Basic tower overwatch functionality
+ */
+
+﻿public interface ITowerController : IUnitController {
+
 }
