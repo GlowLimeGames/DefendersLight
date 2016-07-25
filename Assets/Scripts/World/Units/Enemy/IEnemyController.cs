@@ -1,6 +1,8 @@
-﻿public interface IEnemyController {
-     void Create(IEnemy unit);
-     void Destroy(IEnemy unit);
-     IEnemy[] GetAll();
+/*
+ * Author: Isaiah Mann
+ * Description: Basic enemy overwatch
+ */
+
+﻿public interface IEnemyController : IUnitController {
      IEnemyWave GetWave(int waveNumber);
 }

@@ -1,15 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+/*
+ * Author: Isaiah Mann
+ * Description: Basic enemy behaviour
+ */
 
-public class IEnemy : MonoBehaviour {
+public interface IEnemy : IUnit {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
