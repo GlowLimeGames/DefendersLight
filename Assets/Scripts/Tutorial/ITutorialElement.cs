@@ -3,7 +3,7 @@
  * Description: 
  */
 
-public interface ITutorialElement {
+public interface ITutorialElement : IJSONDeserializable {
 	ITutorialElement[] Siblings {get;}
 	ITutorialStep Parent {get;}
 

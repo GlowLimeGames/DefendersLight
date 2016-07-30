@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/*
+ * Author(s): Isaiah Mann
+ * Description: A single cell/square on the map
+ */
+
+using UnityEngine;
 using System.Collections;
 
 [System.Serializable]

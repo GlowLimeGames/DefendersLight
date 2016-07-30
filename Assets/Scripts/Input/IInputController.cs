@@ -1,3 +1,8 @@
+/*
+ * Author(s): Isaiah Mann
+ * Description: Template for the input controller (accepts and processes all touch/pointer input from the user)
+ */
+
 using UnityEngine;
 
 public interface IInputController {

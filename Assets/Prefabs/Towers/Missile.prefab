@@ -29,6 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.5367577, y: 1.1286105, z: -0.4672335}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -88,14 +89,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 185974}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7abc5e474a07b455aa2ed383761393de, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b510e12b91fb4a669aeaed052c56533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location:
-    X: 0
-    Y: 0
-  _stats: {fileID: 11400000, guid: cdcc199d79f944edd9274f2a4d1ca5c9, type: 2}
-  HasAttack: 1
+  _stats: {fileID: 11400000, guid: 1e22943dd40134f72a7f18373cbc8451, type: 2}
+  HasAttack: 0
   HealthBar: {fileID: 0}
   debugging: 0
 --- !u!135 &13568878

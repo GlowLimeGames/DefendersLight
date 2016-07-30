@@ -1,4 +1,9 @@
-﻿public interface IMapLocation {
+﻿/*
+ * Author(s): Isaiah Mann
+ * Description: Template behaviour and stats for a location on the map
+ */
+
+public interface IMapLocation {
 	int Distance(IMapLocation otherLocation);
 	int GetX();
 	int GetY();

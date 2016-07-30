@@ -6,6 +6,6 @@
 using UnityEngine;
 
 [CreateAssetMenuAttribute]
-public class LightingTowerStats : TowerStats {
+public class IlluminationTowerStats : TowerStats {
 	public int LightRadius;
 }

@@ -9,5 +9,4 @@ public interface IMapController : IController {
      bool TryGetPath(IWorldObject element,
 		IMapLocation destination,
 		out IMapPath path);
-
 }

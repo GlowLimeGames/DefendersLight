@@ -3,7 +3,7 @@
  * Description: Describes the public functioanlity of the AudioController system
  */
 
-public interface IAudioController {
+public interface IAudioController : IJSONDeserializable {
      void Play (AudioFile file);
      void Stop (AudioFile file);
      void ToggleFXMute();

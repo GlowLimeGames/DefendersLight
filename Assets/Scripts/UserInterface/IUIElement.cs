@@ -3,7 +3,7 @@
  * Description: Describes the public functioanlity of a generic UIElement
  */
 
-public interface IUIElement {
+public interface IUIElement : IJSONDeserializable {
 	string GetID();
 	void Show();
 	void Hide();

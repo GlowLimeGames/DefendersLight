@@ -9,7 +9,7 @@ using UnityEngine;
 using System.Collections;
 
 [System.Serializable]
-public class AudioFile {
+public class AudioFile : IAudioFile {
 	public delegate void ClipRequestAction (AudioFile file);
 	public event ClipRequestAction OnClipRequest;
 
@@ -31,12 +31,12 @@ public class AudioFile {
 		}
 	}
 
-	public string FileName;
-	public string[] EventNames;
-	public string[] StopEventNames;
-	public bool Loop;
-	public string Type;
-	public int Volume;
+	public string FileName{get; set;}
+	public string[] EventNames{get; set;}
+	public string[] StopEventNames{get; set;}
+	public bool Loop{get; set;}
+	public string Type{get; set;}
+	public int Volume{get; set;}
 
 	// Volume for the AudioSource class uses 0-1.0f scale while our class uses 0-100 (integer) scale
 	public float Volumef {
@@ -45,13 +45,13 @@ public class AudioFile {
 		}
 	}
 
-	public AudioType typeAsEnum {
+	public AudioType TypeAsEnum {
 		get {
 			return AudioUtil.AudioTypeFromString(Type);
 		}
 	}
 
-	public int Channel;
+	public int Channel{get; set;}
 
 
 	public override string ToString () {
@@ -99,4 +99,14 @@ public class AudioFile {
 	public float GetVolume () {
 		return GetVolume(Volume);
 	}
+
+	#region JSON Deserialization
+	public void DeserializeFromJSON (string jsonText) {
+		throw new System.NotImplementedException();
+	}
+
+	public void DeserializeFromJSONAtPath (string jsonPath) {
+		throw new System.NotImplementedException();
+	}
+	#endregion
 }
