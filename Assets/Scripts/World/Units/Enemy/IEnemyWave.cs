@@ -6,8 +6,9 @@
 using System.Collections.Generic;
 
 public interface IEnemyWave {
-	int GetUnitCount();
-	int GetUnitAliveCount();
-	IEnemy[] GetUnits();
+	int TotalEnemyCount{get;}
+	int RemainingEnemyCount{get;}
+	IEnemy[] AllUnits{get;}
+	IEnemy[] RemainingUnits{get;}
 	Dictionary<Direction, IEnemy[]> GetEnemiesByAttackDirection();
 }

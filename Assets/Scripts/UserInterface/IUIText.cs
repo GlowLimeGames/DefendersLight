@@ -7,9 +7,8 @@
 using UnityEngine;
 
 public interface IUIText : IUIElement {
-	string GetText();
-	void SetText(string text);
-	void SeColor(Color color);
-	void SetFontSize(int fontSize);
+	string Text{get; set;}
+	Color Color{get; set;}
+	int FontSize{get; set;}
 	void SetFont(Font font);
 }

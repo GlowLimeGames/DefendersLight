@@ -4,7 +4,14 @@
  */
 
 public interface IUIElement : IJSONDeserializable {
-	string GetID();
+	string ID {get;}
+	IUIElement[] Children{get;}
+	IUIElement Parent{get;}
+	bool Scrollable{get; set;}
+	bool OverflowEnabled{get; set;}
+	bool Interactive{get; set;}
+	UIDimensions Dimensions{get;}
+
 	void Show();
 	void Hide();
 	void SetParent(IUIElement parent);
@@ -15,13 +22,5 @@ public interface IUIElement : IJSONDeserializable {
 	void AddText (IUIText text);
 	void SetSize(int width, int height);
 	void SetSize(UIDimensions dimensions);
-	void ToggleScrollable(bool isScrollable);
-	void ToggleOverflow(bool overflowEnabled);
-	void SetInteractive(bool isInteractive);
-	bool IsScrollable();
-	bool IsOverflowEnabled();
-	bool IsInteractive();
-	IUIElement[] GetChildren();
-	IUIElement GetParent();
 	IUIElement GetChild(string id);
 }
