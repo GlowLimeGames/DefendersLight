@@ -5,7 +5,7 @@
 
 public interface IMapLocation {
 	int Distance(IMapLocation otherLocation);
-	int GetX();
-	int GetY();
+	int X{get;}
+	int Y{get;}
 	void Set(int x, int y);
 }

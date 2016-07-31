@@ -4,7 +4,8 @@
  */
 
 public interface IUnitController : IController {
-     void Create(IUnit unit);
-     void Destroy(IUnit unit);
-     IUnit[] GetActive();
+	IUnit[] ActiveUnits{get;} 
+
+	void Create(IUnit unit);
+    void Destroy(IUnit unit);
 }
