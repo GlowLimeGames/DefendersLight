@@ -97,7 +97,7 @@ public class AudioController : Controller, IAudioController {
 	}
 
 	void CheckMute (AudioFile file, AudioSource source) {
-		source.mute = AudioUtil.IsMuted(file.typeAsEnum);
+		source.mute = AudioUtil.IsMuted(file.TypeAsEnum);
 	}
 
 	// Checks if the AudioSource corresponding to the channel integer has been initialized
@@ -345,4 +345,13 @@ public class AudioController : Controller, IAudioController {
 		}
 	}
 
+	#region JSON Deserialization
+	public void DeserializeFromJSON (string jsonText) {
+		throw new System.NotImplementedException();
+	}
+
+	public void DeserializeFromJSONAtPath (string jsonPath) {
+		throw new System.NotImplementedException();
+	}
+	#endregion
 }

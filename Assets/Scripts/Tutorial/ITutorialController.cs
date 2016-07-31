@@ -5,7 +5,7 @@
 
 using System.Collections.Generic;
 
-public interface ITutorialController {
+public interface ITutorialController : IJSONDeserializable {
 	ITutorial[] AllTutorials {get;}
 	Dictionary<TutorialStatus, ITutorial> TutorialsByStatus {get;}
 

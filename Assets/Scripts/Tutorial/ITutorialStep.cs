@@ -3,7 +3,7 @@
  * Description: 
  */
 
-public interface ITutorialStep {
+public interface ITutorialStep : IJSONDeserializable {
 	int Index {get;}
 	ITutorialElement[] Elements {get;}
 	ITutorialStep Previous {get;}

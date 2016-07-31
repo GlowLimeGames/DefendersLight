@@ -3,7 +3,7 @@
  * Description: 
  */
 
-public interface ITutorial {
+public interface ITutorial: IJSONDeserializable, IJSONSerializable {
 	ITutorialStep CurrentStep {get;}
 	int StepCount {get;}
 	int StepsRemaining {get;}

@@ -6,6 +6,6 @@
 using UnityEngine;
 
 [CreateAssetMenuAttribute]
-public class DefensiveTowerStats : TowerStats {
+public class AssaultTowerStats : TowerStats {
 
 }

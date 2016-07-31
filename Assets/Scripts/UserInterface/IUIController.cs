@@ -1,4 +1,9 @@
-public interface IUserIntefaceController : IController {
+/*
+ * Author(s): Isaiah Mann
+ * Description: Template actions for a class that can be initialized from JSON
+ */
+
+public interface IUIController : IController {
     void AddElement(IUIElement element);
     void RemoveElement(IUIElement element);
     void ShowElement(IUIElement element);
