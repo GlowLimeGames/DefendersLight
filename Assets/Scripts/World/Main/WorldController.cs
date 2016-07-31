@@ -3,31 +3,34 @@
  * Description: Controls the set up of the game world
  */
 using UnityEngine;
+using System.Collections.Generic;
 
 public class WorldController : MannBehaviour, IWorldController {
-	public void Create() {
+	List<GameObject> unitSpawnpool = new List<GameObject>();
 
+	public void Create() {
+		throw new System.NotImplementedException();
 	}
 
 	// Cleans up/destroys the world
 	public void Teardown() {
-
+		throw new System.NotImplementedException();
 	}
 
 	public void AddObject(IWorldObject element) {
-
+		throw new System.NotImplementedException();
 	}
 
 	public void RemoveObject(IWorldObject element) {
-
+		throw new System.NotImplementedException();
 	}
 
 	public IWorldObject GetObject(string id) {
 		throw new System.NotImplementedException();
 	}
-
+		
 	protected override void SetReferences () {
-
+		
 	}
 
 	protected override void FetchReferences () {
@@ -42,6 +45,10 @@ public class WorldController : MannBehaviour, IWorldController {
 
 	}
 		
+	public static string GenerateID (IUnit unit) {
+		return unit.Type + System.Guid.NewGuid();
+	}
+
 	#region JSON Serialization
 	public string SerializeAsJSON() {
 		throw new System.NotImplementedException();

@@ -3,7 +3,8 @@
  * Description: Basic unit functionality
  */
 
-public interface IUnit {
+public interface IUnit : IWorldObject {
+	string Type {get;}
 	int Health{get;}
     void Attack(IUnit unit);
     void Damage(int damage);

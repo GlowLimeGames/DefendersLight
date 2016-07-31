@@ -10,8 +10,23 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static class EventController {
+	#region Static Initialization
+	static bool _debug = false;
+
+	static EventController () {
+		Init();
+	}
+
+	static void Init() {
+		if (_debug) {
+			Debug.Log("Initializing Event Controller");
+		}
+	}
+	#endregion
+
 	public delegate void Action();
 
+	#region Event Types
 	public delegate void NamedEventAction (string nameOfEvent);
 	public static event NamedEventAction OnNamedEvent;
 
@@ -21,12 +36,14 @@ public static class EventController {
     public delegate void AudioEventAction(AudioActionType actionType, AudioType audioType);
     public static event AudioEventAction OnAudioEvent;
 
-	static bool _debug = false;
+	public delegate void RewardEventAction(string eventName, RewardAmount rewardAmount);
+	public static event RewardEventAction OnRewardEvent;
 
-	static EventController () {
-		Init();
-	}
-	
+	public delegate void UnitEventAction(string eventName, IUnit unit);
+	public static event UnitEventAction OnUnitEvent;
+	#endregion
+
+	#region Event Calls
 	public static void Event (string eventName) {
 		if (OnNamedEvent != null) {
 			OnNamedEvent(eventName);
@@ -41,15 +58,21 @@ public static class EventController {
 	}
 
     public static void Event(AudioActionType actionType, AudioType audioType) {
-        if (OnAudioEvent != null)
-        {
+        if (OnAudioEvent != null) {
             OnAudioEvent(actionType, audioType);
         }
     }
 
-	static void Init() {
-		if (_debug) {
-			Debug.Log("Initializing Event Controller");
+	public static void Event(string eventName, RewardAmount rewardAmount) {
+		if (OnRewardEvent != null) {
+			OnRewardEvent(eventName, rewardAmount);
 		}
 	}
+
+	public static void Event(string eventName, IUnit unit) {
+		if (OnUnitEvent != null) {
+			OnUnitEvent(eventName, unit);
+		}
+	}
+	#endregion
 }

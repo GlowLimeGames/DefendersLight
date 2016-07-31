@@ -69,6 +69,10 @@ public class MapController : MannBehaviour, IMapController {
 		throw new System.NotImplementedException();
 	}
 
+	public IWorldObject ObjectAt (IMapLocation location) {
+		throw new System.NotImplementedException();
+	}
+		
 	#region Input Handling
 	public void HandleZoom (float zoomFactor) {
 		throw new System.NotImplementedException();
