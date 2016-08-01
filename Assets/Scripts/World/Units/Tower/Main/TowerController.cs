@@ -6,7 +6,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class TowerController : UnitController {
+public class TowerController : UnitController, ITowerController {
 	public static TowerController Instance;
 
 	#region Constructors
@@ -14,6 +14,19 @@ public class TowerController : UnitController {
 
 	}
 	#endregion
+
+	public void Create(IUnit unit) {
+
+	}
+
+	public void Destroy(IUnit unit) {
+
+	}
+
+	public IUnit[] GetActive() {
+		throw new System.NotImplementedException ();
+	}
+
 
 	public void Create(ITower unit) {
 		throw new System.NotImplementedException();

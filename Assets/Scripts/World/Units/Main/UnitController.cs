@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public abstract class UnitController : MannBehaviour {
+	public IUnit[] ActiveUnits{get;} 
 	public List<ActiveObjectBehaviour> Units = new List<ActiveObjectBehaviour>();
 
 	protected IWorldController controller;
