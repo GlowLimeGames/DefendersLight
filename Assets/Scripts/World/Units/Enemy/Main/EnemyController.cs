@@ -7,8 +7,13 @@ using UnityEngine;
 using System.Collections;
 
 public class EnemyController : UnitController {
-
 	public static EnemyController Instance;
+
+	#region Constructors
+	public EnemyController (IWorldController controller):base(controller) {
+
+	}
+	#endregion
 
 	protected override void SetReferences() {
 		if (!SingletonUtil.TryInit(ref Instance, this, gameObject)) {
@@ -31,5 +36,4 @@ public class EnemyController : UnitController {
      public IEnemyWave GetWave(int waveNumber) {
 		throw new System.NotImplementedException();
 	}
-
 }

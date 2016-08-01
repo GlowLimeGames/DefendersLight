@@ -10,4 +10,5 @@ public interface IWorldController : IController, IJSONSerializable, IJSONDeseria
     void AddObject(IWorldObject element);
 	void RemoveObject(IWorldObject element);
     IWorldObject GetObject(string id);
+	string GenerateID (IUnit unit);
 }

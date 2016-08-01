@@ -45,7 +45,7 @@ public class WorldController : MannBehaviour, IWorldController {
 
 	}
 		
-	public static string GenerateID (IUnit unit) {
+	public string GenerateID (IUnit unit) {
 		return unit.Type + System.Guid.NewGuid();
 	}
 

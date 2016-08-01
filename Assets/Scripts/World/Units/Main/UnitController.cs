@@ -10,6 +10,14 @@ using System.Collections.Generic;
 public abstract class UnitController : MannBehaviour {
 	public List<ActiveObjectBehaviour> Units = new List<ActiveObjectBehaviour>();
 
+	protected IWorldController controller;
+
+	#region Constructors
+	public UnitController (IWorldController controller) {
+		this.controller = controller;
+	}
+	#endregion
+
 	protected override void FetchReferences() {
 
 	}

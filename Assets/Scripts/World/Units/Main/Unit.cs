@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Unit : IUnit {
 	#region Properties
+	protected IWorldController controller;
 	string _id;
 	public string ID {
 		get {
@@ -74,7 +75,7 @@ public class Unit : IUnit {
 
 
 	#region Constructors
-	public Unit (string type, int health, int damage, float cooldown, int range, int attackRadius, IMapLocation location, string description) {
+	public Unit (string type, int health, int damage, float cooldown, int range, int attackRadius, IMapLocation location, string description, IWorldController controller) {
 		this._type = type;
 		this._health = health;
 		this._attackDamage = damage;
@@ -83,8 +84,9 @@ public class Unit : IUnit {
 		this._attackRadius = attackRadius;
 		this._location = location;
 		this._description = description;
+		this.controller = controller;
 
-		this._id = WorldController.GenerateID(this);
+		this._id = controller.GenerateID(this);
 	}
 	#endregion
 

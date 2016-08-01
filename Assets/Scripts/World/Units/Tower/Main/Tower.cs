@@ -4,6 +4,7 @@
  */
 
 public class Tower : Unit {
+	ITowerController controller;
 	int _cost;
 	public int Cost {
 		get {
@@ -23,11 +24,13 @@ public class Tower : Unit {
 		}
 	}
 
-	public Tower (string type, int health, IMapLocation location, string description, int cost, int unlockLevel, 
+	public Tower (string type, int health, IMapLocation location, string description, int cost, int unlockLevel,
+		IWorldController worldController, ITowerController towerController,
 		int damage = 0, float cooldown = 0, int range = 0, int attackRadius = 0, int illuminationRadius = 0) : 
-	base(type, health, damage, cooldown, range, attackRadius, location, description) {
+	base(type, health, damage, cooldown, range, attackRadius, location, description, worldController) {
 		this._cost = cost;
 		this._unlockLevel = unlockLevel;
 		this._illuminationRadius = illuminationRadius;
+		this.controller = towerController;
 	}
 }

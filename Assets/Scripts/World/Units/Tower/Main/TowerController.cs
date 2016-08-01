@@ -9,6 +9,12 @@ using System.Collections;
 public class TowerController : UnitController {
 	public static TowerController Instance;
 
+	#region Constructors
+	public TowerController (IWorldController controller):base(controller) {
+
+	}
+	#endregion
+
 	public void Create(ITower unit) {
 		throw new System.NotImplementedException();
 	}
