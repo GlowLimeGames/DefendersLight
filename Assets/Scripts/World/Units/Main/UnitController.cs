@@ -8,7 +8,15 @@ using System.Collections;
 using System.Collections.Generic;
 
 public abstract class UnitController : MannBehaviour {
-	public IUnit[] ActiveUnits{get;} 
+	protected IList<IUnit> _activeUnits;
+	public IUnit[] ActiveUnits{
+		get {
+			IUnit[] activeUnits = new IUnit[_activeUnits.Count];
+			this._activeUnits.CopyTo(activeUnits, 0);
+			return activeUnits;
+		}
+	}
+
 	public List<ActiveObjectBehaviour> Units = new List<ActiveObjectBehaviour>();
 
 	protected IWorldController controller;
