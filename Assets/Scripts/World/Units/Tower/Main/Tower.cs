@@ -4,6 +4,8 @@
  */
 
 public class Tower : Unit {
+	protected const int ATTACK_STAT_DEFAULT = 0;
+
 	ITowerController towerController;
 	int _cost;
 	public int Cost {
