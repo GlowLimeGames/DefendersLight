@@ -5,28 +5,22 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class TowerController : UnitController, ITowerController {
+public class TowerController : UnitController<ITower>, ITowerController {
 	public static TowerController Instance;
 
 	#region Constructors
-	public TowerController (IWorldController controller):base(controller) {
+
+	public TowerController (IWorldController controller, string unitTemplateJSON):base(controller, unitTemplateJSON) {
 
 	}
+
 	#endregion
 
-	public void Create(IUnit unit) {
-
-	}
-
-	public void Destroy(IUnit unit) {
-
-	}
-
-	public IUnit[] GetActive() {
+	public ITower[] GetActive() {
 		throw new System.NotImplementedException ();
 	}
-
 
 	public void Create(ITower unit) {
 		throw new System.NotImplementedException();
@@ -38,6 +32,10 @@ public class TowerController : UnitController, ITowerController {
 
 	public ITower[] GetAll() {
 		throw new System.NotImplementedException();
+	}
+
+	public override void CreateUnitTemplates (string jsonText) {
+		throw new System.NotImplementedException ();
 	}
 
 	protected override void SetReferences() {

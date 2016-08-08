@@ -5,14 +5,17 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class EnemyController : UnitController, IEnemyController {
+public class EnemyController : UnitController<IEnemy>, IEnemyController {
 	public static EnemyController Instance;
 
 	#region Constructors
-	public EnemyController (IWorldController controller):base(controller) {
+
+	public EnemyController (IWorldController controller, string unitTemplateJSON):base(controller, unitTemplateJSON) {
 
 	}
+
 	#endregion
 
 	protected override void SetReferences() {
@@ -21,11 +24,11 @@ public class EnemyController : UnitController, IEnemyController {
 		}
 	}
 
-	public void Create(IUnit unit) {
+	public void Create(IEnemy unit) {
 		throw new System.NotImplementedException();
 	}
 
-	public void Destroy(IUnit unit) {
+	public void Destroy(IEnemy unit) {
 		throw new System.NotImplementedException();
 	}
 
@@ -35,5 +38,9 @@ public class EnemyController : UnitController, IEnemyController {
 
      public IEnemyWave GetWave(int waveNumber) {
 		throw new System.NotImplementedException();
+	}
+
+	public override void CreateUnitTemplates (string jsonText) {
+		throw new System.NotImplementedException ();
 	}
 }

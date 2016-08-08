@@ -3,6 +3,6 @@
  * Description: Basic enemy overwatch
  */
 
-﻿public interface IEnemyController : IUnitController {
+﻿public interface IEnemyController : IUnitController<IEnemy> {
      IEnemyWave GetWave(int waveNumber);
 }

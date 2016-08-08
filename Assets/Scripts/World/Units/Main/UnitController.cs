@@ -7,11 +7,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class UnitController : MannBehaviour {
-	protected IList<IUnit> _activeUnits;
-	public IUnit[] ActiveUnits{
+public abstract class UnitController<UnitType> : MannBehaviour where UnitType:IUnit {
+	protected Dictionary<string, UnitType> templateUnits;
+	protected IList<UnitType> _activeUnits;
+	public UnitType[] ActiveUnits{
 		get {
-			IUnit[] activeUnits = new IUnit[_activeUnits.Count];
+			UnitType[] activeUnits = new UnitType[_activeUnits.Count];
 			this._activeUnits.CopyTo(activeUnits, 0);
 			return activeUnits;
 		}
@@ -22,9 +23,12 @@ public abstract class UnitController : MannBehaviour {
 	protected IWorldController controller;
 
 	#region Constructors
-	public UnitController (IWorldController controller) {
+
+	public UnitController (IWorldController controller, string unitTemplateJSON) {
 		this.controller = controller;
+		CreateUnitTemplates(unitTemplateJSON);
 	}
+
 	#endregion
 
 	protected override void FetchReferences() {
@@ -38,4 +42,6 @@ public abstract class UnitController : MannBehaviour {
 	protected override void HandleNamedEvent(string eventName) {
 
 	}
+
+	public abstract void CreateUnitTemplates(string jsonText);
 }
