@@ -11,7 +11,7 @@ public class WorldController : MannBehaviour, IWorldController {
 	IEnemyController enemyController;
 
 	public void Create() {
-		throw new System.NotImplementedException();
+		
 	}
 
 	// Cleans up/destroys the world
