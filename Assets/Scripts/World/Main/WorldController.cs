@@ -15,7 +15,8 @@ public class WorldController : MannBehaviour, IWorldController {
 	IDataController dataController;
 
 	public void Create() {
-		// string towerTemplatesJSON = dataController.r
+		string towerTemplatesJSON = dataController.RetrieveJSONFromResources (TOWER_UNIT_TEMPLATE_FILE_NAME);
+		string enemyTemplatesJSON = dataController.RetrieveJSONFromResources (ENEMY_UNIT_TEMPLATE_FILE_NAME);
 		/* 
 		 * TODO:
 		 * 1. Get Tower Templates
