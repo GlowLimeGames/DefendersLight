@@ -8,5 +8,7 @@
 	void SaveSesion (ISessionData session);
 	void SaveJSON(string fileName, string jsonText);
 	string RetrieveJSON(string fileName);
+	// Resources is a special folder within the Unity Assets directory that you can load in files easily from at Runtime
+	string RetrieveJSONFromResources(string filePathInResources);
 	IData Load();
 }
