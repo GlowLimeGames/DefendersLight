@@ -1,6 +1,6 @@
 ﻿/*
  * Author(s): Isaiah Mann
- * Description: Controls the set up of the game world
+ * Description: Controls the set up and behaviour of the game world
  */
 using UnityEngine;
 using System.Collections.Generic;
@@ -12,8 +12,10 @@ public class WorldController : MannBehaviour, IWorldController {
 	List<GameObject> unitSpawnpool = new List<GameObject>();
 	ITowerController towerController;
 	IEnemyController enemyController;
+	IDataController dataController;
 
 	public void Create() {
+		// string towerTemplatesJSON = dataController.r
 		/* 
 		 * TODO:
 		 * 1. Get Tower Templates
@@ -48,6 +50,7 @@ public class WorldController : MannBehaviour, IWorldController {
 	protected override void FetchReferences () {
 		towerController = TowerController.Instance;
 		enemyController = EnemyController.Instance;
+		// TODO: Fetch reference to datacontroller
 	}
 
 	protected override void CleanupReferences () {
