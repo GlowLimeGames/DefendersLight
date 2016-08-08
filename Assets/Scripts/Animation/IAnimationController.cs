@@ -3,7 +3,7 @@
  * Description: Describes the behaviour of the class that controls all the game's animations
  */
 
-public interface IAnimationController {
+public interface IAnimationController : IController {
 	void Play(string animationName);
 	void Play(IAnimation animation);
 	void Play(IWorldObject worldObject, IWorldAnimation animation);
