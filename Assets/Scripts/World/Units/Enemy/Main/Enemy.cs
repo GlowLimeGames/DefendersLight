@@ -4,7 +4,7 @@
  */
 
 public class Enemy : Unit {
-	IEnemyController controller;
+	IEnemyController enemyController;
 	RewardAmount _deathReward;
 	public RewardAmount DeathReward {
 		get {
@@ -16,6 +16,6 @@ public class Enemy : Unit {
 		IWorldController worldController, IEnemyController enemyController) : 
 	base(type, health, damage, cooldown, range, attackRadius, location, description, worldController) {
 		this._deathReward = deathReward;
-		this.controller = enemyController;
+		this.enemyController = enemyController;
 	}
 }

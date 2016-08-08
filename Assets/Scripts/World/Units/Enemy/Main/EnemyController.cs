@@ -6,7 +6,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class EnemyController : UnitController {
+public class EnemyController : UnitController, IEnemyController {
 	public static EnemyController Instance;
 
 	#region Constructors
@@ -21,11 +21,11 @@ public class EnemyController : UnitController {
 		}
 	}
 
-	public void Create(IEnemy unit) {
+	public void Create(IUnit unit) {
 		throw new System.NotImplementedException();
 	}
 
-     public void Destroy(IEnemy unit) {
+	public void Destroy(IUnit unit) {
 		throw new System.NotImplementedException();
 	}
 

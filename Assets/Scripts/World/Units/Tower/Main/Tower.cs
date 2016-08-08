@@ -4,7 +4,7 @@
  */
 
 public class Tower : Unit {
-	ITowerController controller;
+	ITowerController towerController;
 	int _cost;
 	public int Cost {
 		get {
@@ -31,6 +31,6 @@ public class Tower : Unit {
 		this._cost = cost;
 		this._unlockLevel = unlockLevel;
 		this._illuminationRadius = illuminationRadius;
-		this.controller = towerController;
+		this.towerController = towerController;
 	}
 }

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 public class WorldController : MannBehaviour, IWorldController {
 	List<GameObject> unitSpawnpool = new List<GameObject>();
+	ITowerController towerController;
+	IEnemyController enemyController;
 
 	public void Create() {
 		throw new System.NotImplementedException();
@@ -34,7 +36,8 @@ public class WorldController : MannBehaviour, IWorldController {
 	}
 
 	protected override void FetchReferences () {
-
+		towerController = TowerController.Instance;
+		enemyController = EnemyController.Instance;
 	}
 
 	protected override void CleanupReferences () {
