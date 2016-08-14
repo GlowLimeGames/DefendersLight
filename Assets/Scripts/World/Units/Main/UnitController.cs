@@ -17,19 +17,32 @@ public abstract class UnitController<UnitType> : MannBehaviour where UnitType:IU
 			return activeUnits;
 		}
 	}
+		
+	List<ActiveObjectBehaviour> _units = new List<ActiveObjectBehaviour>();
+	public List<ActiveObjectBehaviour> Units {
+		get {
+			return _units;
+		}
+	}
 
-	public List<ActiveObjectBehaviour> Units = new List<ActiveObjectBehaviour>();
+	protected IWorldController worldController;
+	protected IDataController dataController;
 
-	protected IWorldController controller;
-
-	#region Constructors
-
-	public UnitController (IWorldController controller, string unitTemplateJSON) {
-		this.controller = controller;
+	public virtual void Setup (IWorldController worldController, IDataController dataController, string unitTemplateJSONPath) {
+		this.worldController = worldController;
+		this.dataController = dataController;
+		string unitTemplateJSON = dataController.RetrieveJSONFromResources(unitTemplateJSONPath);
 		CreateUnitTemplates(unitTemplateJSON);
 	}
 
-	#endregion
+	public virtual void CreateUnitTemplates(string jsonText) {
+		UnitType[] tempUnitTemplates = JsonUtility.FromJson<UnitType[]>(jsonText);
+		templateUnits = new Dictionary<string, UnitType>();
+		foreach (UnitType unit in tempUnitTemplates) {
+			templateUnits.Add(unit.Type, unit);
+		}
+		Debug.Log(tempUnitTemplates.Length);
+	}
 
 	protected override void FetchReferences() {
 
@@ -42,6 +55,5 @@ public abstract class UnitController<UnitType> : MannBehaviour where UnitType:IU
 	protected override void HandleNamedEvent(string eventName) {
 
 	}
-
-	public abstract void CreateUnitTemplates(string jsonText);
+		
 }

@@ -6,8 +6,10 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class WorldController : MannBehaviour, IWorldController {
-	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates.json";
-	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates.json";
+	public static IWorldController Instance;
+
+	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
+	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
 
 	List<GameObject> unitSpawnpool = new List<GameObject>();
 	ITowerController towerController;
@@ -15,16 +17,12 @@ public class WorldController : MannBehaviour, IWorldController {
 	IDataController dataController;
 
 	public void Create() {
-		string towerTemplatesJSON = dataController.RetrieveJSONFromResources (TOWER_UNIT_TEMPLATE_FILE_NAME);
-		string enemyTemplatesJSON = dataController.RetrieveJSONFromResources (ENEMY_UNIT_TEMPLATE_FILE_NAME);
-		/* 
-		 * TODO:
-		 * 1. Get Tower Templates
-		 * 2. Call towercontroller constructor
-		 * 3. Get Enemy Templates
-		 * 4. Call enemycontroller constructor
-		 */
+		SetupUnitControllers();
+	}
 
+	void SetupUnitControllers () {
+		towerController.Setup(this, dataController, TOWER_UNIT_TEMPLATE_FILE_NAME);
+		enemyController.Setup(this, dataController, ENEMY_UNIT_TEMPLATE_FILE_NAME);
 	}
 
 	// Cleans up/destroys the world
@@ -45,13 +43,14 @@ public class WorldController : MannBehaviour, IWorldController {
 	}
 		
 	protected override void SetReferences () {
-		
+		SingletonUtil.TryInit(ref Instance, this, gameObject);
 	}
 
 	protected override void FetchReferences () {
+		dataController = DataController.Instance;
 		towerController = TowerController.Instance;
 		enemyController = EnemyController.Instance;
-		// TODO: Fetch reference to datacontroller
+		Create();
 	}
 
 	protected override void CleanupReferences () {
