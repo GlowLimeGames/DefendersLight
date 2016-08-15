@@ -7,12 +7,12 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class UnitController<UnitType> : MannBehaviour where UnitType:IUnit {
+public abstract class UnitController<IUnitType, UnitType, UnitList> : MannBehaviour where IUnitType:IUnit where UnitType:Unit where UnitList:UnitCollection<UnitType> {
 	protected Dictionary<string, UnitType> templateUnits;
-	protected IList<UnitType> _activeUnits;
-	public UnitType[] ActiveUnits{
+	protected IList<IUnitType> _activeUnits;
+	public IUnitType[] ActiveUnits{
 		get {
-			UnitType[] activeUnits = new UnitType[_activeUnits.Count];
+			IUnitType[] activeUnits = new IUnitType[_activeUnits.Count];
 			this._activeUnits.CopyTo(activeUnits, 0);
 			return activeUnits;
 		}
@@ -36,12 +36,13 @@ public abstract class UnitController<UnitType> : MannBehaviour where UnitType:IU
 	}
 
 	public virtual void CreateUnitTemplates(string jsonText) {
-		UnitType[] tempUnitTemplates = JsonUtility.FromJson<UnitType[]>(jsonText);
+		UnitList tempUnitTemplates = JsonUtility.FromJson<UnitList>(jsonText);
 		templateUnits = new Dictionary<string, UnitType>();
-		foreach (UnitType unit in tempUnitTemplates) {
-			templateUnits.Add(unit.Type, unit);
+		foreach (UnitType unit in tempUnitTemplates.Units) {
+			if (!string.IsNullOrEmpty(unit.IType)) {
+				templateUnits.Add(unit.IType, unit);
+			}
 		}
-		Debug.Log(tempUnitTemplates.Length);
 	}
 
 	protected override void FetchReferences() {

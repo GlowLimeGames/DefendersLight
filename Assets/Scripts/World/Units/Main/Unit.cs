@@ -2,9 +2,25 @@
  * Author(s): Isaiah Mann
  * Description: Class that all in game units inherit from
  */
+using SimpleJSON;
 using UnityEngine;
 
+[System.Serializable]
 public class Unit : IUnit {
+	#region JSON Keys
+
+	public const string NAME_KEY = "Name";
+	public const string TYPE_KEY = "Type";
+	public const string HEALTH_KEY = "Health";
+	public const string DAMAGE_KEY = "Attack Damage";
+	public const string COOLDOWN_KEY = "Attack Cooldown";
+	public const string RANGE_KEY = "Range";
+	public const string RADIUS_KEY = "Radius";
+	public const string DESCRIPTION_KEY = "Description";
+	public const string NOTES_KEY = "Notes";
+
+	#endregion
+
 	#region Properties
 	protected IWorldController controller;
 	string _id;
@@ -22,52 +38,52 @@ public class Unit : IUnit {
 			this._isActive = value;
 		}
 	}
-	protected string _type;
-	public string Type {
+	public string Type;
+	public string IType {
 		get {
-			return _type;
+			return Type;
 		}
 	}
-	protected int _health;
-	public int Health {
+	public int Health;
+	public int IHealth {
 		get {
-			return this._health;
+			return Health;
 		}
 	}
-	protected int _attackDamage;
-	public int AttackDamage {
+	public int AttackDamage;
+	public int IAttackDamage {
 		get {
-			return this._attackDamage;
+			return this.AttackDamage;
 		}
 	}
-	protected float _attackCooldown;
-	public float AttackCooldown {
+	protected float AttackCooldown;
+	public float IAttackCooldown {
 		get {
-			return this._attackCooldown;
+			return this.AttackCooldown;
 		}
 	}
-	protected int _attackRange;
-	public int Range {
+	protected int AttackRange;
+	public int IAttackRange {
 		get {
-			return this._attackRange;
+			return this.AttackRange;
 		}
 	}
-	protected int _attackRadius;
-	public int AttackRadius {
+	protected int AttackRadius;
+	public int IAttackRadius {
 		get {
-			return this._attackRadius;
+			return this.AttackRadius;
 		}
 	}
-	protected IMapLocation _location;
-	public IMapLocation Location {
+	protected IMapLocation Location;
+	public IMapLocation ILocation {
 		get {
-			return _location;
+			return Location;
 		}
 	}
-	string _description;
-	public string Description {
+	public string Description;
+	public string IDescription {
 		get {
-			return this._description;
+			return this.Description;
 		}
 	}
 	protected WorldObjectBehaviour objectLink;
@@ -76,14 +92,14 @@ public class Unit : IUnit {
 
 	#region Constructors
 	public Unit (string type, int health, int damage, float cooldown, int range, int attackRadius, IMapLocation location, string description, IWorldController controller) {
-		this._type = type;
-		this._health = health;
-		this._attackDamage = damage;
-		this._attackCooldown = cooldown;
-		this._attackRange = range;
-		this._attackRadius = attackRadius;
-		this._location = location;
-		this._description = description;
+		this.Type = type;
+		this.Health = health;
+		this.AttackDamage = damage;
+		this.AttackCooldown = cooldown;
+		this.AttackRange = range;
+		this.AttackRadius = attackRadius;
+		this.Location = location;
+		this.Description = description;
 		this.controller = controller;
 
 		this._id = controller.GenerateID(this);
@@ -96,7 +112,7 @@ public class Unit : IUnit {
 	}
 
 	public void Damage(int damage) {
-		this._health -= damage;
+		this.Health -= damage;
 	}
 
 	public void Create() {
@@ -109,6 +125,7 @@ public class Unit : IUnit {
 	#endregion
 
 	#region IGameObjectLink Interface
+
 	public void InitializeGameObject(GameObject fromObject) {
 		throw new System.NotImplementedException();
 	}
@@ -119,5 +136,27 @@ public class Unit : IUnit {
 		objectLink = null;
 		return myGameObject;
 	}
+
+	#endregion
+
+	#region JSON Serialization
+
+	public virtual string SerializeAsJSON() {
+		throw new System.NotImplementedException();
+	}
+
+	public void SaveAsJSONToPath(string path) {
+		throw new System.NotImplementedException();
+	}
+
+	public virtual void DeserializeFromJSON(string jsonText) {
+		throw new System.NotImplementedException();
+	}
+
+	public void DeserializeFromJSONAtPath(string jsonPath) {
+		throw new System.NotImplementedException();
+	}
+
 	#endregion
 }
+	

@@ -62,7 +62,7 @@ public class WorldController : MannBehaviour, IWorldController {
 	}
 		
 	public string GenerateID (IUnit unit) {
-		return unit.Type + System.Guid.NewGuid();
+		return unit.IType + System.Guid.NewGuid();
 	}
 		
 	#region JSON Serialization

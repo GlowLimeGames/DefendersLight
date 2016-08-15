@@ -3,7 +3,8 @@
  * Description: NewStruct is a behaviourless data structure
  */
 
+[System.Serializable]
 public struct RewardAmount {
-	int MiniOrbs;
-	int XP;
+	public int MiniOrbs;
+	public int XP;
 }

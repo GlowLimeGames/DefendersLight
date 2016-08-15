@@ -8,7 +8,7 @@ using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 
-public class TowerController : UnitController<ITower>, ITowerController {
+public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerController {
 	public static TowerController Instance;
 
 	public ITower[] GetActive() {

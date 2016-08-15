@@ -4,12 +4,11 @@
  */
 
 using UnityEngine;
-using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 
-public class EnemyController : UnitController<IEnemy>, IEnemyController {
-	public static IEnemyController Instance;
+public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyController {
+	public static EnemyController Instance;
 
 	protected override void SetReferences() {
 		if (!SingletonUtil.TryInit(ref Instance, this, gameObject)) {
@@ -31,5 +30,9 @@ public class EnemyController : UnitController<IEnemy>, IEnemyController {
 
      public IEnemyWave GetWave(int waveNumber) {
 		throw new System.NotImplementedException();
+	}
+
+	public void CreateUnitTemplates (string jsonText) {
+		throw new System.NotImplementedException ();
 	}
 }

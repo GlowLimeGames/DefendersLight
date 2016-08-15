@@ -5,6 +5,6 @@
 
 public interface IWorldObject : IGameObjectLink {
 	string ID{get;}
-	IMapLocation Location{get;}
+	IMapLocation ILocation{get;}
 	bool IsActive{get; set;}
 }
