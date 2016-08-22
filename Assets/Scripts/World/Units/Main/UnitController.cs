@@ -45,6 +45,13 @@ public abstract class UnitController<IUnitType, UnitType, UnitList> : MannBehavi
 		}
 	}
 
+	public virtual void SpawnUnits (string jsonText) {
+		UnitList unitsOnField = JsonUtility.FromJson<UnitList>(jsonText);
+		foreach (UnitType unit in unitsOnField.Units) {
+
+		}
+	}
+
 	protected override void FetchReferences() {
 
 	}

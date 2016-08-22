@@ -31,8 +31,4 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
      public IEnemyWave GetWave(int waveNumber) {
 		throw new System.NotImplementedException();
 	}
-
-	public void CreateUnitTemplates (string jsonText) {
-		throw new System.NotImplementedException ();
-	}
 }
