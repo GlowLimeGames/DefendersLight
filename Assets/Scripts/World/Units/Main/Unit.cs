@@ -43,25 +43,25 @@ public abstract class Unit : IUnit {
 			return this.AttackDamage;
 		}
 	}
-	protected float AttackCooldown;
+	public float AttackCooldown;
 	public float IAttackCooldown {
 		get {
 			return this.AttackCooldown;
 		}
 	}
-	protected int AttackRange;
+	public int AttackRange;
 	public int IAttackRange {
 		get {
 			return this.AttackRange;
 		}
 	}
-	protected int AttackRadius;
+	public int AttackRadius;
 	public int IAttackRadius {
 		get {
 			return this.AttackRadius;
 		}
 	}
-	protected IMapLocation Location;
+	public MapLocation Location = MapLocation.Default;
 	public IMapLocation ILocation {
 		get {
 			return Location;
@@ -79,18 +79,25 @@ public abstract class Unit : IUnit {
 
 	#region Constructors
 
-	public Unit (string type, int health, int damage, float cooldown, int range, int attackRadius, IMapLocation location, string description, IWorldController controller) {
+	public Unit (string type, int health, int damage, float cooldown, int range, int attackRadius, MapLocation location, string description, IWorldController controller) {
 		this.Type = type;
 		this.Health = health;
 		this.AttackDamage = damage;
 		this.AttackCooldown = cooldown;
 		this.AttackRange = range;
 		this.AttackRadius = attackRadius;
-		this.Location = location;
+		if (this.Location != null) {
+			this.Location = location;
+		}
 		this.Description = description;
 		this.controller = controller;
-
-		this._id = controller.GenerateID(this);
+		if (controller != null) {
+			this._id = controller.GenerateID(this);
+		}
+	}
+		
+	public Unit (string jsonText) {
+		DeserializeFromJSON(jsonText);
 	}
 
 	protected void SetupLink (GameObject instance) {
@@ -151,17 +158,26 @@ public abstract class Unit : IUnit {
 	}
 
 	public void SaveAsJSONToPath(string path) {
-		throw new System.NotImplementedException();
+		FileUtil.AppendStringToPath(SerializeAsJSON(), path);
 	}
 
-	public virtual void DeserializeFromJSON(string jsonText) {
-		
-	}
-
-	public void DeserializeFromJSONAtPath(string jsonPath) {
-		throw new System.NotImplementedException();
-	}
+	public abstract void DeserializeFromJSON(string jsonText);
+	public abstract void DeserializeFromJSONAtPath(string jsonPath);
 
 	#endregion
+
+
+	public virtual void Copy (Unit unit) {
+		this.Type = unit.Type;
+		this.Health = unit.Health;
+		this.AttackDamage = unit.AttackDamage;
+		this.AttackCooldown = unit.AttackCooldown;
+		this.AttackRange = unit.AttackRange;
+		this.AttackRadius = unit.AttackRadius;
+		this.Location = unit.Location;
+		this.Description = unit.Description;
+		this.controller = unit.controller;
+		this._id = unit._id;
+	}
 }
 	

@@ -5,7 +5,7 @@
 
 [System.Serializable]
 public class Tower : Unit {
-	public Tower (string type, int health, IMapLocation location, string description, int cost, int unlockLevel,
+	public Tower (string type, int health, MapLocation location, string description, int cost, int unlockLevel,
 		IWorldController worldController, ITowerController towerController,
 		int damage = 0, float cooldown = 0, int range = 0, int attackRadius = 0, string illuminationRadius = "0") : 
 	base(type, health, damage, cooldown, range, attackRadius, location, description, worldController) {
@@ -14,6 +14,8 @@ public class Tower : Unit {
 		this.IlluminationRadius = illuminationRadius;
 		this.towerController = towerController;
 	}
+
+	public Tower (string jsonText):base(jsonText){}
 
 	#region JSON Keys
 
@@ -52,5 +54,27 @@ public class Tower : Unit {
 	// Should calculate illumination radius if the tower has reflectivity
 	int CalculateVariableIlluminationRadius () {
 		throw new System.NotImplementedException();
+	}
+		
+
+	public override void Copy (Unit unit) {
+		base.Copy(unit);
+		try {
+			Tower towerData = (Tower) unit;
+			this.Cost = towerData.Cost;
+			this.UnlockLevel = towerData.UnlockLevel;
+			this.IlluminationRadius = towerData.IlluminationRadius;
+		} catch {
+			UnityEngine.Debug.LogWarningFormat("Unable to fully copy unit. Is not of type {0}", this.GetType());
+		}
+	}
+
+	public override void DeserializeFromJSON(string jsonText) {
+		Tower towerData = UnityEngine.JsonUtility.FromJson<Tower>(jsonText);
+		Copy(towerData);
+	}
+
+	public override void DeserializeFromJSONAtPath(string jsonPath) {
+
 	}
 }

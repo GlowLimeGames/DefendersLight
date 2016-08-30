@@ -9,26 +9,30 @@ using System.Collections;
 [System.Serializable]
 public class MapLocation : IMapLocation {
 
+	// Adapapted from http://stackoverflow.com/questions/1920116/default-value-for-user-defined-class-in-c-sharp
+	public static readonly MapLocation Default = new MapLocation(0, 0) {};
+
 	public MapLocation (int x, int y) {
-		this._x = x;
-		this._y = y;
+		this.X = x;
+		this.Y = y;
 	}
 
-	int _x, _y;
+	public int X;
+	public int Y;
 
 	public void Set (int x, int y) {
-		this._x = x;
-		this._y = y;
+		this.X = x;
+		this.Y = y;
 	}
 
-	public int X {
+	public int IX {
 		get {
-			return _x;
+			return X;
 		}
 	}
-	public int Y {
+	public int IY {
 		get {
-			return _y;
+			return Y;
 		}
 	}
 
@@ -38,8 +42,12 @@ public class MapLocation : IMapLocation {
 
 	public static int Distance (IMapLocation loc1, IMapLocation loc2) {
 		return (int) Mathf.Sqrt(
-			Mathf.Pow(loc1.X - loc2.X, 2) +
-			Mathf.Pow(loc1.Y - loc2.Y, 2)
+			Mathf.Pow(loc1.IX - loc2.IX, 2) +
+			Mathf.Pow(loc1.IY - loc2.IY, 2)
 		);
+	}
+
+	public override string ToString () {
+		return string.Format ("(X={0}, Y={1})", X, Y);
 	}
 }
