@@ -11,19 +11,19 @@ using System.Collections.Generic;
 public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerController {
 	public static TowerController Instance;
 
-	public ITower[] GetActive() {
+	public Tower[] GetActive() {
 		throw new System.NotImplementedException ();
 	}
 
-	public void Create(ITower unit) {
+	public void Create(Tower unit) {
 		throw new System.NotImplementedException();
 	}
 
-	public void Destroy(ITower unit) {
+	public void Destroy(Tower unit) {
 		throw new System.NotImplementedException();
 	}
 
-	public ITower[] GetAll() {
+	public Tower[] GetAll() {
 		throw new System.NotImplementedException();
 	}
 

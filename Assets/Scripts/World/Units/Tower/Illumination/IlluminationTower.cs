@@ -3,6 +3,7 @@
  * Description: 
  */
 
+[System.Serializable]
 public class IlluminationTower : Tower {
 	public IlluminationTower (string type, int health, IMapLocation location, string description, int cost, int unlockLevel,
 		IWorldController worldController, ITowerController towerController, string illuminationRadius = "0") : 

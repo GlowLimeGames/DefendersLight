@@ -13,11 +13,11 @@ public class EnemyBehaviour : MobileAgentBehaviour {
     }
 
     protected override void FetchReferences() {
-		EnemyController.Instance.Units.Add(this);
+
     }
 
 	protected override void CleanupReferences () {
-		EnemyController.Instance.Units.Remove(this);
+
 	}
 
     protected override void HandleNamedEvent(string eventName) {
@@ -46,12 +46,6 @@ public class EnemyBehaviour : MobileAgentBehaviour {
     }
 
 	public override ActiveObjectBehaviour SelectTarget() {
-		foreach (TowerBehaviour tower in TowerController.Instance.Units) {
-			if (InRange(tower)) {
-				return tower;
-			}
-		}
-
-		return null;
+		throw new System.NotImplementedException();
 	}
 }

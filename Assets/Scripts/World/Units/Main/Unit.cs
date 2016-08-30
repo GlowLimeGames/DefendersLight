@@ -2,28 +2,15 @@
  * Author(s): Isaiah Mann
  * Description: Class that all in game units inherit from
  */
-using SimpleJSON;
+
 using UnityEngine;
 
 [System.Serializable]
-public class Unit : IUnit {
-	#region JSON Keys
-
-	public const string NAME_KEY = "Name";
-	public const string TYPE_KEY = "Type";
-	public const string HEALTH_KEY = "Health";
-	public const string DAMAGE_KEY = "Attack Damage";
-	public const string COOLDOWN_KEY = "Attack Cooldown";
-	public const string RANGE_KEY = "Range";
-	public const string RADIUS_KEY = "Radius";
-	public const string DESCRIPTION_KEY = "Description";
-	public const string NOTES_KEY = "Notes";
-
-	#endregion
-
+public abstract class Unit : IUnit {
 	#region Properties
+
 	protected IWorldController controller;
-	string _id;
+	protected string _id;
 	public string ID {
 		get {
 			return this._id;
@@ -86,11 +73,12 @@ public class Unit : IUnit {
 			return this.Description;
 		}
 	}
-	protected WorldObjectBehaviour objectLink;
+	protected ActiveObjectBehaviour objectLink;
+
 	#endregion
 
-
 	#region Constructors
+
 	public Unit (string type, int health, int damage, float cooldown, int range, int attackRadius, IMapLocation location, string description, IWorldController controller) {
 		this.Type = type;
 		this.Health = health;
@@ -104,9 +92,24 @@ public class Unit : IUnit {
 
 		this._id = controller.GenerateID(this);
 	}
+
+	protected void SetupLink (GameObject instance) {
+		WorldController.AttachBehaviourScript(this.GetType(), instance);
+		SendLink();
+	}
+
+	protected void SendLink () {
+		objectLink.ReceiveLink(this);
+	}
+
+	protected void SeverLink () {
+		objectLink.SeverLink();
+	}
+
 	#endregion
 
 	#region IUnit Interface
+
 	public void Attack(IUnit unit) {
 
 	}
@@ -122,27 +125,29 @@ public class Unit : IUnit {
 	public void Destroy() {
 
 	}
+
 	#endregion
 
 	#region IGameObjectLink Interface
 
 	public void InitializeGameObject(GameObject fromObject) {
-		throw new System.NotImplementedException();
+		SetupLink(fromObject);
 	}
 
 	public GameObject ReleaseGameObject() {
 		GameObject myGameObject = objectLink.gameObject;
 		myGameObject.SetActive(false);
+		objectLink.SeverLink();
 		objectLink = null;
 		return myGameObject;
 	}
-
+		
 	#endregion
 
 	#region JSON Serialization
 
 	public virtual string SerializeAsJSON() {
-		throw new System.NotImplementedException();
+		return JsonUtility.ToJson(this);
 	}
 
 	public void SaveAsJSONToPath(string path) {
@@ -150,7 +155,7 @@ public class Unit : IUnit {
 	}
 
 	public virtual void DeserializeFromJSON(string jsonText) {
-		throw new System.NotImplementedException();
+		
 	}
 
 	public void DeserializeFromJSONAtPath(string jsonPath) {

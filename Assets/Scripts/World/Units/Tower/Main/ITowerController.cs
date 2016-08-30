@@ -3,6 +3,6 @@
  * Description: Basic tower overwatch functionality
  */
 
-﻿public interface ITowerController : IUnitController<ITower> {
+﻿public interface ITowerController : IUnitController<Tower> {
 
 }

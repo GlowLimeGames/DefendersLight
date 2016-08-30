@@ -4,6 +4,4 @@
  */
 
 [System.Serializable]
-public class EnemyList : UnitCollection<Enemy> {
-
-}
+public class EnemyList : UnitCollection<Enemy> {}

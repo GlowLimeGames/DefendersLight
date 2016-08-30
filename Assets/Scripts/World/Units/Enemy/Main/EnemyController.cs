@@ -16,11 +16,11 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 
-	public void Create(IEnemy unit) {
+	public void Create(Enemy unit) {
 		throw new System.NotImplementedException();
 	}
 
-	public void Destroy(IEnemy unit) {
+	public void Destroy(Enemy unit) {
 		throw new System.NotImplementedException();
 	}
 

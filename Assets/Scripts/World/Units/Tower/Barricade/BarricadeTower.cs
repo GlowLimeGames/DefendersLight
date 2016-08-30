@@ -3,6 +3,7 @@
  * Description: 
  */
 
+[System.Serializable]
 public class BarricadeTower : Tower {
 
 	public BarricadeTower (string type, int health, IMapLocation location, string description, int cost, int unlockLevel,

@@ -5,6 +5,15 @@
 
 [System.Serializable]
 public class Tower : Unit {
+	public Tower (string type, int health, IMapLocation location, string description, int cost, int unlockLevel,
+		IWorldController worldController, ITowerController towerController,
+		int damage = 0, float cooldown = 0, int range = 0, int attackRadius = 0, string illuminationRadius = "0") : 
+	base(type, health, damage, cooldown, range, attackRadius, location, description, worldController) {
+		this.Cost = cost;
+		this.UnlockLevel = unlockLevel;
+		this.IlluminationRadius = illuminationRadius;
+		this.towerController = towerController;
+	}
 
 	#region JSON Keys
 
@@ -16,7 +25,7 @@ public class Tower : Unit {
 
 	protected const int ATTACK_STAT_DEFAULT = 0;
 
-	ITowerController towerController;
+	protected ITowerController towerController;
 	public int Cost;
 	public int ICost {
 		get {
@@ -38,16 +47,6 @@ public class Tower : Unit {
 				return int.Parse(IlluminationRadius);
 			}
 		}
-	}
-
-	public Tower (string type, int health, IMapLocation location, string description, int cost, int unlockLevel,
-		IWorldController worldController, ITowerController towerController,
-		int damage = 0, float cooldown = 0, int range = 0, int attackRadius = 0, string illuminationRadius = "0") : 
-	base(type, health, damage, cooldown, range, attackRadius, location, description, worldController) {
-		this.Cost = cost;
-		this.UnlockLevel = unlockLevel;
-		this.IlluminationRadius = illuminationRadius;
-		this.towerController = towerController;
 	}
 
 	// Should calculate illumination radius if the tower has reflectivity

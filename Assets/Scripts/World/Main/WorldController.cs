@@ -15,8 +15,9 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
 
 	Dictionary<System.Type, Stack<GameObject>> unitSpawnpool = new Dictionary<System.Type, Stack<GameObject>>();
-	ITowerController towerController;
-	IEnemyController enemyController;
+	TowerController towerController;
+	EnemyController enemyController;
+	UnitController[] unitControllers;
 	IDataController dataController;
 
 	public void Create() {
@@ -26,6 +27,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	void SetupUnitControllers () {
 		towerController.Setup(this, dataController, TOWER_UNIT_TEMPLATE_FILE_NAME);
 		enemyController.Setup(this, dataController, ENEMY_UNIT_TEMPLATE_FILE_NAME);
+		unitControllers = new UnitController[]{towerController, enemyController};
 	}
 
 	// Cleans up/destroys the world
@@ -71,7 +73,14 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	#region JSON Serialization
 
 	public string SerializeAsJSON() {
-		throw new System.NotImplementedException();
+		string worldAsJSON = string.Empty;
+		foreach (UnitController controller in unitControllers) {
+			foreach(Unit unit in controller.GetUnits()) {
+				worldAsJSON += unit.SerializeAsJSON();
+			}
+		}
+		print(worldAsJSON);
+		return worldAsJSON;
 	}
 
 	public void SaveAsJSONToPath(string path) {
@@ -150,4 +159,16 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	#endregion
+
+	public static void AttachBehaviourScript (System.Type unitType, GameObject instance) {
+		if (unitType == typeof(AssaultTower)) {
+			instance.AddComponent<AssaultTowerBehaviour>();
+		} else if (unitType == typeof(BarricadeTower)) {
+			instance.AddComponent<BarricadeTowerBehaviour>();
+		} else if (unitType == typeof(IlluminationTower)) {
+			instance.AddComponent<IlluminationTowerBehaviour>();
+		} else if (unitType == typeof(Enemy)) {
+			instance.AddComponent<EnemyBehaviour>();
+		}
+	}
 }

@@ -7,24 +7,32 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class UnitController<IUnitType, UnitType, UnitList> : MannBehaviour where IUnitType:IUnit where UnitType:Unit where UnitList:UnitCollection<UnitType> {
+public abstract class UnitController : MannBehaviour {
+	public abstract Unit[] GetUnits();
+}
+
+public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitController 
+	where IUnitType:IUnit 
+	where UnitType:Unit 
+	where UnitList:UnitCollection<UnitType> {
+
 	protected Dictionary<string, UnitType> templateUnits;
-	protected IList<IUnitType> _activeUnits;
-	public IUnitType[] ActiveUnits{
+	protected IList<UnitType> _activeUnits;
+	public UnitType[] ActiveUnits{
 		get {
-			IUnitType[] activeUnits = new IUnitType[_activeUnits.Count];
+			UnitType[] activeUnits = new UnitType[_activeUnits.Count];
 			this._activeUnits.CopyTo(activeUnits, 0);
 			return activeUnits;
 		}
 	}
 		
-	List<ActiveObjectBehaviour> _units = new List<ActiveObjectBehaviour>();
-	public List<ActiveObjectBehaviour> Units {
+	List<UnitType> _units = new List<UnitType>();
+	public List<UnitType> Units {
 		get {
 			return _units;
 		}
 	}
-
+		
 	protected IWorldController worldController;
 	protected IDataController dataController;
 
@@ -50,6 +58,10 @@ public abstract class UnitController<IUnitType, UnitType, UnitList> : MannBehavi
 		foreach (UnitType unit in unitsOnField.Units) {
 
 		}
+	}
+
+	public override Unit[] GetUnits () {
+		return Units.ToArray();
 	}
 
 	protected override void FetchReferences() {

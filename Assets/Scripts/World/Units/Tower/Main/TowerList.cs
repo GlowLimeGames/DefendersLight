@@ -4,6 +4,4 @@
  */
 
 [System.Serializable]
-public class TowerList : UnitCollection<Tower> {
-	
-}
+public class TowerList : UnitCollection<Tower> {}

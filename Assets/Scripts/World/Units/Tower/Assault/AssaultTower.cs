@@ -3,6 +3,7 @@
  * Description: 
  */
 
+[System.Serializable]
 public class AssaultTower : Tower {
 	public AssaultTower (string type, int health, IMapLocation location, string description, int cost, int unlockLevel,
 		IWorldController worldController, ITowerController towerController,

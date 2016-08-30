@@ -9,6 +9,11 @@ using System.Collections;
 [System.Serializable]
 public class MapLocation : IMapLocation {
 
+	public MapLocation (int x, int y) {
+		this._x = x;
+		this._y = y;
+	}
+
 	int _x, _y;
 
 	public void Set (int x, int y) {
