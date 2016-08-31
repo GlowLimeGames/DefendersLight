@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.IO;
 
 public static class FileUtil {
 
@@ -34,5 +35,17 @@ public static class FileUtil {
 
 	static char correctQuoatationMark () {
 		return '"';
+	}
+
+	public static void WriteStringToPath (string text, string path) {
+		File.WriteAllText(path, text);
+	}
+
+	public static void AppendStringToPath (string text, string path) {
+		File.AppendAllText(path, text);
+	}
+
+	public static bool FileExistsAtPath (string path) {
+		return File.Exists(path);
 	}
 }

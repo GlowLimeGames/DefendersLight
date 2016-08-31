@@ -12,11 +12,9 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	GameObject MissilePrefab;
 
 	protected override void FetchReferences () {
-		TowerController.Instance.Units.Add(this);
 	}
 
 	protected override void CleanupReferences () {
-		TowerController.Instance.Units.Remove(this);
 	}
 
 	void OnMouseDown () {
@@ -32,12 +30,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	}
 
 	public override ActiveObjectBehaviour SelectTarget() {
-		foreach (EnemyBehaviour enemy in EnemyController.Instance.Units) {
-			if (InRange(enemy)) {
-				return enemy;
-			}
-		}
-
 		return null;
 	}
 

@@ -7,6 +7,12 @@ using UnityEngine;
 using System.Collections;
 
 public static class TextAssetUtil {
+	static char CorrectQuoatationMark {
+		get {
+			return '"';
+		}
+	}
+
 
 	public static string FileText (string path) {
 		return ConvertQuotationMarks(
@@ -19,7 +25,7 @@ public static class TextAssetUtil {
 		char[] characters = original.ToCharArray();
 		for (int i = 0; i < characters.Length; i++) {
 			if (isIncorrectQuotationMark(characters[i])) {
-				characters[i] = CorrectQuoatationMark();
+				characters[i] = CorrectQuoatationMark;
 			}
 		}
 
@@ -30,9 +36,5 @@ public static class TextAssetUtil {
 	static bool isIncorrectQuotationMark (char character) {
 		return (int) character == 8220 ||
 			(int) character == 8221;
-	}
-
-	static char CorrectQuoatationMark () {
-		return '"';
 	}
 }

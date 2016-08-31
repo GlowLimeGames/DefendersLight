@@ -4,5 +4,5 @@
  */
 
 ﻿public interface ITower : IUnit {
-
+	string IClass {get;}
 }

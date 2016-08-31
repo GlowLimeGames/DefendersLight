@@ -10,6 +10,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 
 	[SerializeField]
 	StaticAgentBehaviour containedAgent;
+	StaticAgentBehaviour agentToPlace;
 
 	public StaticAgentBehaviour GetCurrentAgent () {
 		return containedAgent;
@@ -17,6 +18,23 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 
 	public void PlaceAgent (StaticAgentBehaviour agent) {
 		containedAgent = agent;
+		agent.transform.SetParent(transform);
+		agent.transform.localPosition = Vector3.zero;
+		Unhighlight();
+	}
+
+	public void HightlightToPlace (StaticAgentBehaviour agent) {
+		GetComponent<Renderer>().material.color = Color.yellow;
+		agentToPlace = agent;
+	}
+
+	public bool HasAgent () {
+		return containedAgent != null;
+	}
+
+	public void Unhighlight () {
+		GetComponent<Renderer>().material.color = Color.white;
+		agentToPlace = null;
 	}
 
 	public void RemoveAgent () {
