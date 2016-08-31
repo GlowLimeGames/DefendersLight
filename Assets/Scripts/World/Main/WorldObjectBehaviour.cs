@@ -8,10 +8,14 @@ using System.Collections;
 
 public abstract class WorldObjectBehaviour : MannBehaviour {
 	[SerializeField]
-	protected MapLocation Location;
+	protected MapLocation Location = new MapLocation(0, 0);
 
 	public void SetLocation (int x, int y) {
 		Location.Set(x, y);
+	}
+
+	public void SetLocation (MapLocation location) {
+		this.Location.Set(location);
 	}
 
 	public MapLocation GetLocation () {

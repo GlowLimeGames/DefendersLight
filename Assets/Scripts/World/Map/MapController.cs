@@ -35,6 +35,18 @@ public class MapController : MannBehaviour, IMapController {
 		}
 	}
 		
+	public void Illuminate (MapLocation location, int radius) {
+		int diameter = radius * 2;
+		int zeroOffset = 1;
+		int startX = Mathf.Clamp(location.X - radius, 0, Stats.Width);
+		int startY = Mathf.Clamp(location.Y - radius, 0, Stats.Height);
+		for (int x = startX; x < startX + diameter + zeroOffset && x < Stats.Width; x++) {
+			for (int y = startY; y < startY + diameter + zeroOffset && y < Stats.Height; y++) {
+				Board[x, y].IlluminateSquare();
+			}
+		}
+	}
+
 	MapTileBehaviour SpawnBoardTile (int x, int y) {
 		GameObject tile = (GameObject) Instantiate(BoardTilePrefab, GetBoardTileLocation(x, y), Quaternion.identity);
 		tile.transform.SetParent(transform);

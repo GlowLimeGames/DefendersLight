@@ -10,6 +10,9 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	public static IWorldController Instance;
 
 	public GameObject TowerPrefab;
+	public GameObject AssaulTowerPrefab;
+	public GameObject BarricadeTowerPrefab;
+	public GameObject IlluminationTowerPrefab;
 	public GameObject EnemyPrefab;
 	public GameObject ITowerPrefab {
 		get {
@@ -193,6 +196,19 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	#endregion
 
+	public GameObject GetTowerPrefab (TowerType towerType) {
+		switch (towerType) {
+		case TowerType.Assault:
+			return AssaulTowerPrefab;
+		case TowerType.Barricade:
+			return BarricadeTowerPrefab;
+		case TowerType.Illumination:
+			return IlluminationTowerPrefab;
+		default:
+			return null;
+		}
+	}
+
 	public static void AttachBehaviourScript (System.Type unitType, GameObject instance) {
 		if (unitType == typeof(AssaultTower)) {
 			instance.AddComponent<AssaultTowerBehaviour>();
@@ -202,6 +218,20 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			instance.AddComponent<IlluminationTowerBehaviour>();
 		} else if (unitType == typeof(Enemy)) {
 			instance.AddComponent<EnemyBehaviour>();
+		}
+	}
+
+	public static void AttackBehaviourScript (TowerType towerType, GameObject instance) {
+		switch (towerType) {
+		case TowerType.Assault:
+			instance.AddComponent<AssaultTowerBehaviour>();
+			break;
+		case TowerType.Barricade:
+			instance.AddComponent<BarricadeTowerBehaviour>();
+			break;
+		case TowerType.Illumination:
+			instance.AddComponent<IlluminationTowerBehaviour>();
+			break;
 		}
 	}
 }

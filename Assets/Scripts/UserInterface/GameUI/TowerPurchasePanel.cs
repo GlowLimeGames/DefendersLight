@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDragHandler, IDragHandler, IEndDragHandler {
+	public TowerType TowerType;
 	TowerPurchasePanelController controller;
 	Image image;
 	Color standardColor;

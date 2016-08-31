@@ -7,25 +7,58 @@ using UnityEngine;
 using System.Collections;
 
 public class MapTileBehaviour : EnvironmentalObjectBehaviour {
-
 	[SerializeField]
 	StaticAgentBehaviour containedAgent;
-	StaticAgentBehaviour agentToPlace;
+	Color hightlightColor = Color.green;
+	Color cannotBuildColor = Color.red;
+	Color illuminatedColor = Color.yellow;
+	Color standardColor = Color.black;
+	bool isIlluminated;
+
+	void SetTileColor (Color color) {
+		GetComponent<Renderer>().material.color = color;
+	}
+
+	void Awake () {
+		SetTileColor(standardColor);
+	}
 
 	public StaticAgentBehaviour GetCurrentAgent () {
 		return containedAgent;
 	}
 
 	public void PlaceAgent (StaticAgentBehaviour agent) {
-		containedAgent = agent;
-		agent.transform.SetParent(transform);
-		agent.transform.localPosition = Vector3.zero;
+		if (isIlluminated || agent is CoreOrbBehaviour) {
+			containedAgent = agent;
+			agent.transform.SetParent(transform);
+			agent.transform.localPosition = Vector3.zero;
+			agent.SetLocation(this.Location);
+			if (agent is IlluminationTowerBehaviour) {
+				MapController.Instance.Illuminate(this.Location, (agent as IlluminationTowerBehaviour).IlluminationRadius);
+			}
+		} else {
+			// TODO: Collect in object pool instead of destroying
+			Destroy(agent.gameObject);
+		}
 		Unhighlight();
 	}
 
+	public void IlluminateSquare () {
+		isIlluminated = true;
+		SetTileColor(illuminatedColor);
+	}
+
+	public void DelluminateSquare () {
+		isIlluminated = false;
+		SetTileColor(standardColor);
+	}
+
 	public void HightlightToPlace (StaticAgentBehaviour agent) {
-		GetComponent<Renderer>().material.color = Color.yellow;
-		agentToPlace = agent;
+		if (isIlluminated) {
+			SetTileColor(hightlightColor);
+		} else {
+			SetTileColor(cannotBuildColor);
+		}
 	}
 
 	public bool HasAgent () {
@@ -33,8 +66,11 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	}
 
 	public void Unhighlight () {
-		GetComponent<Renderer>().material.color = Color.white;
-		agentToPlace = null;
+		if (isIlluminated) {
+			SetTileColor(illuminatedColor);
+		} else {
+			SetTileColor(standardColor);
+		}
 	}
 
 	public void RemoveAgent () {
