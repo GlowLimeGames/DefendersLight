@@ -4,9 +4,9 @@
  */
 
 public interface IObjectPool<T> {
-	T NewObject(object[] arguments);
-	T CheckoutObject(object[] arguments);
-	T[] CheckoutObjects(int count, object[] arguments);
-	void CheckInObject(T instance, object[] arguments);
-	void CheckInObjects(T[] instances, object[] arguments);
+	T NewObject(params object[] arguments);
+	T CheckoutObject(params object[] arguments);
+	T[] CheckoutObjects(int count, params object[] arguments);
+	void CheckInObject(T instance, params object[] arguments);
+	void CheckInObjects(T[] instances, params object[] arguments);
 }

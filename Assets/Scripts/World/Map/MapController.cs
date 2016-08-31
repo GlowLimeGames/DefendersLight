@@ -7,6 +7,8 @@ using UnityEngine;
 using System.Collections;
 
 public class MapController : MannBehaviour, IMapController {
+	public static MapController Instance;
+
 	[SerializeField]
 	MapStats Stats;
 
@@ -23,9 +25,16 @@ public class MapController : MannBehaviour, IMapController {
 				Board[x, y] = SpawnBoardTile(x, y);
 			}
 		}
-
 	}
 
+	public MapTileBehaviour GetCenterTile () {
+		if (Board != null) {
+			return Board[Stats.Width/2, Stats.Height/2];
+		} else {
+			return null;
+		}
+	}
+		
 	MapTileBehaviour SpawnBoardTile (int x, int y) {
 		GameObject tile = (GameObject) Instantiate(BoardTilePrefab, GetBoardTileLocation(x, y), Quaternion.identity);
 		tile.transform.SetParent(transform);
@@ -46,7 +55,9 @@ public class MapController : MannBehaviour, IMapController {
 	}
 
 	protected override void SetReferences () {
-		GenerateBoard();
+		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
+			GenerateBoard();
+		}
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

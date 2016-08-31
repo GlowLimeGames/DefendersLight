@@ -33,10 +33,10 @@ public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitContro
 		}
 	}
 		
-	protected IWorldController worldController;
+	protected WorldController worldController;
 	protected IDataController dataController;
 
-	public virtual void Setup (IWorldController worldController, IDataController dataController, string unitTemplateJSONPath) {
+	public virtual void Setup (WorldController worldController, IDataController dataController, string unitTemplateJSONPath) {
 		this.worldController = worldController;
 		this.dataController = dataController;
 		string unitTemplateJSON = dataController.RetrieveJSONFromResources(unitTemplateJSONPath);
