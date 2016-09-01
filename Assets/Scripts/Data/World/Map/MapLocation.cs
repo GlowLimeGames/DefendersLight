@@ -25,6 +25,11 @@ public class MapLocation : IMapLocation {
 		this.Y = y;
 	}
 
+	public void Set (IMapLocation location) {
+		this.X = location.IX;
+		this.Y = location.IY;
+	}
+
 	public int IX {
 		get {
 			return X;
