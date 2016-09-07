@@ -11,6 +11,7 @@ using UnityEngine.EventSystems;
 
 public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerController {
 	public GameObject CoreOrbPrefab;
+	public GameObject CoreOrbInstance;
 	GameObject potentialPurchaseTower = null;
 	float dragHeight;
 	MapTileBehaviour previousHighlightedMapTile = null;

@@ -19,9 +19,16 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			return TowerPrefab;
 		}
 	}
+	public GameObject ICoreOrbInstance {
+		get {
+			return towerController.CoreOrbInstance;
+		}
+	}
+
 	const float DRAGGING_HEIGHT = 1.25f;
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
+	int currentWave = 10;
 
 	Dictionary<System.Type, Stack<GameObject>> unitSpawnpool = new Dictionary<System.Type, Stack<GameObject>>();
 	TowerController towerController;
@@ -35,8 +42,13 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		PlaceCoreOrb();
 	}
 
+	public void StartWave () {
+		enemyController.SpawnWave(currentWave);
+		currentWave++;
+	}
+
 	void PlaceCoreOrb () {
-		GameObject coreOrb = (GameObject) Instantiate(towerController.CoreOrbPrefab);
+		GameObject coreOrb = towerController.CoreOrbInstance = (GameObject) Instantiate(towerController.CoreOrbPrefab);
 		MapTileBehaviour centerTile = mapController.GetCenterTile();
 		centerTile.PlaceAgent(coreOrb.GetComponent<StaticAgentBehaviour>());
 	}
@@ -92,6 +104,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		enemyController = EnemyController.Instance;
 		mapController = MapController.Instance;
 		Create();
+		StartWave();
 	}
 
 	protected override void CleanupReferences () {

@@ -40,12 +40,24 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		base.Heal(healthPoints);
 	}
 
-    public override void MoveTo(MapLocation location)
-    {
+    public override void MoveTo(MapLocation location) {
         throw new System.NotImplementedException();
     }
 
 	public override ActiveObjectBehaviour SelectTarget() {
 		throw new System.NotImplementedException();
+	}
+
+	public void SetTarget (GameObject target) {
+		StartCoroutine(MoveTowardsTarget(target));
+	}
+
+	IEnumerator MoveTowardsTarget (GameObject target) {
+		float stop = Random.Range(1f, 2f);
+		while (Vector3.Distance(transform.position, target.transform.position) > stop) {
+			transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 0.05f);
+			yield return new WaitForEndOfFrame();
+		}
+		yield return new WaitForEndOfFrame();
 	}
 }
