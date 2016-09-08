@@ -4,5 +4,6 @@
  */
 
 public interface ISessionData {
-
+	int XP{get;}
+	int MiniOrbs{get;}
 }

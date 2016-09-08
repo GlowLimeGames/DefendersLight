@@ -1,0 +1,81 @@
+{
+     "Units" : [
+        {
+          "Type" : "Undead",
+          "Health" : 10,
+          "AttackDamage" : 5,
+          "AttackCooldown" : 1,
+          "AttackRange" : 1,
+          "AttackRadius" : 1,
+          "DeathRewards" : "Mini-Orbs: 1\nXP: 250",
+          "Description" : "Standard enemy type\nWeak and slow\nAttack in large clusters in later waves",
+          "Notes" : ""
+        },
+        {
+          "Type" : "Brute",
+          "Health" : 100,
+          "AttackDamage" : 15,
+          "AttackCooldown" : 3,
+          "AttackRange" : 1,
+          "AttackRadius" : 2,
+          "DeathRewards" : "Mini-Orbs: 10\nXP: 250",
+          "Description" : "High health + High Damage\nVery slow and large",
+          "Notes" : ""
+        },
+        {
+          "Type" : "Lancer",
+          "Health" : 200,
+          "AttackDamage" : 15,
+          "AttackCooldown" : 1,
+          "AttackRange" : 2,
+          "AttackRadius" : 1,
+          "DeathRewards" : "Mini-Orbs: 20\nXP: 250",
+          "Description" : "An undead enemy riding on a four legged, lizard-like beast\nHas extended range due to a long spear\nCan attack towers with short range from a distance",
+          "Notes" : ""
+        },
+        {
+          "Type" : "Rusher",
+          "Health" : 20,
+          "AttackDamage" : 5,
+          "AttackCooldown" : 1,
+          "AttackRange" : 1,
+          "AttackRadius" : 1,
+          "DeathRewards" : "Mini-Orbs: 5\nXP: 250",
+          "Description" : "Weak but fast enemy\nTries to run past towers towards weak points",
+          "Notes" : ""
+        },
+        {
+          "Type" : "Spike Crawler",
+          "Health" : 75,
+          "AttackDamage" : 5,
+          "AttackCooldown" : 1,
+          "AttackRange" : 3,
+          "AttackRadius" : 1,
+          "DeathRewards" : "Mini-Orbs: 75\nXP: 800",
+          "Description" : "Slow, ranged enemy\nModerate health\nHas a longer range than some standard Assault towers",
+          "Notes" : ""
+        },
+        {
+          "Type" : "Shade",
+          "Health" : 50,
+          "AttackDamage" : 0,
+          "AttackCooldown" : 0,
+          "AttackRange" : 0,
+          "AttackRadius" : 0,
+          "DeathRewards" : "Mini-Orbs: 100\nXP: 1000",
+          "Description" : "Spectral, dementor-like creatures\nSlow and low health\nCan only be hit by certain kinds of towers\nCan heal undead\nNo damage\nNaturally die after they’ve healed a certain amount hitpoints back",
+          "Notes" : ""
+        },
+        {
+          "Type" : "Leaper",
+          "Health" : 25,
+          "AttackDamage" : 5,
+          "AttackCooldown" : 1,
+          "AttackRange" : 1,
+          "AttackRadius" : 1,
+          "DeathRewards" : "Mini-Orbs: 10\nXP: 350",
+          "Description" : "Fast\nLow Health and Damage\nCan jump over a single tower\nIf there is an empty cell on the other side of a tower, the leaper can jump over",
+          "Notes" : ""
+        }
+   ]
+ }

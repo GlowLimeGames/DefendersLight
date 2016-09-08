@@ -18,4 +18,4 @@ MonoBehaviour:
   Health: 1000
   MaxHealth: 1000
   AttackDelay: 3
-  LightRadius: 3
+  LightRadius: 2

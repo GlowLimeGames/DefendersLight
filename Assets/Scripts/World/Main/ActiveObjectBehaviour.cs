@@ -21,8 +21,15 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	[SerializeField]
 	bool debugging;
 
+	IUnit linkedObject;
+	public IUnit ILinkedObject {
+		get {
+			return linkedObject;
+		}
+	}
+
 	void Update () {
-		CheckForAttack();
+
 	}
 
 	void SetStats () {
@@ -79,6 +86,18 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	public GenericStats GetStats () {
 		return _stats;
+	}
+
+	public void ReceiveLink (IUnit unit) {
+		linkedObject = unit;
+	}
+
+	public void SeverLink () {
+		linkedObject = null;
+	}
+
+	public bool HasLink () {
+		return linkedObject != null;
 	}
 
 	IEnumerator AttackCooldown () {

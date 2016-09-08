@@ -3,8 +3,9 @@
  * Description: Basic unit functionality
  */
 
-public interface IUnit {
-	int Health{get;}
+public interface IUnit : IWorldObject, IJSONDeserializable, IJSONSerializable {
+	string IType {get;}
+	int IHealth{get;}
     void Attack(IUnit unit);
     void Damage(int damage);
     void Create();

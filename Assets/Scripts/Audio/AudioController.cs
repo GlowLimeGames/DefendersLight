@@ -54,6 +54,22 @@ public class AudioController : Controller, IAudioController {
 		UnsubscribeEvents();
 	}
 
+	protected override void SetReferences () {
+
+	}
+
+	protected override void FetchReferences () {
+
+	}
+
+	protected override void CleanupReferences () {
+
+	}
+
+	protected override void HandleNamedEvent (string eventName) {
+
+	}
+
 	public void Play (AudioFile file) {
 
 		AudioSource source = GetChannel(file.Channel);

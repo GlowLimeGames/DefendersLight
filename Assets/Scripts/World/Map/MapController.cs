@@ -7,6 +7,8 @@ using UnityEngine;
 using System.Collections;
 
 public class MapController : MannBehaviour, IMapController {
+	public static MapController Instance;
+
 	[SerializeField]
 	MapStats Stats;
 
@@ -23,7 +25,26 @@ public class MapController : MannBehaviour, IMapController {
 				Board[x, y] = SpawnBoardTile(x, y);
 			}
 		}
+	}
 
+	public MapTileBehaviour GetCenterTile () {
+		if (Board != null) {
+			return Board[Stats.Width/2, Stats.Height/2];
+		} else {
+			return null;
+		}
+	}
+		
+	public void Illuminate (MapLocation location, int radius) {
+		int diameter = radius * 2;
+		int zeroOffset = 1;
+		int startX = Mathf.Clamp(location.X - radius, 0, Stats.Width);
+		int startY = Mathf.Clamp(location.Y - radius, 0, Stats.Height);
+		for (int x = startX; x < startX + diameter + zeroOffset && x < Stats.Width; x++) {
+			for (int y = startY; y < startY + diameter + zeroOffset && y < Stats.Height; y++) {
+				Board[x, y].IlluminateSquare();
+			}
+		}
 	}
 
 	MapTileBehaviour SpawnBoardTile (int x, int y) {
@@ -46,7 +67,9 @@ public class MapController : MannBehaviour, IMapController {
 	}
 
 	protected override void SetReferences () {
-		GenerateBoard();
+		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
+			GenerateBoard();
+		}
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
@@ -69,6 +92,10 @@ public class MapController : MannBehaviour, IMapController {
 		throw new System.NotImplementedException();
 	}
 
+	public IWorldObject ObjectAt (IMapLocation location) {
+		throw new System.NotImplementedException();
+	}
+		
 	#region Input Handling
 	public void HandleZoom (float zoomFactor) {
 		throw new System.NotImplementedException();
