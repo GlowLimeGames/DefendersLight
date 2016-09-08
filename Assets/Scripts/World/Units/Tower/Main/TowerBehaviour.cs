@@ -44,4 +44,12 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		missileBehavior.SetTarget(activeAgent);
 	}
 
+	void OnTriggerEnter (Collider collider) {
+		if (HasAttack) {
+			EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
+			if (enemy) {
+				Attack(enemy);
+			}
+		}
+	}
 }

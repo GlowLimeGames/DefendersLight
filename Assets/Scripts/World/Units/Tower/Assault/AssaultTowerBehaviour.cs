@@ -31,11 +31,4 @@ public class AssaultTowerBehaviour : TowerBehaviour {
 	public override void Heal(int healthPoints) {
 		base.Heal(healthPoints);
 	}
-
-	void OnTriggerEnter (Collider collider) {
-		EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
-		if (enemy) {
-			Attack(enemy);
-		}
-	}
 }

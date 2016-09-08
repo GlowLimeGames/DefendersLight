@@ -92,10 +92,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b510e12b91fb4a669aeaed052c56533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Location:
+    X: 0
+    Y: 0
   _stats: {fileID: 11400000, guid: 1e22943dd40134f72a7f18373cbc8451, type: 2}
   HasAttack: 0
   HealthBar: {fileID: 0}
   debugging: 0
+  maxLifespan: 3.5
 --- !u!135 &13568878
 SphereCollider:
   m_ObjectHideFlags: 1

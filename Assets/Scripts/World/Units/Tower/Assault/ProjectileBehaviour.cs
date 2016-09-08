@@ -7,10 +7,13 @@ using UnityEngine;
 using System.Collections;
 
 public class ProjectileBehaviour : MobileAgentBehaviour {
+	[SerializeField]
+	float maxLifespan = 3.5f;
 	ActiveObjectBehaviour _target;
 
 	protected override void SetReferences() {
 		base.SetReferences();
+		StartCoroutine(TimedDestroy(maxLifespan));
 	}
 
 	protected override void FetchReferences() {
