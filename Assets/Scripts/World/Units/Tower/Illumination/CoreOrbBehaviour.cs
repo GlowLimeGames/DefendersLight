@@ -13,9 +13,8 @@ public class CoreOrbBehaviour : IlluminationTowerBehaviour {
 
     }
 		
-    protected override void HandleNamedEvent(string eventName)
-    {
-        throw new System.NotImplementedException();
+    protected override void HandleNamedEvent(string eventName) {
+		base.HandleNamedEvent(eventName);
     }
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {

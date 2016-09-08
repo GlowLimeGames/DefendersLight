@@ -16,7 +16,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
     }
 
 	protected override void CleanupReferences () {
-
+		EventController.Event(EventType.EnemyDestroyed);
 	}
 
     protected override void HandleNamedEvent(string eventName) {

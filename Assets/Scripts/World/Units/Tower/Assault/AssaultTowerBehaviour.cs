@@ -12,14 +12,8 @@ public class AssaultTowerBehaviour : TowerBehaviour {
 		base.SetReferences();
     }
 
-    protected override void FetchReferences()
-    {
+    protected override void FetchReferences() {
 		base.FetchReferences();
-    }
-
-    protected override void HandleNamedEvent(string eventName)
-    {
-        throw new System.NotImplementedException();
     }
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {

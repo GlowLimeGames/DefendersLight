@@ -46,4 +46,8 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 		transform.position = destination.transform.position;
 	}
 
+	protected IEnumerator TimedDestroy (float delayTime = 0.5f) {
+		yield return new WaitForSeconds(delayTime);
+		Destroy(gameObject);
+	}
 }

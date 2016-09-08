@@ -33,10 +33,13 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		return null;
 	}
 
+	protected override void HandleNamedEvent (string eventName) {
+
+	}
+
 	public override void Attack(ActiveObjectBehaviour activeAgent) {
 		base.Attack(activeAgent);
 		GameObject missile = (GameObject) Instantiate(MissilePrefab, transform.position, Quaternion.identity);
-
 		ProjectileBehaviour missileBehavior = missile.GetComponent<ProjectileBehaviour>();
 		missileBehavior.SetTarget(activeAgent);
 	}

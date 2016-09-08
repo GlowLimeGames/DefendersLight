@@ -27,7 +27,7 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 
 	public void SetTarget (ActiveObjectBehaviour target) {
 		this._target = target;
-		StartCoroutine(MoveTo(target.gameObject));
+		StartCoroutine(MoveTo(target.gameObject, 0.5f));
 	}
 
 	public override ActiveObjectBehaviour SelectTarget () {
@@ -42,15 +42,14 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 		base.Attack (activeAgent);
 	}
 
-	void OnTriggerEnter(Collider other) {
+	void OnCollisionEnter (Collision collision) {
 		if (_target == null) {
 			return;
 		}
-
-		if (other.gameObject == this._target.gameObject) {
-			
-			Attack(this._target);
-			Destroy(gameObject);
+		EnemyBehaviour enemy;
+		if ((enemy = collision.collider.GetComponent<EnemyBehaviour>()) != null) {
+			Attack(enemy);
+			StartCoroutine(TimedDestroy(0.25f));
 		}
 	}
 }

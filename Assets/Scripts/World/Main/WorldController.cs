@@ -28,7 +28,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	const float DRAGGING_HEIGHT = 1.25f;
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
-	int currentWave = 10;
 
 	Dictionary<System.Type, Stack<GameObject>> unitSpawnpool = new Dictionary<System.Type, Stack<GameObject>>();
 	TowerController towerController;
@@ -43,8 +42,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void StartWave () {
-		enemyController.SpawnWave(currentWave);
-		currentWave++;
+		enemyController.SpawnWave();
 	}
 
 	void PlaceCoreOrb () {
