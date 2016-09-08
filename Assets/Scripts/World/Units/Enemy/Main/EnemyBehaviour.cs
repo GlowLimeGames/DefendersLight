@@ -7,7 +7,6 @@ using UnityEngine;
 using System.Collections;
 
 public class EnemyBehaviour : MobileAgentBehaviour {
-
     protected override void SetReferences() {
 		base.SetReferences();
     }
@@ -49,7 +48,13 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	public void SetTarget (GameObject target) {
-		StartCoroutine(MoveTowardsTarget(target));
+		StartCoroutine(movementCoroutine = MoveTowardsTarget(target));
+	}
+
+	public void Halt () {
+		if (movementCoroutine != null) {
+			StopCoroutine(movementCoroutine);
+		}
 	}
 
 	IEnumerator MoveTowardsTarget (GameObject target) {
@@ -59,5 +64,14 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			yield return new WaitForEndOfFrame();
 		}
 		yield return new WaitForEndOfFrame();
+	}
+
+	void OnCollisionEnter (Collision collision) {
+		Debug.Log("COLLIDED");
+		TowerBehaviour tower;
+		if ((tower = collision.collider.GetComponent<TowerBehaviour>()) != null) {
+			Halt();
+			Attack(tower);
+		}
 	}
 }
