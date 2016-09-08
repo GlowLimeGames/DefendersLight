@@ -67,7 +67,6 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	void OnCollisionEnter (Collision collision) {
-		Debug.Log("COLLIDED");
 		TowerBehaviour tower;
 		if ((tower = collision.collider.GetComponent<TowerBehaviour>()) != null) {
 			Halt();
