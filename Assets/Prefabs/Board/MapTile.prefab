@@ -9,9 +9,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 470400}
   - 33: {fileID: 3333024}
-  - 65: {fileID: 6572670}
   - 23: {fileID: 2330414}
   - 114: {fileID: 11425290}
+  - 65: {fileID: 6538524}
   m_Layer: 0
   m_Name: MapTile
   m_TagString: Untagged
@@ -65,14 +65,14 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180534}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &6572670
+--- !u!65 &6538524
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180534}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
