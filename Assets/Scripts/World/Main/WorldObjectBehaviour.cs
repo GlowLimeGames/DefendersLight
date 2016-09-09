@@ -51,4 +51,9 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 		yield return new WaitForSeconds(delayTime);
 		Destroy(gameObject);
 	}
+
+	protected IEnumerator TimedToggleActive (bool isActive, float delayTime = 0.5f) {
+		yield return new WaitForSeconds(delayTime);
+		gameObject.SetActive(isActive);
+	}
 }

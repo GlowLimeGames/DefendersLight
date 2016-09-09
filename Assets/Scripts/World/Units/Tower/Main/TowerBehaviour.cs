@@ -39,8 +39,13 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {
 		base.Attack(activeAgent);
-		GameObject missile = (GameObject) Instantiate(MissilePrefab, transform.position, Quaternion.identity);
-		ProjectileBehaviour missileBehavior = missile.GetComponent<ProjectileBehaviour>();
+		ProjectileBehaviour missileBehavior;
+		if (ProjectilePool.Instance && !ProjectilePool.Instance.IsEmpty) {
+			missileBehavior = ProjectilePool.Instance.Take();
+			missileBehavior.transform.position = transform.position;
+		} else {
+			missileBehavior = ((GameObject) Instantiate(MissilePrefab, transform.position, Quaternion.identity)).GetComponent<ProjectileBehaviour>();
+		}
 		missileBehavior.SetTarget(activeAgent);
 	}
 

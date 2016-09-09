@@ -1497,6 +1497,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TowerType: 0
+--- !u!1 &941592118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 941592119}
+  - 114: {fileID: 941592120}
+  m_Layer: 0
+  m_Name: ProjectilePool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &941592119
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 941592118}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 1282894673}
+  m_RootOrder: 5
+--- !u!114 &941592120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 941592118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eb64c3f279eb412fadfd533c705a141, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &974795231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1934,6 +1974,7 @@ Transform:
   - {fileID: 1736125318}
   - {fileID: 1131274893}
   - {fileID: 288982415}
+  - {fileID: 941592119}
   m_Father: {fileID: 0}
   m_RootOrder: 2
 --- !u!114 &1282894674

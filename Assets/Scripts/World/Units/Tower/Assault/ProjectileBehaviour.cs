@@ -13,7 +13,7 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 
 	protected override void SetReferences() {
 		base.SetReferences();
-		StartCoroutine(TimedDestroy(maxLifespan));
+		StartCoroutine(TimedReturnToPool(maxLifespan));
 	}
 
 	protected override void FetchReferences() {
@@ -52,7 +52,16 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 		EnemyBehaviour enemy;
 		if ((enemy = collision.collider.GetComponent<EnemyBehaviour>()) != null) {
 			Attack(enemy);
-			StartCoroutine(TimedDestroy(0.25f));
+			StartCoroutine(TimedReturnToPool(0.25f));
+		}
+	}
+
+	IEnumerator TimedReturnToPool (float waitTime = 0.5f) {
+		yield return new WaitForSeconds(waitTime);
+		if (ProjectilePool.Instance) {
+			ProjectilePool.Instance.Give(this);
+		} else {
+			Destroy(gameObject);
 		}
 	}
 }
