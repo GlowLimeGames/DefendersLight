@@ -11,6 +11,7 @@ using UnityEngine.EventSystems;
 
 public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerController {
 	public GameObject CoreOrbPrefab;
+	public GameObject CoreOrbInstance;
 	GameObject potentialPurchaseTower = null;
 	float dragHeight;
 	MapTileBehaviour previousHighlightedMapTile = null;
@@ -25,6 +26,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 			Destroy(potentialPurchaseTower);
 		}
 		potentialPurchaseTower = (GameObject)Instantiate(worldController.GetTowerPrefab(towerPanel.TowerType));
+		potentialPurchaseTower.GetComponent<TowerBehaviour>().ToggleColliders(false);
 	}
 
 	public void HandleDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {

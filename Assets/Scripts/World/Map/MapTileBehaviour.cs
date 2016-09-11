@@ -36,6 +36,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 			if (agent is IlluminationTowerBehaviour) {
 				MapController.Instance.Illuminate(this.Location, (agent as IlluminationTowerBehaviour).IlluminationRadius);
 			}
+			agent.ToggleColliders(true);
 		} else {
 			// TODO: Collect in object pool instead of destroying
 			Destroy(agent.gameObject);

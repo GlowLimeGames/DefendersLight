@@ -105,4 +105,10 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		yield return new WaitForSeconds(_stats.AttackDelay);
 		_attackCooldownActive = false;
 	}
+
+	public void ToggleColliders (bool areCollidersEnabled) {
+		foreach (Collider collider in GetComponents<Collider>()) {
+			collider.enabled = areCollidersEnabled;
+		}
+	}
 }

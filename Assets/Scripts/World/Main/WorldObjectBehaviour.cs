@@ -42,8 +42,18 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 
 			yield return new WaitForEndOfFrame();
 		}
-
-		transform.position = destination.transform.position;
+		if (transform != null) {
+			transform.position = destination.transform.position;
+		}
 	}
 
+	protected IEnumerator TimedDestroy (float delayTime = 0.5f) {
+		yield return new WaitForSeconds(delayTime);
+		Destroy(gameObject);
+	}
+
+	protected IEnumerator TimedToggleActive (bool isActive, float delayTime = 0.5f) {
+		yield return new WaitForSeconds(delayTime);
+		gameObject.SetActive(isActive);
+	}
 }

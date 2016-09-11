@@ -7,10 +7,13 @@ using UnityEngine;
 using System.Collections;
 
 public class ProjectileBehaviour : MobileAgentBehaviour {
+	[SerializeField]
+	float maxLifespan = 3.5f;
 	ActiveObjectBehaviour _target;
 
 	protected override void SetReferences() {
 		base.SetReferences();
+		StartCoroutine(TimedReturnToPool(maxLifespan));
 	}
 
 	protected override void FetchReferences() {
@@ -27,7 +30,7 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 
 	public void SetTarget (ActiveObjectBehaviour target) {
 		this._target = target;
-		StartCoroutine(MoveTo(target.gameObject));
+		StartCoroutine(MoveTo(target.gameObject, 0.5f));
 	}
 
 	public override ActiveObjectBehaviour SelectTarget () {
@@ -42,14 +45,22 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 		base.Attack (activeAgent);
 	}
 
-	void OnTriggerEnter(Collider other) {
+	void OnCollisionEnter (Collision collision) {
 		if (_target == null) {
 			return;
 		}
+		EnemyBehaviour enemy;
+		if ((enemy = collision.collider.GetComponent<EnemyBehaviour>()) != null) {
+			Attack(enemy);
+			StartCoroutine(TimedReturnToPool(0.25f));
+		}
+	}
 
-		if (other.gameObject == this._target.gameObject) {
-			
-			Attack(this._target);
+	IEnumerator TimedReturnToPool (float waitTime = 0.5f) {
+		yield return new WaitForSeconds(waitTime);
+		if (ProjectilePool.Instance) {
+			ProjectilePool.Instance.Give(this);
+		} else {
 			Destroy(gameObject);
 		}
 	}
