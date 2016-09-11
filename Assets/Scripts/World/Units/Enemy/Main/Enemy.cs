@@ -1,6 +1,6 @@
 ﻿/*
  * Author(s): Isaiah Mann
- * Description: 
+ * Description: Represents a basic enemy
  */
 
 [System.Serializable]
