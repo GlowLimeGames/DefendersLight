@@ -15,6 +15,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	GameObject potentialPurchaseTower = null;
 	float dragHeight;
 	MapTileBehaviour previousHighlightedMapTile = null;
+	List<TowerBehaviour> activeTowers = new List<TowerBehaviour>();
 
 	public void Setup (WorldController worldController, IDataController dataController, string unitTemplateJSONPath, float dragHeight) {
 		base.Setup(worldController, dataController, unitTemplateJSONPath);
@@ -50,6 +51,26 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 					mapTile.HightlightToPlace(potentialPurchaseTower.GetComponent<StaticAgentBehaviour>());
 					previousHighlightedMapTile = mapTile;
 				}
+			}
+		}
+	}
+
+	public void AddActiveTower (TowerBehaviour tower) {
+		if (!activeTowers.Contains(tower)) {
+			activeTowers.Add(tower);
+		}
+	}
+
+	public void RemoveActiveTower (TowerBehaviour tower) {
+		if (activeTowers.Contains(tower)) {
+			activeTowers.Remove(tower);
+		}
+	}
+
+	public void RefreshIlluminations () {
+		foreach (TowerBehaviour tower in activeTowers) {
+			if (tower is IlluminationTowerBehaviour) {
+				worldController.SendIlluminationToMap(tower as IlluminationTowerBehaviour);
 			}
 		}
 	}

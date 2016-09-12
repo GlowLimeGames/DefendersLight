@@ -15,6 +15,8 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	}
 
 	protected override void CleanupReferences () {
+		WorldController.Instance.RemoveActiveTower(this);
+		EventController.Event(EventType.TowerDestroyed);
 	}
 
 	void OnMouseDown () {

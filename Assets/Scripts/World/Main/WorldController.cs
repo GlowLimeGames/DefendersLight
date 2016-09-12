@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class WorldController : MannBehaviour, IWorldController, IObjectPool<GameObject> {
-	public static IWorldController Instance;
+	public static WorldController Instance;
 
 	public GameObject TowerPrefab;
 	public GameObject AssaulTowerPrefab;
@@ -57,11 +57,27 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		unitControllers = new UnitController[]{towerController, enemyController};
 	}
 
+	public void RefreshIlluminations () {
+		towerController.RefreshIlluminations();
+	}
+
+	public void SendIlluminationToMap (IlluminationTowerBehaviour illuminationTower) {
+		MapController.Instance.Illuminate(illuminationTower.GetLocation(), illuminationTower.IlluminationRadius);
+	}
+
 	// Cleans up/destroys the world
 	public void Teardown() {
 		throw new System.NotImplementedException();
 	}
+		
+	public void AddActiveTower (TowerBehaviour tower) {
+		towerController.AddActiveTower(tower);
+	}
 
+	public void RemoveActiveTower (TowerBehaviour tower) {
+		towerController.RemoveActiveTower(tower);
+	}
+		
 	public void AddObject(IWorldObject element) {
 		throw new System.NotImplementedException();
 	}
