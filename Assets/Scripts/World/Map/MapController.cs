@@ -34,7 +34,22 @@ public class MapController : MannBehaviour, IMapController {
 			return null;
 		}
 	}
-		
+
+	public MapTileBehaviour GetTileFromPosition (Vector3 position) {
+		int x = (int) position.x + Stats.Width/2;
+		int y = (int) position.y + Stats.Height/2;
+		if (IntUtil.InRange(x, Board.GetLength(0)) && IntUtil.InRange(y, Board.GetLength(1))) {
+			return Board[x, y];
+		} else {
+			return null;
+		}
+
+	}
+
+	public void AddActiveTower (TowerBehaviour tower) {
+		WorldController.Instance.AddActiveTower(tower);
+	}
+
 	public void Illuminate (MapLocation location, int radius) {
 		int diameter = radius * 2;
 		int zeroOffset = 1;
@@ -47,18 +62,29 @@ public class MapController : MannBehaviour, IMapController {
 		}
 	}
 
+	public void DeilluminateAll () {
+		for (int x = 0; x < Stats.Width; x++) {
+			for (int y = 0; y < Stats.Height; y++) {
+				Board[x, y].DelluminateSquare();
+			}
+		}
+	}
+
+	public void RefreshIlluminations () {
+		DeilluminateAll();
+		WorldController.Instance.RefreshIlluminations();
+	}
+
 	MapTileBehaviour SpawnBoardTile (int x, int y) {
 		GameObject tile = (GameObject) Instantiate(BoardTilePrefab, GetBoardTileLocation(x, y), Quaternion.identity);
 		tile.transform.SetParent(transform);
-
 		MapTileBehaviour tileController = tile.GetComponent<MapTileBehaviour>();
 		tileController.SetLocation(x, y);
-
 		return tileController;
 	}
-
-	// TODO: Implement Correctly
+		
 	Vector3 GetBoardTileLocation (int x, int y) {
+		// TODO: Implement Correctly
 		return new Vector3(x - Stats.Width/2, 0, y - Stats.Height/2);
 	}
 
@@ -73,7 +99,9 @@ public class MapController : MannBehaviour, IMapController {
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		
+		if (eventName == EventType.TowerDestroyed) {
+			RefreshIlluminations();
+		}
 	}
 
 	protected override void CleanupReferences () {

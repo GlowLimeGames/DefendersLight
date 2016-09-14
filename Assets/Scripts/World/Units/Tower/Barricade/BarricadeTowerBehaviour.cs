@@ -14,7 +14,6 @@ public class BarricadeTowerBehaviour : TowerBehaviour {
     }
 
     protected override void FetchReferences() {
-		base.FetchReferences();
     }
 
     protected override void HandleNamedEvent(string eventName) {

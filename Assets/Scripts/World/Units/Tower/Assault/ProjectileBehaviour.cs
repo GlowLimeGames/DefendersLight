@@ -31,6 +31,15 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	public void SetTarget (ActiveObjectBehaviour target) {
 		this._target = target;
 		StartCoroutine(MoveTo(target.gameObject, 0.5f));
+		StartCoroutine(DelayedAttack(target, 0.5f));
+	}
+
+	IEnumerator DelayedAttack (ActiveObjectBehaviour target, float waitTime) {
+		yield return new WaitForSeconds(waitTime);
+		if (target) {
+			Attack(target);
+		}
+		StartCoroutine(TimedReturnToPool(0.25f));
 	}
 
 	public override ActiveObjectBehaviour SelectTarget () {
@@ -44,18 +53,7 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	public override void Attack (ActiveObjectBehaviour activeAgent) {
 		base.Attack (activeAgent);
 	}
-
-	void OnCollisionEnter (Collision collision) {
-		if (_target == null) {
-			return;
-		}
-		EnemyBehaviour enemy;
-		if ((enemy = collision.collider.GetComponent<EnemyBehaviour>()) != null) {
-			Attack(enemy);
-			StartCoroutine(TimedReturnToPool(0.25f));
-		}
-	}
-
+		
 	IEnumerator TimedReturnToPool (float waitTime = 0.5f) {
 		yield return new WaitForSeconds(waitTime);
 		if (ProjectilePool.Instance) {

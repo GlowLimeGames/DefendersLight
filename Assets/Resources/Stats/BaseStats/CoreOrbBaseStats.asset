@@ -13,9 +13,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Core Orb
   Level: 0
-  Range: 2
+  Range: 3
   Damage: 50
-  Health: 1000
+  Health: 690
   MaxHealth: 1000
   AttackDelay: 3
   LightRadius: 2

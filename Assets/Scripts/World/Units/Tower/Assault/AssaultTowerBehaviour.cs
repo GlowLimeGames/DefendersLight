@@ -14,7 +14,7 @@ public class AssaultTowerBehaviour : TowerBehaviour {
 
     protected override void FetchReferences() {
 		base.FetchReferences();
-    }
+	}
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {
 		base.Attack(activeAgent);

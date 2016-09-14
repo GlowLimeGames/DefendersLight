@@ -13,12 +13,11 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	public GameObject CoreOrbPrefab;
 	public GameObject CoreOrbInstance;
 	GameObject potentialPurchaseTower = null;
-	float dragHeight;
 	MapTileBehaviour previousHighlightedMapTile = null;
+	List<TowerBehaviour> activeTowers = new List<TowerBehaviour>();
 
-	public void Setup (WorldController worldController, IDataController dataController, string unitTemplateJSONPath, float dragHeight) {
+	public override void Setup (WorldController worldController, IDataController dataController, string unitTemplateJSONPath) {
 		base.Setup(worldController, dataController, unitTemplateJSONPath);
-		this.dragHeight = dragHeight;
 	}
 		
 	public void HandleBeginDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
@@ -33,23 +32,40 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		Vector3 dragPosition = dragEvent.position;
 		dragPosition.z = towerPanel.transform.position.z - Camera.main.transform.position.z;
 		dragPosition = Camera.main.ScreenToWorldPoint(dragPosition);
-		dragPosition.y = dragHeight;
+		dragPosition.y = dragPosition.z;
 		potentialPurchaseTower.transform.position = dragPosition;
 		HighlightSpotToPlace(dragPosition);
 	}
 
 	void HighlightSpotToPlace (Vector3 dragPosition) {
-		RaycastHit hit;
-		if (Physics.Raycast(dragPosition, Vector3.down, out hit)) {
-			MapTileBehaviour mapTile;
-			if (hit.collider != null && (mapTile = hit.collider.GetComponent<MapTileBehaviour>()) != null) {
-				if (previousHighlightedMapTile) {
-					previousHighlightedMapTile.Unhighlight();
-				}
-				if (!mapTile.HasAgent()) {
-					mapTile.HightlightToPlace(potentialPurchaseTower.GetComponent<StaticAgentBehaviour>());
-					previousHighlightedMapTile = mapTile;
-				}
+		MapTileBehaviour mapTile = MapController.Instance.GetTileFromPosition(dragPosition);
+		if (mapTile) {
+			if (previousHighlightedMapTile) {
+				previousHighlightedMapTile.Unhighlight();
+			}
+			if (!mapTile.HasAgent()) {
+				mapTile.HightlightToPlace(potentialPurchaseTower.GetComponent<StaticAgentBehaviour>());
+				previousHighlightedMapTile = mapTile;
+			}
+		}
+	}
+
+	public void AddActiveTower (TowerBehaviour tower) {
+		if (!activeTowers.Contains(tower)) {
+			activeTowers.Add(tower);
+		}
+	}
+
+	public void RemoveActiveTower (TowerBehaviour tower) {
+		if (activeTowers.Contains(tower)) {
+			activeTowers.Remove(tower);
+		}
+	}
+
+	public void RefreshIlluminations () {
+		foreach (TowerBehaviour tower in activeTowers) {
+			if (tower is IlluminationTowerBehaviour) {
+				worldController.SendIlluminationToMap(tower as IlluminationTowerBehaviour);
 			}
 		}
 	}
