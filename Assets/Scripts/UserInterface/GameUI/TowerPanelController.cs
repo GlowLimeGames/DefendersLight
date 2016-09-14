@@ -27,11 +27,8 @@ public class TowerPanelController : MannBehaviour, IUIController {
 	public void SelectTower (TowerBehaviour tower) {
 		selectedTower = tower;
 		gameObject.SetActive(true);
-
-		GenericStats stats = tower.GetStats();
-
-		TowerName.text = stats.Name;
-		TowerLevel.text = stats.LevelString;
+		TowerName.text = tower.Name;
+		TowerLevel.text = tower.LevelString;
 	}
 
 	public void ClosePanel () {

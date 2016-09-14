@@ -11,12 +11,13 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	[SerializeField]
 	GameObject MissilePrefab;
 
-	protected override void FetchReferences () {
-	}
-
 	protected override void CleanupReferences () {
 		WorldController.Instance.RemoveActiveTower(this);
 		EventController.Event(EventType.TowerDestroyed);
+	}
+
+	protected override void FetchReferences () {
+
 	}
 
 	void OnMouseDown () {
@@ -40,7 +41,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	}
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {
-		base.Attack(activeAgent);
 		ProjectileBehaviour missileBehavior;
 		if (ProjectilePool.Instance && !ProjectilePool.Instance.IsEmpty) {
 			missileBehavior = ProjectilePool.Instance.Take();

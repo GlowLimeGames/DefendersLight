@@ -9,10 +9,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 416752}
   - 33: {fileID: 3376676}
-  - 135: {fileID: 13568878}
   - 23: {fileID: 2303974}
   - 114: {fileID: 11445600}
-  - 54: {fileID: 5414678}
   m_Layer: 0
   m_Name: Missile
   m_TagString: Untagged
@@ -28,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 185974}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.5367577, y: 1.1286105, z: -0.4672335}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -65,22 +63,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 185974}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &5414678
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 185974}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &11445600
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -95,23 +78,17 @@ MonoBehaviour:
   Location:
     X: 0
     Y: 0
-  _stats: {fileID: 11400000, guid: 1e22943dd40134f72a7f18373cbc8451, type: 2}
+  Name: Missile
+  Health: 0
+  MaxHealth: 0
+  BaseDamage: 50
+  Range: 0
+  LevelString: 
+  AttackDelay: 0
   HasAttack: 0
   HealthBar: {fileID: 0}
   debugging: 0
   maxLifespan: 3.5
---- !u!135 &13568878
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 185974}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

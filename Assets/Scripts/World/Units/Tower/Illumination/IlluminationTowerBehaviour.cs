@@ -13,20 +13,14 @@ public class IlluminationTowerBehaviour : TowerBehaviour {
 		HasAttack = false;
     }
 
-    protected override void FetchReferences() {
+	protected override void FetchReferences () {
 		base.FetchReferences();
-    }
-
-    protected override void HandleNamedEvent(string eventName)
-    {
+	}
+    protected override void HandleNamedEvent(string eventName) {
 		
     }
     
-	public int IlluminationRadius {
-		get {
-			return ((IlluminationTowerStats)GetStats()).LightRadius;
-		}
-	}
+	public int IlluminationRadius;
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {
 		base.Attack(activeAgent);

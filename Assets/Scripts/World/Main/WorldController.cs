@@ -25,7 +25,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 	}
 
-	const float DRAGGING_HEIGHT = 1.25f;
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
 
@@ -52,7 +51,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	void SetupUnitControllers () {
-		towerController.Setup(this, dataController, TOWER_UNIT_TEMPLATE_FILE_NAME, DRAGGING_HEIGHT);
+		towerController.Setup(this, dataController, TOWER_UNIT_TEMPLATE_FILE_NAME);
 		enemyController.Setup(this, dataController, ENEMY_UNIT_TEMPLATE_FILE_NAME);
 		unitControllers = new UnitController[]{towerController, enemyController};
 	}

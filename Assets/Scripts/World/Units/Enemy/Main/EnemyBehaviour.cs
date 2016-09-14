@@ -66,9 +66,9 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		yield return new WaitForEndOfFrame();
 	}
 
-	void OnCollisionEnter (Collision collision) {
+	void OnTriggerEnter (Collider collider) {
 		TowerBehaviour tower;
-		if ((tower = collision.collider.GetComponent<TowerBehaviour>()) != null) {
+		if ((tower = collider.GetComponent<TowerBehaviour>()) != null) {
 			Halt();
 			Attack(tower);
 		}

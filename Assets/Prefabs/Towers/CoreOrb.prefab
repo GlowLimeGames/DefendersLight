@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 470360}
   - 33: {fileID: 3372360}
-  - 135: {fileID: 13552782}
   - 23: {fileID: 2359088}
   - 114: {fileID: 11468174}
   - 65: {fileID: 6525924}
@@ -237,11 +236,18 @@ MonoBehaviour:
   Location:
     X: 0
     Y: 0
-  _stats: {fileID: 11400000, guid: 7b9d50829a75e4804b5fa1a385240fcd, type: 2}
+  Name: Core Orb
+  Health: 1000
+  MaxHealth: 1000
+  BaseDamage: 50
+  Range: 3
+  LevelString: Level 0
+  AttackDelay: 0.5
   HasAttack: 1
   HealthBar: {fileID: 11475450}
   debugging: 0
   MissilePrefab: {fileID: 185974, guid: 3581d8a813a9e4f2595c1e54cd94244e, type: 2}
+  IlluminationRadius: 2
 --- !u!114 &11475450
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -254,18 +260,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HealthBarFill: {fileID: 11466714}
---- !u!135 &13552782
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 118346}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!222 &22229748
 CanvasRenderer:
   m_ObjectHideFlags: 1

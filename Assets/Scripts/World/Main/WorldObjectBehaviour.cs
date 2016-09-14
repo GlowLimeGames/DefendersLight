@@ -42,7 +42,7 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 
 			yield return new WaitForEndOfFrame();
 		}
-		if (transform != null) {
+		if (transform != null && destination != null) {
 			transform.position = destination.transform.position;
 		}
 	}

@@ -34,7 +34,18 @@ public class MapController : MannBehaviour, IMapController {
 			return null;
 		}
 	}
-		
+
+	public MapTileBehaviour GetTileFromPosition (Vector3 position) {
+		int x = (int) position.x + Stats.Width/2;
+		int y = (int) position.y + Stats.Height/2;
+		if (IntUtil.InRange(x, Board.GetLength(0)) && IntUtil.InRange(y, Board.GetLength(1))) {
+			return Board[x, y];
+		} else {
+			return null;
+		}
+
+	}
+
 	public void AddActiveTower (TowerBehaviour tower) {
 		WorldController.Instance.AddActiveTower(tower);
 	}

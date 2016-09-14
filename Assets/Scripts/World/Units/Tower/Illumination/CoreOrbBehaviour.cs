@@ -10,7 +10,7 @@ using System.Collections;
 public class CoreOrbBehaviour : IlluminationTowerBehaviour {
     
 	protected override void SetReferences() {
-
+		base.SetReferences();
     }
 		
     protected override void HandleNamedEvent(string eventName) {
