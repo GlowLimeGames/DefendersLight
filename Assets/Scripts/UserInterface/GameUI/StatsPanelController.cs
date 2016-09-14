@@ -50,7 +50,7 @@ public class StatsPanelController : MannBehaviour, IUIController {
 	}
 
 	protected override void CleanupReferences () {
-
+		Instance = null;
 	}
 
 	public void AddElement(IUIElement element) {

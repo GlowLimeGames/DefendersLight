@@ -141,7 +141,7 @@ public class AudioController : Controller, IAudioController {
 	void Init () {
 
 		// Singleton method returns a bool depending on whether this object is the instance of the class
-		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
+		if (SingletonUtil.TryInit(ref Instance, this, gameObject, true)) {
 
 			loader = new AudioLoader(path);
 			fileList = loader.Load();

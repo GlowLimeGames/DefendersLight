@@ -14,7 +14,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	public GameObject CoreOrbInstance;
 	GameObject potentialPurchaseTower = null;
 	MapTileBehaviour previousHighlightedMapTile = null;
-	List<TowerBehaviour> activeTowers = new List<TowerBehaviour>();
+	HashSet<TowerBehaviour> activeTowers = new HashSet<TowerBehaviour>();
 
 	public override void Setup (WorldController worldController, IDataController dataController, string unitTemplateJSONPath) {
 		base.Setup(worldController, dataController, unitTemplateJSONPath);
@@ -102,5 +102,10 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		if (!SingletonUtil.TryInit(ref Instance, this, gameObject)) {
 			Destroy(gameObject);
 		}
+	}
+
+	protected override void CleanupReferences () {
+		base.CleanupReferences ();
+		Instance = null;
 	}
 }

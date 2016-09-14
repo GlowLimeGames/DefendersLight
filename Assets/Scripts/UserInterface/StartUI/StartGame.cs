@@ -6,7 +6,6 @@ public class StartGame : MonoBehaviour {
 
 	public void SwitchToPrototype() {
         SceneManager.LoadScene("Prototype");
-         
     }
 }
 

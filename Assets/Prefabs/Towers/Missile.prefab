@@ -84,7 +84,7 @@ MonoBehaviour:
   BaseDamage: 50
   Range: 0
   LevelString: 
-  AttackDelay: 0
+  AttackDelay: 1
   HasAttack: 0
   HealthBar: {fileID: 0}
   debugging: 0

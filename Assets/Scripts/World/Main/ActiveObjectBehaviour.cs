@@ -21,7 +21,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	[SerializeField]
 	protected HealthBarBehaviour HealthBar;
 
-	bool _attackCooldownActive = false;
+	protected bool attackCooldownActive = false;
 
 	[SerializeField]
 	bool debugging;
@@ -32,11 +32,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 			return linkedObject;
 		}
 	}
-
-	void Update () {
-
-	}
-
+		
 	void SetStats () {
 	}
 
@@ -45,7 +41,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	protected virtual void CheckForAttack () {
-		if (HasAttack && !_attackCooldownActive) {
+		if (HasAttack && !attackCooldownActive) {
 			ActiveObjectBehaviour target = SelectTarget();
 
 			if (target != null) {
@@ -98,10 +94,10 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		return linkedObject != null;
 	}
 
-	IEnumerator AttackCooldown () {
-		_attackCooldownActive = true;
+	protected IEnumerator AttackCooldown () {
+		attackCooldownActive = true;
 		yield return new WaitForSeconds(AttackDelay);
-		_attackCooldownActive = false;
+		attackCooldownActive = false;
 	}
 
 	public void ToggleColliders (bool areCollidersEnabled) {

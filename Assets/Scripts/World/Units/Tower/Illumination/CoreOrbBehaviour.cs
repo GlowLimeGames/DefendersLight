@@ -17,6 +17,11 @@ public class CoreOrbBehaviour : IlluminationTowerBehaviour {
 		base.HandleNamedEvent(eventName);
     }
 
+	protected override void CleanupReferences () {
+		base.CleanupReferences ();
+		UnityEngine.SceneManagement.SceneManager.LoadScene("StartScreen");
+	}
+
 	public override void Attack(ActiveObjectBehaviour activeAgent) {
 		base.Attack(activeAgent);
 	}

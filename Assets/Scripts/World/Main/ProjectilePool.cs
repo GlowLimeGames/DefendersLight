@@ -36,7 +36,7 @@ public class ProjectilePool : MannBehaviour {
 	}
 
 	protected override void CleanupReferences () {
-
+		Instance = null;
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

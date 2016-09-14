@@ -59,6 +59,11 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 
+	protected override void CleanupReferences () {
+		base.CleanupReferences ();
+		Instance = null;
+	}
+
 	public void Create(Enemy unit) {
 		throw new System.NotImplementedException();
 	}
