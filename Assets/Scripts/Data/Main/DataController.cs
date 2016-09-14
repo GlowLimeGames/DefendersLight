@@ -49,7 +49,7 @@ public class DataController : Controller, IDataController {
 	}
 
 	protected override void CleanupReferences () {
-
+		Instance = null;
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

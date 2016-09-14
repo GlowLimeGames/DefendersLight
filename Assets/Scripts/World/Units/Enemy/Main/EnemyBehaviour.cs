@@ -23,22 +23,6 @@ public class EnemyBehaviour : MobileAgentBehaviour {
       
     }
 
-	public override void Attack(ActiveObjectBehaviour activeAgent) {
-		base.Attack(activeAgent);
-    }
-
-	public override void Damage(int damage) {
-		base.Damage(damage);
-	}
-
-	public override void Destroy() {
-		base.Destroy();
-	}
-
-	public override void Heal(int healthPoints) {
-		base.Heal(healthPoints);
-	}
-
     public override void MoveTo(MapLocation location) {
         throw new System.NotImplementedException();
     }
@@ -67,8 +51,16 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	void OnTriggerEnter (Collider collider) {
-		TowerBehaviour tower;
-		if ((tower = collider.GetComponent<TowerBehaviour>()) != null) {
+		if (!attackCooldownActive && collider.tag == "Tower") {
+			TowerBehaviour tower = collider.GetComponent<TowerBehaviour>();
+			Halt();
+			Attack(tower);
+		}
+	}
+
+	void OnTriggerStay (Collider collider) {
+		if (!attackCooldownActive && collider.tag == "Tower") {
+			TowerBehaviour tower = collider.GetComponent<TowerBehaviour>();
 			Halt();
 			Attack(tower);
 		}

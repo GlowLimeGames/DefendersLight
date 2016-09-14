@@ -12,7 +12,9 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	GameObject MissilePrefab;
 
 	protected override void CleanupReferences () {
-		WorldController.Instance.RemoveActiveTower(this);
+		if (WorldController.Instance) {
+			WorldController.Instance.RemoveActiveTower(this);
+		}
 		EventController.Event(EventType.TowerDestroyed);
 	}
 
@@ -41,6 +43,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	}
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {
+		StartCoroutine(AttackCooldown());
 		ProjectileBehaviour missileBehavior;
 		if (ProjectilePool.Instance && !ProjectilePool.Instance.IsEmpty) {
 			missileBehavior = ProjectilePool.Instance.Take();
@@ -52,11 +55,21 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	}
 
 	void OnTriggerEnter (Collider collider) {
-		if (HasAttack) {
-			EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
-			if (enemy) {
+		if (HasAttack && !attackCooldownActive) {
+			if (collider.tag == "Enemy") {
+				EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
 				Attack(enemy);
 			}
 		}
 	}
+
+	void OnTriggerStay (Collider collider) {
+	 	if (HasAttack && !attackCooldownActive) {
+			if (collider.tag == "Enemy") {
+				EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
+				Attack(enemy);
+			}
+		}
+	}
+
 }

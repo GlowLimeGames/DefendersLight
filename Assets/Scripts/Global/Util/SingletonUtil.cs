@@ -9,10 +9,12 @@ using System.Collections;
 
 public static class SingletonUtil {
 
-	public static bool TryInit<T> (ref T singleton, T instance, GameObject gameObject) {
+	public static bool TryInit<T> (ref T singleton, T instance, GameObject gameObject, bool dontDestroyOnLoad = false) {
 		if (singleton == null) {
 			singleton = instance;
-			Object.DontDestroyOnLoad(gameObject);
+			if (dontDestroyOnLoad) {
+				Object.DontDestroyOnLoad(gameObject);
+			}
 			return true;
 		} else {
 			Object.Destroy(gameObject);

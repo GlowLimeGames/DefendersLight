@@ -121,7 +121,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	protected override void CleanupReferences () {
-
+		Instance = null;
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

@@ -28,7 +28,7 @@ public class UIController : MannBehaviour {
 	}
 
 	protected override void CleanupReferences () {
-
+		Instance = null;
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

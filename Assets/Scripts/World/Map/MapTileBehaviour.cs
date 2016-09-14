@@ -14,12 +14,14 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	Color illuminatedColor = Color.yellow;
 	Color standardColor = Color.black;
 	bool isIlluminated;
+	Renderer meshRenderer;
 
 	void SetTileColor (Color color) {
-		GetComponent<Renderer>().material.color = color;
+		meshRenderer.material.color = color;
 	}
 
 	void Awake () {
+		meshRenderer = GetComponent<MeshRenderer>();
 		SetTileColor(standardColor);
 	}
 

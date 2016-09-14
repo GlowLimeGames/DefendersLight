@@ -105,7 +105,7 @@ public class MapController : MannBehaviour, IMapController {
 	}
 
 	protected override void CleanupReferences () {
-
+		Instance = null;
 	}
 
 	public void Place(IWorldObject element, IMapLocation location) {

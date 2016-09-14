@@ -5,19 +5,23 @@
 
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 
 public class HealthBarBehaviour : MannBehaviour {
 	[SerializeField]
-	Image HealthBarFill;
+	RectTransform healthBarFill;
+
+	Vector3 healthBarOrigin;
 
 	// Float must be between 0 and 1
 	public void SetHealthDisplay (float healthFraction) {
-		HealthBarFill.fillAmount = healthFraction;
+		Vector3 current = healthBarFill.localScale;
+		healthBarFill.localScale = new Vector3(healthFraction, current.y, current.z);
+		healthBarFill.localPosition = healthBarOrigin;;
+		healthBarFill.localPosition += Vector3.left * (healthFraction/2f);
 	}
 
 	protected override void SetReferences() {
-
+		healthBarOrigin = healthBarFill.localPosition;
 	}
 
 	protected override void FetchReferences() {
