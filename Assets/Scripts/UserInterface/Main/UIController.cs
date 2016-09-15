@@ -35,4 +35,11 @@ public class UIController : MannBehaviour {
 
 	}
 
+	public void LoadStartScreen () {
+		SceneController.LoadStart();
+	}
+
+	public void LoadGame () {
+		SceneController.LoadGame();
+	}
 }

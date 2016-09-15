@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerController {
+	const float DRAG_HEIGHT_OFFSET = 1.25f;
+
 	public GameObject CoreOrbPrefab;
 	public GameObject CoreOrbInstance;
 	GameObject potentialPurchaseTower = null;
@@ -32,20 +34,23 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		Vector3 dragPosition = dragEvent.position;
 		dragPosition.z = towerPanel.transform.position.z - Camera.main.transform.position.z;
 		dragPosition = Camera.main.ScreenToWorldPoint(dragPosition);
-		dragPosition.y = dragPosition.z;
+		dragPosition.y = DRAG_HEIGHT_OFFSET;
 		potentialPurchaseTower.transform.position = dragPosition;
 		HighlightSpotToPlace(dragPosition);
 	}
 
 	void HighlightSpotToPlace (Vector3 dragPosition) {
-		MapTileBehaviour mapTile = MapController.Instance.GetTileFromPosition(dragPosition);
-		if (mapTile) {
-			if (previousHighlightedMapTile) {
-				previousHighlightedMapTile.Unhighlight();
-			}
-			if (!mapTile.HasAgent()) {
-				mapTile.HightlightToPlace(potentialPurchaseTower.GetComponent<StaticAgentBehaviour>());
-				previousHighlightedMapTile = mapTile;
+		RaycastHit hit;
+		if (Physics.Raycast(dragPosition, Vector3.down, out hit)) {
+			MapTileBehaviour mapTile;
+			if (hit.collider != null && (mapTile = hit.collider.GetComponent<MapTileBehaviour>()) != null) {
+				if (previousHighlightedMapTile) {
+					previousHighlightedMapTile.Unhighlight();
+				}
+				if (!mapTile.HasAgent()) {
+					mapTile.HightlightToPlace(potentialPurchaseTower.GetComponent<StaticAgentBehaviour>());
+					previousHighlightedMapTile = mapTile;
+				}
 			}
 		}
 	}

@@ -19,7 +19,8 @@ public class CoreOrbBehaviour : IlluminationTowerBehaviour {
 
 	protected override void CleanupReferences () {
 		base.CleanupReferences ();
-		UnityEngine.SceneManagement.SceneManager.LoadScene("StartScreen");
+		// Immediately load game over when the core orb is destroyed:
+		SceneController.LoadGameOver();
 	}
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {
