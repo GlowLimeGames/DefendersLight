@@ -3,7 +3,7 @@
  * Description: Template for the data for a specific game session
  */
 
-public interface ISessionData {
-	int XP{get;}
-	int MiniOrbs{get;}
+public interface ISessionData : IData {
+	int IXP{get;}
+	int IMiniOrbs{get;}
 }

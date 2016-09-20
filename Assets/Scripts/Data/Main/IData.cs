@@ -4,6 +4,6 @@
  */
 
 public interface IData {
-	string FilePath{get; set;}
+	string IFilePath{get; set;}
 	void Reset();
 }
