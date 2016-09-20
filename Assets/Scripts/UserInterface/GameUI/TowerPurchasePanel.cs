@@ -14,25 +14,48 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 	Image image;
 	Color standardColor;
 	float selectedScale = 1.05f;
+	[SerializeField]
+	Text purchaseCostText;
+	[SerializeField]
+	int cost;
+	bool cannotPurchaseDragOccuring = false;
 
 	public void InitWithController (TowerPurchasePanelController controller) {
 		this.controller = controller;
 	}
 
 	public void OnBeginDrag (PointerEventData pointerEvent) {
+		if (DataController.Instance.HasSufficientMiniOrbs(cost)) {
+			HandleCanPurchaseBeginDrag(pointerEvent);
+		} else {
+			HandleCannotPurchaesBeginDrag();
+		}
+	}
+
+	void HandleCanPurchaseBeginDrag (PointerEventData pointerEvent) {
 		controller.HandleBeginDragPurchase(pointerEvent, this);
 		image.color = Color.gray;
 		transform.localScale *= selectedScale;
 	}
 
+	void HandleCannotPurchaesBeginDrag () {
+		image.color = Color.red;
+		cannotPurchaseDragOccuring = true;
+	}
+
 	public void OnDrag (PointerEventData pointerEvent) {
-		controller.HandleDragPurchase(pointerEvent, this);
+		if (!cannotPurchaseDragOccuring) {
+			controller.HandleDragPurchase(pointerEvent, this);
+		}
 	}
 
 	public void OnEndDrag (PointerEventData pointerEvent) {
-		controller.HandleEndDragPurchase(pointerEvent, this);
+		if (!cannotPurchaseDragOccuring) {
+			controller.HandleEndDragPurchase(pointerEvent, this);
+			transform.localScale /= selectedScale;
+		}
 		image.color = standardColor;
-		transform.localScale /= selectedScale;
+		cannotPurchaseDragOccuring = false;
 	}
 
 	protected override void FetchReferences () {
@@ -42,6 +65,16 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 	protected override void SetReferences () {
 		image = GetComponent<Image>();
 		standardColor = image.color;
+		SetCost(cost);
+	}
+
+	public void SetCost (int cost) {
+		this.cost = cost;
+		purchaseCostText.text = this.cost.ToString();
+	}
+
+	public void OnPurchased () {
+		WorldController.Instance.TrySpendMiniOrbs(cost);
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

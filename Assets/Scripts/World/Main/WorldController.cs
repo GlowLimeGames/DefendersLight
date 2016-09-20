@@ -25,6 +25,9 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 	}
 
+	// TODO: Make this a tuning variable in a centralized tuning script
+	public int MiniOrbsFromKillingEnemy = 5;
+
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
 
@@ -33,7 +36,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	EnemyController enemyController;
 	MapController mapController;
 	UnitController[] unitControllers;
-	IDataController dataController;
+	DataController dataController;
 
 	public void Create() {
 		SetupUnitControllers();
@@ -42,6 +45,20 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	public void StartWave () {
 		enemyController.SpawnWave();
+	}
+
+	public void CollectMiniOrbs (int count) {
+		dataController.CollectMiniOrbs(count);
+		StatsPanelController.Instance.SetMiniOrbs(dataController.MiniOrbCount);
+	}
+
+	public bool TrySpendMiniOrbs (int count) {
+		if (dataController.TrySpendMiniOrbs(count)) {
+			StatsPanelController.Instance.SetMiniOrbs(dataController.MiniOrbCount); 
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	void PlaceCoreOrb () {
@@ -125,7 +142,9 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-
+		if (eventName == EventType.EnemyDestroyed) {
+			CollectMiniOrbs(MiniOrbsFromKillingEnemy);
+		}
 	}
 		
 	public string GenerateID (IUnit unit) {
