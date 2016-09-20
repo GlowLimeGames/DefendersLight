@@ -7,7 +7,9 @@ using UnityEngine;
 using System.Collections;
 
 public class EnemyBehaviour : MobileAgentBehaviour {
-    protected override void SetReferences() {
+	TowerBehaviour currentTarget;
+
+	protected override void SetReferences() {
 		base.SetReferences();
     }
 
@@ -20,7 +22,11 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
     protected override void HandleNamedEvent(string eventName) {
-      
+		if (eventName == EventType.EnemyDestroyed && currentTarget == null && !isMoving) {
+			if (WorldController.Instance && WorldController.Instance.ICoreOrbInstance != null) {
+				SetTarget(WorldController.Instance.ICoreOrbInstance);
+			}
+		}
     }
 
     public override void MoveTo(MapLocation location) {
@@ -32,12 +38,16 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	public void SetTarget (GameObject target) {
-		StartCoroutine(movementCoroutine = MoveTowardsTarget(target));
+		if (gameObject.activeInHierarchy) {
+			StartCoroutine(movementCoroutine = MoveTowardsTarget(target));
+			isMoving = true;
+		}
 	}
 
 	public void Halt () {
 		if (movementCoroutine != null) {
 			StopCoroutine(movementCoroutine);
+			isMoving = false;
 		}
 	}
 
@@ -51,7 +61,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	void OnTriggerEnter (Collider collider) {
-		if (!attackCooldownActive && collider.tag == "Tower") {
+		if (CanAttack(collider)) {
 			TowerBehaviour tower = collider.GetComponent<TowerBehaviour>();
 			Halt();
 			Attack(tower);
@@ -59,14 +69,15 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	void OnTriggerStay (Collider collider) {
-		if (!attackCooldownActive && collider.tag == "Tower") {
-			TowerBehaviour tower = collider.GetComponent<TowerBehaviour>();
+		if (CanAttack(collider)) {
+			currentTarget = collider.GetComponent<TowerBehaviour>();
 			Halt();
-			Attack(tower);
+			Attack(currentTarget);
 		}
 	}
 
-	void OnTriggerExit (Collider collider) {
 
+	bool CanAttack (Collider unit) {
+		return !attackCooldownActive && unit.tag == TowerController.TOWER_TAG;
 	}
 }

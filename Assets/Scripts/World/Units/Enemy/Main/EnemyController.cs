@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyController {
+	public const string ENEMY_TAG = "Enemy";
 	public static EnemyController Instance;
 	int enemiesAlive = 0;
 	int currentWave = 1;
