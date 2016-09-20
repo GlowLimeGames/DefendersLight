@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class MobileAgentBehaviour : ActiveObjectBehaviour {
+	protected bool isMoving;
 	protected IEnumerator movementCoroutine;
     public abstract void MoveTo(MapLocation location);
 }
