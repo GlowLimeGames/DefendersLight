@@ -65,4 +65,8 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			Attack(tower);
 		}
 	}
+
+	void OnTriggerExit (Collider collider) {
+
+	}
 }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerController {
+	public const string TOWER_TAG = "Tower";
 	const float DRAG_HEIGHT_OFFSET = 1.25f;
 
 	public GameObject CoreOrbPrefab;
