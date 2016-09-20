@@ -5,11 +5,78 @@
 
 using System.IO;
 using UnityEngine;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class DataController : Controller, IDataController {
 	const string JSON_DIRECTORY = "JSON";
+	const string SAVE_DIRECTORY = "Save";
+	const string WORLD_STATE_FILE_NAME = "WorldState.dat";
+	static string WorldStateFilePath {
+		get {
+			return Path.Combine(Application.persistentDataPath, WORLD_STATE_FILE_NAME);
+		}
+	}
+
+	WorldState currentWorldState;
 
 	public static IDataController Instance;
+
+	#region World State
+
+	public WorldState LoadWorldState () {
+		BinaryFormatter binaryFormatter = new BinaryFormatter();
+		FileStream file;
+		try {
+			file = File.Open(WorldStateFilePath, FileMode.Open);
+			currentWorldState = (WorldState) binaryFormatter.Deserialize(file);
+			file.Close();
+			return currentWorldState;
+		} catch {
+			currentWorldState = new WorldState(WorldStateFilePath);
+			return currentWorldState;
+		}
+	}
+
+	public void SaveWorldState () {
+		SaveWorldState(currentWorldState);
+	}
+
+	void SaveWorldState (WorldState worldState) {
+		BinaryFormatter binaryFormatter = new BinaryFormatter();
+		FileStream file;
+		try {
+			file = File.Open(WorldStateFilePath, FileMode.Open);
+		} catch {
+			file = File.Create(WorldStateFilePath);
+		}
+		if (currentWorldState == null) {
+			currentWorldState = new WorldState(WorldStateFilePath);
+		}
+		binaryFormatter.Serialize(file, currentWorldState);
+		file.Close();
+	}
+
+	public void CollectMiniOrbs (int miniOrbCount) {
+		this.currentWorldState.CollectMiniOrbs(miniOrbCount);
+	}
+
+	public bool TrySpendMiniOrbs (int miniOrbCount) {
+		return this.currentWorldState.TrySpendMiniOrbs(miniOrbCount);
+	}
+
+	public void NextWave () {
+		this.currentWorldState.NextWave();
+	}
+
+	public void UpdateEnemiesKilled (int deltaEnemiesKilled) {
+		this.currentWorldState.UpdateEnemiesKilled(deltaEnemiesKilled);
+	}
+
+	public void UpdateXPEarned (int deltaXP) {
+		this.currentWorldState.UpdateXPEarned(deltaXP);
+	}
+		
+	#endregion
 
 	public void Save(IData data) {
 
@@ -25,6 +92,15 @@ public class DataController : Controller, IDataController {
 
 	public string RetrieveJSON(string fileName) {
 		throw new System.NotImplementedException();
+	}
+
+	public void Reset () {
+		ResetWorldState();
+	}
+
+	void ResetWorldState () {
+		currentWorldState = new WorldState(WorldStateFilePath);
+		SaveWorldState();
 	}
 
 	// Resources is a special folder within the Unity Assets directory that you can load in files easily from at Runtime
