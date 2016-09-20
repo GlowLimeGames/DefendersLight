@@ -50,12 +50,15 @@ public class WorldState : IWorldState, ISessionData {
 	}
 
 	public bool TrySpendMiniOrbs (int miniOrbCount) {
-		if (this.MiniOrbCount >= miniOrbCount) {
+		bool returnValue = HasSufficientMiniOrbs(miniOrbCount);
+		if (returnValue) {
 			this.MiniOrbCount -= miniOrbCount;
-			return true;
-		} else {
-			return false;
 		}
+		return returnValue;
+	}
+
+	public bool HasSufficientMiniOrbs (int miniOrbCount) {
+		return this.MiniOrbCount >= miniOrbCount;
 	}
 
 	public void NextWave () {

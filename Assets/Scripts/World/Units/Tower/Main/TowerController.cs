@@ -78,6 +78,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	public void HandleEndDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		if (previousHighlightedMapTile && !previousHighlightedMapTile.HasAgent()) {
 			previousHighlightedMapTile.PlaceAgent(potentialPurchaseTower.GetComponent<StaticAgentBehaviour>());
+			towerPanel.OnPurchased();
 		} else {
 			// TODO: Collect in object pool instead of destroying
 			Destroy(potentialPurchaseTower);

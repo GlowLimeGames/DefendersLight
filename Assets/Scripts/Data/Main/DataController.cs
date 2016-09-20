@@ -19,10 +19,17 @@ public class DataController : Controller, IDataController {
 
 	WorldState currentWorldState;
 
-	public static IDataController Instance;
+	public static DataController Instance;
+
 
 	#region World State
 
+	public int MiniOrbCount {
+		get {
+			return currentWorldState.IMiniOrbs;
+		}
+	}
+		
 	public WorldState LoadWorldState () {
 		BinaryFormatter binaryFormatter = new BinaryFormatter();
 		FileStream file;
@@ -64,6 +71,10 @@ public class DataController : Controller, IDataController {
 		return this.currentWorldState.TrySpendMiniOrbs(miniOrbCount);
 	}
 
+	public bool HasSufficientMiniOrbs (int miniOrbCount) {
+		return this.currentWorldState.HasSufficientMiniOrbs(miniOrbCount);
+	}
+	
 	public void NextWave () {
 		this.currentWorldState.NextWave();
 	}
@@ -94,8 +105,16 @@ public class DataController : Controller, IDataController {
 		throw new System.NotImplementedException();
 	}
 
-	public void Reset () {
+	public void ResetGame () {
 		ResetWorldState();
+	}
+
+	public void LoadGame () {
+		LoadWorldState();
+	}
+
+	public void SaveGame () {
+		SaveWorldState();
 	}
 
 	void ResetWorldState () {
@@ -117,7 +136,9 @@ public class DataController : Controller, IDataController {
 	}
 
 	protected override void SetReferences () {
-		SingletonUtil.TryInit(ref Instance, this, gameObject);
+		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
+			LoadGame();
+		}
 	}
 
 	protected override void FetchReferences () {
