@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public class WorldController : MannBehaviour, IWorldController, IObjectPool<GameObject> {
 	public static WorldController Instance;
-
+	bool isPaused;
 	public GameObject TowerPrefab;
 	public GameObject AssaulTowerPrefab;
 	public GameObject BarricadeTowerPrefab;
@@ -59,6 +59,24 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		} else {
 			return false;
 		}
+	}
+
+	public void TogglePause () {
+		if (isPaused) {
+			Resume();
+		} else {
+			Pause();
+		}
+	}
+
+	public void Pause () {
+		Time.timeScale = 0;
+		isPaused = true;
+	}
+
+	public void Resume () {
+		Time.timeScale = 1;
+		isPaused = false;
 	}
 
 	void PlaceCoreOrb () {
