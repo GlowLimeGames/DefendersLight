@@ -5,7 +5,7 @@
 
 public interface ICheatController : IController, IJSONDeserializable {
 	// Cheats that are currently affecting the game state
-	IPassiveCheatCommand[] RunningCheats {get;}
+	IPassiveCheatCommand[] IRunningCheats {get;}
 
 	void Run(ICheatCommand command);
 	ICheatCommand GetCheat(string id);
