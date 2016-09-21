@@ -6,6 +6,7 @@
 using UnityEngine.SceneManagement;
 
 public class SceneController : MannBehaviour {
+	public static bool IsLoadingScene;
 	const string GAME_SCENE_NAME = "Prototype";
 	const string START_SCENE_NAME = "StartScreen";
 	const string GAME_OVER_SCENE_NAME = "GameOver";
@@ -19,9 +20,13 @@ public class SceneController : MannBehaviour {
 	}
 
 	public static void LoadStart () {
+		IsLoadingScene = true;
 		SceneManager.LoadScene(START_SCENE_NAME);
 	}
 
+	public static void ReportSceneLoadComplete () {
+		IsLoadingScene = false;
+	}
 
 	protected override void SetReferences () {
 		// NOTHING
