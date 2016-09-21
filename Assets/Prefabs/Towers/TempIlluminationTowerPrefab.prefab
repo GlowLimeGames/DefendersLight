@@ -138,7 +138,7 @@ MonoBehaviour:
   Location:
     X: 0
     Y: 0
-  Name: Illumination Tower
+  Name: Minor Orb
   Health: 100
   MaxHealth: 100
   BaseDamage: 0
@@ -149,6 +149,7 @@ MonoBehaviour:
   HealthBar: {fileID: 11486420}
   debugging: 0
   MissilePrefab: {fileID: 0}
+  sellValue: 8
   IlluminationRadius: 1
 --- !u!114 &11486420
 MonoBehaviour:

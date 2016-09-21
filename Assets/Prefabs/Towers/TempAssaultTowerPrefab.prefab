@@ -162,7 +162,7 @@ MonoBehaviour:
   Location:
     X: 0
     Y: 0
-  Name: Assault Tower
+  Name: Archer's Tower
   Health: 100
   MaxHealth: 100
   BaseDamage: 25
@@ -173,6 +173,7 @@ MonoBehaviour:
   HealthBar: {fileID: 11415180}
   debugging: 0
   MissilePrefab: {fileID: 185974, guid: 3581d8a813a9e4f2595c1e54cd94244e, type: 2}
+  sellValue: 3
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -29,12 +29,20 @@ public class TowerPanelController : MannBehaviour, IUIController {
 		gameObject.SetActive(true);
 		TowerName.text = tower.Name;
 		TowerLevel.text = tower.LevelString;
+		SellButton.gameObject.SetActive(!(tower is CoreOrbBehaviour));
 	}
 
 	public void ClosePanel () {
 		gameObject.SetActive(false);
 	}
 		
+	public void SellTower () {
+		if (selectedTower) {
+			selectedTower.Sell();
+			ClosePanel();
+		}
+	}
+
 	public TowerBehaviour GetSelectedTower () {
 		return selectedTower;
 	}
