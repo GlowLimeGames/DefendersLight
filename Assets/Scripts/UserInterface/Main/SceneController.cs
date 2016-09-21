@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MannBehaviour {
 	public static bool IsLoadingScene;
-	const string GAME_SCENE_NAME = "Prototype";
+	const string GAME_SCENE_NAME = "Game";
 	const string START_SCENE_NAME = "StartScreen";
 	const string GAME_OVER_SCENE_NAME = "GameOver";
 

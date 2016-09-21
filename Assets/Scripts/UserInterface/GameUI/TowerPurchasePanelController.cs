@@ -8,7 +8,10 @@ using System.Collections;
 using UnityEngine.EventSystems;
 
 public class TowerPurchasePanelController : MannBehaviour, IUIController {
+	CanvasGroup purchaseCanvas;
+
 	public void HandleBeginDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
+		TogglePurchaseCanvasVisible(false);
 		WorldController.Instance.HandleBeginDragPurchase(dragEvent, towerPanel);
 	}
 
@@ -17,7 +20,12 @@ public class TowerPurchasePanelController : MannBehaviour, IUIController {
 	}
 
 	public void HandleEndDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
+		TogglePurchaseCanvasVisible(true);
 		WorldController.Instance.HandleEndDragPurchase(dragEvent, towerPanel);
+	}
+
+	void TogglePurchaseCanvasVisible (bool isVisible) {
+		purchaseCanvas.alpha = isVisible ? 1 : 0;
 	}
 
 	protected override void FetchReferences () {
@@ -28,6 +36,7 @@ public class TowerPurchasePanelController : MannBehaviour, IUIController {
 		foreach (TowerPurchasePanel towerPanel in GetComponentsInChildren<TowerPurchasePanel>()) {
 			towerPanel.InitWithController(this);
 		}
+		purchaseCanvas = GetComponent<CanvasGroup>();
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
