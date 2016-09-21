@@ -19,8 +19,10 @@ public class CoreOrbBehaviour : IlluminationTowerBehaviour {
 
 	protected override void CleanupReferences () {
 		base.CleanupReferences ();
-		// Immediately load game over when the core orb is destroyed:
-		SceneController.LoadGameOver();
+		if (!SceneController.IsLoadingScene) {
+			// Immediately load game over when the core orb is destroyed:
+			SceneController.LoadGameOver();
+		}
 	}
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {

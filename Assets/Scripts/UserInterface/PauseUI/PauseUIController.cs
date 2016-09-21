@@ -23,6 +23,7 @@ public class PauseUIController : MannBehaviour, IUIController {
 	}
 
 	public void QuitGame () {
+		Time.timeScale = 1;
 		SceneController.LoadStart();
 	}
 
