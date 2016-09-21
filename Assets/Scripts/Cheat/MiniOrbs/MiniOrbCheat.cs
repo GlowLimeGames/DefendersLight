@@ -1,6 +1,6 @@
 ﻿/*
  * Author(s): Isaiah Mann
- * Description: 
+ * Description: Cheat to increase number of miniorbs the player has
  */
 
 public class MiniOrbCheat : ICheatCommand {

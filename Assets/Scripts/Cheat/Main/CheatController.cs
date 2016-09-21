@@ -1,6 +1,6 @@
 ﻿/*
  * Author(s): Isaiah Mann
- * Description: 
+ * Description: Handles setting and running cheats
  */
 
 using System.Collections.Generic;
