@@ -21,10 +21,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	protected override void FetchReferences () {
 
 	}
-
-	void OnMouseDown () {
-		SelectTower();
-	}
 		
 	public void SelectTower () {
 		UIController.Instance.SelectTower(this);
