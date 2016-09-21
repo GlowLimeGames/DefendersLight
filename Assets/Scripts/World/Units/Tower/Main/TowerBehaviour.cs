@@ -11,6 +11,9 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	[SerializeField]
 	GameObject MissilePrefab;
 
+	[SerializeField]
+	int sellValue = 2;
+
 	protected override void CleanupReferences () {
 		if (WorldController.Instance) {
 			WorldController.Instance.RemoveActiveTower(this);
@@ -36,6 +39,11 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	protected override void HandleNamedEvent (string eventName) {
 
+	}
+
+	public void Sell () {
+		WorldController.Instance.CollectMiniOrbs(sellValue);
+		Destroy(gameObject);
 	}
 
 	public override void Attack(ActiveObjectBehaviour activeAgent) {
