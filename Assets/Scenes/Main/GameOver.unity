@@ -590,7 +590,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 32, y: -59}
+  m_AnchoredPosition: {x: 30, y: -38}
   m_SizeDelta: {x: 463, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1086692584
@@ -625,7 +625,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Waves Survived: [not yet implemented]'
+  m_Text: 'Waves Survived: {0}'
 --- !u!222 &1086692585
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1216,7 +1216,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28fd6b04902547f989149a580bbb35f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TowerPanel: {fileID: 0}
+  enemiesKilled: {fileID: 2075204626}
+  wavesSurvivied: {fileID: 1086692584}
 --- !u!114 &1913978625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1329,7 +1330,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 55, y: -144}
+  m_AnchoredPosition: {x: 53, y: -123}
   m_SizeDelta: {x: 508.6, y: 59.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2075204626
@@ -1364,7 +1365,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Enemies Killed: [not yet implemented]'
+  m_Text: 'Enemies Killed: {0}'
 --- !u!222 &2075204627
 CanvasRenderer:
   m_ObjectHideFlags: 0
