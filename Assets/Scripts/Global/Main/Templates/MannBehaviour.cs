@@ -4,8 +4,6 @@
  */
 
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 	void Awake () {
