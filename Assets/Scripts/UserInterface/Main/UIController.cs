@@ -1,45 +1,59 @@
 ﻿/*
  * Author(s): Isaiah Mann
- * Description: Controls the behaviour and display of the user interface
+ * Description: The base class that UIController's inherit from
  */
 
-using UnityEngine;
-using System.Collections;
-
-public class UIController : MannBehaviour {
-	public static UIController Instance;
-
-	[SerializeField]
-	TowerPanelController TowerPanel;
-
-	public void SelectTower (TowerBehaviour tower) {
-		TowerPanel.SelectTower(tower);	
-	}
-		
-	protected override void FetchReferences () {
-
-	}
-
-	protected override void SetReferences () {
-		if (!SingletonUtil.TryInit(ref Instance, this, gameObject)) {
-			Destroy(gameObject);
-		}
-
-	}
-
-	protected override void CleanupReferences () {
-		Instance = null;
-	}
-
-	protected override void HandleNamedEvent (string eventName) {
-
-	}
-
+public abstract class UIController : MannBehaviour, IUIController {
 	public void LoadStartScreen () {
 		SceneController.LoadStart();
 	}
 
 	public void LoadGame () {
 		SceneController.LoadGame();
+	}
+
+
+	protected override void SetReferences () {
+
+	}
+
+	protected override void FetchReferences () {
+
+	}
+
+	protected override void CleanupReferences () {
+
+	}
+
+	protected override void HandleNamedEvent (string eventName) {
+
+	}
+
+	public void AddElement(IUIElement element) {
+		throw new System.NotImplementedException();
+	}
+
+	public void RemoveElement(IUIElement element) {
+		throw new System.NotImplementedException();
+	}
+
+	public void ShowElement(IUIElement element) {
+		throw new System.NotImplementedException();
+	}
+
+	public void HideElement(IUIElement element) {
+		throw new System.NotImplementedException();
+	}
+
+	public IUIElement GetElementByID(string id) {
+		throw new System.NotImplementedException();
+	}
+
+	public IUIElement GetParent (IUIElement element) {
+		throw new System.NotImplementedException();
+	}
+
+	public IUIElement[] GetChildren (IUIElement element) {
+		throw new System.NotImplementedException();
 	}
 }

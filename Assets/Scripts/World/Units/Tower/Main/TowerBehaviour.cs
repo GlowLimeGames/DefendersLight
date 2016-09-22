@@ -26,7 +26,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	}
 		
 	public void SelectTower () {
-		UIController.Instance.SelectTower(this);
+		GameUIController.Instance.SelectTower(this);
 	}
 
 	public void DeselectTower () {

@@ -273,7 +273,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1790530221}
-        m_MethodName: SwitchToPrototype
+        m_MethodName: LoadGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1161,7 +1161,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1790530220}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fefd348ebc2fa9241ae0376e417a889a, type: 3}
+  m_Script: {fileID: 11500000, guid: 54f3dde21d59340da8c1282a1bb40906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1790530222
