@@ -20,6 +20,7 @@ public class CoreOrbBehaviour : IlluminationTowerBehaviour {
 	protected override void CleanupReferences () {
 		base.CleanupReferences ();
 		if (!SceneController.IsLoadingScene) {
+			DataController.Instance.SaveGame();
 			// Immediately load game over when the core orb is destroyed:
 			SceneController.LoadGameOver();
 		}

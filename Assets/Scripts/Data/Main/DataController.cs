@@ -29,6 +29,16 @@ public class DataController : Controller, IDataController {
 			return currentWorldState.IMiniOrbs;
 		}
 	}
+	public int EnemiesKilled {
+		get {
+			return currentWorldState.EnemiesKilled;
+		}
+	}
+	public int WavesSurvivied {
+		get {
+			return currentWorldState.CurrentWave;
+		}
+	}
 		
 	public WorldState LoadWorldState () {
 		BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -138,6 +148,7 @@ public class DataController : Controller, IDataController {
 	protected override void SetReferences () {
 		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
 			LoadGame();
+			DontDestroyOnLoad(gameObject);
 		}
 	}
 
@@ -146,7 +157,9 @@ public class DataController : Controller, IDataController {
 	}
 
 	protected override void CleanupReferences () {
-		Instance = null;
+		if (Instance == this) {
+			Instance = null;
+		}
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

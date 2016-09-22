@@ -85,9 +85,11 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		enemiesAlive = Mathf.Clamp(enemiesAlive - 1, 0, int.MaxValue);
 		if (enemiesAlive == 0) {
 			currentWave++;
+			dataController.NextWave();
 			SpawnWave(currentWave);
 		}
 		updateEnemiesAliveText();
+		dataController.UpdateEnemiesKilled(1);
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

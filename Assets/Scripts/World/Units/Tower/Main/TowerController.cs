@@ -19,7 +19,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	MapTileBehaviour previousHighlightedMapTile = null;
 	HashSet<TowerBehaviour> activeTowers = new HashSet<TowerBehaviour>();
 
-	public override void Setup (WorldController worldController, IDataController dataController, string unitTemplateJSONPath) {
+	public override void Setup (WorldController worldController, DataController dataController, string unitTemplateJSONPath) {
 		base.Setup(worldController, dataController, unitTemplateJSONPath);
 	}
 		
