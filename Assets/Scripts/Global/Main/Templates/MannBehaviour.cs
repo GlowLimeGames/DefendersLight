@@ -7,7 +7,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class MannBehaviour : MonoBehaviour {
+public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 	void Awake () {
 		SetReferences();
 		SubscribeEvents();
@@ -78,4 +78,11 @@ public abstract class MannBehaviour : MonoBehaviour {
 
 	protected abstract void HandleNamedEvent (string eventName);
 
+	public int CompareTo (object other) {
+		if (other is MannBehaviour) {
+			return this == (other as MannBehaviour) ? 0 : -1;
+		} else {
+			return -1;
+		}
+	}
 }

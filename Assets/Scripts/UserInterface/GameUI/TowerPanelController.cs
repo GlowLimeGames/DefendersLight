@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class TowerPanelController : MannBehaviour, IUIController {
+public class TowerPanelController : UIController {
 
 	TowerBehaviour selectedTower;
 
@@ -45,49 +45,5 @@ public class TowerPanelController : MannBehaviour, IUIController {
 
 	public TowerBehaviour GetSelectedTower () {
 		return selectedTower;
-	}
-		
-	protected override void FetchReferences () {
-
-	}
-
-	protected override void SetReferences () {
-
-	}
-
-	protected override void HandleNamedEvent (string eventName) {
-
-	}
-
-	protected override void CleanupReferences () {
-		
-	}
-
-	public void AddElement(IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public void RemoveElement(IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public void ShowElement(IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public void HideElement(IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public IUIElement GetElementByID(string id) {
-		throw new System.NotImplementedException();
-	}
-
-	public IUIElement GetParent (IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public IUIElement[] GetChildren (IUIElement element) {
-		throw new System.NotImplementedException();
 	}
 }

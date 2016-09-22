@@ -157,9 +157,7 @@ public class DataController : Controller, IDataController {
 	}
 
 	protected override void CleanupReferences () {
-		if (Instance == this) {
-			Instance = null;
-		}
+		SingletonUtil.TryCleanupSingleton(ref Instance, this);
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

@@ -21,4 +21,13 @@ public static class SingletonUtil {
 			return false;
 		}
 	}
+
+	public static bool TryCleanupSingleton<T> (ref T singleton, T instance) where T : System.IComparable {
+		if (singleton.CompareTo(instance) == 0) {
+			singleton = default(T);
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

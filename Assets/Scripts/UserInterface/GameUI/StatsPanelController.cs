@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class StatsPanelController : MannBehaviour, IUIController {
+public class StatsPanelController : UIController {
 	public static StatsPanelController Instance;
 
 	const string WAVE = "Wave";
@@ -44,48 +44,14 @@ public class StatsPanelController : MannBehaviour, IUIController {
 	string getMiniOrbText (int miniOrbs) {
 		return string.Format("{0}: {1}", MINI_ORBS, miniOrbs);
 	}
-
-	protected override void FetchReferences () {
-
-	}
-
+		
 	protected override void SetReferences () {
+		base.SetReferences();
 		SingletonUtil.TryInit(ref Instance, this, gameObject);
 	}
 
-	protected override void HandleNamedEvent (string eventName) {
-
-	}
-
 	protected override void CleanupReferences () {
-		Instance = null;
-	}
-
-	public void AddElement(IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public void RemoveElement(IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public void ShowElement(IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public void HideElement(IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public IUIElement GetElementByID(string id) {
-		throw new System.NotImplementedException();
-	}
-
-	public IUIElement GetParent (IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public IUIElement[] GetChildren (IUIElement element) {
-		throw new System.NotImplementedException();
+		base.CleanupReferences();
+		SingletonUtil.TryCleanupSingleton(ref Instance, this);
 	}
 }
