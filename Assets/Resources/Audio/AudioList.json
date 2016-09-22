@@ -297,6 +297,51 @@
 			"Volume": 100
 		},
 		{
+			“FileName”:"Leaper_Jump_1",
+			“EventNames”:["LeaperJump"],
+			"StopEventNames":[""],
+			“Loop”:false,
+			“Type”: "FX",
+			“Channel”:1,
+			"Volume": 100
+		},
+		{
+			“FileName”:"Leaper_Jump_2",
+			“EventNames”:["LeaperJump"],
+			"StopEventNames":[""],
+			“Loop”:false,
+			“Type”: "FX",
+			“Channel”:1,
+			"Volume": 100
+		},
+		{
+			“FileName”:"Leaper_Jump_3",
+			“EventNames”:["LeaperJump"],
+			"StopEventNames":[""],
+			“Loop”:false,
+			“Type”: "FX",
+			“Channel”:1,
+			"Volume": 100
+		},
+		{
+			“FileName”:"Leaper_Jump_4",
+			“EventNames”:["LeaperJump"],
+			"StopEventNames":[""],
+			“Loop”:false,
+			“Type”: "FX",
+			“Channel”:1,
+			"Volume": 100
+		},
+		{
+			“FileName”:"levelup2",
+			“EventNames”:["levelup"],
+			"StopEventNames":[""],
+			“Loop”:false,
+			“Type”: "FX",
+			“Channel”:1,
+			"Volume": 100
+		},
+		{
 			“FileName”:"Lightning_Attack_A2",
 			“EventNames”:["LightningAttack"],
 			"StopEventNames":[""],
