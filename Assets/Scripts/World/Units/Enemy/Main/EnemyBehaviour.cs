@@ -13,24 +13,25 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		base.SetReferences();
     }
 
-    protected override void FetchReferences() {
-
-    }
+	protected override void FetchReferences() {}
 
 	protected override void CleanupReferences () {
 		EventController.Event(EventType.EnemyDestroyed);
 	}
 
-    protected override void HandleNamedEvent(string eventName) {
-		if (eventName == EventType.EnemyDestroyed && currentTarget == null && !isMoving) {
-			if (WorldController.Instance && WorldController.Instance.ICoreOrbInstance != null) {
-				SetTarget(WorldController.Instance.ICoreOrbInstance);
-			}
+    protected override void HandleNamedEvent(string eventName) {}
+
+		
+	void ResumeMoving () {
+		if (WorldController.Instance && WorldController.Instance.ICoreOrbInstance != null) {
+			SetTarget(WorldController.Instance.ICoreOrbInstance);
 		}
-    }
+	}
 
     public override void MoveTo(MapLocation location) {
-        throw new System.NotImplementedException();
+		if (WorldController.Instance && WorldController.Instance.ICoreOrbInstance != null) {
+			SetTarget(WorldController.Instance.ICoreOrbInstance);
+		}
     }
 
 	public override ActiveObjectBehaviour SelectTarget() {
@@ -38,9 +39,11 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	public void SetTarget (GameObject target) {
-		if (gameObject.activeInHierarchy) {
-			StartCoroutine(movementCoroutine = MoveTowardsTarget(target));
-			isMoving = true;
+		if (this != null && gameObject != null) {
+			if (gameObject.activeInHierarchy) {
+				StartCoroutine(movementCoroutine = MoveTowardsTarget(target));
+				isMoving = true;
+			}
 		}
 	}
 
@@ -62,7 +65,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	IEnumerator MoveTowardsTarget (GameObject target) {
-		float stop = Random.Range(1f, 2f);
+		float stop = Random.Range(0.1f, 0.5f);
 		while (target != null && Vector3.Distance(transform.position, target.transform.position) > stop) {
 			transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 0.05f);
 			yield return new WaitForEndOfFrame();
@@ -75,6 +78,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			TowerBehaviour tower = collider.GetComponent<TowerBehaviour>();
 			Halt();
 			Attack(tower);
+			tower.SubscribeToDestruction(ResumeMoving);
 		}
 	}
 
