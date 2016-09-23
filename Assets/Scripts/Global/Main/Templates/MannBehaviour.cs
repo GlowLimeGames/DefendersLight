@@ -6,6 +6,7 @@
 using UnityEngine;
 
 public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
+	public delegate void EventAction();
 	void Awake () {
 		SetReferences();
 		SubscribeEvents();

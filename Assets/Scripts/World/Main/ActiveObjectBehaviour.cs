@@ -14,7 +14,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public int Range;
 	public string LevelString;
 	public float AttackDelay;
-
+	EventAction onDestroyed;
 	[SerializeField]
 	protected bool HasAttack;
 
@@ -38,6 +38,12 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	protected override void SetReferences () {
 		SetStats();
+	}
+
+	protected override void CleanupReferences () {
+		if (onDestroyed != null) {	
+			onDestroyed();
+		}
 	}
 
 	protected virtual void CheckForAttack () {
@@ -105,4 +111,18 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 			collider.enabled = areCollidersEnabled;
 		}
 	}
+
+	public void SubscribeToDestruction (EventAction action) {
+		onDestroyed += action;
+	}
+
+	public void UnusubscribeFromDestruction (EventAction action) {
+		onDestroyed -= action;
+	}
+		
+	public virtual void HandleColliderEnterTrigger (Collider collider) {}
+
+	public virtual void HandleColliderStayTrigger (Collider collider) {}
+
+	public virtual void HandleColliderExitTrigger (Collider collider) {}
 }

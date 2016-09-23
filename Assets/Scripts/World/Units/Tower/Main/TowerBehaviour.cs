@@ -15,6 +15,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	int sellValue = 2;
 
 	protected override void CleanupReferences () {
+		base.CleanupReferences();
 		if (WorldController.Instance) {
 			WorldController.Instance.RemoveActiveTower(this);
 		}
@@ -62,22 +63,23 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		missileBehavior.SetTarget(activeAgent);
 	}
 
-	void OnTriggerEnter (Collider collider) {
+	public override void HandleColliderEnterTrigger (Collider collider) {
+		base.HandleColliderEnterTrigger (collider);
 		if (HasAttack && !attackCooldownActive) {
-			if (collider.tag == "Enemy") {
+			if (collider.tag == EnemyController.ENEMY_TAG) {
 				EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
 				Attack(enemy);
 			}
 		}
 	}
 
-	void OnTriggerStay (Collider collider) {
-	 	if (HasAttack && !attackCooldownActive) {
-			if (collider.tag == "Enemy") {
+	public override void HandleColliderStayTrigger (Collider collider)	{
+		base.HandleColliderStayTrigger (collider);
+		if (HasAttack && !attackCooldownActive) {
+			if (collider.tag == EnemyController.ENEMY_TAG) {
 				EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
 				Attack(enemy);
 			}
 		}
 	}
-
 }
