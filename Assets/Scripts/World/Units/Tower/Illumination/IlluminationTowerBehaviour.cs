@@ -9,7 +9,7 @@ using System.Collections;
 public class IlluminationTowerBehaviour : TowerBehaviour {
 	public int IlluminationRadius;
 
-    protected override void HandleNamedEvent(string eventName) {
-		
-    }
+	public override void PlayBuildSound () {
+		EventController.Event(EventType.BuildIlluminationTower);
+	}
 }

@@ -33,6 +33,10 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	}
 
+	public virtual void PlayBuildSound () {
+		EventController.Event(EventType.BuildTower);
+	}
+
 	public override ActiveObjectBehaviour SelectTarget() {
 		return null;
 	}

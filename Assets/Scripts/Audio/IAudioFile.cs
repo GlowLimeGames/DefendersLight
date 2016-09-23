@@ -12,33 +12,11 @@ public interface IAudioFile : IJSONDeserializable {
 	float ClipLength {
 		get;
 	}
-
-	string FileName {
-		get;
-	}
-	string[] EventNames {
-		get;
-	}
-	string[] StopEventNames {
-		get;
-	}
-	bool Loop {
-		get;
-	}
-	string Type {
-		get;
-	}
-	int Volume {
-		get;
-	}
 	// Volume for the AudioSource class uses 0-1.0f scale while our class uses 0-100 (integer) scale
 	float Volumef {
 		get;
 	}
 	AudioType TypeAsEnum {
-		get;
-	}
-	int Channel {
 		get;
 	}
 		

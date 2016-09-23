@@ -29,6 +29,18 @@ public abstract class UIController : MannBehaviour, IUIController {
 
 	}
 
+	public void PlayClickSound () {
+		EventController.Event(EventType.Click);
+	}
+
+	public void ToggleMusic () {
+		SettingsUtil.ToggleMusicMuted();
+	}
+
+	public void ToggleSFX () {
+		SettingsUtil.ToggleSFXMuted();
+	}
+
 	public void AddElement(IUIElement element) {
 		throw new System.NotImplementedException();
 	}

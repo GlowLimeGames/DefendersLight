@@ -11,6 +11,11 @@ public class StartUIController : UIController {
 		base.SetReferences ();
 		SceneController.ReportSceneLoadComplete();
 	}
+
+	protected override void FetchReferences () {
+		base.FetchReferences ();
+		EventController.Event(EventType.LoadStart);
+	}
 }
 
 

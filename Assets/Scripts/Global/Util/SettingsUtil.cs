@@ -24,16 +24,23 @@ public static class SettingsUtil {
 		);
 	}
 
-	public static void ToggleFXMuted (bool muted) {
+	public static void ToggleMusicMuted () {
+		ToggleMusicMuted(!MusicMuted);
+	}
+
+	public static void ToggleSFXMuted (bool muted) {
 		ToggleMute (
 			fxMuteSettingsKey,
 			muted
 		);
-
 		EventController.Event (
 			AudioUtil.MuteActionFromBool(muted),
 			AudioType.FX
 		);
+	}
+
+	public static void ToggleSFXMuted () {
+		ToggleSFXMuted(!SFXMuted);
 	}
 
 	public static void ToggleVOMuted (bool muted) {
@@ -41,13 +48,15 @@ public static class SettingsUtil {
 			voMuteSettingsKey,
 			muted
 		);
-
 		EventController.Event (
 			AudioUtil.MuteActionFromBool(muted),
 			AudioType.VO
 		);
 	}
 
+	public static void ToggleVOMuted () {
+		ToggleVOMuted(!VOMuted);
+	}
 
 	public static bool MusicMuted {
 		get {
@@ -55,7 +64,7 @@ public static class SettingsUtil {
 		}
 	}
 
-	public static bool FXMuted {
+	public static bool SFXMuted {
 		get {
 			return IsMuted(fxMuteSettingsKey);
 		}

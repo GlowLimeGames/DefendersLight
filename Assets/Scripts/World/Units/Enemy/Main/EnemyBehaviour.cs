@@ -51,6 +51,16 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		}
 	}
 
+	public override void Attack (ActiveObjectBehaviour activeAgent) {
+		base.Attack (activeAgent);
+		EventController.Event(EventType.EnemiesDealDamage);
+	}
+
+	public override void Damage (int damage) {
+		base.Damage (damage);
+		EventController.Event(EventType.EnemiesTakeDamage);
+	}
+
 	IEnumerator MoveTowardsTarget (GameObject target) {
 		float stop = Random.Range(1f, 2f);
 		while (target != null && Vector3.Distance(transform.position, target.transform.position) > stop) {

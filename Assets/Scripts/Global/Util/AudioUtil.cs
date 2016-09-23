@@ -44,7 +44,7 @@ public static class AudioUtil {
 	public static bool IsMuted (AudioType audioType) {
 		switch (audioType) {
 		case AudioType.FX:
-			return SettingsUtil.FXMuted;
+			return SettingsUtil.SFXMuted;
 		case AudioType.Music:
 			return SettingsUtil.MusicMuted;
 		default:
