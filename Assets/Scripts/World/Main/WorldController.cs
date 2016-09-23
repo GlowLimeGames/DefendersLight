@@ -50,6 +50,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	public void CollectMiniOrbs (int count) {
 		dataController.CollectMiniOrbs(count);
 		StatsPanelController.Instance.SetMiniOrbs(dataController.MiniOrbCount);
+		EventController.Event(EventType.InGameReward);
 	}
 
 	public bool TrySpendMiniOrbs (int count) {
@@ -153,6 +154,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		mapController = MapController.Instance;
 		Create();
 		StartWave();
+		EventController.Event(EventType.LoadGame);
 	}
 
 	protected override void CleanupReferences () {

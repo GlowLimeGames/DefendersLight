@@ -11,11 +11,10 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class AudioList {
-
 	Dictionary<AudioClip, AudioFile> clipToFileDictionary = new Dictionary<AudioClip, AudioFile>();
-
+	public bool AreEventsSubscribed = false;
 	public AudioList (AudioFile[] files) {
-		Audio = files;
+		Files = files;
 		SubscribeEvents();
 	}
 
@@ -26,20 +25,31 @@ public class AudioList {
 
 	public AudioList(){}
 
-	public AudioFile[] Audio;
+	public AudioFile[] Files;
+	public AudioGroup[] Groups;
 
 	public AudioFile this[int index] {
 		get {
-			return Audio[index];
+			return Files[index];
 		}
 	}
 
 	public int Length {
 		get {
-			if (Audio == null) { 
+			if (Files == null) { 
 				return 0;
 			} else {
-				return Audio.Length;
+				return Files.Length;
+			}
+		}
+	}
+
+	public void PopulateGroups () {
+		foreach (AudioFile file in Files) {
+			foreach (AudioGroup group in Groups) {
+				if (ArrayUtil.Contains(file.Groups, group.Name)) {
+					group.AddFile(file);
+				}
 			}
 		}
 	}
@@ -53,27 +63,25 @@ public class AudioList {
 	}
 
 	void AddToClipDictionary (AudioFile file) {
-
 		if (!clipToFileDictionary.ContainsKey(file.Clip)) {
 			clipToFileDictionary.Add(file.Clip, file);
 		}
-
 	}
 
-	void SubscribeEvents () {
-		for (int i = 0; i < Audio.Length; i++) {
-			Audio[i].OnClipRequest += ProcessAudioFileAccess;
+	public void SubscribeEvents () {
+		for (int i = 0; i < Files.Length; i++) {
+			Files[i].OnClipRequest += ProcessAudioFileAccess;
 		}
+		AreEventsSubscribed = true;
 	}
 
 	void UnsubscribeEvents () {
-		for (int i = 0; i < Audio.Length; i++) {
-			Audio[i].OnClipRequest -= ProcessAudioFileAccess;
+		for (int i = 0; i < Files.Length; i++) {
+			Files[i].OnClipRequest -= ProcessAudioFileAccess;
 		}
 	}
 
 	void HandleClipRequest (AudioFile file) {
 		ProcessAudioFileAccess(file);
-	}
-		
+	}		
 }

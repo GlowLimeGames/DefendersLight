@@ -18,4 +18,9 @@ public class CoreOrbBehaviour : IlluminationTowerBehaviour {
 			SceneController.LoadGameOver();
 		}
 	}
+
+	public override void Attack (ActiveObjectBehaviour activeAgent) {
+		base.Attack (activeAgent);
+		EventController.Event(EventType.LightningAttack);
+	}
 }

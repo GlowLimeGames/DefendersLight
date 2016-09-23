@@ -19,16 +19,13 @@ public class AudioLoader {
 	// Returns a C# class formatted like corresponding JSON file
 	// JSON file must be formatted to match class structure or will throw an error
 	public AudioList Load () {
-
 		return JsonUtility.FromJson<AudioList>(
 			FileUtil.FileText (
 				this._path
 			)
 		);
-
 	}
-
-
+		
 	// Fetches a particular clip from the resources folder
 	public static AudioClip GetClip (string fileName) {
 		return Resources.Load<AudioClip>(
@@ -36,8 +33,12 @@ public class AudioLoader {
 		);
 	}
 
+	public static ResourceRequest GetClipAsync (string fileName) {
+		return Resources.LoadAsync<AudioClip>(DIRECTORY + fileName);
+	}
+
 	public static AudioClip GetClip (AudioFile file) {
-		return GetClip(file.FileName);
+		return GetClip(file.Name);
 	}
 
 }

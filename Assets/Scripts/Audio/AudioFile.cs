@@ -9,15 +9,15 @@ using UnityEngine;
 using System.Collections;
 
 [System.Serializable]
-public class AudioFile : IAudioFile {
+public class AudioFile : AudioData, IAudioFile {
 	public delegate void ClipRequestAction (AudioFile file);
 	public event ClipRequestAction OnClipRequest;
-
+	public string[] Groups;
 	AudioClip _clip;
 	public AudioClip Clip {
 		get {
 			if (_clip == null) {
-				_clip = AudioLoader.GetClip(FileName);
+				_clip = AudioLoader.GetClip(Name);
 				CallOnClipRequest();
 			}
 
@@ -25,18 +25,22 @@ public class AudioFile : IAudioFile {
 		}
 	}
 
+	public override AudioFile GetNextFile () {
+		return this;
+	}
+
+	public override AudioFile GetCurrentFile () {
+		return this;
+	}
+
 	public float ClipLength {
 		get {
 			return Clip.length;
 		}
 	}
-
-	public string FileName{get; set;}
-	public string[] EventNames{get; set;}
-	public string[] StopEventNames{get; set;}
-	public bool Loop{get; set;}
-	public string Type{get; set;}
-	public int Volume{get; set;}
+		
+	public bool Loop;
+	public int Volume;
 
 	// Volume for the AudioSource class uses 0-1.0f scale while our class uses 0-100 (integer) scale
 	public float Volumef {
@@ -51,8 +55,7 @@ public class AudioFile : IAudioFile {
 		}
 	}
 
-	public int Channel{get; set;}
-
+	public int Channel;
 
 	public override string ToString () {
 		return string.Format (
@@ -64,9 +67,9 @@ public class AudioFile : IAudioFile {
 			"Type={4}\n" +
 			"Channel={5}" +
 			"]", 
-			FileName, 
-			ArrayUtil.ToString(EventNames),
-			ArrayUtil.ToString(StopEventNames),
+			Name, 
+			ArrayUtil.ToString(Events),
+			ArrayUtil.ToString(StopEvents),
 			Loop, 
 			Type, 
 			Channel);
@@ -74,14 +77,14 @@ public class AudioFile : IAudioFile {
 
 	public bool HasEvent (string eventName) {
 		return ArrayUtil.Contains (
-			EventNames,
+			Events,
 			eventName
 		);
 	}
 
 	public bool HasEndEvent (string eventName) {
 		return ArrayUtil.Contains (
-			StopEventNames,
+			StopEvents,
 			eventName
 		);
 	}
@@ -100,7 +103,17 @@ public class AudioFile : IAudioFile {
 		return GetVolume(Volume);
 	}
 
+	public void SetClip (AudioClip clip) {
+		this._clip = clip;
+		CallOnClipRequest();
+	}
+		
+	public bool ClipIsSet () {
+		return _clip != null;
+	}
+
 	#region JSON Deserialization
+
 	public void DeserializeFromJSON (string jsonText) {
 		throw new System.NotImplementedException();
 	}
@@ -108,5 +121,6 @@ public class AudioFile : IAudioFile {
 	public void DeserializeFromJSONAtPath (string jsonPath) {
 		throw new System.NotImplementedException();
 	}
+
 	#endregion
 }

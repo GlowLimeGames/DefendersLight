@@ -39,24 +39,33 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 				MapController.Instance.Illuminate(this.Location, (agent as IlluminationTowerBehaviour).IlluminationRadius);
 			}
 			if (agent is TowerBehaviour) {
-				MapController.Instance.AddActiveTower(agent as TowerBehaviour);	
+				TowerBehaviour tower = agent as TowerBehaviour;
+				MapController.Instance.AddActiveTower(tower);
+				tower.PlayBuildSound();
 			}
 			agent.ToggleColliders(true);
 		} else {
 			// TODO: Collect in object pool instead of destroying
+			EventController.Event(EventType.TowerCannotPlace);
 			Destroy(agent.gameObject);
 		}
 		Unhighlight();
 	}
 
 	public void IlluminateSquare () {
-		isIlluminated = true;
-		SetTileColor(illuminatedColor);
+		if (!isIlluminated) {
+			isIlluminated = true;
+			SetTileColor(illuminatedColor);
+			EventController.Event(EventType.IlluminationOn);
+		}
 	}
 
 	public void DelluminateSquare () {
-		isIlluminated = false;
-		SetTileColor(standardColor);
+		if (isIlluminated) {
+			isIlluminated = false;
+			SetTileColor(standardColor);
+			EventController.Event(EventType.IlluminationOff);
+		}
 	}
 
 	public void HightlightToPlace (StaticAgentBehaviour agent) {
