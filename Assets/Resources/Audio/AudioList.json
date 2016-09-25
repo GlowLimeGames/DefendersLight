@@ -260,6 +260,56 @@
 			"Volume": 100
 		},
 		{
+			"Name":"Enemy_Death_A",
+			"Groups":["EnemyDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemy_Death_B",
+			"Groups":["EnemyDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemy_Death_C",
+			"Groups":["EnemyDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemy_Death_D",
+			"Groups":["EnemyDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemy_Death_E",
+			"Groups":["EnemyDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
 			"Name":"FlameTower_Attack_Loop",
 			"Groups":[],
 			"Events":["FlameTowerAttack"],
