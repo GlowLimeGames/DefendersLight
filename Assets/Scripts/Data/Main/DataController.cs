@@ -161,6 +161,8 @@ public class DataController : Controller, IDataController {
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-
+		if (eventName == EventType.LoadStart) {
+			ResetGame();
+		}
 	}
 }
