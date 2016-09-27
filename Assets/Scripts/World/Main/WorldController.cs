@@ -50,7 +50,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	public void CollectMiniOrbs (int count) {
 		dataController.CollectMiniOrbs(count);
 		StatsPanelController.Instance.SetMiniOrbs(dataController.MiniOrbCount);
-		EventController.Event(EventType.InGameReward);
 	}
 
 	public bool TrySpendMiniOrbs (int count) {
@@ -83,7 +82,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	void PlaceCoreOrb () {
 		GameObject coreOrb = towerController.CoreOrbInstance = (GameObject) Instantiate(towerController.CoreOrbPrefab);
 		MapTileBehaviour centerTile = mapController.GetCenterTile();
-		centerTile.PlaceAgent(coreOrb.GetComponent<StaticAgentBehaviour>());
+		centerTile.PlaceAgent(coreOrb.GetComponent<StaticAgentBehaviour>(), false);
 	}
 
 	void SetupUnitControllers () {
@@ -96,8 +95,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		towerController.RefreshIlluminations();
 	}
 
-	public void SendIlluminationToMap (IlluminationTowerBehaviour illuminationTower) {
-		MapController.Instance.Illuminate(illuminationTower.GetLocation(), illuminationTower.IlluminationRadius);
+	public void SendIlluminationToMap (IlluminationTowerBehaviour illuminationTower, bool shouldPlaySound = true) {
+		MapController.Instance.Illuminate(illuminationTower.GetLocation(), illuminationTower.IlluminationRadius, shouldPlaySound);
 	}
 
 	// Cleans up/destroys the world

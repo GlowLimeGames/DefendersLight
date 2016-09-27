@@ -29,42 +29,50 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		return containedAgent;
 	}
 
-	public void PlaceAgent (StaticAgentBehaviour agent) {
+	public void PlaceAgent (StaticAgentBehaviour agent, bool shouldPlaySound = true) {
 		if (isIlluminated || agent is CoreOrbBehaviour) {
 			containedAgent = agent;
 			agent.transform.SetParent(transform);
 			agent.transform.localPosition = Vector3.zero;
 			agent.SetLocation(this.Location);
 			if (agent is IlluminationTowerBehaviour) {
-				MapController.Instance.Illuminate(this.Location, (agent as IlluminationTowerBehaviour).IlluminationRadius);
+				MapController.Instance.Illuminate(this.Location, (agent as IlluminationTowerBehaviour).IlluminationRadius, shouldPlaySound);
 			}
 			if (agent is TowerBehaviour) {
 				TowerBehaviour tower = agent as TowerBehaviour;
 				MapController.Instance.AddActiveTower(tower);
-				tower.PlayBuildSound();
+				if (shouldPlaySound) {
+					tower.PlayBuildSound();
+				}
 			}
 			agent.ToggleColliders(true);
 		} else {
 			// TODO: Collect in object pool instead of destroying
-			EventController.Event(EventType.TowerCannotPlace);
+			if (shouldPlaySound) {
+				EventController.Event(EventType.TowerCannotPlace);
+			}
 			Destroy(agent.gameObject);
 		}
 		Unhighlight();
 	}
 
-	public void IlluminateSquare () {
+	public void IlluminateSquare (bool shouldPlaySound = true) {
 		if (!isIlluminated) {
 			isIlluminated = true;
 			SetTileColor(illuminatedColor);
-			EventController.Event(EventType.IlluminationOn);
+			if (shouldPlaySound) {
+				EventController.Event(EventType.IlluminationOn);
+			}
 		}
 	}
 
-	public void DelluminateSquare () {
+	public void DelluminateSquare (bool shouldPlaySound = true) {
 		if (isIlluminated) {
 			isIlluminated = false;
 			SetTileColor(standardColor);
-			EventController.Event(EventType.IlluminationOff);
+			if (shouldPlaySound) {
+				EventController.Event(EventType.IlluminationOff);
+			}
 		}
 	}
 
