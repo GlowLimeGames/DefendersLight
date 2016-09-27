@@ -8,7 +8,7 @@ public static class EventType {
 	#region Units Deaths
 
 	public const string Death = "Death";
-	public const string EnemyDestroyed = "EnemyDestroyed";
+	public const string EnemyDestroyed = "EnemyDeath";
 	public const string TowerDestroyed = "TowerDestroyed";
 
 	#endregion
@@ -60,7 +60,7 @@ public static class EventType {
 	#region Game Modes
 
 	public const string LoadStart = "LoadStart";
-	public const string LoadGameOver = "GameOver";
+	public const string LoadGameOver = "LoadGameOver";
 	public const string LoadGame = "LoadGame";
 
 	#endregion

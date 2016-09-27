@@ -1,7 +1,7 @@
 {
 	"Files": [
 		{
-			"Name":"Alien Dreams",
+			"Name":"Warlock",
 			"Groups":[],
 			"Events":["LoadStart", "LoadGameOver"],
 			"StopEvents":[],
@@ -11,7 +11,7 @@
 			"Volume": 100
 		},
 		{
-			"Name":"Dig It",
+			"Name":"Defender's Light Soundtrack 1_2",
 			"Groups":[],
 			"Events":["LoadGame"],
 			"StopEvents":[],
@@ -561,6 +561,12 @@
 			"Name":"EnemiesTakeDamage",
 			"Type":"Random",
 			"Events":["EnemiesTakeDamage"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"EnemyDeath",
+			"Type":"Random",
+			"Events":["EnemyDeath"],
 			"StopEvents":[]
 		},
 		{

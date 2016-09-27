@@ -72,16 +72,26 @@ public class AudioController : Controller, IAudioController {
 	public void Play (AudioFile file) {
 		AudioSource source = GetChannel(file.Channel);
 		CheckMute(file, source);
+		bool shouldResumeClip = false;
+		float clipTime = 0;
 		if (file.TypeAsEnum == AudioType.FX) {
 			if (source.clip != null && source.isPlaying) { 
 				if (!AudioUtil.IsMuted(AudioType.FX)) {
 					StartCoroutine(CompleteOnTempChannel(source.clip, source.time, source.volume));
 				}
 			}
+		} else if (file.TypeAsEnum == AudioType.Music) {
+			if (source.clip == file.Clip) {
+				shouldResumeClip = true;
+				clipTime = source.time;
+			}
 		}
 		source.clip = file.Clip;
 		source.loop = file.Loop;
 		source.volume = file.Volumef;
+		if (shouldResumeClip) {
+			source.time = clipTime;
+		}
 		source.Play();
 	}
 
