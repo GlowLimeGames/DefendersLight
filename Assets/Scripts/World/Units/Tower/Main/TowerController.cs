@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using SimpleJSON;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -18,11 +19,33 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	GameObject potentialPurchaseTower = null;
 	MapTileBehaviour previousHighlightedMapTile = null;
 	HashSet<TowerBehaviour> activeTowers = new HashSet<TowerBehaviour>();
+	Dictionary<TowerType, List<Tower>> towerTemplatesByType = new Dictionary<TowerType, List<Tower>>();
 
 	public override void Setup (WorldController worldController, DataController dataController, string unitTemplateJSONPath) {
 		base.Setup(worldController, dataController, unitTemplateJSONPath);
+		towerTemplatesByType = SortTowers(templateUnits.Values.ToArray());
 	}
-		
+
+	Dictionary<TowerType, List<Tower>> SortTowers (Tower[] towers) {
+		Dictionary<TowerType, List<Tower>> sortedTowers = new Dictionary<TowerType, List<Tower>>();
+		for (int i = 0; i < System.Enum.GetNames(typeof(TowerType)).Length; i++) {
+			sortedTowers.Add((TowerType)i, new List<Tower>());
+		}
+		foreach (Tower tower in towers) {
+			sortedTowers[tower.TowerType].Add(tower);
+		}
+		return sortedTowers;
+	}
+
+	public Tower[] GetTowersOfType (TowerType type) {
+		List<Tower> towers;
+		if (towerTemplatesByType.TryGetValue(type, out towers)) {
+			return towers.ToArray();
+		} else {
+			return new Tower[0];
+		}
+	}
+
 	public void HandleBeginDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		if (potentialPurchaseTower != null) {
 			Destroy(potentialPurchaseTower);

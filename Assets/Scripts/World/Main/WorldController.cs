@@ -44,7 +44,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void StartWave () {
-		enemyController.SpawnWave();
+		// enemyController.SpawnWave();
 	}
 
 	public void CollectMiniOrbs (int count) {
@@ -298,4 +298,12 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			break;
 		}
 	}
+
+	#region TowerController
+
+	public Tower[] GetTowersOfType (TowerType type) {
+		return towerController.GetTowersOfType(type);
+	}
+
+	#endregion
 }

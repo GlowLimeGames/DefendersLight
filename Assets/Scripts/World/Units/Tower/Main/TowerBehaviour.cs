@@ -7,12 +7,17 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class TowerBehaviour : StaticAgentBehaviour {
+	Tower tower;
 
 	[SerializeField]
 	GameObject MissilePrefab;
 
 	[SerializeField]
 	int sellValue = 2;
+
+	public void SetTower (Tower tower) {
+		this.tower = tower;
+	}
 
 	protected override void CleanupReferences () {
 		base.CleanupReferences();
@@ -51,7 +56,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		Destroy(gameObject);
 	}
 
-	public override void Attack(ActiveObjectBehaviour activeAgent) {
+	public override void Attack(ActiveObjectBehaviour activeAgent, int damage) {
 		StartCoroutine(AttackCooldown());
 		ProjectileBehaviour missileBehavior;
 		if (ProjectilePool.Instance && !ProjectilePool.Instance.IsEmpty) {
@@ -68,7 +73,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		if (HasAttack && !attackCooldownActive) {
 			if (collider.tag == EnemyController.ENEMY_TAG) {
 				EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
-				Attack(enemy);
+				Attack(enemy, tower.AttackDamage);
 			}
 		}
 	}
@@ -78,7 +83,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		if (HasAttack && !attackCooldownActive) {
 			if (collider.tag == EnemyController.ENEMY_TAG) {
 				EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
-				Attack(enemy);
+				Attack(enemy, tower.AttackDamage);
 			}
 		}
 	}

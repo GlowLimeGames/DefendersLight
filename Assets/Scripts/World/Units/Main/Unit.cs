@@ -25,6 +25,7 @@ public abstract class Unit : IUnit {
 			this._isActive = value;
 		}
 	}
+	public string Class;
 	public string Type;
 	public string IType {
 		get {

@@ -8,6 +8,11 @@ using System.Collections;
 
 public class EnemyBehaviour : MobileAgentBehaviour {
 	TowerBehaviour currentTarget;
+	Enemy enemy;
+
+	public void SetEnemy (Enemy enemy) {
+		this.enemy = enemy;
+	}
 
 	protected override void SetReferences() {
 		base.SetReferences();
@@ -55,8 +60,8 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		}
 	}
 
-	public override void Attack (ActiveObjectBehaviour activeAgent) {
-		base.Attack (activeAgent);
+	public override void Attack (ActiveObjectBehaviour activeAgent, int damage) {
+		base.Attack (activeAgent, damage);
 		EventController.Event(EventType.EnemiesDealDamage);
 	}
 
@@ -78,7 +83,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		if (CanAttack(collider)) {
 			TowerBehaviour tower = collider.GetComponent<TowerBehaviour>();
 			Halt();
-			Attack(tower);
+			Attack(tower, enemy.AttackDamage);
 			tower.SubscribeToDestruction(ResumeMoving);
 		}
 	}
@@ -87,7 +92,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		if (CanAttack(collider)) {
 			currentTarget = collider.GetComponent<TowerBehaviour>();
 			Halt();
-			Attack(currentTarget);
+			Attack(currentTarget, enemy.AttackDamage);
 		}
 	}
 

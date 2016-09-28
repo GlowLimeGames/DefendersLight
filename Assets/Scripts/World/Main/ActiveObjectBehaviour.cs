@@ -45,20 +45,10 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 			onDestroyed();
 		}
 	}
-
-	protected virtual void CheckForAttack () {
-		if (HasAttack && !attackCooldownActive) {
-			ActiveObjectBehaviour target = SelectTarget();
-
-			if (target != null) {
-				Attack(target);
-			}
-		}
-	}
-
-	public virtual void Attack(ActiveObjectBehaviour activeAgent) {
+		
+	public virtual void Attack(ActiveObjectBehaviour activeAgent, int damage) {
 		StartCoroutine(AttackCooldown());
-		activeAgent.Damage(BaseDamage);
+		activeAgent.Damage(damage);
 	}
 
 	public abstract ActiveObjectBehaviour SelectTarget();
