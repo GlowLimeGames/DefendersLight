@@ -14,6 +14,11 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public int Range;
 	public string LevelString;
 	public float AttackDelay;
+	public virtual string IName {
+		get {
+			return Name;
+		}
+	}
 	EventAction onDestroyed;
 	[SerializeField]
 	protected bool HasAttack;

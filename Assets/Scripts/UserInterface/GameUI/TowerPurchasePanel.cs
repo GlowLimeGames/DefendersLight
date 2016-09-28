@@ -29,6 +29,12 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 	public void SetTower (Tower tower) {
 		this.tower = tower;
 		SetCost(this.tower.Cost);
+		TowerType = tower.TowerType;
+		image.sprite = tower.GetSprite();
+	}
+
+	public Tower GetTower () {
+		return this.tower;
 	}
 
 	public void OnBeginDrag (PointerEventData pointerEvent) {

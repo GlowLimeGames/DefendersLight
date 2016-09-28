@@ -7,7 +7,7 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class TowerBehaviour : StaticAgentBehaviour {
-	Tower tower;
+	protected Tower tower;
 
 	[SerializeField]
 	GameObject MissilePrefab;
@@ -18,7 +18,11 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	public void SetTower (Tower tower) {
 		this.tower = tower;
 	}
-
+	public override string IName {
+		get {
+			return tower.Type;
+		}
+	}
 	protected override void CleanupReferences () {
 		base.CleanupReferences();
 		if (WorldController.Instance) {

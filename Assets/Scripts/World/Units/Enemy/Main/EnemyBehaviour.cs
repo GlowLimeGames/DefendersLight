@@ -9,7 +9,11 @@ using System.Collections;
 public class EnemyBehaviour : MobileAgentBehaviour {
 	TowerBehaviour currentTarget;
 	Enemy enemy;
-
+	public override string IName {
+		get {
+			return enemy.Type;
+		}
+	}
 	public void SetEnemy (Enemy enemy) {
 		this.enemy = enemy;
 	}

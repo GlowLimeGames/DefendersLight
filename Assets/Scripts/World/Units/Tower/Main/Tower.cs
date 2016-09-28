@@ -72,7 +72,8 @@ public class Tower : Unit {
 
 	// Should calculate illumination radius if the tower has reflectivity
 	int CalculateVariableIlluminationRadius () {
-		throw new System.NotImplementedException();
+		// TODO: Actually implement this method
+		return 0;
 	}
 		
 
@@ -96,4 +97,13 @@ public class Tower : Unit {
 	public override void DeserializeFromJSONAtPath(string jsonPath) {
 
 	}
+
+	public UnityEngine.Sprite GetSprite () {
+		if (WorldController.Instance){ 
+			return WorldController.Instance.GetTowerSprite(Type);
+		} else {
+			return null;
+		}
+	}
+
 }

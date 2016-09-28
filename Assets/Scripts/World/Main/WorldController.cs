@@ -303,5 +303,9 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		return towerController.GetTowersOfType(type);
 	}
 
+	public Sprite GetTowerSprite (string towerKey) {
+		return towerController.GetTowerSprite(towerKey);
+	}
+
 	#endregion
 }
