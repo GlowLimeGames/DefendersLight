@@ -26,7 +26,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	// TODO: Make this a tuning variable in a centralized tuning script
-	public int MiniOrbsFromKillingEnemy = 5;
+	public int MiniOrbsFromKillingEnemy = 25;
 
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";

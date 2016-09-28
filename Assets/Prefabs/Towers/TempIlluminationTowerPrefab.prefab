@@ -148,9 +148,9 @@ MonoBehaviour:
   HasAttack: 0
   HealthBar: {fileID: 11486420}
   debugging: 0
+  spriteRenderer: {fileID: 21246020}
   MissilePrefab: {fileID: 0}
   sellValue: 8
-  IlluminationRadius: 1
 --- !u!114 &11486420
 MonoBehaviour:
   m_ObjectHideFlags: 1

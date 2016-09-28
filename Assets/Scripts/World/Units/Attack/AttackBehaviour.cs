@@ -4,6 +4,7 @@
  */
 
 public class AttackBehaviour : MannBehaviour {
+	protected Unit unit;
 	protected ActiveObjectBehaviour parentObject;
 	protected bool isActive;
 	protected override void SetReferences () {
@@ -13,6 +14,10 @@ public class AttackBehaviour : MannBehaviour {
 		} else {
 			UnityEngine.Debug.LogError("{0} AttackBehaviour cannot locate a parent object");
 		}
+	}
+
+	public virtual void SetUnit (Unit unit) {
+		this.unit = unit;
 	}
 
 	protected override void FetchReferences () {

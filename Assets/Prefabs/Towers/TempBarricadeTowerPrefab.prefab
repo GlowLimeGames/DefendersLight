@@ -160,6 +160,7 @@ MonoBehaviour:
   HasAttack: 0
   HealthBar: {fileID: 11478236}
   debugging: 0
+  spriteRenderer: {fileID: 21246714}
   MissilePrefab: {fileID: 0}
   sellValue: 2
 --- !u!114 &11478236

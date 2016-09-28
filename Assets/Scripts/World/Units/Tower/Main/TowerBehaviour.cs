@@ -8,6 +8,8 @@ using System.Collections;
 
 public abstract class TowerBehaviour : StaticAgentBehaviour {
 	protected Tower tower;
+	[SerializeField]
+	SpriteRenderer spriteRenderer;
 
 	[SerializeField]
 	GameObject MissilePrefab;
@@ -15,14 +17,39 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	[SerializeField]
 	int sellValue = 2;
 
+	RangedAttackBehaviour attackModule = null;
+
+	public override float IAttackDelay {
+		get {
+			return tower.AttackCooldown;
+		}
+	}
+
 	public void SetTower (Tower tower) {
 		this.tower = tower;
+		spriteRenderer.sprite = tower.GetSprite();
+		if (attackModule) {
+			attackModule.SetUnit(tower);
+		}
 	}
+
 	public override string IName {
 		get {
 			return tower.Type;
 		}
 	}
+
+	protected override void SetReferences () {
+		base.SetReferences ();
+		attackModule = GetComponentInChildren<RangedAttackBehaviour>();
+	}
+
+	protected override void FetchReferences () {
+		if (HasAttack) {
+			attackModule = GetComponentInChildren<RangedAttackBehaviour>();
+		}
+	}
+
 	protected override void CleanupReferences () {
 		base.CleanupReferences();
 		if (WorldController.Instance) {
@@ -31,10 +58,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		EventController.Event(EventType.TowerDestroyed);
 	}
 
-	protected override void FetchReferences () {
-
-	}
-		
 	public void SelectTower () {
 		GameUIController.Instance.SelectTower(this);
 	}
@@ -71,6 +94,17 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		}
 		missileBehavior.SetTower(tower);
 		missileBehavior.SetTarget(activeAgent);
+		StartCoroutine(trackMissile(missileBehavior.transform, 1f));
+	}
+
+	IEnumerator trackMissile (Transform missileTransform, float time) {
+		float timer = 0;
+		while (timer <= time) {
+			spriteRenderer.transform.LookAt(missileTransform, Vector3.up);
+			spriteRenderer.transform.eulerAngles = new Vector3(90, spriteRenderer.transform.eulerAngles.y, spriteRenderer.transform.eulerAngles.z);
+			timer += Time.deltaTime;
+			yield return new WaitForEndOfFrame();
+		}
 	}
 
 	public override void HandleColliderEnterTrigger (Collider collider) {

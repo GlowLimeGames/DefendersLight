@@ -14,6 +14,11 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			return enemy.Type;
 		}
 	}
+	public override float IAttackDelay {
+		get {
+			return enemy.AttackCooldown;
+		}
+	}
 	public void SetEnemy (Enemy enemy) {
 		this.enemy = enemy;
 	}
