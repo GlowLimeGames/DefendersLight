@@ -23,18 +23,32 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 
 	public override void Setup (WorldController worldController, DataController dataController, string unitTemplateJSONPath) {
 		base.Setup(worldController, dataController, unitTemplateJSONPath);
-		towerTemplatesByType = SortTowers(templateUnits.Values.ToArray());
+		towerTemplatesByType = sortTowers(templateUnits.Values.ToArray());
 	}
 
-	Dictionary<TowerType, List<Tower>> SortTowers (Tower[] towers) {
+	public void PlaceCoreOrb (MapTileBehaviour mapTile) {
+		GameObject coreOrb = (GameObject) Instantiate(CoreOrbPrefab);
+		CoreOrbInstance = coreOrb;
+		CoreOrbBehaviour coreOrbBehaviour = coreOrb.GetComponent<CoreOrbBehaviour>();
+		mapTile.PlaceAgent(coreOrbBehaviour, false);
+		coreOrbBehaviour.SetTower(templateUnits[CoreOrbBehaviour.CORE_ORB_KEY]);
+	}
+
+	Dictionary<TowerType, List<Tower>> sortTowers (Tower[] towers) {
 		Dictionary<TowerType, List<Tower>> sortedTowers = new Dictionary<TowerType, List<Tower>>();
 		for (int i = 0; i < System.Enum.GetNames(typeof(TowerType)).Length; i++) {
 			sortedTowers.Add((TowerType)i, new List<Tower>());
 		}
 		foreach (Tower tower in towers) {
-			sortedTowers[tower.TowerType].Add(tower);
+			if (includeTowerInTypes(tower)) {
+				sortedTowers[tower.TowerType].Add(tower);
+			}
 		}
 		return sortedTowers;
+	}
+
+	bool includeTowerInTypes (Tower tower) {
+		return tower.Type != CoreOrbBehaviour.CORE_ORB_KEY;
 	}
 
 	public Tower[] GetTowersOfType (TowerType type) {

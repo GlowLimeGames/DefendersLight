@@ -9,6 +9,8 @@ using System.Collections.Generic;
 
 public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyController {
 	public const string ENEMY_TAG = "Enemy";
+	const string UNDEAD_KEY = "Undead";
+		
 	public static EnemyController Instance;
 	int enemiesAlive = 0;
 	int currentWave = 1;
@@ -30,9 +32,10 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	IEnumerator RunSpawnWave (int waveIndex, float spawnDelay) {
 		int enemiesInWaveCount = GetEnemyCount(waveIndex);
+		string[] enemyTypes = GetEnemyTypes(waveIndex);
 		enemiesAlive += enemiesInWaveCount;
 		for (int i = 0; i < enemiesInWaveCount; i++) {
-			SpawnEnemy((Direction)(i%4));
+			SpawnEnemy((Direction)(i%4), enemyTypes[i]);
 			yield return new WaitForSeconds(spawnDelay);
 		}
 		updateEnemiesAliveText();
@@ -46,11 +49,19 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		// TODO: Implement actual difficulty curve
 		return waveIndex;
 	}
-	public void SpawnEnemy (Direction spawnDirection) {
+
+	string[] GetEnemyTypes (int waveIndex) {
+		// TODO: Implement actual enemy type spawning formula
+		return ArrayUtil.Fill(new string[GetEnemyCount(waveIndex)], UNDEAD_KEY);
+	}
+
+	public void SpawnEnemy (Direction spawnDirection, string enemyKey) {
 		Quaternion angle = Quaternion.identity;
 		angle.eulerAngles = new Vector3(90, 0, 0);
 		GameObject enemy = (GameObject) Instantiate(worldController.EnemyPrefab, EnemySpawnPoint.GetPosition(spawnDirection), angle);
-		enemy.GetComponent<EnemyBehaviour>().SetTarget(worldController.ICoreOrbInstance);
+		EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+		enemyBehaviour.SetEnemy(templateUnits[enemyKey]);
+		enemyBehaviour.SetTarget(worldController.ICoreOrbInstance);
 		enemy.transform.SetParent(transform);
 	}
 		

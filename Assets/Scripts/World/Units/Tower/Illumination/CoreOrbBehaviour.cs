@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Collections;
 
 public class CoreOrbBehaviour : IlluminationTowerBehaviour {
+	public const string CORE_ORB_KEY = "Core Orb";
 	protected override void CleanupReferences () {
 		base.CleanupReferences ();
 		if (!SceneController.IsLoadingScene) {

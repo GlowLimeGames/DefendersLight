@@ -65,6 +65,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		} else {
 			missileBehavior = ((GameObject) Instantiate(MissilePrefab, transform.position, Quaternion.identity)).GetComponent<ProjectileBehaviour>();
 		}
+		missileBehavior.SetTower(tower);
 		missileBehavior.SetTarget(activeAgent);
 	}
 

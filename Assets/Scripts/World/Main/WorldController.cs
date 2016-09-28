@@ -44,7 +44,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void StartWave () {
-		// enemyController.SpawnWave();
+		enemyController.SpawnWave();
 	}
 
 	public void CollectMiniOrbs (int count) {
@@ -80,9 +80,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	void PlaceCoreOrb () {
-		GameObject coreOrb = towerController.CoreOrbInstance = (GameObject) Instantiate(towerController.CoreOrbPrefab);
-		MapTileBehaviour centerTile = mapController.GetCenterTile();
-		centerTile.PlaceAgent(coreOrb.GetComponent<StaticAgentBehaviour>(), false);
+		towerController.PlaceCoreOrb(mapController.GetCenterTile());
 	}
 
 	void SetupUnitControllers () {
