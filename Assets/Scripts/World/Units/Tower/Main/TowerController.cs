@@ -5,9 +5,12 @@
 
 using UnityEngine;
 using SimpleJSON;
+using System.IO;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using System.Text.RegularExpressions;
 
 public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerController {
 	public const string TOWER_TAG = "Tower";
@@ -15,20 +18,57 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 
 	public GameObject CoreOrbPrefab;
 	public GameObject CoreOrbInstance;
-	GameObject potentialPurchaseTower = null;
+	TowerBehaviour potentialPurchaseTower = null;
 	MapTileBehaviour previousHighlightedMapTile = null;
 	HashSet<TowerBehaviour> activeTowers = new HashSet<TowerBehaviour>();
+	Dictionary<TowerType, List<Tower>> towerTemplatesByType = new Dictionary<TowerType, List<Tower>>();
 
 	public override void Setup (WorldController worldController, DataController dataController, string unitTemplateJSONPath) {
 		base.Setup(worldController, dataController, unitTemplateJSONPath);
+		towerTemplatesByType = sortTowers(templateUnits.Values.ToArray());
 	}
-		
+
+	public void PlaceCoreOrb (MapTileBehaviour mapTile) {
+		GameObject coreOrb = (GameObject) Instantiate(CoreOrbPrefab);
+		CoreOrbInstance = coreOrb;
+		CoreOrbBehaviour coreOrbBehaviour = coreOrb.GetComponent<CoreOrbBehaviour>();
+		coreOrbBehaviour.SetTower(templateUnits[CoreOrbBehaviour.CORE_ORB_KEY]);
+		mapTile.PlaceAgent(coreOrbBehaviour, false);
+	}
+
+	Dictionary<TowerType, List<Tower>> sortTowers (Tower[] towers) {
+		Dictionary<TowerType, List<Tower>> sortedTowers = new Dictionary<TowerType, List<Tower>>();
+		for (int i = 0; i < System.Enum.GetNames(typeof(TowerType)).Length; i++) {
+			sortedTowers.Add((TowerType)i, new List<Tower>());
+		}
+		foreach (Tower tower in towers) {
+			if (includeTowerInTypes(tower)) {
+				sortedTowers[tower.TowerType].Add(tower);
+			}
+		}
+		return sortedTowers;
+	}
+
+	bool includeTowerInTypes (Tower tower) {
+		return tower.Type != CoreOrbBehaviour.CORE_ORB_KEY;
+	}
+
+	public Tower[] GetTowersOfType (TowerType type) {
+		List<Tower> towers;
+		if (towerTemplatesByType.TryGetValue(type, out towers)) {
+			return towers.ToArray();
+		} else {
+			return new Tower[0];
+		}
+	}
+
 	public void HandleBeginDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		if (potentialPurchaseTower != null) {
 			Destroy(potentialPurchaseTower);
 		}
-		potentialPurchaseTower = (GameObject)Instantiate(worldController.GetTowerPrefab(towerPanel.TowerType));
-		potentialPurchaseTower.GetComponent<TowerBehaviour>().ToggleColliders(false);
+		potentialPurchaseTower = Instantiate(worldController.GetTowerPrefab(towerPanel.TowerType)).GetComponent<TowerBehaviour>();
+		potentialPurchaseTower.ToggleColliders(false);
+		potentialPurchaseTower.SetTower(towerPanel.GetTower());
 	}
 
 	public void HandleDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
@@ -78,11 +118,11 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 
 	public void HandleEndDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		if (previousHighlightedMapTile && !previousHighlightedMapTile.HasAgent()) {
-			previousHighlightedMapTile.PlaceAgent(potentialPurchaseTower.GetComponent<StaticAgentBehaviour>());
+			previousHighlightedMapTile.PlaceAgent(potentialPurchaseTower);
 			towerPanel.OnPurchased();
 		} else {
 			// TODO: Collect in object pool instead of destroying
-			Destroy(potentialPurchaseTower);
+			Destroy(potentialPurchaseTower.gameObject);
 		}
 		potentialPurchaseTower = null;
 	}
@@ -114,5 +154,12 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	protected override void CleanupReferences () {
 		base.CleanupReferences ();
 		Instance = null;
+	}
+
+	public Sprite GetTowerSprite (string towerKey) {
+		// Remove special characters from tower key (to produce filename)
+		Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+		towerKey = rgx.Replace(towerKey, "");
+		return Resources.Load<Sprite>(Path.Combine(TOWER_TAG, towerKey.ToLower().Replace(" ", string.Empty)));
 	}
 }

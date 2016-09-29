@@ -215,6 +215,7 @@ MonoBehaviour:
   HasAttack: 1
   HealthBar: {fileID: 11415180}
   debugging: 0
+  spriteRenderer: {fileID: 21202822}
   MissilePrefab: {fileID: 185974, guid: 3581d8a813a9e4f2595c1e54cd94244e, type: 2}
   sellValue: 3
 --- !u!114 &11460012

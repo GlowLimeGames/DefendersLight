@@ -27,6 +27,13 @@ public static class ArrayUtil {
 		return modified.ToArray();
 	}
 
+	public static T[] Fill<T> (T[] source, T value) {
+		for (int i = 0; i < source.Length; i++) {
+			source[i] = value;
+		}
+		return source;
+	}
+
 	// Returns an array w/ first element removed
 	public static T[] RemoveFirst<T> (T[] source) {
 		T[] modified = new T[source.Length - 1];

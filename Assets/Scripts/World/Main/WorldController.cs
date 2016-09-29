@@ -26,7 +26,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	// TODO: Make this a tuning variable in a centralized tuning script
-	public int MiniOrbsFromKillingEnemy = 5;
+	public int MiniOrbsFromKillingEnemy = 25;
 
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
@@ -80,9 +80,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	void PlaceCoreOrb () {
-		GameObject coreOrb = towerController.CoreOrbInstance = (GameObject) Instantiate(towerController.CoreOrbPrefab);
-		MapTileBehaviour centerTile = mapController.GetCenterTile();
-		centerTile.PlaceAgent(coreOrb.GetComponent<StaticAgentBehaviour>(), false);
+		towerController.PlaceCoreOrb(mapController.GetCenterTile());
 	}
 
 	void SetupUnitControllers () {
@@ -298,4 +296,16 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			break;
 		}
 	}
+
+	#region TowerController
+
+	public Tower[] GetTowersOfType (TowerType type) {
+		return towerController.GetTowersOfType(type);
+	}
+
+	public Sprite GetTowerSprite (string towerKey) {
+		return towerController.GetTowerSprite(towerKey);
+	}
+
+	#endregion
 }

@@ -10,6 +10,7 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	[SerializeField]
 	float maxLifespan = 3.5f;
 	ActiveObjectBehaviour _target;
+	Tower tower;
 
 	protected override void SetReferences() {
 		base.SetReferences();
@@ -28,6 +29,11 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 		
 	}
 
+	// Sets the tower that spawned this projectile
+	public void SetTower (Tower tower) {
+		this.tower = tower;
+	}
+
 	public void SetTarget (ActiveObjectBehaviour target) {
 		this._target = target;
 		StartCoroutine(MoveTo(target.gameObject, 0.5f));
@@ -37,7 +43,7 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	IEnumerator DelayedAttack (ActiveObjectBehaviour target, float waitTime) {
 		yield return new WaitForSeconds(waitTime);
 		if (target) {
-			Attack(target);
+			Attack(target, tower.AttackDamage);
 		}
 		StartCoroutine(TimedReturnToPool(0.25f));
 	}
@@ -50,8 +56,8 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 		
 	}
 		
-	public override void Attack (ActiveObjectBehaviour activeAgent) {
-		base.Attack (activeAgent);
+	public override void Attack (ActiveObjectBehaviour activeAgent, int damage) {
+		base.Attack (activeAgent, tower.AttackDamage);
 	}
 		
 	IEnumerator TimedReturnToPool (float waitTime = 0.5f) {

@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Collections;
 
 public class CoreOrbBehaviour : IlluminationTowerBehaviour {
+	public const string CORE_ORB_KEY = "Core Orb";
 	protected override void CleanupReferences () {
 		base.CleanupReferences ();
 		if (!SceneController.IsLoadingScene) {
@@ -19,8 +20,8 @@ public class CoreOrbBehaviour : IlluminationTowerBehaviour {
 		}
 	}
 
-	public override void Attack (ActiveObjectBehaviour activeAgent) {
-		base.Attack (activeAgent);
+	public override void Attack (ActiveObjectBehaviour activeAgent, int damage) {
+		base.Attack (activeAgent, damage);
 		EventController.Event(EventType.LightningAttack);
 	}
 }

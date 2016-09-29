@@ -10,6 +10,8 @@ using UnityEngine.UI;
 
 public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDragHandler, IDragHandler, IEndDragHandler {
 	public TowerType TowerType;
+	Tower tower;
+	CanvasGroup canvasGroup;
 	TowerPurchasePanelController controller;
 	Image image;
 	Color standardColor;
@@ -22,6 +24,17 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 
 	public void InitWithController (TowerPurchasePanelController controller) {
 		this.controller = controller;
+	}
+
+	public void SetTower (Tower tower) {
+		this.tower = tower;
+		SetCost(this.tower.Cost);
+		TowerType = tower.TowerType;
+		image.sprite = tower.GetSprite();
+	}
+
+	public Tower GetTower () {
+		return this.tower;
 	}
 
 	public void OnBeginDrag (PointerEventData pointerEvent) {
@@ -66,6 +79,20 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 		image = GetComponent<Image>();
 		standardColor = image.color;
 		SetCost(cost);
+		canvasGroup = GetComponent<CanvasGroup>();
+	}
+
+	void Toggle (bool isActive) {
+		this.canvasGroup.alpha = isActive ? 1 : 0;
+		this.canvasGroup.blocksRaycasts = isActive;
+	}
+
+	public void Hide () {
+		Toggle(false);
+	}
+
+	public void Show () {
+		Toggle(true);
 	}
 
 	public void SetCost (int cost) {

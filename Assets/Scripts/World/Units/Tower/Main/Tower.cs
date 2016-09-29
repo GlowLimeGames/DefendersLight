@@ -3,8 +3,14 @@
  * Description: Describes the base behaviour of a tower
  */
 
+using System.Collections.Generic;
+
 [System.Serializable]
 public class Tower : Unit {
+	const string ILLUMINATION = "Illumination";
+	const string ASSAULT = "Assault";
+	const string BARRICADE = "Barricade";
+	static Dictionary<string, UnityEngine.Sprite> towerSprites = new Dictionary<string, UnityEngine.Sprite>();
 	public Tower (string type, int health, MapLocation location, string description, int cost, int unlockLevel,
 		IWorldController worldController, ITowerController towerController,
 		int damage = 0, float cooldown = 0, int range = 0, int attackRadius = 0, string illuminationRadius = "0") : 
@@ -16,6 +22,21 @@ public class Tower : Unit {
 	}
 
 	public Tower (string jsonText):base(jsonText){}
+
+	public TowerType TowerType {
+		get {
+			switch (Class) {
+			case ILLUMINATION:
+				return TowerType.Illumination;
+			case ASSAULT:
+				return TowerType.Assault;
+			case BARRICADE:
+				return TowerType.Barricade;
+			default:
+				return default(TowerType);	
+			}
+		}
+	}
 
 	#region JSON Keys
 
@@ -53,7 +74,8 @@ public class Tower : Unit {
 
 	// Should calculate illumination radius if the tower has reflectivity
 	int CalculateVariableIlluminationRadius () {
-		throw new System.NotImplementedException();
+		// TODO: Actually implement this method
+		return 0;
 	}
 		
 
@@ -77,4 +99,18 @@ public class Tower : Unit {
 	public override void DeserializeFromJSONAtPath(string jsonPath) {
 
 	}
+
+	public UnityEngine.Sprite GetSprite () {
+		UnityEngine.Sprite sprite;
+		if (towerSprites.TryGetValue(Type, out sprite)) {
+			return sprite;
+		} else if (WorldController.Instance){ 
+			sprite = WorldController.Instance.GetTowerSprite(Type);
+			towerSprites.Add(Type, sprite);
+			return sprite;
+		} else {
+			return null;
+		}
+	}
+
 }

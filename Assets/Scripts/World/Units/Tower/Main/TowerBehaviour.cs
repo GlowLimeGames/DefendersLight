@@ -7,12 +7,48 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class TowerBehaviour : StaticAgentBehaviour {
+	protected Tower tower;
+	[SerializeField]
+	SpriteRenderer spriteRenderer;
 
 	[SerializeField]
 	GameObject MissilePrefab;
 
 	[SerializeField]
 	int sellValue = 2;
+
+	RangedAttackBehaviour attackModule = null;
+
+	public override float IAttackDelay {
+		get {
+			return tower.AttackCooldown;
+		}
+	}
+
+	public void SetTower (Tower tower) {
+		this.tower = tower;
+		spriteRenderer.sprite = tower.GetSprite();
+		if (attackModule) {
+			attackModule.SetUnit(tower);
+		}
+	}
+
+	public override string IName {
+		get {
+			return tower.Type;
+		}
+	}
+
+	protected override void SetReferences () {
+		base.SetReferences ();
+		attackModule = GetComponentInChildren<RangedAttackBehaviour>();
+	}
+
+	protected override void FetchReferences () {
+		if (HasAttack) {
+			attackModule = GetComponentInChildren<RangedAttackBehaviour>();
+		}
+	}
 
 	protected override void CleanupReferences () {
 		base.CleanupReferences();
@@ -22,10 +58,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		EventController.Event(EventType.TowerDestroyed);
 	}
 
-	protected override void FetchReferences () {
-
-	}
-		
 	public void SelectTower () {
 		GameUIController.Instance.SelectTower(this);
 	}
@@ -51,7 +83,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		Destroy(gameObject);
 	}
 
-	public override void Attack(ActiveObjectBehaviour activeAgent) {
+	public override void Attack(ActiveObjectBehaviour activeAgent, int damage) {
 		StartCoroutine(AttackCooldown());
 		ProjectileBehaviour missileBehavior;
 		if (ProjectilePool.Instance && !ProjectilePool.Instance.IsEmpty) {
@@ -60,7 +92,19 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		} else {
 			missileBehavior = ((GameObject) Instantiate(MissilePrefab, transform.position, Quaternion.identity)).GetComponent<ProjectileBehaviour>();
 		}
+		missileBehavior.SetTower(tower);
 		missileBehavior.SetTarget(activeAgent);
+		StartCoroutine(trackMissile(missileBehavior.transform, 1f));
+	}
+
+	IEnumerator trackMissile (Transform missileTransform, float time) {
+		float timer = 0;
+		while (timer <= time) {
+			spriteRenderer.transform.LookAt(missileTransform, Vector3.up);
+			spriteRenderer.transform.eulerAngles = new Vector3(90, spriteRenderer.transform.eulerAngles.y, spriteRenderer.transform.eulerAngles.z);
+			timer += Time.deltaTime;
+			yield return new WaitForEndOfFrame();
+		}
 	}
 
 	public override void HandleColliderEnterTrigger (Collider collider) {
@@ -68,7 +112,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		if (HasAttack && !attackCooldownActive) {
 			if (collider.tag == EnemyController.ENEMY_TAG) {
 				EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
-				Attack(enemy);
+				Attack(enemy, tower.AttackDamage);
 			}
 		}
 	}
@@ -78,7 +122,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		if (HasAttack && !attackCooldownActive) {
 			if (collider.tag == EnemyController.ENEMY_TAG) {
 				EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
-				Attack(enemy);
+				Attack(enemy, tower.AttackDamage);
 			}
 		}
 	}

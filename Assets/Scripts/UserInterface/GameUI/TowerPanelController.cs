@@ -30,7 +30,7 @@ public class TowerPanelController : UIController {
 		}
 		selectedTower = tower;
 		gameObject.SetActive(true);
-		TowerName.text = tower.Name;
+		TowerName.text = tower.IName;
 		TowerLevel.text = tower.LevelString;
 		SellButton.gameObject.SetActive(!(tower is CoreOrbBehaviour));
 		tower.SubscribeToDestruction(ClosePanel);

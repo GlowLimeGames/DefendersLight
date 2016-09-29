@@ -14,6 +14,16 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public int Range;
 	public string LevelString;
 	public float AttackDelay;
+	public virtual float IAttackDelay {
+		get {
+			return AttackDelay;
+		}
+	}
+	public virtual string IName {
+		get {
+			return Name;
+		}
+	}
 	EventAction onDestroyed;
 	[SerializeField]
 	protected bool HasAttack;
@@ -45,20 +55,10 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 			onDestroyed();
 		}
 	}
-
-	protected virtual void CheckForAttack () {
-		if (HasAttack && !attackCooldownActive) {
-			ActiveObjectBehaviour target = SelectTarget();
-
-			if (target != null) {
-				Attack(target);
-			}
-		}
-	}
-
-	public virtual void Attack(ActiveObjectBehaviour activeAgent) {
+		
+	public virtual void Attack(ActiveObjectBehaviour activeAgent, int damage) {
 		StartCoroutine(AttackCooldown());
-		activeAgent.Damage(BaseDamage);
+		activeAgent.Damage(damage);
 	}
 
 	public abstract ActiveObjectBehaviour SelectTarget();
@@ -102,7 +102,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	protected IEnumerator AttackCooldown () {
 		attackCooldownActive = true;
-		yield return new WaitForSeconds(AttackDelay);
+		yield return new WaitForSeconds(IAttackDelay);
 		attackCooldownActive = false;
 	}
 
