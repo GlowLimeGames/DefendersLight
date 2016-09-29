@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 
 public class EnemyBehaviour : MobileAgentBehaviour {
+	public Direction DirectionFacing;
 	TowerBehaviour currentTarget;
 	Enemy enemy;
 	public override string IName {

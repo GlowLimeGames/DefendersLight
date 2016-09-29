@@ -45,7 +45,7 @@ GameObject:
   - 212: {fileID: 21266276}
   - 54: {fileID: 5437952}
   m_Layer: 0
-  m_Name: Grunt
+  m_Name: Undead
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

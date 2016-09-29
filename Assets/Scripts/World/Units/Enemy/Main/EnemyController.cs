@@ -10,7 +10,10 @@ using System.Collections.Generic;
 public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyController {
 	public const string ENEMY_TAG = "Enemy";
 	const string UNDEAD_KEY = "Undead";
-		
+	const string BRUTE_KEY = "Brute";
+	const string SHADE_KEY = "Shade";
+	public GameObject[] EnemyPrefabs;
+	Dictionary<string, GameObject> orderedEnemyPrefabs = new Dictionary<string, GameObject>();
 	public static EnemyController Instance;
 	int enemiesAlive = 0;
 	int currentWave = 1;
@@ -52,25 +55,54 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	string[] GetEnemyTypes (int waveIndex) {
 		// TODO: Implement actual enemy type spawning formula
-		return ArrayUtil.Fill(new string[GetEnemyCount(waveIndex)], UNDEAD_KEY);
+		string [] enemyKeys = ArrayUtil.Fill(new string[GetEnemyCount(waveIndex)], UNDEAD_KEY);
+		for (int i = 0; i < enemyKeys.Length; i++) {
+			if (i != 0) {
+				if (i % 5 == 0) {
+					enemyKeys[i] = BRUTE_KEY;
+				} else if (i % 7 == 0) {
+					enemyKeys[i] = SHADE_KEY;
+				}
+			}
+		}
+		return enemyKeys;
 	}
 
 	public void SpawnEnemy (Direction spawnDirection, string enemyKey) {
-		Quaternion angle = Quaternion.identity;
-		angle.eulerAngles = new Vector3(90, 0, 0);
-		GameObject enemy = (GameObject) Instantiate(worldController.EnemyPrefab, EnemySpawnPoint.GetPosition(spawnDirection), angle);
-		EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
-		enemyBehaviour.SetEnemy(templateUnits[enemyKey]);
-		enemyBehaviour.SetTarget(worldController.ICoreOrbInstance);
-		enemy.transform.SetParent(transform);
+		if (orderedEnemyPrefabs.ContainsKey(enemyKey)) {
+			GameObject enemy = (GameObject) Instantiate(orderedEnemyPrefabs[enemyKey], EnemySpawnPoint.GetPosition(spawnDirection), Quaternion.identity);
+			EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+			enemyBehaviour.SetEnemy(templateUnits[enemyKey]);
+			enemyBehaviour.SetTarget(worldController.ICoreOrbInstance);
+			enemy.transform.SetParent(transform);
+			// Placeholder: because undead is sprite;
+			Quaternion angle = Quaternion.identity;
+			if (enemyKey == UNDEAD_KEY) {
+				angle.eulerAngles = new Vector3(90, 0, 0);
+			} else {
+				float yRotation = DirectionUtil.DegreesToRotate(enemyBehaviour.DirectionFacing, spawnDirection);
+				angle.eulerAngles = new Vector3(0, yRotation, 0);
+			}
+			enemy.transform.eulerAngles = angle.eulerAngles;
+		} else {
+			Debug.LogErrorFormat("ERROR: No enemy of type {0}", enemyKey);
+		}
 	}
 		
 	protected override void SetReferences() {
 		if (!SingletonUtil.TryInit(ref Instance, this, gameObject)) {
 			Destroy(gameObject);
+		} else {
+			PopulateOrderedEnemyPrefabs();
 		}
 	}
 
+	void PopulateOrderedEnemyPrefabs () {
+		orderedEnemyPrefabs.Clear();
+		foreach (GameObject enemyPrefab in EnemyPrefabs) {
+			orderedEnemyPrefabs.Add(enemyPrefab.name, enemyPrefab);
+		}
+	}
 	protected override void CleanupReferences () {
 		base.CleanupReferences ();
 		Instance = null;
