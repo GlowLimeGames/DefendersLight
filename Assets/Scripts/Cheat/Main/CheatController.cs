@@ -21,6 +21,12 @@ public class CheatController : Controller, ICheatController {
 		}
 	}
 
+	public void HealAllTowers (){
+		for (int i = 0; i < TowerController.GetTowers ().Count; i++) {
+			TowerController.GetTowers () [i].Heal (TowerController.GetTowers () [i].MaxHealth);
+		}
+	}
+
 	public void RunMiniOrbCheat () {
 		Run(miniOrbCheat);
 	}
