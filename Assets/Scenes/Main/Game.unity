@@ -1061,7 +1061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b457cc307a9f64c12b5bbdb95f086986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 1
+  Location: 2
 --- !u!1 &309443564
 GameObject:
   m_ObjectHideFlags: 0
@@ -4403,7 +4403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b457cc307a9f64c12b5bbdb95f086986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 2
+  Location: 1
 --- !u!4 &1198508953 stripped
 Transform:
   m_PrefabParentObject: {fileID: 420256, guid: cf75357e9b74b4ae48dfec307912be11, type: 2}
@@ -5404,7 +5404,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 6
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1.06
   m_Range: 10
   m_SpotAngle: 30
@@ -6407,6 +6407,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 597db0013683c4f0fa95a02ac322b4d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyPrefabs:
+  - {fileID: 172852, guid: 14cd95061c46148a5ba73e7b0e380f95, type: 2}
+  - {fileID: 128344, guid: 84f722eb810b54803a65483c7b5617e9, type: 2}
+  - {fileID: 178702, guid: c5f81430e084c4a06aeff331d2a2f36d, type: 2}
 --- !u!1001 &1736538370
 Prefab:
   m_ObjectHideFlags: 0

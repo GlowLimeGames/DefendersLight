@@ -45,7 +45,7 @@ GameObject:
   - 212: {fileID: 21266276}
   - 54: {fileID: 5437952}
   m_Layer: 0
-  m_Name: Grunt
+  m_Name: Undead
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,9 +156,12 @@ MonoBehaviour:
   Range: 1
   LevelString: Level 0
   AttackDelay: 1
-  HasAttack: 1
+  AttackType: 0
+  hasAttack: 1
+  canHeal: 0
   HealthBar: {fileID: 11437684}
   debugging: 0
+  DirectionFacing: 0
 --- !u!212 &21242232
 SpriteRenderer:
   m_ObjectHideFlags: 1

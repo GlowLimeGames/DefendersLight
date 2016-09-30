@@ -39,7 +39,7 @@ public static class EventController {
 	public delegate void RewardEventAction(string eventName, RewardAmount rewardAmount);
 	public static event RewardEventAction OnRewardEvent;
 
-	public delegate void UnitEventAction(string eventName, IUnit unit);
+	public delegate void UnitEventAction(string eventName, Unit unit);
 	public static event UnitEventAction OnUnitEvent;
 	#endregion
 
@@ -69,7 +69,7 @@ public static class EventController {
 		}
 	}
 
-	public static void Event(string eventName, IUnit unit) {
+	public static void Event(string eventName, Unit unit) {
 		if (OnUnitEvent != null) {
 			OnUnitEvent(eventName, unit);
 		}

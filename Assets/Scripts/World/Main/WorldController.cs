@@ -164,6 +164,18 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 	}
 		
+	void handleUnitEvent (string eventName, Unit unit) {
+		if (eventName == EventType.EnemyDestroyed) {
+			if (unit.Type == "Undead") {
+				CollectMiniOrbs(25);
+			} else if (unit.Type == "Brute") {
+				CollectMiniOrbs(100);
+			} else if (unit.Type == "Shade") {
+				CollectMiniOrbs(200);
+			}
+		}
+	}
+
 	public string GenerateID (IUnit unit) {
 		return unit.IType + System.Guid.NewGuid();
 	}
@@ -295,6 +307,16 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			instance.AddComponent<IlluminationTowerBehaviour>();
 			break;
 		}
+	}
+
+	protected override void SubscribeEvents () {
+		base.SubscribeEvents ();
+		EventController.OnUnitEvent += handleUnitEvent;
+	}
+
+	protected override void UnusbscribeEvents () {
+		base.UnusbscribeEvents ();
+		EventController.OnUnitEvent -= handleUnitEvent;
 	}
 
 	#region TowerController

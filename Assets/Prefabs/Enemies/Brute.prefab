@@ -29,7 +29,7 @@ GameObject:
   - 54: {fileID: 5410242}
   m_Layer: 0
   m_Name: Brute
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -266,9 +266,12 @@ MonoBehaviour:
   Range: 0
   LevelString: 
   AttackDelay: 0
-  HasAttack: 0
+  AttackType: 0
+  hasAttack: 1
+  canHeal: 0
   HealthBar: {fileID: 0}
   debugging: 0
+  DirectionFacing: 1
 --- !u!212 &21221304
 SpriteRenderer:
   m_ObjectHideFlags: 1

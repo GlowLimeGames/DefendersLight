@@ -212,7 +212,9 @@ MonoBehaviour:
   Range: 3
   LevelString: Level 0
   AttackDelay: 3
-  HasAttack: 1
+  AttackType: 1
+  hasAttack: 1
+  canHeal: 0
   HealthBar: {fileID: 11451144}
   debugging: 0
   spriteRenderer: {fileID: 21202270}
