@@ -25,12 +25,13 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		}
 	}
 
-	public void SetTower (Tower tower) {
+	public virtual void SetTower (Tower tower) {
 		this.tower = tower;
 		spriteRenderer.sprite = tower.GetSprite();
 		if (attackModule) {
 			attackModule.SetUnit(tower);
 		}
+		setUnit(tower);
 	}
 
 	public override string IName {
@@ -45,7 +46,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	}
 
 	protected override void FetchReferences () {
-		if (HasAttack) {
+		if (hasAttack) {
 			attackModule = GetComponentInChildren<RangedAttackBehaviour>();
 		}
 	}
@@ -109,20 +110,21 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	public override void HandleColliderEnterTrigger (Collider collider) {
 		base.HandleColliderEnterTrigger (collider);
-		if (HasAttack && !attackCooldownActive) {
-			if (collider.tag == EnemyController.ENEMY_TAG) {
-				EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
-				Attack(enemy, tower.AttackDamage);
-			}
-		}
+		checkToAttack(collider);
 	}
 
 	public override void HandleColliderStayTrigger (Collider collider)	{
 		base.HandleColliderStayTrigger (collider);
-		if (HasAttack && !attackCooldownActive) {
+		checkToAttack(collider);
+	}
+
+	void checkToAttack (Collider collider) {
+		if (hasAttack && !attackCooldownActive) {
 			if (collider.tag == EnemyController.ENEMY_TAG) {
 				EnemyBehaviour enemy = collider.GetComponent<EnemyBehaviour>();
-				Attack(enemy, tower.AttackDamage);
+				if (enemy.CanDamage(this)) {
+					Attack(enemy, tower.AttackDamage);
+				}
 			}
 		}
 	}

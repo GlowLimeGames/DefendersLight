@@ -80,7 +80,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			if (enemyKey == UNDEAD_KEY) {
 				angle.eulerAngles = new Vector3(90, 0, 0);
 			} else {
-				float yRotation = DirectionUtil.DegreesToRotate(enemyBehaviour.DirectionFacing, spawnDirection);
+				float yRotation = DirectionUtil.DegreesToRotate(enemyBehaviour.DirectionFacing, DirectionUtil.OppositeDirection(spawnDirection));
 				angle.eulerAngles = new Vector3(0, yRotation, 0);
 			}
 			enemy.transform.eulerAngles = angle.eulerAngles;

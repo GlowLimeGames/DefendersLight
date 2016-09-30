@@ -9,11 +9,11 @@ using System.Collections;
 public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public string Name;
 	public int Health;
-	public int MaxHealth;
 	public int BaseDamage;
 	public int Range;
 	public string LevelString;
 	public float AttackDelay;
+	public AttackType AttackType;
 	public virtual float IAttackDelay {
 		get {
 			return AttackDelay;
@@ -24,9 +24,13 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 			return Name;
 		}
 	}
+	Unit unit;
+
 	EventAction onDestroyed;
 	[SerializeField]
-	protected bool HasAttack;
+	protected bool hasAttack;
+	[SerializeField]
+	protected bool canHeal = false;
 
 	[SerializeField]
 	protected HealthBarBehaviour HealthBar;
@@ -68,7 +72,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		if (HealthBar) {
 			HealthBar.SetHealthDisplay(
 				(float) Health /
-				(float) MaxHealth
+				(float) this.unit.Health
 			);
 		}
 		if (Health <= 0) {
@@ -80,6 +84,14 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		Health += healthPoints;
 	}
     
+	public virtual void HealTarget (ActiveObjectBehaviour target, int healthPoints) {
+		target.Heal(healthPoints);
+	}
+
+	protected virtual bool canHealTarget (ActiveObjectBehaviour target) {
+		return canHeal;
+	}
+
 	public virtual void Destroy() {
 		DestroyObject(gameObject);
 	}
@@ -102,7 +114,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	protected IEnumerator AttackCooldown () {
 		attackCooldownActive = true;
-		yield return new WaitForSeconds(IAttackDelay);
+		yield return new WaitForSeconds(unit.AttackCooldown);
 		attackCooldownActive = false;
 	}
 
@@ -120,9 +132,18 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		onDestroyed -= action;
 	}
 		
+	public virtual bool CanDamage (ActiveObjectBehaviour attacker) {
+		return true;
+	}
+
 	public virtual void HandleColliderEnterTrigger (Collider collider) {}
 
 	public virtual void HandleColliderStayTrigger (Collider collider) {}
 
 	public virtual void HandleColliderExitTrigger (Collider collider) {}
+
+	protected void setUnit (Unit unit) {
+		this.unit = unit;
+		this.Health = unit.Health;
+	}
 }

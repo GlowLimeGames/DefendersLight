@@ -266,10 +266,12 @@ MonoBehaviour:
   Range: 0
   LevelString: 
   AttackDelay: 0
-  HasAttack: 0
+  AttackType: 0
+  hasAttack: 1
+  canHeal: 0
   HealthBar: {fileID: 0}
   debugging: 0
-  DirectionFacing: 2
+  DirectionFacing: 1
 --- !u!212 &21221304
 SpriteRenderer:
   m_ObjectHideFlags: 1

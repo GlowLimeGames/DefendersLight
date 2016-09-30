@@ -1061,7 +1061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b457cc307a9f64c12b5bbdb95f086986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 1
+  Location: 2
 --- !u!1 &309443564
 GameObject:
   m_ObjectHideFlags: 0
@@ -4403,7 +4403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b457cc307a9f64c12b5bbdb95f086986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Location: 2
+  Location: 1
 --- !u!4 &1198508953 stripped
 Transform:
   m_PrefabParentObject: {fileID: 420256, guid: cf75357e9b74b4ae48dfec307912be11, type: 2}

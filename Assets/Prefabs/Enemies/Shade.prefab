@@ -59,9 +59,9 @@ GameObject:
   - 33: {fileID: 3328130}
   - 23: {fileID: 2312558}
   - 95: {fileID: 9528128}
-  - 114: {fileID: 11484202}
   - 65: {fileID: 6538964}
   - 54: {fileID: 5438280}
+  - 114: {fileID: 11494426}
   m_Layer: 0
   m_Name: Shade
   m_TagString: Enemy
@@ -78,7 +78,7 @@ Transform:
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5000001, w: 0.49999994}
   m_LocalPosition: {x: 0.8, y: 10.1, z: 0.4}
   m_LocalScale: {x: 10, y: 10, z: 10}
-  m_LocalEulerAnglesHint: {x: 89.980194, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
   m_Children:
   - {fileID: 22418952}
   - {fileID: 22469278}
@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarFill: {fileID: 22469278}
---- !u!114 &11484202
+--- !u!114 &11494426
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 178702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05d20a8e79e40d14ab114c4ea65f25ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b8f97fc50d364a9cb89d4ccb5000ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Location:
@@ -208,10 +208,16 @@ MonoBehaviour:
   Range: 0
   LevelString: 
   AttackDelay: 0
-  HasAttack: 0
-  HealthBar: {fileID: 0}
+  AttackType: 0
+  hasAttack: 0
+  canHeal: 1
+  HealthBar: {fileID: 11418688}
   debugging: 0
-  DirectionFacing: 0
+  DirectionFacing: 3
+  HealRate: 0
+  HealCooldown: 0
+  HealthDrainPerTick: 1
+  HealthDrainDelay: 1
 --- !u!212 &21220020
 SpriteRenderer:
   m_ObjectHideFlags: 1

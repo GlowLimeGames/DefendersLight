@@ -22,6 +22,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 	public void SetEnemy (Enemy enemy) {
 		this.enemy = enemy;
+		setUnit(enemy);
 	}
 
 	protected override void SetReferences() {
@@ -33,6 +34,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	protected override void CleanupReferences () {
 		base.CleanupReferences();
 		EventController.Event(EventType.EnemyDestroyed);
+		EventController.Event(EventType.EnemyDestroyed, enemy);
 	}
 
     protected override void HandleNamedEvent(string eventName) {}
@@ -90,24 +92,26 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	void OnTriggerEnter (Collider collider) {
-		if (CanAttack(collider)) {
-			TowerBehaviour tower = collider.GetComponent<TowerBehaviour>();
-			Halt();
-			Attack(tower, enemy.AttackDamage);
-			tower.SubscribeToDestruction(ResumeMoving);
-		}
+		checkToAttack(collider);
 	}
 
 	void OnTriggerStay (Collider collider) {
+		checkToAttack(collider);
+	}
+
+	void checkToAttack (Collider collider) {
 		if (CanAttack(collider)) {
 			currentTarget = collider.GetComponent<TowerBehaviour>();
 			Halt();
 			Attack(currentTarget, enemy.AttackDamage);
 		}
 	}
-
-
+		
 	bool CanAttack (Collider unit) {
 		return !attackCooldownActive && unit.tag == TowerController.TOWER_TAG;
+	}
+
+	protected bool isEnemy (ActiveObjectBehaviour activeObject) {
+		return activeObject.gameObject.tag.Equals(EnemyController.ENEMY_TAG);
 	}
 }

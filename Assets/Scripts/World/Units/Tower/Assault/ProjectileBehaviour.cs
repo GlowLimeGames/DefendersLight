@@ -32,6 +32,7 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	// Sets the tower that spawned this projectile
 	public void SetTower (Tower tower) {
 		this.tower = tower;
+		this.setUnit(tower);
 	}
 
 	public void SetTarget (ActiveObjectBehaviour target) {

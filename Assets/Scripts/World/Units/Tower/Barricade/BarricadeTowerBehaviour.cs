@@ -9,6 +9,6 @@ using System.Collections;
 public class BarricadeTowerBehaviour : TowerBehaviour {
 	protected override void SetReferences() {
 		base.SetReferences();
-		HasAttack = false;
+		hasAttack = false;
     }
 }
