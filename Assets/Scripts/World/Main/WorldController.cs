@@ -114,8 +114,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		towerController.HealAllTowers ();
 	}
 
-    public void KillAllEnemies()
-    {
+    public void KillAllEnemies() {
         enemyController.KillAllEnemies();
     }
 		
