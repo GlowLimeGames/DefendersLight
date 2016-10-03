@@ -15,13 +15,16 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	Color standardColor = Color.black;
 	bool isIlluminated;
 	Renderer meshRenderer;
+	SpriteRenderer spriteRenderer;
 
 	void SetTileColor (Color color) {
 		meshRenderer.material.color = color;
+		spriteRenderer.color = color;
 	}
 
 	void Awake () {
 		meshRenderer = GetComponent<MeshRenderer>();
+		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 		SetTileColor(standardColor);
 	}
 
