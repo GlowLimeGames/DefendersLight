@@ -6,6 +6,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyController {
 	public const string ENEMY_TAG = "Enemy";
@@ -17,6 +18,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	public static EnemyController Instance;
 	int enemiesAlive = 0;
 	int currentWave = 1;
+    HashSet<EnemyBehaviour> activeEnemies = new HashSet<EnemyBehaviour>();
 	public int ICurrentWave {
 		get {
 			return currentWave;
@@ -72,6 +74,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		if (orderedEnemyPrefabs.ContainsKey(enemyKey)) {
 			GameObject enemy = (GameObject) Instantiate(orderedEnemyPrefabs[enemyKey], EnemySpawnPoint.GetPosition(spawnDirection), Quaternion.identity);
 			EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+            AddActiveEnemy(enemyBehaviour);
 			enemyBehaviour.SetEnemy(templateUnits[enemyKey]);
 			enemyBehaviour.SetTarget(worldController.ICoreOrbInstance);
 			enemy.transform.SetParent(transform);
@@ -108,7 +111,26 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		Instance = null;
 	}
 
-	public void Create(Enemy unit) {
+    public void AddActiveEnemy(EnemyBehaviour enemy) {
+        if (!activeEnemies.Contains(enemy)) {
+            activeEnemies.Add(enemy);
+        }
+    }
+
+    public void RemoveActiveEnemy(EnemyBehaviour enemy) {
+        if (activeEnemies.Contains(enemy)) {
+            activeEnemies.Remove(enemy);
+        }
+    }
+
+    public void KillAllEnemies() {
+        for (int i = 0; i < activeEnemies.Count; i++) {
+            activeEnemies.ElementAt(i).Destroy();
+        }
+        activeEnemies.Clear();
+    }
+
+    public void Create(Enemy unit) {
 		throw new System.NotImplementedException();
 	}
 

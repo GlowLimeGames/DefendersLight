@@ -110,9 +110,17 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		towerController.RemoveActiveTower(tower);
 	}
 
-	public void HealAllTowers (){
+    public void RemoveActiveEnemy (EnemyBehaviour enemy) {
+        enemyController.RemoveActiveEnemy(enemy);
+    }
+
+    public void HealAllTowers (){
 		towerController.HealAllTowers ();
 	}
+
+    public void KillAllEnemies() {
+        enemyController.KillAllEnemies();
+    }
 		
 	public void AddObject(IWorldObject element) {
 		throw new System.NotImplementedException();
