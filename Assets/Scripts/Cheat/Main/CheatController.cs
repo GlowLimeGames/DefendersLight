@@ -37,6 +37,10 @@ public class CheatController : Controller, ICheatController {
         WorldController.Instance.setWave(waveIndex);
     }
 
+    public void DestroyAllTowers() {
+        WorldController.Instance.DestroyAllTowers();
+    }
+
 	public void RunMiniOrbCheat () {
 		Run(miniOrbCheat);
 	}

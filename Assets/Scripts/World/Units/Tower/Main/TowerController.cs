@@ -149,6 +149,16 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		}
 	}
 
+    public void DestroyAllTowers() {
+        foreach (TowerBehaviour tower in activeTowers) {         
+            if (!(tower is CoreOrbBehaviour)) {
+                tower.Destroy();
+                activeTowers.Remove(tower);
+            }
+
+        }
+    }
+
     public void ToggleGodMode() {
         for (int i = 0; i < activeTowers.Count; i++) {
             activeTowers.ElementAt(i).isInvulnerable = !activeTowers.ElementAt(i).isInvulnerable;

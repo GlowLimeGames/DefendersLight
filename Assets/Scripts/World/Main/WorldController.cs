@@ -122,6 +122,10 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
         enemyController.KillAllEnemies();
     }
 
+    public void DestroyAllTowers() {
+        towerController.DestroyAllTowers();
+    }
+
     public void ToggleGodMode() {
         towerController.ToggleGodMode();
     }
