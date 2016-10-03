@@ -32,6 +32,11 @@ public class CheatController : Controller, ICheatController {
     public void GodMode() {
         WorldController.Instance.ToggleGodMode();
     }
+
+    public void setWave(int waveIndex) {
+        WorldController.Instance.setWave(waveIndex);
+    }
+
 	public void RunMiniOrbCheat () {
 		Run(miniOrbCheat);
 	}
