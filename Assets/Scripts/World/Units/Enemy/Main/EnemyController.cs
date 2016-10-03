@@ -125,9 +125,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
     public void KillAllEnemies() {
         for (int i = 0; i < activeEnemies.Count; i++) {
-            int EnemyMaxHealth = activeEnemies.ElementAt(i).IMaxHealth;
-
-            activeEnemies.ElementAt(i).Heal(-EnemyMaxHealth);
+            activeEnemies.ElementAt(i).Destroy();
             RemoveActiveEnemy(activeEnemies.ElementAt(i));
         }
     }
