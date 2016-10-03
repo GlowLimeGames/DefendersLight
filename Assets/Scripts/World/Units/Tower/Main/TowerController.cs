@@ -142,7 +142,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	}
 
 	public void HealAllTowers (){
-		for (int i = 0; i < activeTowers.Count (); i++) {
+		for (int i = 0; i < activeTowers.Count; i++) {
 			int TowerMaxHealth = activeTowers.ElementAt (i).IMaxHealth;
 
 			activeTowers.ElementAt (i).Heal (TowerMaxHealth);
