@@ -13,6 +13,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public int Range;
 	public string LevelString;
 	public float AttackDelay;
+	int _maxHealth;
 	public AttackType AttackType;
 	public virtual float IAttackDelay {
 		get {
@@ -22,6 +23,11 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public virtual string IName {
 		get {
 			return Name;
+		}
+	}
+	public virtual int IMaxHealth {
+		get {
+			return _maxHealth;
 		}
 	}
 	Unit unit;

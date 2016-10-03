@@ -24,7 +24,11 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 			return tower.AttackCooldown;
 		}
 	}
-
+	public override int IMaxHealth {
+		get {
+			return tower.Health;
+		}
+	}
 	public virtual void SetTower (Tower tower) {
 		this.tower = tower;
 		spriteRenderer.sprite = tower.GetSprite();

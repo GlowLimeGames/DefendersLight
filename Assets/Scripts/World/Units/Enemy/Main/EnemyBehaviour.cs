@@ -20,6 +20,11 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			return enemy.AttackCooldown;
 		}
 	}
+	public override int IMaxHealth {
+		get {
+			return enemy.Health;
+		}
+	}
 	public void SetEnemy (Enemy enemy) {
 		this.enemy = enemy;
 		setUnit(enemy);
