@@ -110,6 +110,10 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		towerController.RemoveActiveTower(tower);
 	}
 
+    public void RemoveActiveEnemy (EnemyBehaviour enemy) {
+        enemyController.RemoveActiveEnemy(enemy);
+    }
+
     public void HealAllTowers (){
 		towerController.HealAllTowers ();
 	}
