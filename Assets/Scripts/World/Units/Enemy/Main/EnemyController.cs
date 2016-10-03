@@ -126,8 +126,8 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
     public void KillAllEnemies() {
         for (int i = 0; i < activeEnemies.Count; i++) {
             activeEnemies.ElementAt(i).Destroy();
-            RemoveActiveEnemy(activeEnemies.ElementAt(i));
         }
+        activeEnemies.Clear();
     }
 
     public void Create(Enemy unit) {
