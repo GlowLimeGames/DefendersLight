@@ -21,6 +21,10 @@ public class CheatController : Controller, ICheatController {
 		}
 	}
 
+	public void HealAllTowers(){
+		WorldController.Instance.HealAllTowers ();
+	}
+
 	public void RunMiniOrbCheat () {
 		Run(miniOrbCheat);
 	}

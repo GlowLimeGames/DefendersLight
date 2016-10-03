@@ -109,6 +109,10 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	public void RemoveActiveTower (TowerBehaviour tower) {
 		towerController.RemoveActiveTower(tower);
 	}
+
+	public void HealAllTowers (){
+		towerController.HealAllTowers ();
+	}
 		
 	public void AddObject(IWorldObject element) {
 		throw new System.NotImplementedException();

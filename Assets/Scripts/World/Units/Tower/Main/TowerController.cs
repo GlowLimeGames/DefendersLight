@@ -141,6 +141,14 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		throw new System.NotImplementedException();
 	}
 
+	public void HealAllTowers (){
+		for (int i = 0; i < activeTowers.Count (); i++) {
+			int TowerMaxHealth = activeTowers.ElementAt (i).IMaxHealth;
+
+			activeTowers.ElementAt (i).Heal (TowerMaxHealth);
+		}
+	}
+
 	public Tower[] GetAll() {
 		throw new System.NotImplementedException();
 	}
