@@ -14,6 +14,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public string LevelString;
 	public float AttackDelay;
 	int _maxHealth;
+    public bool isInvulnerable = false;
 	public AttackType AttackType;
 	public virtual float IAttackDelay {
 		get {
@@ -74,7 +75,9 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public abstract ActiveObjectBehaviour SelectTarget();
 
 	public virtual void Damage(int damage) {
-		Health -= damage;
+        if (!isInvulnerable) {
+            Health -= damage;
+        }
 		if (HealthBar) {
 			HealthBar.SetHealthDisplay(
 				(float) Health /

@@ -29,6 +29,9 @@ public class CheatController : Controller, ICheatController {
         WorldController.Instance.KillAllEnemies();
     }
 
+    public void GodMode() {
+        WorldController.Instance.ToggleGodMode();
+    }
 	public void RunMiniOrbCheat () {
 		Run(miniOrbCheat);
 	}

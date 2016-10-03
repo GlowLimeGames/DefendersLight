@@ -149,6 +149,12 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		}
 	}
 
+    public void ToggleGodMode() {
+        for (int i = 0; i < activeTowers.Count; i++) {
+            activeTowers.ElementAt(i).isInvulnerable = !activeTowers.ElementAt(i).isInvulnerable;
+        }
+    }
+
 	public Tower[] GetAll() {
 		throw new System.NotImplementedException();
 	}

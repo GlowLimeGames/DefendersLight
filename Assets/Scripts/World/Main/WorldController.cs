@@ -121,6 +121,10 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
     public void KillAllEnemies() {
         enemyController.KillAllEnemies();
     }
+
+    public void ToggleGodMode() {
+        towerController.ToggleGodMode();
+    }
 		
 	public void AddObject(IWorldObject element) {
 		throw new System.NotImplementedException();
