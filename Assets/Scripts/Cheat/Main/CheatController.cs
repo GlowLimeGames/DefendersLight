@@ -21,12 +21,11 @@ public class CheatController : Controller, ICheatController {
 		}
 	}
 
-	public void HealAllTowers(){
+	public void HealAllTowers() { 
 		WorldController.Instance.HealAllTowers ();
 	}
     
-    public void KillAllEnemies()
-    {
+    public void KillAllEnemies() {
         WorldController.Instance.KillAllEnemies();
     }
 
