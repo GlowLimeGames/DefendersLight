@@ -29,6 +29,18 @@ public class CheatController : Controller, ICheatController {
         WorldController.Instance.KillAllEnemies();
     }
 
+    public void GodMode() {
+        WorldController.Instance.ToggleGodMode();
+    }
+
+    public void setWave(int waveIndex) {
+        WorldController.Instance.setWave(waveIndex);
+    }
+
+    public void DestroyAllTowers() {
+        WorldController.Instance.DestroyAllTowers();
+    }
+
 	public void RunMiniOrbCheat () {
 		Run(miniOrbCheat);
 	}

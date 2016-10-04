@@ -55,6 +55,12 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		return waveIndex;
 	}
 
+    public void setWave(int waveIndex) {
+        currentWave = waveIndex;
+        KillAllEnemies();
+        SpawnWave();
+    }
+
 	string[] GetEnemyTypes (int waveIndex) {
 		// TODO: Implement actual enemy type spawning formula
 		string [] enemyKeys = ArrayUtil.Fill(new string[GetEnemyCount(waveIndex)], UNDEAD_KEY);
