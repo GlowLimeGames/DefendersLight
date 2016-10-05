@@ -40,7 +40,9 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		base.CleanupReferences();
 		EventController.Event(EventType.EnemyDestroyed);
 		EventController.Event(EventType.EnemyDestroyed, enemy);
-        WorldController.Instance.RemoveActiveEnemy(this);
+		if (WorldController.Instance) {
+			WorldController.Instance.RemoveActiveEnemy(this);
+		}
 	}
 
     protected override void HandleNamedEvent(string eventName) {}
