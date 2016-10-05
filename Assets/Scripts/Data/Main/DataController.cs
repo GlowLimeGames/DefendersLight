@@ -153,6 +153,26 @@ public class DataController : Controller, IDataController {
 		
 	#endregion
 
+	#region Player Data
+
+	public int PlayerLevel {
+		get {
+			return currentPlayerData.ILevel;
+		}
+	}
+	public int XP {
+		get {
+			return currentPlayerData.IXP;
+		}
+	}
+	public int HighestWave {
+		get {
+			return currentPlayerData.IHighestWave;
+		}
+	}
+
+	#endregion
+
 	public void Save(IData data) {
 
 	}
