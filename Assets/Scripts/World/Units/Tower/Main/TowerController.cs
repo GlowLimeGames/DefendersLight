@@ -153,10 +153,11 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
         foreach (TowerBehaviour tower in activeTowers) {         
             if (!(tower is CoreOrbBehaviour)) {
                 tower.Destroy();
-                activeTowers.Remove(tower);
             }
 
         }
+		activeTowers.Clear();
+		activeTowers.Add(CoreOrbInstance.GetComponent<CoreOrbBehaviour>());
     }
 
     public void ToggleGodMode() {

@@ -78,21 +78,27 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
         if (!isInvulnerable) {
             Health -= damage;
         }
+		if (Health <= 0) {
+			Destroy();
+		} else {
+			updateHealthBar();
+		}
+	}
+    
+	public virtual void Heal(int healthPoints) {
+		Health = Mathf.Clamp(Health + healthPoints, 0, IMaxHealth);
+		updateHealthBar();
+	}
+    
+	void updateHealthBar () {
 		if (HealthBar) {
 			HealthBar.SetHealthDisplay(
 				(float) Health /
 				(float) this.unit.Health
 			);
 		}
-		if (Health <= 0) {
-			Destroy();
-		}
 	}
-    
-	public virtual void Heal(int healthPoints) {
-		Health += healthPoints;
-	}
-    
+
 	public virtual void HealTarget (ActiveObjectBehaviour target, int healthPoints) {
 		target.Heal(healthPoints);
 	}
