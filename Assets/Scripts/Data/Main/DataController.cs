@@ -12,14 +12,19 @@ public class DataController : Controller, IDataController {
 	const string SAVE_DIRECTORY = "Save";
 	const string WORLD_STATE_FILE_NAME = "WorldState.dat";
 	const string PLAYER_DATA_FILE_NAME = "PlayerData.dat";
+	static string SaveDirectory {
+		get {
+			return Path.Combine(Application.persistentDataPath, SAVE_DIRECTORY);
+		}
+	}
 	static string WorldStateFilePath {
 		get {
-			return Path.Combine(Application.persistentDataPath, Path.Combine(SAVE_DIRECTORY, WORLD_STATE_FILE_NAME));
+			return Path.Combine(SaveDirectory, WORLD_STATE_FILE_NAME);
 		}
 	}
 	static string PlayerDataFilePath {
 		get {
-			return Path.Combine(Application.persistentDataPath, Path.Combine(SAVE_DIRECTORY, PLAYER_DATA_FILE_NAME));
+			return Path.Combine(SaveDirectory, PLAYER_DATA_FILE_NAME);
 		}
 	}
 
@@ -46,6 +51,12 @@ public class DataController : Controller, IDataController {
 
 	public void SavePlayerData () {
 		SavePlayerData(currentPlayerData);
+	}
+
+	void CheckSaveDirectory () {
+		if (!Directory.Exists(SaveDirectory)) {
+			Directory.CreateDirectory(SaveDirectory);
+		}
 	}
 
 	void SavePlayerData (PlayerData playerData) {
@@ -159,16 +170,19 @@ public class DataController : Controller, IDataController {
 	}
 
 	public void ResetGame () {
+		CheckSaveDirectory();
 		ResetWorldState();
 		ResetPlayerData();
 	}
 
 	public void LoadGame () {
+		CheckSaveDirectory();
 		LoadWorldState();
 		LoadPlayerData();
 	}
 
 	public void SaveGame () {
+		CheckSaveDirectory();
 		SaveWorldState();
 		SavePlayerData();
 	}
