@@ -4,6 +4,6 @@
  */
 
 public interface IPlayerData : IData {
-	int XP {get;}
-	int Level{get;}
+	int IXP {get;}
+	int ILevel{get;}
 }
