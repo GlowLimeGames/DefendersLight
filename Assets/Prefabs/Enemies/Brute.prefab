@@ -261,15 +261,15 @@ MonoBehaviour:
     Y: 0
   Name: 
   Health: 0
-  MaxHealth: 0
   BaseDamage: 0
   Range: 0
   LevelString: 
   AttackDelay: 0
+  isInvulnerable: 0
   AttackType: 0
   hasAttack: 1
   canHeal: 0
-  HealthBar: {fileID: 0}
+  HealthBar: {fileID: 11423464}
   debugging: 0
   DirectionFacing: 1
 --- !u!212 &21221304

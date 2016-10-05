@@ -8,7 +8,7 @@ using System.Collections;
 
 public class EnemyBehaviour : MobileAgentBehaviour {
 	public Direction DirectionFacing;
-	TowerBehaviour currentTarget;
+	TowerBehaviour previousTarget;
 	Enemy enemy;
 	public override string IName {
 		get {
@@ -109,9 +109,13 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 
 	void checkToAttack (Collider collider) {
 		if (CanAttack(collider)) {
-			currentTarget = collider.GetComponent<TowerBehaviour>();
+			TowerBehaviour currentTarget = collider.GetComponent<TowerBehaviour>();
 			Halt();
 			Attack(currentTarget, enemy.AttackDamage);
+			if (previousTarget != currentTarget) {
+				currentTarget.SubscribeToDestruction(ResumeMoving);
+				previousTarget = currentTarget;
+			}
 		}
 	}
 		
