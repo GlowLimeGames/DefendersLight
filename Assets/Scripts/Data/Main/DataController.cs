@@ -11,16 +11,59 @@ public class DataController : Controller, IDataController {
 	const string JSON_DIRECTORY = "JSON";
 	const string SAVE_DIRECTORY = "Save";
 	const string WORLD_STATE_FILE_NAME = "WorldState.dat";
+	const string PLAYER_DATA_FILE_NAME = "PlayerData.dat";
 	static string WorldStateFilePath {
 		get {
-			return Path.Combine(Application.persistentDataPath, WORLD_STATE_FILE_NAME);
+			return Path.Combine(Application.persistentDataPath, Path.Combine(SAVE_DIRECTORY, WORLD_STATE_FILE_NAME));
+		}
+	}
+	static string PlayerDataFilePath {
+		get {
+			return Path.Combine(Application.persistentDataPath, Path.Combine(SAVE_DIRECTORY, PLAYER_DATA_FILE_NAME));
 		}
 	}
 
 	WorldState currentWorldState;
+	PlayerData currentPlayerData;
 
 	public static DataController Instance;
 
+	#region Player Data
+
+	public PlayerData LoadPlayerData () {
+		BinaryFormatter binaryFormatter = new BinaryFormatter();
+		FileStream file;
+		try {
+			file = File.Open(PlayerDataFilePath, FileMode.Open);
+			currentPlayerData = (PlayerData) binaryFormatter.Deserialize(file);
+			file.Close();
+			return currentPlayerData;
+		} catch {
+			currentPlayerData = new PlayerData(PlayerDataFilePath);
+			return currentPlayerData;
+		}
+	}
+
+	public void SavePlayerData () {
+		SavePlayerData(currentPlayerData);
+	}
+
+	void SavePlayerData (PlayerData playerData) {
+		BinaryFormatter binaryFormatter = new BinaryFormatter();
+		FileStream file;
+		try {
+			file = File.Open(PlayerDataFilePath, FileMode.Open);
+		} catch {
+			file = File.Create(PlayerDataFilePath);
+		}
+		if (currentPlayerData == null) {
+			currentPlayerData = new PlayerData(PlayerDataFilePath);
+		}
+		binaryFormatter.Serialize(file, currentPlayerData);
+		file.Close();
+	}
+
+	#endregion
 
 	#region World State
 
@@ -117,19 +160,27 @@ public class DataController : Controller, IDataController {
 
 	public void ResetGame () {
 		ResetWorldState();
+		ResetPlayerData();
 	}
 
 	public void LoadGame () {
 		LoadWorldState();
+		LoadPlayerData();
 	}
 
 	public void SaveGame () {
 		SaveWorldState();
+		SavePlayerData();
 	}
 
 	void ResetWorldState () {
 		currentWorldState = new WorldState(WorldStateFilePath);
 		SaveWorldState();
+	}
+
+	void ResetPlayerData () {
+		currentPlayerData = new PlayerData(PlayerDataFilePath);
+		SavePlayerData();
 	}
 
 	// Resources is a special folder within the Unity Assets directory that you can load in files easily from at Runtime
