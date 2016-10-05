@@ -1,6 +1,6 @@
 ﻿/*
  * Author(s): Isaiah Mann
- * Description: 
+ * Description: Template for Player Data
  */
 
 public interface IPlayerData : IData {
