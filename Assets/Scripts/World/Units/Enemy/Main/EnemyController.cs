@@ -17,16 +17,17 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	Dictionary<string, GameObject> orderedEnemyPrefabs = new Dictionary<string, GameObject>();
 	public static EnemyController Instance;
 	int enemiesAlive = 0;
-	int currentWave = 1;
+	int currentWaveIndex = 1;
+	EnemyWave currentWave = null;
     HashSet<EnemyBehaviour> activeEnemies = new HashSet<EnemyBehaviour>();
-	public int ICurrentWave {
+	public int ICurrentWaveIndex {
 		get {
-			return currentWave;
+			return currentWaveIndex;
 		}
 	}
 
 	public void SpawnWave () {
-		SpawnWave(currentWave);
+		SpawnWave(currentWaveIndex);
 	}
 
 	public void SpawnWave (int waveIndex) {
@@ -56,7 +57,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	}
 
     public void setWave(int waveIndex) {
-        currentWave = waveIndex;
+        currentWaveIndex = waveIndex;
         KillAllEnemies();
         SpawnWave();
     }
@@ -155,9 +156,9 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	void HandleEnemyKilled () {
 		enemiesAlive = Mathf.Clamp(enemiesAlive - 1, 0, int.MaxValue);
 		if (enemiesAlive == 0) {
-			currentWave++;
+			currentWaveIndex++;
 			dataController.NextWave();
-			SpawnWave(currentWave);
+			SpawnWave(currentWaveIndex);
 		}
 		updateEnemiesAliveText();
 		dataController.UpdateEnemiesKilled(1);
