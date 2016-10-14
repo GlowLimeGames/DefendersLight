@@ -7,6 +7,11 @@ using UnityEngine;
 
 public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 	public delegate void EventAction();
+	public delegate void EventActionInt(int integer);
+	public delegate void EventActionf(float floatingPointNumber);
+	public delegate void EventActionKey(string key);
+	public delegate void EventActionFlag(bool flag);
+
 	void Awake () {
 		SetReferences();
 		SubscribeEvents();

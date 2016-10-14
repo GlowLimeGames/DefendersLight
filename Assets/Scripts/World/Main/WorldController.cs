@@ -51,11 +51,13 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	MapController mapController;
 	UnitController[] unitControllers;
 	DataController dataController;
+	int spawnPoints = 1;
 
 	public void Create() {
 		createRules();
 		SetupUnitControllers();
 		PlaceCoreOrb();
+		setupUnitControllerCallbacks();
 	}
 
 	void createRules () {
@@ -63,10 +65,36 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		currentSeason = seasons[0];
 	}
 
+	void checkForSeasonAdvance (int waveIndex) {
+		if (waveIndex > currentSeason.EndingWave) {
+			changeSeason(currentSeason.Index + 1);
+			increaseSpawnPoints();
+		} else if (waveIndex > currentSeason.MiddleWave) {
+			// TODO: Implement behaviour if the wave has passed the midway point (increased spawn points)
+			increaseSpawnPoints();
+		}
+	}
+
+	void setupUnitControllerCallbacks () {
+		enemyController.SubscribeToWaveAdvance(checkForSeasonAdvance);
+	}
+
+	void teardownUnitControllerCallbacks () {
+		enemyController.UnusubscribeFromWaveAdvance(checkForSeasonAdvance);
+	}
+
+	void changeSeason (int newSeasonIndex) {
+		currentSeason = seasons[newSeasonIndex];
+	}
+
+	void increaseSpawnPoints () {
+		spawnPoints++;
+	}
+
 	public void StartWave () {
 		enemyController.SpawnWave();
 	}
-
+		
 	public void CollectMiniOrbs (int count) {
 		dataController.CollectMiniOrbs(count);
 		StatsPanelController.Instance.SetMiniOrbs(dataController.MiniOrbCount);
@@ -200,6 +228,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	protected override void CleanupReferences () {
 		Instance = null;
+		teardownUnitControllerCallbacks();
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

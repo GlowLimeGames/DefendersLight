@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyController {
+	EventActionInt waveAdvance;
+
 	public const string ENEMY_TAG = "Enemy";
 	const string UNDEAD_KEY = "Undead";
 	const string BRUTE_KEY = "Brute";
@@ -33,12 +35,27 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	public void SpawnWave (int waveIndex) {
 		StatsPanelController.Instance.SetWave(waveIndex);
+		callOnWaveAdvance(waveIndex);
 		// TODO: Implement non-placeholder functionality
 		StartCoroutine(RunSpawnWave(waveIndex, 0.5f));
 	}
 
 	public void SetSeason (Season season) {
 		this.currentSeason = season;
+	}
+
+	public void SubscribeToWaveAdvance (EventActionInt onWaveAdvance) {
+		waveAdvance += onWaveAdvance;
+	}
+
+	public void UnusubscribeFromWaveAdvance (EventActionInt onWaveAdvance) {
+		waveAdvance -= onWaveAdvance;
+	}
+
+	void callOnWaveAdvance (int waveIndex) {
+		if (waveAdvance != null) {
+			waveAdvance(waveIndex);
+		}
 	}
 
 	IEnumerator RunSpawnWave (int waveIndex, float spawnDelay) {
