@@ -8,6 +8,9 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public class DataController : Controller, IDataController {
+	EventActionInt levelUp;
+	EventActionInt earnXP;
+
 	const string JSON_DIRECTORY = "JSON";
 	const string SAVE_DIRECTORY = "Save";
 	const string WORLD_STATE_FILE_NAME = "WorldState.dat";
@@ -33,6 +36,8 @@ public class DataController : Controller, IDataController {
 
 	public static DataController Instance;
 
+	public LinearEquation XPEquation = new LinearEquation(200, 100);
+
 	#region Player Data
 
 	public PlayerData LoadPlayerData () {
@@ -42,11 +47,12 @@ public class DataController : Controller, IDataController {
 			file = File.Open(PlayerDataFilePath, FileMode.Open);
 			currentPlayerData = (PlayerData) binaryFormatter.Deserialize(file);
 			file.Close();
-			return currentPlayerData;
 		} catch {
 			currentPlayerData = new PlayerData(PlayerDataFilePath);
-			return currentPlayerData;
 		}
+		currentPlayerData.SetXPEquation(XPEquation);
+		return currentPlayerData;
+
 	}
 
 	public void SavePlayerData () {
@@ -165,9 +171,53 @@ public class DataController : Controller, IDataController {
 			return currentPlayerData.IXP;
 		}
 	}
+
+	// The total amount of data needed to level up
+	public int XPForLevel {
+		get {
+			return currentPlayerData.IXPForLevel;
+		}
+	}
+
 	public int HighestWave {
 		get {
 			return currentPlayerData.IHighestWave;
+		}
+	}
+
+	public void EarnXP (int xpEarned) {
+		currentPlayerData.EarnXP(xpEarned);
+		callOnXPEarned(xpEarned);
+		if (currentPlayerData.ReadyToLevelUp()) {
+			callOnLevelUp(currentPlayerData.LevelUp());
+		}
+	}
+		
+	public void SubscribeToOnLevelUp (EventActionInt onLevelUp) {
+		levelUp += onLevelUp;
+	}
+
+	public void UnsubscribeFromOnLevelUp (EventActionInt onLevelUp) {
+		levelUp -= onLevelUp;
+	}
+
+	void callOnLevelUp (int newLevel) {
+		if (levelUp != null) {
+			levelUp(newLevel);
+		}
+	}
+
+	public void SubscribeToOnXPEarned (EventActionInt onXPEarned) {
+		earnXP += onXPEarned;
+	}
+
+	public void UnsubscribeFromOnXPEarned (EventActionInt onXPEarned) {
+		earnXP -= onXPEarned;
+	}
+
+	void callOnXPEarned (int xpEarned) {
+		if (this.earnXP != null) {
+			this.earnXP(xpEarned);
 		}
 	}
 
