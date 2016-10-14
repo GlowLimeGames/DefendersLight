@@ -67,17 +67,18 @@ public class TowerPurchasePanelController : UIController {
 	}
 
 	public void SetTowers (Tower[] towers) {
-		for (int i = 0; i <  towerPuchasePanels.Length; i++) {
-			if (i >= towers.Length) {
-				towerPuchasePanels[i].Hide();
-			} else {
-				towerPuchasePanels[i].SetTower(towers[i]);
-				towerPuchasePanels[i].Show();
+		int panelIndex = 0;
+		for (int i = 0; i <  towers.Length; i++) {
+			if (towers[i].Unlocked(DataController.Instance.IPlayer)) {
+				towerPuchasePanels[panelIndex].SetTower(towers[i]);
+				towerPuchasePanels[panelIndex++].Show();
 			}
 		}
+		for (int j = panelIndex; j < towerPuchasePanels.Length; j++) {
+			towerPuchasePanels[j].Hide();
+		}
 	}
-
-
+		
 	void ToggleTowerPage (bool isActive) {
 		towerPage.alpha = isActive ? 1 : 0;
 		towerPage.blocksRaycasts = isActive;

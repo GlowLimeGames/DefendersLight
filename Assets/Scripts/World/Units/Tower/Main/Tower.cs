@@ -113,4 +113,7 @@ public class Tower : Unit {
 		}
 	}
 
+	public bool Unlocked (PlayerData player) {
+		return player.ILevel >= UnlockLevel;
+	}
 }

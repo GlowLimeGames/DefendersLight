@@ -11,13 +11,17 @@ public class GameOverUIController : UIController, IUIController {
 	Text enemiesKilled;
 	[SerializeField]
 	Text wavesSurvivied;
-
+	[SerializeField]
+	GameObject newHighestWave;
 	protected override void FetchReferences () {
 		base.FetchReferences();
-		if (DataController.Instance) {
-			enemiesKilled.text = string.Format(enemiesKilled.text, DataController.Instance.EnemiesKilled);
-			wavesSurvivied.text = string.Format(wavesSurvivied.text, DataController.Instance.WavesSurvivied);
-			DataController.Instance.ResetWorld();
+		DataController data;
+		// Assignment is intentional
+		if (data = DataController.Instance) {
+			enemiesKilled.text = string.Format(enemiesKilled.text, data.EnemiesKilled);
+			wavesSurvivied.text = string.Format(wavesSurvivied.text, data.WavesSurvivied);
+			newHighestWave.SetActive(data.CheckToUpdateHighestWave());
+			data.ResetWorld();
 		}
 		EventController.Event(EventType.LoadGameOver);
 	}

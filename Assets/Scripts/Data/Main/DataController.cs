@@ -30,6 +30,11 @@ public class DataController : Controller, IDataController {
 			return Path.Combine(SaveDirectory, PLAYER_DATA_FILE_NAME);
 		}
 	}
+	public PlayerData IPlayer {
+		get {
+			return currentPlayerData;
+		}
+	}
 
 	WorldState currentWorldState;
 	PlayerData currentPlayerData;
@@ -79,87 +84,6 @@ public class DataController : Controller, IDataController {
 		binaryFormatter.Serialize(file, currentPlayerData);
 		file.Close();
 	}
-
-	#endregion
-
-	#region World State
-
-	public int MiniOrbCount {
-		get {
-			return currentWorldState.IMiniOrbs;
-		}
-	}
-	public int EnemiesKilled {
-		get {
-			return currentWorldState.EnemiesKilled;
-		}
-	}
-	public int WavesSurvivied {
-		get {
-			return currentWorldState.CurrentWave;
-		}
-	}
-		
-	public WorldState LoadWorldState () {
-		BinaryFormatter binaryFormatter = new BinaryFormatter();
-		FileStream file;
-		try {
-			file = File.Open(WorldStateFilePath, FileMode.Open);
-			currentWorldState = (WorldState) binaryFormatter.Deserialize(file);
-			file.Close();
-			return currentWorldState;
-		} catch {
-			currentWorldState = new WorldState(WorldStateFilePath);
-			return currentWorldState;
-		}
-	}
-
-	public void SaveWorldState () {
-		SaveWorldState(currentWorldState);
-	}
-
-	void SaveWorldState (WorldState worldState) {
-		BinaryFormatter binaryFormatter = new BinaryFormatter();
-		FileStream file;
-		try {
-			file = File.Open(WorldStateFilePath, FileMode.Open);
-		} catch {
-			file = File.Create(WorldStateFilePath);
-		}
-		if (currentWorldState == null) {
-			currentWorldState = new WorldState(WorldStateFilePath);
-		}
-		binaryFormatter.Serialize(file, currentWorldState);
-		file.Close();
-	}
-
-	public void CollectMiniOrbs (int miniOrbCount) {
-		this.currentWorldState.CollectMiniOrbs(miniOrbCount);
-	}
-
-	public bool TrySpendMiniOrbs (int miniOrbCount) {
-		return this.currentWorldState.TrySpendMiniOrbs(miniOrbCount);
-	}
-
-	public bool HasSufficientMiniOrbs (int miniOrbCount) {
-		return this.currentWorldState.HasSufficientMiniOrbs(miniOrbCount);
-	}
-	
-	public void NextWave () {
-		this.currentWorldState.NextWave();
-	}
-
-	public void UpdateEnemiesKilled (int deltaEnemiesKilled) {
-		this.currentWorldState.UpdateEnemiesKilled(deltaEnemiesKilled);
-	}
-
-	public void UpdateXPEarned (int deltaXP) {
-		this.currentWorldState.UpdateXPEarned(deltaXP);
-	}
-		
-	#endregion
-
-	#region Player Data
 
 	public int PlayerLevel {
 		get {
@@ -219,6 +143,96 @@ public class DataController : Controller, IDataController {
 		if (this.earnXP != null) {
 			this.earnXP(xpEarned);
 		}
+	}
+
+	public bool CheckToUpdateHighestWave (int waveReached) {
+		if (currentPlayerData.NewHighestWave(waveReached)) {
+			currentPlayerData.UpdateHighestWave(waveReached);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public bool CheckToUpdateHighestWave () {
+		return CheckToUpdateHighestWave(currentWorldState.CurrentWave);
+	}
+
+	#endregion
+
+	#region World State
+
+	public int MiniOrbCount {
+		get {
+			return currentWorldState.IMiniOrbs;
+		}
+	}
+	public int EnemiesKilled {
+		get {
+			return currentWorldState.EnemiesKilled;
+		}
+	}
+	public int WavesSurvivied {
+		get {
+			return currentWorldState.CurrentWave;
+		}
+	}
+
+	public WorldState LoadWorldState () {
+		BinaryFormatter binaryFormatter = new BinaryFormatter();
+		FileStream file;
+		try {
+			file = File.Open(WorldStateFilePath, FileMode.Open);
+			currentWorldState = (WorldState) binaryFormatter.Deserialize(file);
+			file.Close();
+			return currentWorldState;
+		} catch {
+			currentWorldState = new WorldState(WorldStateFilePath);
+			return currentWorldState;
+		}
+	}
+
+	public void SaveWorldState () {
+		SaveWorldState(currentWorldState);
+	}
+
+	void SaveWorldState (WorldState worldState) {
+		BinaryFormatter binaryFormatter = new BinaryFormatter();
+		FileStream file;
+		try {
+			file = File.Open(WorldStateFilePath, FileMode.Open);
+		} catch {
+			file = File.Create(WorldStateFilePath);
+		}
+		if (currentWorldState == null) {
+			currentWorldState = new WorldState(WorldStateFilePath);
+		}
+		binaryFormatter.Serialize(file, currentWorldState);
+		file.Close();
+	}
+
+	public void CollectMiniOrbs (int miniOrbCount) {
+		this.currentWorldState.CollectMiniOrbs(miniOrbCount);
+	}
+
+	public bool TrySpendMiniOrbs (int miniOrbCount) {
+		return this.currentWorldState.TrySpendMiniOrbs(miniOrbCount);
+	}
+
+	public bool HasSufficientMiniOrbs (int miniOrbCount) {
+		return this.currentWorldState.HasSufficientMiniOrbs(miniOrbCount);
+	}
+
+	public void NextWave () {
+		this.currentWorldState.NextWave();
+	}
+
+	public void UpdateEnemiesKilled (int deltaEnemiesKilled) {
+		this.currentWorldState.UpdateEnemiesKilled(deltaEnemiesKilled);
+	}
+
+	public void UpdateXPEarned (int deltaXP) {
+		this.currentWorldState.UpdateXPEarned(deltaXP);
 	}
 
 	#endregion

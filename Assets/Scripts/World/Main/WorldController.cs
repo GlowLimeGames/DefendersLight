@@ -39,6 +39,14 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 	}
 
+	public bool IsPaused {
+		get {
+			return Time.timeScale == 0;
+		}
+	}
+
+	public LinearEquation EnemySpawnCountEquation;
+
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
 	const string SEASONS_DATA_FILE_NAME = "Seasons";
@@ -164,7 +172,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	void SetupUnitControllers () {
 		towerController.Setup(this, dataController, TOWER_UNIT_TEMPLATE_FILE_NAME);
-		enemyController.Setup(this, dataController, ENEMY_UNIT_TEMPLATE_FILE_NAME);
+		enemyController.Setup(this, dataController, ENEMY_UNIT_TEMPLATE_FILE_NAME, EnemySpawnCountEquation);
 		unitControllers = new UnitController[]{towerController, enemyController};
 	}
 

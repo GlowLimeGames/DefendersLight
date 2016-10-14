@@ -84,6 +84,14 @@ public class PlayerData : IPlayerData {
 		return IXPForLevel <= this._xp;
 	}
 
+	public bool NewHighestWave (int waveReached) {
+		return waveReached > this._highestWave;
+	}
+
+	public void UpdateHighestWave (int waveReached) {
+		this._highestWave = waveReached;
+	}
+
 	void setFilePath (string filePath) {
 		this._filePath = filePath;
 	}
