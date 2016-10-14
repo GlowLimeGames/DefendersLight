@@ -24,12 +24,26 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			return towerController.CoreOrbInstance;
 		}
 	}
+	SeasonList seasons;
+	Season _currentSeason;
+	Season currentSeason {
+		get {
+			return _currentSeason;
+		}
+		set {
+			_currentSeason = value;
+			if (enemyController) {
+				enemyController.SetSeason(value);
+			}
+		}
+	}
 
 	// TODO: Make this a tuning variable in a centralized tuning script
 	public int MiniOrbsFromKillingEnemy = 25;
 
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
+	const string SEASONS_DATA_FILE_NAME = "Seasons";
 
 	Dictionary<System.Type, Stack<GameObject>> unitSpawnpool = new Dictionary<System.Type, Stack<GameObject>>();
 	TowerController towerController;
@@ -37,16 +51,50 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	MapController mapController;
 	UnitController[] unitControllers;
 	DataController dataController;
+	int spawnPoints = 1;
 
 	public void Create() {
+		createRules();
 		SetupUnitControllers();
 		PlaceCoreOrb();
+		setupUnitControllerCallbacks();
+	}
+
+	void createRules () {
+		seasons = JsonUtility.FromJson<SeasonList>(dataController.RetrieveJSONFromResources(SEASONS_DATA_FILE_NAME));
+		currentSeason = seasons[0];
+	}
+
+	void checkForSeasonAdvance (int waveIndex) {
+		if (waveIndex > currentSeason.EndingWave) {
+			changeSeason(currentSeason.Index + 1);
+			increaseSpawnPoints();
+		} else if (waveIndex > currentSeason.MiddleWave) {
+			// TODO: Implement behaviour if the wave has passed the midway point (increased spawn points)
+			increaseSpawnPoints();
+		}
+	}
+
+	void setupUnitControllerCallbacks () {
+		enemyController.SubscribeToWaveAdvance(checkForSeasonAdvance);
+	}
+
+	void teardownUnitControllerCallbacks () {
+		enemyController.UnusubscribeFromWaveAdvance(checkForSeasonAdvance);
+	}
+
+	void changeSeason (int newSeasonIndex) {
+		currentSeason = seasons[newSeasonIndex];
+	}
+
+	void increaseSpawnPoints () {
+		spawnPoints++;
 	}
 
 	public void StartWave () {
 		enemyController.SpawnWave();
 	}
-
+		
 	public void CollectMiniOrbs (int count) {
 		dataController.CollectMiniOrbs(count);
 		StatsPanelController.Instance.SetMiniOrbs(dataController.MiniOrbCount);
@@ -180,6 +228,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	protected override void CleanupReferences () {
 		Instance = null;
+		teardownUnitControllerCallbacks();
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
