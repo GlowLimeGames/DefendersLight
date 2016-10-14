@@ -93,7 +93,9 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	IEnumerator MoveTowardsTarget (GameObject target) {
 		float stop = Random.Range(0.1f, 0.5f);
 		while (target != null && Vector3.Distance(transform.position, target.transform.position) > stop) {
-			transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 0.05f);
+			if (!WorldController.Instance.IsPaused) {
+				transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 0.05f);
+			}
 			yield return new WaitForEndOfFrame();
 		}
 		yield return new WaitForEndOfFrame();
