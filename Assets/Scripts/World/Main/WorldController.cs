@@ -24,6 +24,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			return towerController.CoreOrbInstance;
 		}
 	}
+
 	SeasonList seasons;
 	Season _currentSeason;
 	Season currentSeason {
@@ -38,9 +39,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 	}
 
-	// TODO: Make this a tuning variable in a centralized tuning script
-	public int MiniOrbsFromKillingEnemy = 25;
-
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
 	const string SEASONS_DATA_FILE_NAME = "Seasons";
@@ -51,6 +49,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	MapController mapController;
 	UnitController[] unitControllers;
 	DataController dataController;
+	StatsPanelController statsPanel;
+
 	int spawnPoints = 1;
 
 	public void Create() {
@@ -76,11 +76,38 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	void setupUnitControllerCallbacks () {
-		enemyController.SubscribeToWaveAdvance(checkForSeasonAdvance);
+		if (enemyController) {
+			enemyController.SubscribeToWaveAdvance(checkForSeasonAdvance);
+		}
 	}
 
 	void teardownUnitControllerCallbacks () {
-		enemyController.UnusubscribeFromWaveAdvance(checkForSeasonAdvance);
+		if (enemyController) {
+			enemyController.UnusubscribeFromWaveAdvance(checkForSeasonAdvance);
+		}
+	}
+
+	void setupDataControllerCallbacks () {
+		if (dataController) {
+			dataController.SubscribeToOnLevelUp(onLevelUp);
+			dataController.SubscribeToOnXPEarned(onEarnXP);
+		}
+	}
+
+	void teardownDataControllerCallbacks () {
+		if (dataController) {
+			dataController.UnsubscribeFromOnLevelUp(onLevelUp);
+			dataController.UnsubscribeFromOnXPEarned(onEarnXP);
+		}
+	}
+
+	void onLevelUp (int newLevel) {
+		statsPanel.SetLevel(newLevel);
+		onEarnXP(0);
+	}
+
+	void onEarnXP (int xpEarned) {
+		statsPanel.SetXP(dataController.XP, dataController.XPForLevel);
 	}
 
 	void changeSeason (int newSeasonIndex) {
@@ -97,12 +124,16 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		
 	public void CollectMiniOrbs (int count) {
 		dataController.CollectMiniOrbs(count);
-		StatsPanelController.Instance.SetMiniOrbs(dataController.MiniOrbCount);
+		statsPanel.SetMiniOrbs(dataController.MiniOrbCount);
+	}
+
+	public void EarnXP (int xpEarned) {
+		dataController.EarnXP(xpEarned);
 	}
 
 	public bool TrySpendMiniOrbs (int count) {
 		if (dataController.TrySpendMiniOrbs(count)) {
-			StatsPanelController.Instance.SetMiniOrbs(dataController.MiniOrbCount); 
+			statsPanel.SetMiniOrbs(dataController.MiniOrbCount); 
 			return true;
 		} else {
 			return false;
@@ -142,7 +173,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void SendIlluminationToMap (IlluminationTowerBehaviour illuminationTower, bool shouldPlaySound = true) {
-		MapController.Instance.Illuminate(illuminationTower.GetLocation(), illuminationTower.IlluminationRadius, shouldPlaySound);
+		mapController.Illuminate(illuminationTower.GetLocation(), illuminationTower.IlluminationRadius, shouldPlaySound);
 	}
 
 	// Cleans up/destroys the world
@@ -221,30 +252,39 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		towerController = TowerController.Instance;
 		enemyController = EnemyController.Instance;
 		mapController = MapController.Instance;
+		statsPanel = StatsPanelController.Instance;
+		setupDataControllerCallbacks();
+		setupUI();
 		Create();
 		StartWave();
 		EventController.Event(EventType.LoadGame);
 	}
 
+	void setupUI () {
+		onLevelUp(dataController.PlayerLevel);
+	}
+
 	protected override void CleanupReferences () {
 		Instance = null;
+		teardownDataControllerCallbacks();
 		teardownUnitControllerCallbacks();
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		if (eventName == EventType.EnemyDestroyed) {
-			CollectMiniOrbs(MiniOrbsFromKillingEnemy);
-		}
+		// Nothing
 	}
 		
 	void handleUnitEvent (string eventName, Unit unit) {
 		if (eventName == EventType.EnemyDestroyed) {
 			if (unit.Type == "Undead") {
 				CollectMiniOrbs(25);
+				EarnXP(10);
 			} else if (unit.Type == "Brute") {
 				CollectMiniOrbs(100);
+				EarnXP(50);
 			} else if (unit.Type == "Shade") {
 				CollectMiniOrbs(200);
+				EarnXP(100);
 			}
 		}
 	}
