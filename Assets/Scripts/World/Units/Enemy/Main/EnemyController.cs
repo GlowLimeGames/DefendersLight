@@ -22,11 +22,17 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	int currentWaveIndex = 1;
 	Season currentSeason;
 	EnemyWave currentWave = null;
+	MathEquation spawnCountEquation = LinearEquation.Default;
     HashSet<EnemyBehaviour> activeEnemies = new HashSet<EnemyBehaviour>();
 	public int ICurrentWaveIndex {
 		get {
 			return currentWaveIndex;
 		}
+	}
+
+	public virtual void Setup (WorldController worldController, DataController dataController, string unitTemplateJSONPath, MathEquation spawnCountEquation) {
+		base.Setup(worldController, dataController, unitTemplateJSONPath);
+		this.spawnCountEquation = spawnCountEquation;
 	}
 
 	public void SpawnWave () {
@@ -75,7 +81,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	int GetEnemyCount (int waveIndex) {
 		// TODO: Implement actual difficulty curve
-		return waveIndex;
+		return spawnCountEquation.Calculate(waveIndex);
 	}
 
     public void setWave(int waveIndex) {

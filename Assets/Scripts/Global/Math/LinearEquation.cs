@@ -16,4 +16,10 @@ public class LinearEquation : MathEquation {
 	public override int Calculate (int input) {
 		return (int) (Slope * input) + YIntercept;
 	}
+
+	public static LinearEquation Default {
+		get {
+			return new LinearEquation(1, 0);
+		}
+	}
 }

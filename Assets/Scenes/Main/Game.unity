@@ -4463,6 +4463,9 @@ MonoBehaviour:
   IlluminationTowerPrefab: {fileID: 106030, guid: 1c37b900567694c4e9d2abcdb59506ec,
     type: 2}
   EnemyPrefab: {fileID: 172852, guid: 14cd95061c46148a5ba73e7b0e380f95, type: 2}
+  EnemySpawnCountEquation:
+    Slope: 2
+    YIntercept: 1
 --- !u!1001 &1358028103
 Prefab:
   m_ObjectHideFlags: 0
