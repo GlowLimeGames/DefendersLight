@@ -24,12 +24,26 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			return towerController.CoreOrbInstance;
 		}
 	}
+	SeasonList seasons;
+	Season _currentSeason;
+	Season currentSeason {
+		get {
+			return _currentSeason;
+		}
+		set {
+			_currentSeason = value;
+			if (enemyController) {
+				enemyController.SetSeason(value);
+			}
+		}
+	}
 
 	// TODO: Make this a tuning variable in a centralized tuning script
 	public int MiniOrbsFromKillingEnemy = 25;
 
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
+	const string SEASONS_DATA_FILE_NAME = "Seasons";
 
 	Dictionary<System.Type, Stack<GameObject>> unitSpawnpool = new Dictionary<System.Type, Stack<GameObject>>();
 	TowerController towerController;
@@ -39,8 +53,14 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	DataController dataController;
 
 	public void Create() {
+		createRules();
 		SetupUnitControllers();
 		PlaceCoreOrb();
+	}
+
+	void createRules () {
+		seasons = JsonUtility.FromJson<SeasonList>(dataController.RetrieveJSONFromResources(SEASONS_DATA_FILE_NAME));
+		currentSeason = seasons[0];
 	}
 
 	public void StartWave () {

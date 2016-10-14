@@ -18,6 +18,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	public static EnemyController Instance;
 	int enemiesAlive = 0;
 	int currentWaveIndex = 1;
+	Season currentSeason;
 	EnemyWave currentWave = null;
     HashSet<EnemyBehaviour> activeEnemies = new HashSet<EnemyBehaviour>();
 	public int ICurrentWaveIndex {
@@ -34,6 +35,10 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		StatsPanelController.Instance.SetWave(waveIndex);
 		// TODO: Implement non-placeholder functionality
 		StartCoroutine(RunSpawnWave(waveIndex, 0.5f));
+	}
+
+	public void SetSeason (Season season) {
+		this.currentSeason = season;
 	}
 
 	IEnumerator RunSpawnWave (int waveIndex, float spawnDelay) {

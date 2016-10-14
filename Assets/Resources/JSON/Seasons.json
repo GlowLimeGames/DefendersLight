@@ -1,0 +1,30 @@
+{
+  "Seasons" : [{
+    "Name" : "Spring",
+    "StartingWave" : 1,
+    "MiddleWave" : 5,
+    "EndingWave" : 10,
+    "Index" : 0
+  },
+  {
+    "Name" : "Summer",
+    "StartingWave" : 11,
+    "MiddleWave" : 15,
+    "EndingWave" : 20,
+    "Index" : 1
+  },
+  {
+    "Name" : "Fall",
+    "StartingWave" : 21,
+    "MiddleWave" : 25,
+    "EndingWave" : 30,
+    "Index" : 2
+  },
+  {
+    "Name" : "Winter",
+    "StartingWave" : 31,
+    "MiddleWave" : 35,
+    "EndingWave" : -1,
+    "Index" : 3
+  }]
+}
