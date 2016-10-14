@@ -274,6 +274,7 @@ public class DataController : Controller, IDataController {
 
 	void ResetPlayerData () {
 		currentPlayerData = new PlayerData(PlayerDataFilePath);
+		currentPlayerData.SetXPEquation(XPEquation);
 		SavePlayerData();
 	}
 
