@@ -17,7 +17,7 @@ public class GameOverUIController : UIController, IUIController {
 		if (DataController.Instance) {
 			enemiesKilled.text = string.Format(enemiesKilled.text, DataController.Instance.EnemiesKilled);
 			wavesSurvivied.text = string.Format(wavesSurvivied.text, DataController.Instance.WavesSurvivied);
-			DataController.Instance.ResetGame();
+			DataController.Instance.ResetWorld();
 		}
 		EventController.Event(EventType.LoadGameOver);
 	}
