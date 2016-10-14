@@ -245,10 +245,20 @@ public class DataController : Controller, IDataController {
 		ResetPlayerData();
 	}
 
+	public void ResetWorld () {
+		CheckSaveDirectory();
+		ResetWorldState();
+	}
+
 	public void LoadGame () {
 		CheckSaveDirectory();
 		LoadWorldState();
 		LoadPlayerData();
+		setPlayerLevel();
+	}
+
+	void setPlayerLevel () {
+		callOnLevelUp(PlayerLevel);
 	}
 
 	public void SaveGame () {
@@ -297,7 +307,7 @@ public class DataController : Controller, IDataController {
 
 	protected override void HandleNamedEvent (string eventName) {
 		if (eventName == EventType.LoadStart) {
-			ResetGame();
+			ResetWorldState();
 		}
 	}
 }

@@ -13,7 +13,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public int Range;
 	public string LevelString;
 	public float AttackDelay;
-	int _maxHealth;
+	int _maxHealth = 0;
     public bool isInvulnerable = false;
 	public AttackType AttackType;
 	public virtual float IAttackDelay {
