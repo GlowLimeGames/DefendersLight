@@ -24,6 +24,16 @@ public class EnemySpawnPoint : MannBehaviour {
 		return transform.position;
 	}
 
+	MapTileBehaviour _closestTile;
+	public MapTileBehaviour ClosestTile {
+		get {
+			if (!_closestTile) {
+				_closestTile = MapController.Instance.GetClosest(transform.position);
+			}
+			return _closestTile;
+		}
+	}
+
 	protected override void FetchReferences () {
 		// NOTHING
 	}

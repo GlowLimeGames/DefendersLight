@@ -75,6 +75,17 @@ public class MapController : MannBehaviour, IMapController {
 		WorldController.Instance.RefreshIlluminations();
 	}
 
+	public MapTileBehaviour GetClosest (Vector3 toPosition) {
+		MapTileBehaviour currentClosest = null;
+		float currentDistance = float.MaxValue;
+		foreach (MapTileBehaviour tile in Board) {
+			if (!currentClosest || currentClosest.GetDistance(toPosition) < currentDistance) {
+				currentClosest = tile;
+			}
+		}
+		return currentClosest;
+	}
+
 	MapTileBehaviour SpawnBoardTile (int x, int y) {
 		GameObject tile = (GameObject) Instantiate(BoardTilePrefab, GetBoardTileLocation(x, y), Quaternion.identity);
 		tile.transform.SetParent(transform);

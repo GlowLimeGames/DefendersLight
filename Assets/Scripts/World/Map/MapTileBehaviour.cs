@@ -103,6 +103,10 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 
 	}
 
+	public float GetDistance (Vector3 fromWorldPosition) {
+		return Vector3.Distance(transform.position, fromWorldPosition);
+	}
+
 	protected override void FetchReferences () {
 
     }

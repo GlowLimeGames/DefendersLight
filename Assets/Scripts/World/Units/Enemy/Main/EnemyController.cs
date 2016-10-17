@@ -199,4 +199,8 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			base.HandleNamedEvent (eventName);
 		}
 	}
+
+//	MapTileBehaviour[] createEnemyPath (EnemySpawnPoint spawnPoint) {
+//		
+//	}
 }
