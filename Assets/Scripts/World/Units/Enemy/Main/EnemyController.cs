@@ -37,6 +37,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		foreach (EnemySpawnPoint spawnPoint in EnemySpawnPoint.SpawnPoints.Values) {
 			spawnPoint.Setup((MapQuadrant) quadrantAsIndex);
 			spawnPoint.ChooseStartingTile();
+			spawnPoint.SetPath(createEnemyPath(spawnPoint.Tile));
 			quadrantAsIndex++;
 			quadrantAsIndex %= 4;
 		}
@@ -210,6 +211,56 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	MapTileBehaviour[] createEnemyPath (MapTileBehaviour startingTile) {
 		MapQuadrant startingQudrant = startingTile.Quadrant;
 		MapTileBehaviour goalTile = mapController.GetCenterTile();
-		throw new System.NotImplementedException();
+		MapTileBehaviour currentTile = startingTile;
+		MapTileBehaviour previousTile;
+		List<MapTileBehaviour> path = new List<MapTileBehaviour>();
+		Direction previousDirection = Direction.Zero;
+		path.Add(startingTile);
+		while (currentTile != goalTile) {
+			currentTile = chooseTile(currentTile, goalTile, previousDirection);
+			// previousDirection = currentTile.p
+			path.Add(currentTile);
+			previousTile = currentTile;
+		}
+		return path.ToArray();
+	}
+
+	MapTileBehaviour chooseTile (MapTileBehaviour currentTile, MapTileBehaviour goalTile, Direction previousDirection) {
+		if (Random.Range(0, 1) == 1) {
+			return closerTile(currentTile, goalTile);
+		} else {
+			return sideTile(currentTile, previousDirection);
+		}
+	}
+		
+	MapTileBehaviour closerTile (MapTileBehaviour currentTile, MapTileBehaviour goalTile) {
+		switch (currentTile.Quadrant) {
+		case MapQuadrant.NorthEast:
+			return Or(currentTile.South, currentTile.West);
+		case MapQuadrant.NorthWest:
+			return Or(currentTile.South, currentTile.East);
+		case MapQuadrant.SouthEast:
+			return Or(currentTile.North, currentTile.West);
+		case MapQuadrant.SouthWest:
+			return Or(currentTile.North, currentTile.East);
+		default:
+			return null;
+		}
+	}
+
+	MapTileBehaviour sideTile (MapTileBehaviour currentTile, Direction previousDirection) {
+		Direction newDirection = previousDirection;
+		while (newDirection == previousDirection || !currentTile.TileFromDirection(newDirection)) {		
+			newDirection = DirectionUtil.RandomCardinalDirection();
+		}
+		return currentTile.TileFromDirection(newDirection);
+	}
+
+	MapTileBehaviour Or (MapTileBehaviour firstTile, MapTileBehaviour secondTile) {
+		if (Random.Range(0, 1) == 1) {
+			return firstTile;
+		} else {
+			return secondTile;
+		}
 	}
 }

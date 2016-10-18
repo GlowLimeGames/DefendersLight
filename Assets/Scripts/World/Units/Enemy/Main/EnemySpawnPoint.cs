@@ -10,8 +10,22 @@ public class EnemySpawnPoint : MannBehaviour {
 
 	public Direction Location;
 
+	public MapLocation MapLocation {
+		get {
+			if (currentSpawnPoint) {
+				return currentSpawnPoint.GetLocation();
+			} else {
+				return null;
+			}
+		}
+	}
+	public MapTileBehaviour Tile {
+		get {
+			return currentSpawnPoint;
+		}
+	}
 	MapTileBehaviour currentSpawnPoint;
-
+	MapTileBehaviour[] currentPath;
 	MapQuadrant quadrant;
 
 	public static Vector3 GetPosition (Direction spawnLocation) {
@@ -37,12 +51,20 @@ public class EnemySpawnPoint : MannBehaviour {
 		currentSpawnPoint = tiles[Random.Range(0, tiles.Length)];
 	}
 
+	public void SetPath (MapTileBehaviour[] path) {
+		this.currentPath = path;
+		Debug.Log(currentPath.Length);
+		foreach (MapTileBehaviour tile in path) {
+			tile.Highlight();
+		}
+	}
+
 	public void SpawnEnemies (EnemyBehaviour[] enemies) {
 		foreach (EnemyBehaviour enemy in enemies) {
 			currentSpawnPoint.PositionMobileAgent(enemy);
 		}
 	}
-
+		
 	protected override void FetchReferences () {
 		// NOTHING
 	}

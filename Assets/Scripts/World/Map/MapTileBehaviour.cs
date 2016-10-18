@@ -4,7 +4,6 @@
  */
 
 using UnityEngine;
-using System.Collections;
 
 public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	[SerializeField]
@@ -21,27 +20,57 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	MapController controller;
 	MapLocation location;
 
-	public MapTileBehaviour Up {
+	public MapTileBehaviour North {
 		get {
 			return controller.GetTileFromLocation(location.Translate(0, 1));
 		}
 	}
-	public MapTileBehaviour Right {
+	public MapTileBehaviour East {
 		get {
 			return controller.GetTileFromLocation(location.Translate(-1, 0));
 		}
 	}
-	public MapTileBehaviour Down {
+	public MapTileBehaviour South {
 		get {
 			return controller.GetTileFromLocation(location.Translate(0, -1));
 		}
 	}
-	public MapTileBehaviour Left {
+	public MapTileBehaviour West {
 		get {
 			return controller.GetTileFromLocation(location.Translate(1, 0));
 		}
 	}
-		
+
+	public MapTileBehaviour TileFromDirection (Direction direction) {
+		switch (direction) {
+		case Direction.North:
+			return North;
+		case Direction.East:
+			return East;
+		case Direction.South:
+			return South;
+		case Direction.West:
+			return West;
+		case Direction.NorthEast:
+			return controller.GetTileFromLocation(location.Translate(1, 1));
+		case Direction.NorthWest:
+			return controller.GetTileFromLocation(location.Translate(-1, 1));
+		case Direction.SouthEast:
+			return controller.GetTileFromLocation(location.Translate(1, -1));
+		case Direction.SouthWest:
+			return controller.GetTileFromLocation(location.Translate(-1, -1));
+		case Direction.Zero:
+			return this;
+		default:
+			return null;
+		}
+			
+	}
+
+	public Direction GetDirection (MapTileBehaviour toTile) {
+		return DirectionUtil.GetDirection(location.Difference(toTile.location));
+	}
+
 	void SetTileColor (Color color) {
 		meshRenderer.material.color = color;
 		spriteRenderer.color = color;
@@ -61,6 +90,10 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		this.controller = controller;
 		this.location = location;
 		this.Quadrant = quadrant;
+	}
+
+	public void Highlight () {
+		SetTileColor(Color.blue);
 	}
 		
 	public void PlaceStaticAgent (StaticAgentBehaviour agent, bool shouldPlaySound = true) {
@@ -153,6 +186,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	protected override void CleanupReferences () {
 
 	}
+
     protected override void HandleNamedEvent (string eventName) {
 
     }

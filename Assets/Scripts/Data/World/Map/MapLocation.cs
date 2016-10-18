@@ -59,4 +59,8 @@ public class MapLocation : IMapLocation {
 	public MapLocation Translate (int x, int y) {
 		return new MapLocation(this.X + x, this.Y + y);
 	}
+
+	public MapLocation Difference (MapLocation from) {
+		return new MapLocation(from.X - this.X, from.Y - this.Y);
+	}
 }
