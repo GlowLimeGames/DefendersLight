@@ -33,7 +33,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		CoreOrbInstance = coreOrb;
 		CoreOrbBehaviour coreOrbBehaviour = coreOrb.GetComponent<CoreOrbBehaviour>();
 		coreOrbBehaviour.SetTower(templateUnits[CoreOrbBehaviour.CORE_ORB_KEY]);
-		mapTile.PlaceAgent(coreOrbBehaviour, false);
+		mapTile.PlaceStaticAgent(coreOrbBehaviour, false);
 	}
 
 	Dictionary<TowerType, List<Tower>> sortTowers (Tower[] towers) {
@@ -118,7 +118,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 
 	public void HandleEndDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		if (previousHighlightedMapTile && !previousHighlightedMapTile.HasAgent()) {
-			previousHighlightedMapTile.PlaceAgent(potentialPurchaseTower);
+			previousHighlightedMapTile.PlaceStaticAgent(potentialPurchaseTower);
 			towerPanel.OnPurchased();
 		} else {
 			// TODO: Collect in object pool instead of destroying

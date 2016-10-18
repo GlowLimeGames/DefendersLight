@@ -23,14 +23,22 @@ public class EnemySpawnPoint : MannBehaviour {
 	public Vector3 GetPosition () {
 		return transform.position;
 	}
+	MapTileBehaviour currentSpawnPoint;
 
-	MapTileBehaviour _closestTile;
-	public MapTileBehaviour ClosestTile {
-		get {
-			if (!_closestTile) {
-				_closestTile = MapController.Instance.GetClosest(transform.position);
-			}
-			return _closestTile;
+	MapQuadrant quadrant;
+
+	public void Setup (MapQuadrant quadrant) {
+		this.quadrant = quadrant;
+	}
+
+	public void ChooseStartingTile () {
+		MapTileBehaviour[] tiles = MapController.Instance.GetQudrantEdges(quadrant);
+		currentSpawnPoint = tiles[Random.Range(0, tiles.Length)];
+	}
+
+	public void SpawnEnemies (EnemyBehaviour[] enemies) {
+		foreach (EnemyBehaviour enemy in enemies) {
+			currentSpawnPoint.PositionMobileAgent(enemy);
 		}
 	}
 

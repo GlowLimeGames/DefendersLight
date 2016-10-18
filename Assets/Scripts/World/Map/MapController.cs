@@ -4,7 +4,9 @@
  */
 
 using UnityEngine;
+using System.Linq;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MapController : MannBehaviour, IMapController {
 	public static MapController Instance;
@@ -23,6 +25,7 @@ public class MapController : MannBehaviour, IMapController {
 		for (int x = 0; x < Stats.Width; x++) {
 			for (int y = 0; y < Stats.Height; y++) {
 				Board[x, y] = SpawnBoardTile(x, y);
+				Board[x, y].Setup(getQuadrant(x, y));
 			}
 		}
 	}
@@ -99,8 +102,54 @@ public class MapController : MannBehaviour, IMapController {
 		return new Vector3(x - Stats.Width/2, 0, y - Stats.Height/2);
 	}
 
-	protected override void FetchReferences () {
+	MapQuadrant getQuadrant (int x, int y) {
+		return getQuadrant(new MapLocation(x, y));
+	}
+
+	MapQuadrant getQuadrant (MapLocation location) {
+		if (location.X < Stats.Width / 2) {
+			if (location.Y > Stats.Height / 2) {
+				return MapQuadrant.NorthWest;
+			} else {
+				return MapQuadrant.SouthWest;
+			}
+		} else {
+			if (location.Y > Stats.Height / 2) {
+				return MapQuadrant.NorthEast;
+			} else {
+				return MapQuadrant.SouthEast;
+			}
+		}
+	}
+
+	MapTileBehaviour[] getMapEdges () {
+		int tileOverlap = 4;
+		MapTileBehaviour[] edges = new MapTileBehaviour[Stats.Width * 2 + Stats.Height * 2 - tileOverlap];
+		for (int x = 0; x < Stats.Width; x++) {
+			edges[x] = Board[x, 0];
+			edges[x + Stats.Width] = Board[x, Stats.Height - 1];
+		}
+		int offset = Stats.Width * 2 - 1;
+		for (int y = 1; y < Stats.Height - 1; y++) {
+			edges[y + offset] = Board[0, y];
+			edges[y + offset + Stats.Height - 2] = Board[Stats.Width - 1, y];
+		}
+		return edges;
+	}
+
+	public MapTileBehaviour[] GetQudrantEdges (MapQuadrant quadrant) {
+		List<MapTileBehaviour> edges = new List<MapTileBehaviour>();
+		edges.AddRange(getMapEdges());
+		List<MapTileBehaviour> edgeList = edges.FindAll(tile => tile.Quadrant == quadrant);
+		if (edgeList != null) {
+			return edgeList.ToArray();
+		} else {
+			return new MapTileBehaviour[0];
+		}
+	}
 		
+	protected override void FetchReferences () {
+		// Nothing
 	}
 
 	protected override void SetReferences () {
@@ -116,7 +165,7 @@ public class MapController : MannBehaviour, IMapController {
 	}
 
 	protected override void CleanupReferences () {
-		Instance = null;
+		SingletonUtil.TryCleanupSingleton(ref Instance, this);
 	}
 
 	public void Place(IWorldObject element, IMapLocation location) {
@@ -136,6 +185,7 @@ public class MapController : MannBehaviour, IMapController {
 	}
 		
 	#region Input Handling
+
 	public void HandleZoom (float zoomFactor) {
 		throw new System.NotImplementedException();
 	}
@@ -143,6 +193,7 @@ public class MapController : MannBehaviour, IMapController {
 	public void HandlePan (Vector2 panDirection) {
 		throw new System.NotImplementedException();
 	}
+
 	#endregion
 
 }

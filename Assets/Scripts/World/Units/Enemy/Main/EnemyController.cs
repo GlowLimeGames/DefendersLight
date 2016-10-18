@@ -33,6 +33,13 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	public virtual void Setup (WorldController worldController, DataController dataController, string unitTemplateJSONPath, MathEquation spawnCountEquation) {
 		base.Setup(worldController, dataController, unitTemplateJSONPath);
 		this.spawnCountEquation = spawnCountEquation;
+		int quadrantAsIndex = 0;
+		foreach (EnemySpawnPoint spawnPoint in EnemySpawnPoint.SpawnPoints.Values) {
+			spawnPoint.Setup((MapQuadrant) quadrantAsIndex);
+			spawnPoint.ChooseStartingTile();
+			quadrantAsIndex++;
+			quadrantAsIndex %= 4;
+		}
 	}
 
 	public void SpawnWave () {
