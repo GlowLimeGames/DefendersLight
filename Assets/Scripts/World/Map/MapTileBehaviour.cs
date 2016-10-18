@@ -16,7 +16,8 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	bool isIlluminated;
 	Renderer meshRenderer;
 	SpriteRenderer spriteRenderer;
-
+	[SerializeField]
+	public MapQuadrant Quadrant {private set; get;}
 	void SetTileColor (Color color) {
 		meshRenderer.material.color = color;
 		spriteRenderer.color = color;
@@ -32,7 +33,11 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		return containedAgent;
 	}
 
-	public void PlaceAgent (StaticAgentBehaviour agent, bool shouldPlaySound = true) {
+	public void Setup (MapQuadrant quadrant) {
+		this.Quadrant = quadrant;
+	}
+		
+	public void PlaceStaticAgent (StaticAgentBehaviour agent, bool shouldPlaySound = true) {
 		if (isIlluminated || agent is CoreOrbBehaviour) {
 			containedAgent = agent;
 			agent.transform.SetParent(transform);
@@ -57,6 +62,10 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 			Destroy(agent.gameObject);
 		}
 		Unhighlight();
+	}
+
+	public void PositionMobileAgent (MobileAgentBehaviour agent) {
+
 	}
 
 	public void IlluminateSquare (bool shouldPlaySound = true) {
@@ -101,6 +110,10 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 
 	public void RemoveAgent () {
 
+	}
+
+	public float GetDistance (Vector3 fromWorldPosition) {
+		return Vector3.Distance(transform.position, fromWorldPosition);
 	}
 
 	protected override void FetchReferences () {
