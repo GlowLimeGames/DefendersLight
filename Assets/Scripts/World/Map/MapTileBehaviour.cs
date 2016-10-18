@@ -18,6 +18,30 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	SpriteRenderer spriteRenderer;
 	[SerializeField]
 	public MapQuadrant Quadrant {private set; get;}
+	MapController controller;
+	MapLocation location;
+
+	public MapTileBehaviour Up {
+		get {
+			return controller.GetTileFromLocation(location.Translate(0, 1));
+		}
+	}
+	public MapTileBehaviour Right {
+		get {
+			return controller.GetTileFromLocation(location.Translate(-1, 0));
+		}
+	}
+	public MapTileBehaviour Down {
+		get {
+			return controller.GetTileFromLocation(location.Translate(0, -1));
+		}
+	}
+	public MapTileBehaviour Left {
+		get {
+			return controller.GetTileFromLocation(location.Translate(1, 0));
+		}
+	}
+		
 	void SetTileColor (Color color) {
 		meshRenderer.material.color = color;
 		spriteRenderer.color = color;
@@ -33,7 +57,9 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		return containedAgent;
 	}
 
-	public void Setup (MapQuadrant quadrant) {
+	public void Setup (MapController controller, MapLocation location, MapQuadrant quadrant) {
+		this.controller = controller;
+		this.location = location;
 		this.Quadrant = quadrant;
 	}
 		

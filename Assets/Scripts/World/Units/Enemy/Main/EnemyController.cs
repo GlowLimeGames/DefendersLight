@@ -30,8 +30,8 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 
-	public virtual void Setup (WorldController worldController, DataController dataController, string unitTemplateJSONPath, MathEquation spawnCountEquation) {
-		base.Setup(worldController, dataController, unitTemplateJSONPath);
+	public virtual void Setup (WorldController worldController, DataController dataController, MapController mapController, string unitTemplateJSONPath, MathEquation spawnCountEquation) {
+		base.Setup(worldController, dataController, mapController, unitTemplateJSONPath);
 		this.spawnCountEquation = spawnCountEquation;
 		int quadrantAsIndex = 0;
 		foreach (EnemySpawnPoint spawnPoint in EnemySpawnPoint.SpawnPoints.Values) {
@@ -207,7 +207,9 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 
-//	MapTileBehaviour[] createEnemyPath (EnemySpawnPoint spawnPoint) {
-//		
-//	}
+	MapTileBehaviour[] createEnemyPath (MapTileBehaviour startingTile) {
+		MapQuadrant startingQudrant = startingTile.Quadrant;
+		MapTileBehaviour goalTile = mapController.GetCenterTile();
+		throw new System.NotImplementedException();
+	}
 }

@@ -23,8 +23,8 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	HashSet<TowerBehaviour> activeTowers = new HashSet<TowerBehaviour>();
 	Dictionary<TowerType, List<Tower>> towerTemplatesByType = new Dictionary<TowerType, List<Tower>>();
 
-	public override void Setup (WorldController worldController, DataController dataController, string unitTemplateJSONPath) {
-		base.Setup(worldController, dataController, unitTemplateJSONPath);
+	public override void Setup (WorldController worldController, DataController dataController, MapController mapController, string unitTemplateJSONPath) {
+		base.Setup(worldController, dataController, mapController, unitTemplateJSONPath);
 		towerTemplatesByType = sortTowers(templateUnits.Values.ToArray());
 	}
 

@@ -10,6 +10,10 @@ public class EnemySpawnPoint : MannBehaviour {
 
 	public Direction Location;
 
+	MapTileBehaviour currentSpawnPoint;
+
+	MapQuadrant quadrant;
+
 	public static Vector3 GetPosition (Direction spawnLocation) {
 		EnemySpawnPoint spawnPoint;
 		if (SpawnPoints.TryGetValue(spawnLocation, out spawnPoint)) {
@@ -23,9 +27,6 @@ public class EnemySpawnPoint : MannBehaviour {
 	public Vector3 GetPosition () {
 		return transform.position;
 	}
-	MapTileBehaviour currentSpawnPoint;
-
-	MapQuadrant quadrant;
 
 	public void Setup (MapQuadrant quadrant) {
 		this.quadrant = quadrant;

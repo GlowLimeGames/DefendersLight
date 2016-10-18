@@ -171,8 +171,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	void SetupUnitControllers () {
-		towerController.Setup(this, dataController, TOWER_UNIT_TEMPLATE_FILE_NAME);
-		enemyController.Setup(this, dataController, ENEMY_UNIT_TEMPLATE_FILE_NAME, EnemySpawnCountEquation);
+		towerController.Setup(this, dataController, mapController, TOWER_UNIT_TEMPLATE_FILE_NAME);
+		enemyController.Setup(this, dataController, mapController, ENEMY_UNIT_TEMPLATE_FILE_NAME, EnemySpawnCountEquation);
 		unitControllers = new UnitController[]{towerController, enemyController};
 	}
 
