@@ -41,6 +41,10 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		}
 	}
 
+	public Vector3 GetWorldPosition () {
+		return transform.position;
+	}
+
 	public MapTileBehaviour TileFromDirection (Direction direction) {
 		switch (direction) {
 		case Direction.North:
