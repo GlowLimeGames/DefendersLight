@@ -126,7 +126,26 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		spawnPoints++;
 	}
 
+	int getEnemySpawnPointCount () {
+		int spawnPoints = 1;
+		int currentWave = enemyController.ICurrentWaveIndex;
+		for (int i = 0; i < seasons.Length; i++) {
+			if (currentWave < seasons[i].StartingWave) {
+				break;
+			}
+			if (currentWave > seasons[i].MiddleWave) {
+				spawnPoints++;
+			}
+			if (currentWave > seasons[i].EndingWave) {
+				spawnPoints++;
+			}
+		}
+		return spawnPoints;
+	}
+		
 	public void StartWave () {
+		dataController.NextWave();
+		enemyController.SetSpawnPointCount(getEnemySpawnPointCount());
 		enemyController.SpawnWave();
 	}
 		
@@ -171,8 +190,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	void SetupUnitControllers () {
-		towerController.Setup(this, dataController, TOWER_UNIT_TEMPLATE_FILE_NAME);
-		enemyController.Setup(this, dataController, ENEMY_UNIT_TEMPLATE_FILE_NAME, EnemySpawnCountEquation);
+		towerController.Setup(this, dataController, mapController, TOWER_UNIT_TEMPLATE_FILE_NAME);
+		enemyController.Setup(this, dataController, mapController, ENEMY_UNIT_TEMPLATE_FILE_NAME, EnemySpawnCountEquation);
 		unitControllers = new UnitController[]{towerController, enemyController};
 	}
 

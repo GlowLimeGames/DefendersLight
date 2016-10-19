@@ -10,16 +10,21 @@ using System.Linq;
 
 public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyController {
 	EventActionInt waveAdvance;
-
+	[SerializeField]
+	GameObject spawnPointPrefab;
+	[SerializeField]
+	Transform spawnPointParent;
 	public const string ENEMY_TAG = "Enemy";
 	const string UNDEAD_KEY = "Undead";
 	const string BRUTE_KEY = "Brute";
 	const string SHADE_KEY = "Shade";
 	public GameObject[] EnemyPrefabs;
 	Dictionary<string, GameObject> orderedEnemyPrefabs = new Dictionary<string, GameObject>();
+	List<EnemySpawnPoint> spawnPoints;
 	public static EnemyController Instance;
 	int enemiesAlive = 0;
 	int currentWaveIndex = 1;
+	int spawnPointCount = 1;
 	Season currentSeason;
 	EnemyWave currentWave = null;
 	MathEquation spawnCountEquation = LinearEquation.Default;
@@ -30,23 +35,74 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 
-	public virtual void Setup (WorldController worldController, DataController dataController, string unitTemplateJSONPath, MathEquation spawnCountEquation) {
-		base.Setup(worldController, dataController, unitTemplateJSONPath);
+	public virtual void Setup (WorldController worldController, DataController dataController, MapController mapController, string unitTemplateJSONPath, MathEquation spawnCountEquation) {
+		base.Setup(worldController, dataController, mapController, unitTemplateJSONPath);
 		this.spawnCountEquation = spawnCountEquation;
-		int quadrantAsIndex = 0;
-		foreach (EnemySpawnPoint spawnPoint in EnemySpawnPoint.SpawnPoints.Values) {
-			spawnPoint.Setup((MapQuadrant) quadrantAsIndex);
-			spawnPoint.ChooseStartingTile();
-			quadrantAsIndex++;
-			quadrantAsIndex %= 4;
+		createSpawnPoints();
+	}
+
+	#region Spawn Points
+
+	void createSpawnPoints () {
+		spawnPoints = new List<EnemySpawnPoint>();
+		for (int i = 0; i < spawnPointCount; i++) {
+			MapQuadrant spawnQuadrant = (MapQuadrant) (i % 4);
+			spawnPoints.Add(createNewSpawnPoint());
+			spawnPoints[i].Setup(spawnQuadrant);
 		}
 	}
+
+	EnemySpawnPoint createNewSpawnPoint () {
+		GameObject spawnPoint = Instantiate(spawnPointPrefab) as GameObject;
+		spawnPoint.transform.SetParent(spawnPointParent);
+		return spawnPoint.GetComponent<EnemySpawnPoint>();
+	}
+
+	void refreshSpawnPointsForWave () {
+		foreach (EnemySpawnPoint spawnPoint in spawnPoints) {
+			spawnPoint.ChooseStartingTile();
+			spawnPoint.SetPath(createEnemyPath(spawnPoint.Tile));
+		}
+	}
+		
+	void updateSpawnPoints () {
+		int currentSpawnPoints = spawnPoints.Count;
+		if (currentSpawnPoints > spawnPointCount) {
+			int countToRemove = currentSpawnPoints - spawnPointCount;
+			removeSpawnPoints(countToRemove);
+		} else if (currentSpawnPoints < spawnPointCount) {
+			int countToAdd = spawnPointCount - currentSpawnPoints;
+			addSpawnPoints(countToAdd);
+		}
+	}
+
+	void addSpawnPoints (int countToAdd) {
+		for (int i = 0; i < countToAdd; i++) {
+			EnemySpawnPoint spawnPoint = createNewSpawnPoint();
+			spawnPoint.Setup((MapQuadrant) (spawnPoints.Count % 4));
+			spawnPoints.Add(spawnPoint);
+		}
+	}
+
+	void removeSpawnPoints (int countToRemove) {
+		spawnPoints.RemoveRange(0, countToRemove);
+	}
+
+	#endregion
 
 	public void SpawnWave () {
 		SpawnWave(currentWaveIndex);
 	}
 
+	public void SetSpawnPointCount (int spawnPointCount) {
+		this.spawnPointCount = spawnPointCount;
+		if (spawnPoints != null) {
+			updateSpawnPoints();
+		}
+	}
+
 	public void SpawnWave (int waveIndex) {
+		refreshSpawnPointsForWave();
 		StatsPanelController.Instance.SetWave(waveIndex);
 		callOnWaveAdvance(waveIndex);
 		// TODO: Implement non-placeholder functionality
@@ -76,10 +132,14 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		string[] enemyTypes = GetEnemyTypes(waveIndex);
 		enemiesAlive += enemiesInWaveCount;
 		for (int i = 0; i < enemiesInWaveCount; i++) {
-			SpawnEnemy((Direction)(i%4), enemyTypes[i]);
+			SpawnEnemy(randomSpawnPoint(), (Direction)(i%4), enemyTypes[i]);
 			yield return new WaitForSeconds(spawnDelay);
 		}
 		updateEnemiesAliveText();
+	}
+
+	EnemySpawnPoint randomSpawnPoint () {
+		return spawnPoints[Random.Range(0, spawnPoints.Count)];
 	}
 
 	void updateEnemiesAliveText () {
@@ -112,13 +172,14 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		return enemyKeys;
 	}
 
-	public void SpawnEnemy (Direction spawnDirection, string enemyKey) {
+	public void SpawnEnemy (EnemySpawnPoint spawnPoint, Direction spawnDirection, string enemyKey) {
 		if (orderedEnemyPrefabs.ContainsKey(enemyKey)) {
-			GameObject enemy = (GameObject) Instantiate(orderedEnemyPrefabs[enemyKey], EnemySpawnPoint.GetPosition(spawnDirection), Quaternion.identity);
+			GameObject enemy = (GameObject) Instantiate(orderedEnemyPrefabs[enemyKey], spawnPoint.GetPosition(), Quaternion.identity);
 			EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
             AddActiveEnemy(enemyBehaviour);
 			enemyBehaviour.SetEnemy(templateUnits[enemyKey]);
-			enemyBehaviour.SetTarget(worldController.ICoreOrbInstance);
+			enemyBehaviour.SetPath(new Queue<MapTileBehaviour>(spawnPoint.CurrentPath));
+			enemyBehaviour.SetOffset(new Vector3(Random.Range(0, 0.2f), 0, Random.Range(0, 0.2f)));
 			enemy.transform.SetParent(transform);
 			// Placeholder: because undead is sprite;
 			Quaternion angle = Quaternion.identity;
@@ -129,6 +190,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 				angle.eulerAngles = new Vector3(0, yRotation, 0);
 			}
 			enemy.transform.eulerAngles = angle.eulerAngles;
+			enemyBehaviour.NavigatePath();
 		} else {
 			Debug.LogErrorFormat("ERROR: No enemy of type {0}", enemyKey);
 		}
@@ -172,31 +234,18 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
         activeEnemies.Clear();
     }
 
-    public void Create(Enemy unit) {
-		throw new System.NotImplementedException();
-	}
-
-	public void Destroy(Enemy unit) {
-		throw new System.NotImplementedException();
-	}
-
-     public IEnemy[] GetAll() {
-		throw new System.NotImplementedException();
-	}
-
-     public IEnemyWave GetWave(int waveNumber) {
-		throw new System.NotImplementedException();
-	}
-
 	void HandleEnemyKilled () {
 		enemiesAlive = Mathf.Clamp(enemiesAlive - 1, 0, int.MaxValue);
 		if (enemiesAlive == 0) {
-			currentWaveIndex++;
-			dataController.NextWave();
-			SpawnWave(currentWaveIndex);
+			transitionToNextWave();
 		}
 		updateEnemiesAliveText();
 		dataController.UpdateEnemiesKilled(1);
+	}
+
+	void transitionToNextWave () {
+		currentWaveIndex++;
+		worldController.StartWave();
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
@@ -207,7 +256,59 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 
-//	MapTileBehaviour[] createEnemyPath (EnemySpawnPoint spawnPoint) {
-//		
-//	}
+	MapTileBehaviour[] createEnemyPath (MapTileBehaviour startingTile) {
+		MapQuadrant startingQudrant = startingTile.Quadrant;
+		MapTileBehaviour goalTile = mapController.GetCenterTile();
+		MapTileBehaviour currentTile = startingTile;
+		MapTileBehaviour previousTile = null;
+		List<MapTileBehaviour> path = new List<MapTileBehaviour>();
+		Direction previousDirection = Direction.Zero;
+		path.Add(startingTile);
+		while (currentTile != goalTile) {
+			while (path.Contains(currentTile)) {
+				currentTile = chooseTile(currentTile, goalTile, previousDirection);
+			}
+			path.Add(currentTile);
+			if (currentTile && previousTile) {
+				previousDirection = currentTile.GetDirection(previousTile);
+			}
+			path.Add(currentTile);
+			previousTile = currentTile;
+		}
+		return path.ToArray();
+	}
+
+	MapTileBehaviour chooseTile (MapTileBehaviour currentTile, MapTileBehaviour goalTile, Direction previousDirection) {
+		if (Random.Range(0.0f, 1.0f) >= 0.25f) {
+			return closerTile(currentTile, goalTile);
+		} else {
+			return sideTile(currentTile, previousDirection);
+		}
+	}
+
+	MapTileBehaviour closerTile (MapTileBehaviour currentTile, MapTileBehaviour goalTile) {
+		if (currentTile.X > goalTile.X) {
+			return currentTile.West;
+		} else if (currentTile.X < goalTile.X) {
+			return currentTile.East;
+		} else if (currentTile.Y > goalTile.Y) {
+			return currentTile.South;
+		} else if (currentTile.Y < goalTile.Y) {
+			return currentTile.North;
+		} else {
+			return goalTile;
+		}
+	}
+
+	MapTileBehaviour sideTile (MapTileBehaviour currentTile, Direction previousDirection) {
+		Direction newDirection = previousDirection;
+		while (newDirection == previousDirection || !currentTile.TileFromDirection(newDirection)) {		
+			newDirection = DirectionUtil.RandomCardinalDirection();
+		}
+		return currentTile.TileFromDirection(newDirection);
+	}
+
+	public IEnemyWave GetWave(int waveNumber) {
+		throw new System.NotImplementedException();
+	}
 }

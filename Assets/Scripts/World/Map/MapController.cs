@@ -19,13 +19,12 @@ public class MapController : MannBehaviour, IMapController {
 
 	[SerializeField]
 	MapTileBehaviour[,] Board;
-
 	void GenerateBoard () {
 		Board = new MapTileBehaviour[Stats.Width,Stats.Height];
 		for (int x = 0; x < Stats.Width; x++) {
 			for (int y = 0; y < Stats.Height; y++) {
 				Board[x, y] = SpawnBoardTile(x, y);
-				Board[x, y].Setup(getQuadrant(x, y));
+				Board[x, y].Setup(this, new MapLocation(x, y), getQuadrant(x, y));
 			}
 		}
 	}
@@ -33,6 +32,14 @@ public class MapController : MannBehaviour, IMapController {
 	public MapTileBehaviour GetCenterTile () {
 		if (Board != null) {
 			return Board[Stats.Width/2, Stats.Height/2];
+		} else {
+			return null;
+		}
+	}
+
+	public MapTileBehaviour GetTileFromLocation (MapLocation location) {
+		if (inBounds(location)) {
+			return Board[location.X, location.Y];
 		} else {
 			return null;
 		}
@@ -87,6 +94,14 @@ public class MapController : MannBehaviour, IMapController {
 			}
 		}
 		return currentClosest;
+	}
+
+	bool inBounds (MapLocation location) {
+		return inBounds(location.X, location.Y);
+	}
+		
+	bool inBounds (int x, int y) {
+		return IntUtil.InRange(x, Stats.Width) && IntUtil.InRange(y, Stats.Height);
 	}
 
 	MapTileBehaviour SpawnBoardTile (int x, int y) {

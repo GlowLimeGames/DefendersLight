@@ -6,6 +6,8 @@
 using UnityEngine;
 
 public static class DirectionUtil {
+	public const int CARDINAL_DIRECTION_COUNT = 4;
+
 	public static Vector2 VectorFromDirection (Direction direction) {
 		switch(direction) {
 		case Direction.West:
@@ -78,5 +80,37 @@ public static class DirectionUtil {
 			currentDirectionIndex %= numDirections;
 		}
 		return degrees;
+	}
+
+	public static Direction GetDirection (MapLocation directionVector) {
+		if (directionVector.X > 0) {		
+			if (directionVector.Y > 0) {
+				return Direction.NorthEast;
+			} else if (directionVector.Y == 0) {
+				return Direction.East;
+			} else {
+				return Direction.SouthEast;
+			}
+		} else if (directionVector.X == 0) {
+			if (directionVector.Y > 0) {
+				return Direction.North;
+			} else if (directionVector.Y == 0) {
+				return Direction.Zero;
+			} else {
+				return Direction.South;
+			}
+		} else {
+			if (directionVector.Y > 0) {
+				return Direction.NorthWest;
+			} else if (directionVector.Y == 0) {
+				return Direction.West;
+			} else {
+				return Direction.SouthWest;
+			}
+		}
+	}
+
+	public static Direction RandomCardinalDirection () {
+		return (Direction) Random.Range(0, DirectionUtil.CARDINAL_DIRECTION_COUNT);
 	}
 }
