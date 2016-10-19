@@ -18,26 +18,34 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	[SerializeField]
 	public MapQuadrant Quadrant {private set; get;}
 	MapController controller;
-	MapLocation location;
-
+	public int X {
+		get {
+			return Location.X;
+		}
+	}
+	public int Y {
+		get {
+			return Location.Y;
+		}
+	}
 	public MapTileBehaviour North {
 		get {
-			return controller.GetTileFromLocation(location.Translate(0, 1));
+			return controller.GetTileFromLocation(Location.Translate(0, 1));
 		}
 	}
 	public MapTileBehaviour East {
 		get {
-			return controller.GetTileFromLocation(location.Translate(-1, 0));
+			return controller.GetTileFromLocation(Location.Translate(1, 0));
 		}
 	}
 	public MapTileBehaviour South {
 		get {
-			return controller.GetTileFromLocation(location.Translate(0, -1));
+			return controller.GetTileFromLocation(Location.Translate(0, -1));
 		}
 	}
 	public MapTileBehaviour West {
 		get {
-			return controller.GetTileFromLocation(location.Translate(1, 0));
+			return controller.GetTileFromLocation(Location.Translate(-1, 0));
 		}
 	}
 
@@ -56,13 +64,13 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		case Direction.West:
 			return West;
 		case Direction.NorthEast:
-			return controller.GetTileFromLocation(location.Translate(1, 1));
+			return controller.GetTileFromLocation(Location.Translate(1, 1));
 		case Direction.NorthWest:
-			return controller.GetTileFromLocation(location.Translate(-1, 1));
+			return controller.GetTileFromLocation(Location.Translate(-1, 1));
 		case Direction.SouthEast:
-			return controller.GetTileFromLocation(location.Translate(1, -1));
+			return controller.GetTileFromLocation(Location.Translate(1, -1));
 		case Direction.SouthWest:
-			return controller.GetTileFromLocation(location.Translate(-1, -1));
+			return controller.GetTileFromLocation(Location.Translate(-1, -1));
 		case Direction.Zero:
 			return this;
 		default:
@@ -72,7 +80,11 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	}
 
 	public Direction GetDirection (MapTileBehaviour toTile) {
-		return DirectionUtil.GetDirection(location.Difference(toTile.location));
+		return DirectionUtil.GetDirection(Location.Difference(toTile.Location));
+	}
+
+	public bool LinearPathTo (MapTileBehaviour toTile) {
+		return X == toTile.X ^ Y == toTile.Y;
 	}
 
 	void SetTileColor (Color color) {
@@ -92,7 +104,6 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 
 	public void Setup (MapController controller, MapLocation location, MapQuadrant quadrant) {
 		this.controller = controller;
-		this.location = location;
 		this.Quadrant = quadrant;
 	}
 
@@ -177,6 +188,10 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 
 	public float GetDistance (Vector3 fromWorldPosition) {
 		return Vector3.Distance(transform.position, fromWorldPosition);
+	}
+
+	public override string ToString () {
+		return string.Format ("[MapTileBehaviour: ({0}, {1})]", Location.X, Location.Y);
 	}
 
 	protected override void FetchReferences () {

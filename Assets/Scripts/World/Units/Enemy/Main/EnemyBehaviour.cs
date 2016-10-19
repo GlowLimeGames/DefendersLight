@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyBehaviour : MobileAgentBehaviour {
 	public Direction DirectionFacing;
@@ -25,15 +26,22 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			return enemy.Health;
 		}
 	}
+	public bool HasPath {
+		get {
+			return path != null && path.Count > 0;
+		}
+	}
+	List<MapTileBehaviour> path = null;
+
 	public void SetEnemy (Enemy enemy) {
 		this.enemy = enemy;
 		setUnit(enemy);
 	}
 
-	protected override void SetReferences() {
-		base.SetReferences();
-    }
-
+	public void SetPath (List<MapTileBehaviour> path) {
+		this.path = path;
+	}
+		
 	protected override void FetchReferences() {}
 
 	protected override void CleanupReferences () {

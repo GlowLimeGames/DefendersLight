@@ -279,8 +279,11 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		Direction previousDirection = Direction.Zero;
 		path.Add(startingTile);
 		while (currentTile != goalTile) {
-			currentTile = chooseTile(currentTile, goalTile, previousDirection);
-			if (previousTile) {
+			while (path.Contains(currentTile)) {
+				currentTile = chooseTile(currentTile, goalTile, previousDirection);
+			}
+			path.Add(currentTile);
+			if (currentTile && previousTile) {
 				previousDirection = currentTile.GetDirection(previousTile);
 			}
 			path.Add(currentTile);
@@ -290,25 +293,24 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	}
 
 	MapTileBehaviour chooseTile (MapTileBehaviour currentTile, MapTileBehaviour goalTile, Direction previousDirection) {
-		if (Random.Range(0, 1) > 0.25f) {
+		if (Random.Range(0.0f, 1.0f) >= 0.25f) {
 			return closerTile(currentTile, goalTile);
 		} else {
 			return sideTile(currentTile, previousDirection);
 		}
 	}
-		
+
 	MapTileBehaviour closerTile (MapTileBehaviour currentTile, MapTileBehaviour goalTile) {
-		switch (currentTile.Quadrant) {
-		case MapQuadrant.NorthEast:
-			return Or(currentTile.South, currentTile.West);
-		case MapQuadrant.NorthWest:
-			return Or(currentTile.South, currentTile.East);
-		case MapQuadrant.SouthEast:
-			return Or(currentTile.North, currentTile.West);
-		case MapQuadrant.SouthWest:
-			return Or(currentTile.North, currentTile.East);
-		default:
-			return null;
+		if (currentTile.X > goalTile.X) {
+			return currentTile.West;
+		} else if (currentTile.X < goalTile.X) {
+			return currentTile.East;
+		} else if (currentTile.Y > goalTile.Y) {
+			return currentTile.South;
+		} else if (currentTile.Y < goalTile.Y) {
+			return currentTile.North;
+		} else {
+			return goalTile;
 		}
 	}
 
@@ -318,13 +320,5 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			newDirection = DirectionUtil.RandomCardinalDirection();
 		}
 		return currentTile.TileFromDirection(newDirection);
-	}
-
-	MapTileBehaviour Or (MapTileBehaviour firstTile, MapTileBehaviour secondTile) {
-		if (Random.Range(0, 1) == 1) {
-			return firstTile;
-		} else {
-			return secondTile;
-		}
 	}
 }
