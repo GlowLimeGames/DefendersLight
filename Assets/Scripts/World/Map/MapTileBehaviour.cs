@@ -50,7 +50,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	}
 
 	public Vector3 GetWorldPosition () {
-		return transform.position;
+		return transform.position + Vector3.up;
 	}
 
 	public MapTileBehaviour TileFromDirection (Direction direction) {

@@ -23,11 +23,11 @@ public class EnemySpawnPoint : MannBehaviour {
 		}
 	}
 	MapTileBehaviour currentSpawnPoint;
-	MapTileBehaviour[] currentPath;
+	public MapTileBehaviour[] CurrentPath{private set; get;}
 	MapQuadrant quadrant;
 
 	public Vector3 GetPosition () {
-		return currentSpawnPoint.GetWorldPosition() + Vector3.up;
+		return currentSpawnPoint.GetWorldPosition();
 	}
 
 	public void Setup (MapQuadrant quadrant) {
@@ -40,10 +40,7 @@ public class EnemySpawnPoint : MannBehaviour {
 	}
 
 	public void SetPath (MapTileBehaviour[] path) {
-		this.currentPath = path;
-		foreach (MapTileBehaviour tile in path) {
-			tile.Highlight();
-		}
+		this.CurrentPath = path;
 	}
 
 	public void SpawnEnemies (EnemyBehaviour[] enemies) {

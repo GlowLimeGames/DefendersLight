@@ -31,17 +31,29 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			return path != null && path.Count > 0;
 		}
 	}
-	List<MapTileBehaviour> path = null;
+	float _placeholderMovementSpeed = 0.5f;
+	float movementSpeed {
+		get {
+			// TODO: Implement actual speed value in JSON
+			return _placeholderMovementSpeed;
+		}
+	}
+
+	Queue<MapTileBehaviour> path = null;
 
 	public void SetEnemy (Enemy enemy) {
 		this.enemy = enemy;
 		setUnit(enemy);
 	}
 
-	public void SetPath (List<MapTileBehaviour> path) {
+	public void SetPath (Queue<MapTileBehaviour> path) {
 		this.path = path;
 	}
 		
+	protected override void updateCurrentLocation (MapTileBehaviour currentTile) {
+		base.updateCurrentLocation (currentTile);
+	}
+
 	protected override void FetchReferences() {}
 
 	protected override void CleanupReferences () {
@@ -57,8 +69,14 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 
 		
 	void ResumeMoving () {
-		if (WorldController.Instance && WorldController.Instance.ICoreOrbInstance != null) {
-			SetTarget(WorldController.Instance.ICoreOrbInstance);
+		if (this && WorldController.Instance && WorldController.Instance.ICoreOrbInstance != null) {
+			NavigatePath();
+		}
+	}
+		
+	public void NavigatePath () {
+		if (path != null) {
+			NavigatePath(path, movementSpeed);
 		}
 	}
 

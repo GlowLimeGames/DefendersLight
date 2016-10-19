@@ -178,7 +178,8 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
             AddActiveEnemy(enemyBehaviour);
 			enemyBehaviour.SetEnemy(templateUnits[enemyKey]);
-			enemyBehaviour.SetTarget(worldController.ICoreOrbInstance);
+			enemyBehaviour.SetPath(new Queue<MapTileBehaviour>(spawnPoint.CurrentPath));
+			enemyBehaviour.SetOffset(new Vector3(Random.Range(0, 0.2f), 0, Random.Range(0, 0.2f)));
 			enemy.transform.SetParent(transform);
 			// Placeholder: because undead is sprite;
 			Quaternion angle = Quaternion.identity;
@@ -189,6 +190,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 				angle.eulerAngles = new Vector3(0, yRotation, 0);
 			}
 			enemy.transform.eulerAngles = angle.eulerAngles;
+			enemyBehaviour.NavigatePath();
 		} else {
 			Debug.LogErrorFormat("ERROR: No enemy of type {0}", enemyKey);
 		}
@@ -231,22 +233,6 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
         }
         activeEnemies.Clear();
     }
-
-    public void Create(Enemy unit) {
-		throw new System.NotImplementedException();
-	}
-
-	public void Destroy(Enemy unit) {
-		throw new System.NotImplementedException();
-	}
-
-     public IEnemy[] GetAll() {
-		throw new System.NotImplementedException();
-	}
-
-     public IEnemyWave GetWave(int waveNumber) {
-		throw new System.NotImplementedException();
-	}
 
 	void HandleEnemyKilled () {
 		enemiesAlive = Mathf.Clamp(enemiesAlive - 1, 0, int.MaxValue);
@@ -320,5 +306,9 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			newDirection = DirectionUtil.RandomCardinalDirection();
 		}
 		return currentTile.TileFromDirection(newDirection);
+	}
+
+	public IEnemyWave GetWave(int waveNumber) {
+		throw new System.NotImplementedException();
 	}
 }

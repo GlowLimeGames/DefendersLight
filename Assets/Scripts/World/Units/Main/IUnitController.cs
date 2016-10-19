@@ -9,7 +9,5 @@ public interface IUnitController<UnitType> : IController where UnitType : IUnit 
 	List<UnitType> Units{get;}
 
 	void Setup(WorldController controller, DataController dataController, MapController mapController, string templateResourcesPath);
-	void Create(UnitType unit);
-	void Destroy(UnitType unit);
 	void CreateUnitTemplates(string jsonText);
 }
