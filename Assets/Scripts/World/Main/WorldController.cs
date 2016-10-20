@@ -58,6 +58,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	UnitController[] unitControllers;
 	DataController dataController;
 	StatsPanelController statsPanel;
+	InputController input;
 
 	int spawnPoints = 1;
 
@@ -253,6 +254,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 		
 	public void HandleBeginDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
+		input.ToggleDraggingObject(true);
 		if (dragEvent != null) {
 			towerController.HandleBeginDragPurchase(dragEvent, towerPanel);
 		}
@@ -265,6 +267,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void HandleEndDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
+		input.ToggleDraggingObject(false);
 		if (dragEvent != null) {
 			towerController.HandleEndDragPurchase(dragEvent, towerPanel);
 		}
@@ -280,6 +283,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		enemyController = EnemyController.Instance;
 		mapController = MapController.Instance;
 		statsPanel = StatsPanelController.Instance;
+		input = InputController.Instance;
 		setupDataControllerCallbacks();
 		setupUI();
 		Create();

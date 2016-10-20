@@ -4,16 +4,22 @@
  */
 
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 
 public class InputController : Controller {
+	public static InputController Instance;
 	const int MOUSE_ID = int.MaxValue;
 	bool inputEnabled = true;
+	bool isDraggingObject = false;
 	InputPointer[] pointersInPreviousFrame = new InputPointer[0];
 	InputPointer previousSwipingPointer = null;
 	public float SwipeTolerance = 0.05f;
-	public float PanSpeed = 0.1f;
-	CameraController camera;
+	public float MaxPanSpeed = 0.1f;
+	public float PanAcceleration = 0.001f;
+	float panSpeed = 0;
+	Vector3 swipeDirection;
+	new CameraController camera;
 
 	void Update () {
 		if (inputEnabled) {
@@ -25,12 +31,17 @@ public class InputController : Controller {
 		this.inputEnabled = inputEnabled;
 	}
 
+	public void ToggleDraggingObject (bool isDragging) {
+		this.isDraggingObject = isDragging;
+	}
+
 	void HandleInput () {
 		InputPointer[] pointers = GetPointers();
 		if (HasPointersDown()) {
 			HandlePointersDown(pointers);
 		} else {
 			previousSwipingPointer = null;
+			panSpeed = 0;
 		}
 		pointersInPreviousFrame = pointers;
 	}
@@ -170,18 +181,29 @@ public class InputController : Controller {
 	}
 
 	void handleSwipe (InputPointer pointer) {
-		if (previousSwipingPointer != null && pointer.ID == previousSwipingPointer.ID) {
-			Vector3 deltaPosition = pointer.Position - previousSwipingPointer.Position;
-			deltaPosition *= -PanSpeed;
-			camera.Pan(new Vector3(deltaPosition.x, 0, deltaPosition.y));
+		if (!isDraggingObject) {
+			if (previousSwipingPointer != null && pointer.ID == previousSwipingPointer.ID) {
+				Vector3 deltaPosition = pointer.Position - previousSwipingPointer.Position;
+				if (Math.Abs(Math.Sign(deltaPosition.x) - Math.Sign(swipeDirection.x)) < 2 && 
+					Math.Abs(Math.Sign(deltaPosition.y) - Math.Sign(swipeDirection.y)) < 2) {
+					panSpeed += PanAcceleration;
+				} else {
+					panSpeed = 0;
+				}
+				swipeDirection = deltaPosition;
+				deltaPosition *= -panSpeed;
+				camera.Pan(new Vector3(deltaPosition.x, 0, deltaPosition.y));
+			}
+			previousSwipingPointer = pointer;
 		}
-		previousSwipingPointer = pointer;
 	}
 
 	#endregion
 		
-	protected override void SetReferences () {
+	#region MannBehaviour Methods
 
+	protected override void SetReferences () {
+		SingletonUtil.TryInit(ref Instance, this, gameObject);
 	}
 
 	protected override void FetchReferences () {
@@ -189,10 +211,12 @@ public class InputController : Controller {
 	}
 
 	protected override void CleanupReferences () {
-
+		SingletonUtil.TryCleanupSingleton(ref Instance, this);
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
 
 	}
+
+	#endregion
 }
