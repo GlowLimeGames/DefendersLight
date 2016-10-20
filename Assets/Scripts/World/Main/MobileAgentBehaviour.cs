@@ -36,13 +36,14 @@ public abstract class MobileAgentBehaviour : ActiveObjectBehaviour {
 	}
 
 	IEnumerator runPathNavigation (Queue<MapTileBehaviour> path, float timePerStep) {
-		Vector3 previousLocation = transform.position;
 		while (path.Count > 0) {
-			float timer = 0;
 			MapTileBehaviour currentTile = path.Dequeue();
+			Vector3 previousLocation = transform.position;
+			Vector3 targetLocation = currentTile.GetWorldPosition() + offset;
+			float timer = 0;
 			while (timer <= timePerStep) {
-				transform.position = Vector3.Lerp(transform.position, currentTile.GetWorldPosition() + offset, timer / timePerStep);
 				timer += Time.deltaTime;
+				transform.position = Vector3.Lerp(previousLocation, targetLocation, timer / timePerStep);
 				yield return new WaitForEndOfFrame();
 			}
 			updateCurrentLocation(currentTile);
