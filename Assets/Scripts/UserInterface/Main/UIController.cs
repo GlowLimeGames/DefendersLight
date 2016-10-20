@@ -4,6 +4,7 @@
  */
 
 public abstract class UIController : MannBehaviour, IUIController {
+
 	public void LoadStartScreen () {
 		SceneController.LoadStart();
 	}
@@ -12,6 +13,13 @@ public abstract class UIController : MannBehaviour, IUIController {
 		SceneController.LoadGame();
 	}
 
+	public void LoadAbout () {
+		SceneController.LoadAbout();
+	}
+
+	public void LoadCredits () {
+		SceneController.LoadCredits();
+	}
 
 	protected override void SetReferences () {
 
@@ -39,6 +47,10 @@ public abstract class UIController : MannBehaviour, IUIController {
 
 	public void ToggleSFX () {
 		SettingsUtil.ToggleSFXMuted();
+	}
+
+	public void OpenURL (string url) {
+		UnityEngine.Application.OpenURL(url);
 	}
 
 	public void AddElement(IUIElement element) {
