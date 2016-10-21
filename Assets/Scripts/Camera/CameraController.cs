@@ -6,8 +6,12 @@
 using UnityEngine;
 
 public class CameraController : Controller {
+	MapController map;
+
 	public void Pan (Vector3 panDirection) {
-		transform.position += panDirection;
+		if (map.InBounds(transform.position + panDirection)) {
+			transform.position += panDirection;
+		}
 	}
 
 	protected override void SetReferences () {
@@ -15,7 +19,7 @@ public class CameraController : Controller {
 	}
 
 	protected override void FetchReferences () {
-
+		map = MapController.Instance;
 	}
 
 	protected override void CleanupReferences () {
