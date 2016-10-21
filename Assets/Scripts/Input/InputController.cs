@@ -10,6 +10,8 @@ using System.Collections.Generic;
 public class InputController : Controller {
 	public static InputController Instance;
 	const int MOUSE_ID = int.MaxValue;
+	const string SCROLL_WHEEL_KEY = "Mouse ScrollWheel";
+
 	bool inputEnabled = true;
 	bool isDraggingObject = false;
 	InputPointer[] pointersInPreviousFrame = new InputPointer[0];
@@ -17,8 +19,12 @@ public class InputController : Controller {
 	public float SwipeTolerance = 0.05f;
 	public float MaxPanSpeed = 0.1f;
 	public float PanAcceleration = 0.001f;
+	public float PinchZoomSpeed = 0.001f;
+
 	float panSpeed = 0;
+	float? previousPointerDistance = null;
 	Vector3 swipeDirection;
+	bool isZooming;
 	new CameraController camera;
 
 	void Update () {
@@ -37,6 +43,12 @@ public class InputController : Controller {
 
 	void HandleInput () {
 		InputPointer[] pointers = GetPointers();
+		if (checkForZoom()) {
+			isZooming = true;
+			handleZoom(pointers);
+		} else if (isZooming) {
+			handleZoomEnd();
+		}
 		if (HasPointersDown()) {
 			HandlePointersDown(pointers);
 		} else {
@@ -157,6 +169,32 @@ public class InputController : Controller {
 		return hitObjects.ToArray();
 	}
 
+	#region Zooming
+
+	bool checkForZoom () {
+		return Input.GetAxis(SCROLL_WHEEL_KEY) != 0 || Input.touchCount > 1;
+	}
+
+	void handleZoom (InputPointer[] pointers) {
+		if (Input.mousePresent) {
+			camera.Zoom(Input.GetAxis(SCROLL_WHEEL_KEY));
+		} else if (pointers.Length > 1) {
+			float pointerDistance = Vector3.Distance(pointers[0].Position, pointers[1].Position);
+			if (previousPointerDistance != null) {
+				float deltaPosition = pointerDistance - (float) previousPointerDistance;
+				camera.Zoom(deltaPosition * -PinchZoomSpeed);
+			}
+			previousPointerDistance = pointerDistance;
+		}
+	}
+
+	void handleZoomEnd () {
+		isZooming = false;
+		previousPointerDistance = null;
+		camera.EndZoom();
+	}
+
+	#endregion
 
 	#region Swiping
 
