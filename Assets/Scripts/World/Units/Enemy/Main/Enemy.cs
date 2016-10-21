@@ -23,7 +23,7 @@ public class Enemy : Unit {
 		IWorldController worldController, int speed) : 
 	base(type, health, damage, cooldown, range, attackRadius, location, description, worldController) {
 		this.DeathReward = deathReward;
-        
+        this.Speed = speed;
 	}
 
 	public Enemy (string jsonText):base(jsonText){}
