@@ -42,11 +42,12 @@ public abstract class MobileAgentBehaviour : ActiveObjectBehaviour {
 			Vector3 targetLocation = currentTile.GetWorldPosition() + offset;
 			float timer = 0;
 			while (timer <= timePerStep) {
-				timer += Time.deltaTime;
 				transform.position = Vector3.Lerp(previousLocation, targetLocation, timer / timePerStep);
 				yield return new WaitForEndOfFrame();
+				timer += Time.deltaTime;
 			}
 			updateCurrentLocation(currentTile);
+			yield return new WaitForEndOfFrame();
 		}
 	}
 }

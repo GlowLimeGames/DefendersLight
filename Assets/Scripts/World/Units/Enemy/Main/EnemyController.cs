@@ -25,7 +25,6 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	int enemiesAlive = 0;
 	int currentWaveIndex = 1;
 	int spawnPointCount = 1;
-	Season currentSeason;
 	EnemyWave currentWave = null;
 	MathEquation spawnCountEquation = LinearEquation.Default;
     HashSet<EnemyBehaviour> activeEnemies = new HashSet<EnemyBehaviour>();
@@ -107,10 +106,6 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		callOnWaveAdvance(waveIndex);
 		// TODO: Implement non-placeholder functionality
 		StartCoroutine(RunSpawnWave(waveIndex, 0.5f));
-	}
-
-	public void SetSeason (Season season) {
-		this.currentSeason = season;
 	}
 
 	public void SubscribeToWaveAdvance (EventActionInt onWaveAdvance) {
@@ -272,7 +267,6 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			if (currentTile && previousTile) {
 				previousDirection = currentTile.GetDirection(previousTile);
 			}
-			path.Add(currentTile);
 			previousTile = currentTile;
 		}
 		return path.ToArray();
