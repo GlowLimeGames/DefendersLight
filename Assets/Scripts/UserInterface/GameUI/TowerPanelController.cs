@@ -37,7 +37,7 @@ public class TowerPanelController : UIController {
 	}
 
 	public void ClosePanel () {
-		if (gameObject != null) {
+		if (this != null && gameObject != null) {
 			gameObject.SetActive(false);
 		}
 	}
