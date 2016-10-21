@@ -80,6 +80,10 @@ public class PlayerData : IPlayerData {
 		return this._level;
 	}
 
+    public void LevelUpCheat() {
+        this._level++;
+    }
+
 	public bool ReadyToLevelUp () {
 		return IXPForLevel <= this._xp;
 	}

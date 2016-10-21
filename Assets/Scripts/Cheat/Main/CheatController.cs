@@ -20,6 +20,9 @@ public class CheatController : Controller, ICheatController {
 			return runningCheats;
 		}
 	}
+    public void LevelUpCheat() {
+        WorldController.Instance.LevelUpCheat();
+    }
 
 	public void HealAllTowers() { 
 		WorldController.Instance.HealAllTowers ();

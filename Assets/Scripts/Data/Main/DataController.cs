@@ -90,6 +90,9 @@ public class DataController : Controller, IDataController {
 			return currentPlayerData.ILevel;
 		}
 	}
+    public void LevelUpCheat() {
+        currentPlayerData.LevelUpCheat();
+    }
 	public int XP {
 		get {
 			return currentPlayerData.IXP;

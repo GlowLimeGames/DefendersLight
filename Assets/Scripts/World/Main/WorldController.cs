@@ -112,6 +112,10 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		onEarnXP(0);
 	}
 
+    public void LevelUpCheat() {
+        dataController.LevelUpCheat();
+    }
+
 	void onEarnXP (int xpEarned) {
 		statsPanel.SetXP(dataController.XP, dataController.XPForLevel);
 	}
