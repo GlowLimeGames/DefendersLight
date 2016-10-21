@@ -26,6 +26,11 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			return enemy.Health;
 		}
 	}
+    public int ISpeed{
+        get{
+            return enemy.Speed;
+        }
+    }
 	public bool HasPath {
 		get {
 			return path != null && path.Count > 0;

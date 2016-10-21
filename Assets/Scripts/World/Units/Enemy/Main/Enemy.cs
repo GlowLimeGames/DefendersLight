@@ -12,6 +12,7 @@ public class Enemy : Unit {
 	#endregion
 
 	public RewardAmount DeathReward;
+    public int Speed;
 	public RewardAmount IDeathReward {
 		get {
 			return this.DeathReward;
@@ -19,9 +20,10 @@ public class Enemy : Unit {
 	}
 
 	public Enemy (string type, int health, int damage, float cooldown, int range, int attackRadius, MapLocation location, string description, RewardAmount deathReward,
-		IWorldController worldController) : 
+		IWorldController worldController, int speed) : 
 	base(type, health, damage, cooldown, range, attackRadius, location, description, worldController) {
 		this.DeathReward = deathReward;
+        this.Speed = speed;
 	}
 
 	public Enemy (string jsonText):base(jsonText){}
