@@ -33,9 +33,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 		set {
 			_currentSeason = value;
-			if (enemyController) {
-				enemyController.SetSeason(value);
-			}
 		}
 	}
 
