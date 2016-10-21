@@ -19,6 +19,9 @@ public class MapController : MannBehaviour, IMapController {
 
 	[SerializeField]
 	MapTileBehaviour[,] Board;
+	Bounds mapBounds;
+	float zBound = 10f;
+
 	void GenerateBoard () {
 		Board = new MapTileBehaviour[Stats.Width,Stats.Height];
 		for (int x = 0; x < Stats.Width; x++) {
@@ -27,6 +30,7 @@ public class MapController : MannBehaviour, IMapController {
 				Board[x, y].Setup(this, new MapLocation(x, y), getQuadrant(x, y));
 			}
 		}
+		mapBounds = new Bounds(GetCenterTile().GetWorldPosition(), new Vector3(Stats.Width * Stats.TileSize, zBound, Stats.Height * Stats.TileSize));
 	}
 
 	public MapTileBehaviour GetCenterTile () {
@@ -104,6 +108,10 @@ public class MapController : MannBehaviour, IMapController {
 		return IntUtil.InRange(x, Stats.Width) && IntUtil.InRange(y, Stats.Height);
 	}
 
+	public bool InBounds (Vector3 worldPosition) {
+		return mapBounds.Contains(worldPosition);
+	}
+
 	MapTileBehaviour SpawnBoardTile (int x, int y) {
 		GameObject tile = (GameObject) Instantiate(BoardTilePrefab, GetBoardTileLocation(x, y), Quaternion.identity);
 		tile.transform.SetParent(transform);
@@ -114,7 +122,7 @@ public class MapController : MannBehaviour, IMapController {
 		
 	Vector3 GetBoardTileLocation (int x, int y) {
 		// TODO: Implement Correctly
-		return new Vector3(x - Stats.Width/2, 0, y - Stats.Height/2);
+		return new Vector3((x - Stats.Width/2) * Stats.TileSize, 0, (y - Stats.Height/2) * Stats.TileSize);
 	}
 
 	MapQuadrant getQuadrant (int x, int y) {
