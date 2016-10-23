@@ -5,17 +5,27 @@
 			"Groups":[],
 			"Events":["LoadStart", "LoadGameOver"],
 			"StopEvents":[],
-			"Loop":false,
+			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
 			"Volume": 100
 		},
 		{
-			"Name":"Defender's Light Soundtrack 1_2",
+			"Name":"Defender's Light SoundTrack 1_1",
 			"Groups":[],
 			"Events":["LoadGame"],
 			"StopEvents":[],
-			"Loop":false,
+			"Loop":true,
+			"Type": "Music",
+			"Channel":2,
+			"Volume": 100
+		},
+		{
+			"Name":"Defender's Light Soundtrack 2_4",
+			"Groups":[],
+			"Events":["NotAssigned"],
+			"StopEvents":[],
+			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
 			"Volume": 100
