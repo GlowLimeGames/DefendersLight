@@ -180,6 +180,16 @@
 			"Volume": 100
 		},
 		{
+			"Name":"Enemies_Approaching",
+			"Groups":["EnemiesApproaching"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
 			"Name":"Enemies_DealDamage_A",
 			"Groups":["EnemiesDealDamage"],
 			"Events":[],
@@ -330,7 +340,7 @@
 			"Volume": 100
 		},
 		{
-			"Name":"Gui_Click_2",
+			"Name":"Gui_Click_3",
 			"Groups":[],
 			"Events":["GuiClick"],
 			"StopEvents":[],
@@ -488,6 +498,36 @@
 			"Type": "FX",
 			"Channel":1,
 			"Volume": 80
+		},
+		{
+			"Name":"Orb_Attack_A",
+			"Groups":["OrbAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Orb_Attack_B",
+			"Groups":["OrbAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Orb_Attack_C",
+			"Groups":["OrbAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
 		},
 		{
 			"Name":"Shade_Healing_Loop",
