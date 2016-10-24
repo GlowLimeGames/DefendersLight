@@ -38,7 +38,7 @@
 			"Loop":true,
 			"Type": "Ambience",
 			"Channel":2,
-			"Volume": 100
+			"Volume": 50
 		},
 		{
 			"Name":"Defender's Light Ambience 1",
@@ -48,7 +48,7 @@
 			"Loop":true,
 			"Type": "Ambience",
 			"Channel":2,
-			"Volume": 100
+			"Volume": 50
 		},
 
 		{
