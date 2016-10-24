@@ -31,7 +31,7 @@
 			"Volume": 100
 		},
 		{
-			"Name":"Defender's Light Bass Drone 1",
+			"Name":"Defender's Light Bass Drone 2",
 			"Groups":[],
 			"Events":["LoadGame"],
 			"StopEvents":[],
