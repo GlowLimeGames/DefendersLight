@@ -31,6 +31,27 @@
 			"Volume": 100
 		},
 		{
+			"Name":"Defender's Light Bass Drone 1",
+			"Groups":[],
+			"Events":["LoadGame"],
+			"StopEvents":[],
+			"Loop":true,
+			"Type": "Ambience",
+			"Channel":2,
+			"Volume": 100
+		},
+		{
+			"Name":"Defender's Light Ambience 1",
+			"Groups":[],
+			"Events":["NotAssigned"],
+			"StopEvents":[],
+			"Loop":true,
+			"Type": "Ambience",
+			"Channel":2,
+			"Volume": 100
+		},
+
+		{
 			"Name":"ArchersTower_Attack_A",
 			"Groups":["ArchersTowerAttack"],
 			"Events":[],
