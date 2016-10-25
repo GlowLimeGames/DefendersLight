@@ -9,7 +9,7 @@ using System.Linq;
 public class CheatController : Controller, ICheatController {
 	const string MINI_ORB_CHEAT_ID = "Increase Mini Orbs";
 
-	public int MiniOrbCheatIncreaseAmount = 10000;
+	public int MiniOrbCheatIncreaseAmount = 10000; //changed
 	ICheatCommand miniOrbCheat = null;
 	public List<ICheatCommand> cheats {get; private set;}
 
