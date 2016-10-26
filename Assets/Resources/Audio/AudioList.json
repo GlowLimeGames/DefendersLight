@@ -212,8 +212,8 @@
 		},
 		{
 			"Name":"Enemies_Approaching",
-			"Groups":["EnemiesApproaching"],
-			"Events":[],
+			"Groups":[],
+			"Events":["EnemiesApproaching"],
 			"StopEvents":[],
 			"Loop":false,
 			"Type": "FX",
@@ -537,7 +537,7 @@
 			"StopEvents":[],
 			"Loop":false,
 			"Type": "FX",
-			"Channel":1,
+			"Channel":5,
 			"Volume": 100
 		},
 		{
@@ -547,7 +547,7 @@
 			"StopEvents":[],
 			"Loop":false,
 			"Type": "FX",
-			"Channel":1,
+			"Channel":5,
 			"Volume": 100
 		},
 		{
@@ -557,7 +557,7 @@
 			"StopEvents":[],
 			"Loop":false,
 			"Type": "FX",
-			"Channel":1,
+			"Channel":5,
 			"Volume": 100
 		},
 		{
@@ -650,6 +650,12 @@
 			"Name":"LightningAttack",
 			"Type":"Random",
 			"Events":["LightningAttack"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"OrbAttack",
+			"Type":"Random",
+			"Events":["OrbAttack"],
 			"StopEvents":[]
 		}
 	]
