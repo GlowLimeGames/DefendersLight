@@ -151,7 +151,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		enemyController.SpawnWave();
 	}
 		
-	public void CollectMiniOrbs (int count) {
+	public void CollectMana (int count) {
 		dataController.CollectMana(count);
 		statsPanel.SetMana(dataController.Mana);
 	}
@@ -160,7 +160,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		dataController.EarnXP(xpEarned);
 	}
 
-	public bool TrySpendMiniOrbs (int count) {
+	public bool TrySpendMana (int count) {
 		if (dataController.TrySpendMana(count)) {
 			statsPanel.SetMana(dataController.Mana); 
 			return true;
@@ -309,13 +309,13 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	void handleUnitEvent (string eventName, Unit unit) {
 		if (eventName == EventType.EnemyDestroyed) {
 			if (unit.Type == "Undead") {
-				CollectMiniOrbs(25);
+				CollectMana(25);
 				EarnXP(10);
 			} else if (unit.Type == "Brute") {
-				CollectMiniOrbs(100);
+				CollectMana(100);
 				EarnXP(50);
 			} else if (unit.Type == "Shade") {
-				CollectMiniOrbs(200);
+				CollectMana(200);
 				EarnXP(100);
 			}
 		}

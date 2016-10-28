@@ -109,7 +109,7 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 	}
 
 	public void OnPurchased () {
-		WorldController.Instance.TrySpendMiniOrbs(cost);
+		WorldController.Instance.TrySpendMana(cost);
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

@@ -80,7 +80,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	}
 
 	public void Sell () {
-		WorldController.Instance.CollectMiniOrbs(sellValue);
+		WorldController.Instance.CollectMana(sellValue);
 		Destroy(gameObject);
 	}
 
