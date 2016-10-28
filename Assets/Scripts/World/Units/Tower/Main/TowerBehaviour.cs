@@ -110,7 +110,9 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	public override void HandleColliderEnterTrigger (Collider collider) {
 		base.HandleColliderEnterTrigger (collider);
-		checkToAttack(collider);
+		if (isActive) {
+			checkToAttack(collider);
+		}
 	}
 
 	public override void HandleColliderStayTrigger (Collider collider)	{

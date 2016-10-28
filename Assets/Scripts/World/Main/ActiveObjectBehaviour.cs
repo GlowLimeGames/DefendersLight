@@ -48,7 +48,12 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	protected HealthBarBehaviour HealthBar;
 
 	protected bool attackCooldownActive = false;
-
+	protected bool isActive = true;
+	public bool IIsActive {
+		get {
+			return isActive;
+		}
+	}
 	[SerializeField]
 	bool debugging;
 
@@ -164,5 +169,9 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	protected void setUnit (Unit unit) {
 		this.unit = unit;
 		this.Health = unit.Health;
+	}
+
+	public virtual void ToggleActive (bool isActive) {
+		this.isActive = isActive;
 	}
 }
