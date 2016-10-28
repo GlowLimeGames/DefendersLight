@@ -106,6 +106,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		callOnWaveAdvance(waveIndex);
 		// TODO: Implement non-placeholder functionality
 		StartCoroutine(RunSpawnWave(waveIndex, 0.5f));
+		EventController.Event(EventType.EnemiesApproaching);
 	}
 
 	public void SubscribeToWaveAdvance (EventActionInt onWaveAdvance) {
