@@ -43,7 +43,7 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 	}
 
 	public void OnBeginDrag (PointerEventData pointerEvent) {
-		if (DataController.Instance.HasSufficientMiniOrbs(cost)) {
+		if (DataController.Instance.HasSufficientMana(cost)) {
 			HandleCanPurchaseBeginDrag(pointerEvent);
 		} else {
 			HandleCannotPurchaesBeginDrag();
@@ -109,7 +109,7 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 	}
 
 	public void OnPurchased () {
-		WorldController.Instance.TrySpendMiniOrbs(cost);
+		WorldController.Instance.TrySpendMana(cost);
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

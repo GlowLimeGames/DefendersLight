@@ -5,5 +5,5 @@
 
 public interface ISessionData : IData {
 	int IXP{get;}
-	int IMiniOrbs{get;}
+	int IMana{get;}
 }

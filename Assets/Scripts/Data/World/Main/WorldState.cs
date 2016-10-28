@@ -5,7 +5,7 @@
 
 [System.Serializable]
 public class WorldState : IWorldState, ISessionData {
-	public int MiniOrbCount;
+	public int Mana;
 	public int EnemiesKilled;
 	public int CurrentWave;
 	public int XPEarned;
@@ -21,9 +21,9 @@ public class WorldState : IWorldState, ISessionData {
 
 	#region Properties
 
-	public int IMiniOrbs {
+	public int IMana {
 		get {
-			return this.MiniOrbCount;
+			return this.Mana;
 		}
 	}
 	public int IXP {
@@ -39,26 +39,26 @@ public class WorldState : IWorldState, ISessionData {
 	}
 
 	public void Reset () {
-		MiniOrbCount = 0;
+		Mana = 0;
 		EnemiesKilled = 0;
 		CurrentWave = 1;
 		XPEarned = 0;
 	}
 
-	public void CollectMiniOrbs (int miniOrbCount) {
-		this.MiniOrbCount += miniOrbCount;
+	public void CollectMana (int mana) {
+		this.Mana += mana;
 	}
 
-	public bool TrySpendMiniOrbs (int miniOrbCount) {
-		bool returnValue = HasSufficientMiniOrbs(miniOrbCount);
+	public bool TrySpendMana (int mana) {
+		bool returnValue = HasSufficientMana(mana);
 		if (returnValue) {
-			this.MiniOrbCount -= miniOrbCount;
+			this.Mana -= mana;
 		}
 		return returnValue;
 	}
 
-	public bool HasSufficientMiniOrbs (int miniOrbCount) {
-		return this.MiniOrbCount >= miniOrbCount;
+	public bool HasSufficientMana (int mana) {
+		return this.Mana >= mana;
 	}
 
 	public void NextWave () {

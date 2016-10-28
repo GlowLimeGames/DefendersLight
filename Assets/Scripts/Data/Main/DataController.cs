@@ -165,9 +165,9 @@ public class DataController : Controller, IDataController {
 
 	#region World State
 
-	public int MiniOrbCount {
+	public int Mana {
 		get {
-			return currentWorldState.IMiniOrbs;
+			return currentWorldState.IMana;
 		}
 	}
 	public int EnemiesKilled {
@@ -214,16 +214,16 @@ public class DataController : Controller, IDataController {
 		file.Close();
 	}
 
-	public void CollectMiniOrbs (int miniOrbCount) {
-		this.currentWorldState.CollectMiniOrbs(miniOrbCount);
+	public void CollectMana (int mana) {
+		this.currentWorldState.CollectMana(mana);
 	}
 
-	public bool TrySpendMiniOrbs (int miniOrbCount) {
-		return this.currentWorldState.TrySpendMiniOrbs(miniOrbCount);
+	public bool TrySpendMana (int mana) {
+		return this.currentWorldState.TrySpendMana(mana);
 	}
 
-	public bool HasSufficientMiniOrbs (int miniOrbCount) {
-		return this.currentWorldState.HasSufficientMiniOrbs(miniOrbCount);
+	public bool HasSufficientMana (int mana) {
+		return this.currentWorldState.HasSufficientMana(mana);
 	}
 
 	public void NextWave () {
