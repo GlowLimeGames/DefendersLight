@@ -38,11 +38,11 @@ public static class FileUtil {
 	}
 
 	public static void WriteStringToPath (string text, string path) {
-		//File.WriteAllText(path, text);
+		File.WriteAllText(path, text);
 	}
 
 	public static void AppendStringToPath (string text, string path) {
-		//File.AppendAllText(path, text);
+		File.AppendAllText(path, text);
 	}
 
 	public static bool FileExistsAtPath (string path) {
