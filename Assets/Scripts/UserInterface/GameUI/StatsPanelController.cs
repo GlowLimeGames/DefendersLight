@@ -12,7 +12,7 @@ public class StatsPanelController : UIController {
 
 	const string WAVE = "Wave";
 	const string ENEMIES = "Enemies";
-	const string MINI_ORBS = "Mini Orbs";
+	const string MANA = "Mana";
 	const string LEVEL = "Level";
 	const string XP = "XP";
 
@@ -21,7 +21,7 @@ public class StatsPanelController : UIController {
 	[SerializeField]
 	Text enemyText;
 	[SerializeField]
-	Text miniOrbText;
+	Text manaText;
 	[SerializeField]
 	Text levelText;
 	[SerializeField]
@@ -35,8 +35,8 @@ public class StatsPanelController : UIController {
 		enemyText.text = getEnemyText(enemiesAlive);
 	}
 
-	public void SetMiniOrbs (int miniOrbs) {
-		miniOrbText.text = getMiniOrbText(miniOrbs);
+	public void SetMana (int mana) {
+		manaText.text = getManaText(mana);
 	}
 
 	public void SetLevel (int level) {
@@ -55,8 +55,8 @@ public class StatsPanelController : UIController {
 		return string.Format("{0}: {1}", ENEMIES, enemiesAlive);
 	}
 
-	string getMiniOrbText (int miniOrbs) {
-		return string.Format("{0}: {1}", MINI_ORBS, miniOrbs);
+	string getManaText (int mana) {
+		return string.Format("{0}: {1}", MANA, mana);
 	}
 		
 	string getLevelText (int level) {

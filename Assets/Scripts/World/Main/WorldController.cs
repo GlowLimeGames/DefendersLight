@@ -152,8 +152,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 		
 	public void CollectMiniOrbs (int count) {
-		dataController.CollectMiniOrbs(count);
-		statsPanel.SetMiniOrbs(dataController.MiniOrbCount);
+		dataController.CollectMana(count);
+		statsPanel.SetMana(dataController.Mana);
 	}
 
 	public void EarnXP (int xpEarned) {
@@ -161,8 +161,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public bool TrySpendMiniOrbs (int count) {
-		if (dataController.TrySpendMiniOrbs(count)) {
-			statsPanel.SetMiniOrbs(dataController.MiniOrbCount); 
+		if (dataController.TrySpendMana(count)) {
+			statsPanel.SetMana(dataController.Mana); 
 			return true;
 		} else {
 			return false;
