@@ -203,11 +203,11 @@ MonoBehaviour:
     Y: 0
   Name: 
   Health: 0
-  MaxHealth: 0
   BaseDamage: 0
   Range: 0
   LevelString: 
   AttackDelay: 0
+  isInvulnerable: 0
   AttackType: 0
   hasAttack: 0
   canHeal: 1
@@ -216,7 +216,7 @@ MonoBehaviour:
   DirectionFacing: 3
   HealRate: 0
   HealCooldown: 0
-  HealthDrainPerTick: 1
+  HealthDrainPerTick: 10
   HealthDrainDelay: 1
 --- !u!212 &21220020
 SpriteRenderer:

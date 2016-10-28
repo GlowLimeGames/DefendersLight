@@ -31,6 +31,11 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 			return _maxHealth;
 		}
 	}
+	public bool IAtFullHealth {
+		get {
+			return Health == IMaxHealth;
+		}
+	}
 	Unit unit;
 
 	EventAction onDestroyed;
@@ -62,6 +67,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	protected override void CleanupReferences () {
+		base.CleanupReferences();
 		if (onDestroyed != null) {	
 			onDestroyed();
 		}
@@ -71,8 +77,6 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		StartCoroutine(AttackCooldown());
 		activeAgent.Damage(damage);
 	}
-
-	public abstract ActiveObjectBehaviour SelectTarget();
 
 	public virtual void Damage(int damage) {
         if (!isInvulnerable) {
