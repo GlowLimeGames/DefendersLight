@@ -124,6 +124,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 11468770, guid: 1b76efca60ccc41b78689ce8e6454942, type: 2}
+      propertyPath: MiniOrbCheatIncreaseAmount
+      value: 10000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1b76efca60ccc41b78689ce8e6454942, type: 2}
   m_IsPrefabParent: 0
