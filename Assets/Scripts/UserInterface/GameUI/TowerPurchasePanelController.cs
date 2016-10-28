@@ -42,6 +42,12 @@ public class TowerPurchasePanelController : UIController {
 		purchaseCanvas = GetComponent<CanvasGroup>();
 	}
 
+	protected override void FetchReferences () {
+		base.FetchReferences ();
+		foreach (TowerPurchasePanel towerPanel in towerPuchasePanels) {
+			towerPanel.Setup(input);
+		}
+	}
 
 	Tower[] GetTowers (TowerType type) {
 		return WorldController.Instance.GetTowersOfType(type);

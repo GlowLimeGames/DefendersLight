@@ -4,6 +4,7 @@
  */
 
 public abstract class UIController : MannBehaviour, IUIController {
+	protected InputController input;
 
 	public void LoadStartScreen () {
 		SceneController.LoadStart();
@@ -26,7 +27,7 @@ public abstract class UIController : MannBehaviour, IUIController {
 	}
 
 	protected override void FetchReferences () {
-
+		input = InputController.Instance;
 	}
 
 	protected override void CleanupReferences () {

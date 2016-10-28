@@ -13,6 +13,7 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 	Tower tower;
 	CanvasGroup canvasGroup;
 	TowerPurchasePanelController controller;
+	InputController input;
 	Image image;
 	Color standardColor;
 	float selectedScale = 1.05f;
@@ -24,6 +25,10 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 
 	public void InitWithController (TowerPurchasePanelController controller) {
 		this.controller = controller;
+	}
+
+	public void Setup (InputController input) {
+		this.input = input;
 	}
 
 	public void SetTower (Tower tower) {
@@ -42,6 +47,7 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 			HandleCanPurchaseBeginDrag(pointerEvent);
 		} else {
 			HandleCannotPurchaesBeginDrag();
+			input.ToggleDraggingObject(true);
 		}
 	}
 
@@ -66,6 +72,8 @@ public class TowerPurchasePanel : MannBehaviour, IUIInteractiveElement, IBeginDr
 		if (!cannotPurchaseDragOccuring) {
 			controller.HandleEndDragPurchase(pointerEvent, this);
 			transform.localScale /= selectedScale;
+		} else {
+			input.ToggleDraggingObject(false);
 		}
 		image.color = standardColor;
 		cannotPurchaseDragOccuring = false;
