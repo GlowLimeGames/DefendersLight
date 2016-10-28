@@ -122,7 +122,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 477660, guid: 1b76efca60ccc41b78689ce8e6454942, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1b76efca60ccc41b78689ce8e6454942, type: 2}
@@ -1841,7 +1841,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: +100 Mini Orbs
+  m_Text: +10000 Mini Orbs
 --- !u!222 &441545035
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4300,7 +4300,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 446692, guid: 617a22b68009a4f61af55452d7586adc, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 617a22b68009a4f61af55452d7586adc, type: 2}
@@ -4549,7 +4549,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 424000, guid: e652f9844b75e474ba57f365880b2114, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e652f9844b75e474ba57f365880b2114, type: 2}
@@ -5810,7 +5810,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 491694, guid: 7351696d4657642e68a96be3f879a460, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 11455654, guid: 7351696d4657642e68a96be3f879a460, type: 2}
       propertyPath: PanSpeed
