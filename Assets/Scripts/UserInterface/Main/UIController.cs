@@ -30,12 +30,8 @@ public abstract class UIController : MannBehaviour, IUIController {
 		input = InputController.Instance;
 	}
 
-	protected override void CleanupReferences () {
-
-	}
-
 	protected override void HandleNamedEvent (string eventName) {
-
+		
 	}
 
 	public void PlayClickSound () {
