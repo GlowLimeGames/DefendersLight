@@ -18,13 +18,13 @@ public abstract class MobileAgentBehaviour : ActiveObjectBehaviour {
 		this.offset = offset;
 	}
 
-	public void NavigatePath (Queue<MapTileBehaviour> path, float timePerStep) {
+	public virtual void NavigatePath (Queue<MapTileBehaviour> path, float timePerStep) {
 		haltMovementCoroutine();
 		movementCoroutine = runPathNavigation(path, timePerStep);
 		StartCoroutine(movementCoroutine);
 	}
 
-	protected void haltMovementCoroutine () {
+	protected virtual void haltMovementCoroutine () {
 		if (this && movementCoroutine != null) {
 			StopCoroutine(movementCoroutine);
 		}

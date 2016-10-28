@@ -78,11 +78,21 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			NavigatePath();
 		}
 	}
-		
+
+	public override void NavigatePath (Queue<MapTileBehaviour> path, float timePerStep) {
+		base.NavigatePath (path, timePerStep);
+		isMoving = true;
+	}
+
 	public void NavigatePath () {
 		if (path != null) {
 			NavigatePath(path, movementSpeed);
 		}
+	}
+
+	protected override void haltMovementCoroutine () {
+		base.haltMovementCoroutine ();
+		isMoving = false;
 	}
 
     public override void MoveTo(MapLocation location) {
@@ -90,11 +100,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			SetTarget(WorldController.Instance.ICoreOrbInstance);
 		}
     }
-
-	public override ActiveObjectBehaviour SelectTarget() {
-		throw new System.NotImplementedException();
-	}
-
+		
 	public void SetTarget (GameObject target) {
 		if (this != null && gameObject != null) {
 			if (gameObject.activeInHierarchy) {
@@ -105,10 +111,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	public void Halt () {
-		if (movementCoroutine != null) {
-			StopCoroutine(movementCoroutine);
-			isMoving = false;
-		}
+		haltMovementCoroutine();
 	}
 
 	public override void Attack (ActiveObjectBehaviour activeAgent, int damage) {

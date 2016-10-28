@@ -75,10 +75,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		EventController.Event(EventType.BuildTower);
 	}
 
-	public override ActiveObjectBehaviour SelectTarget() {
-		return null;
-	}
-
 	protected override void HandleNamedEvent (string eventName) {
 
 	}

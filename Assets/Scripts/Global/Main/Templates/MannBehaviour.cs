@@ -78,7 +78,9 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 
 	protected abstract void FetchReferences ();
 
-	protected abstract void CleanupReferences ();
+	protected virtual void CleanupReferences () {
+		StopAllCoroutines();
+	}
 
 	protected abstract void HandleNamedEvent (string eventName);
 
