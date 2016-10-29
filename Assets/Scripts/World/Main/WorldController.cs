@@ -24,6 +24,12 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			return towerController.CoreOrbInstance;
 		}
 	}
+	public bool HasTowerToPlace {
+		get {
+			return currentlySelectedPurchaseTower != null;
+		}
+	}
+	Tower currentlySelectedPurchaseTower = null;
 
 	SeasonList seasons;
 	Season _currentSeason;
@@ -55,6 +61,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	UnitController[] unitControllers;
 	DataController dataController;
 	StatsPanelController statsPanel;
+	TowerPurchasePanelController purchasePanel;
 	InputController input;
 
 	int spawnPoints = 1;
@@ -258,6 +265,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		input.ToggleDraggingObject(true);
 		if (dragEvent != null) {
 			towerController.HandleBeginDragPurchase(dragEvent, towerPanel);
+			mapController.HighlightValidBuildTiles();
 		}
 	}
 
@@ -271,6 +279,25 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		input.ToggleDraggingObject(false);
 		if (dragEvent != null) {
 			towerController.HandleEndDragPurchase(dragEvent, towerPanel);
+			mapController.UnhighlightValidBuildsTiles();
+		}
+	}
+
+	public void HandleTowerPurchaseSelected (Tower tower) {
+		this.currentlySelectedPurchaseTower = tower;
+		mapController.HighlightValidBuildTiles();
+	}
+
+	public TowerBehaviour GetPurchaseTowerToPlace (bool purchaseLock = false) {
+		if (TrySpendMana(currentlySelectedPurchaseTower.ICost)) {
+			Tower purchaseTower = currentlySelectedPurchaseTower;
+			if (!purchaseLock) {
+				currentlySelectedPurchaseTower = null;
+				purchasePanel.TryDeselectSelectedPanel();
+			}
+			return towerController.GetTowerBehaviourFromTower(purchaseTower);
+		} else {
+			return null;
 		}
 	}
 
@@ -284,6 +311,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		enemyController = EnemyController.Instance;
 		mapController = MapController.Instance;
 		statsPanel = StatsPanelController.Instance;
+		purchasePanel = TowerPurchasePanelController.Instance;
 		input = InputController.Instance;
 		setupDataControllerCallbacks();
 		setupUI();

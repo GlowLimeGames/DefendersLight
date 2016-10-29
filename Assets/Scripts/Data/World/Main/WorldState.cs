@@ -5,6 +5,7 @@
 
 [System.Serializable]
 public class WorldState : IWorldState, ISessionData {
+	int startingMana;
 	public int Mana;
 	public int EnemiesKilled;
 	public int CurrentWave;
@@ -33,13 +34,14 @@ public class WorldState : IWorldState, ISessionData {
 	}
 	#endregion
 
-	public WorldState (string filePath) {
+	public WorldState (string filePath, int startingMana) {
 		this.filePath = filePath;
+		this.startingMana = startingMana;
 		Reset();
 	}
 
 	public void Reset () {
-		Mana = 0;
+		Mana = this.startingMana;
 		EnemiesKilled = 0;
 		CurrentWave = 1;
 		XPEarned = 0;

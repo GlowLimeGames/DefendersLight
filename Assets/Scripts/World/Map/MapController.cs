@@ -11,6 +11,8 @@ using System.Collections.Generic;
 public class MapController : MannBehaviour, IMapController {
 	public static MapController Instance;
 
+	WorldController world;
+
 	[SerializeField]
 	MapStats Stats;
 
@@ -21,16 +23,33 @@ public class MapController : MannBehaviour, IMapController {
 	MapTileBehaviour[,] Board;
 	Bounds mapBounds;
 	float zBound = 10f;
+	List<MapTileBehaviour> highlightedTiles = new List<MapTileBehaviour>();
 
-	void GenerateBoard () {
+	void GenerateBoard (WorldController world) {
 		Board = new MapTileBehaviour[Stats.Width,Stats.Height];
 		for (int x = 0; x < Stats.Width; x++) {
 			for (int y = 0; y < Stats.Height; y++) {
 				Board[x, y] = SpawnBoardTile(x, y);
-				Board[x, y].Setup(this, new MapLocation(x, y), getQuadrant(x, y));
+				Board[x, y].Setup(this, world, new MapLocation(x, y), getQuadrant(x, y));
 			}
 		}
 		mapBounds = new Bounds(GetCenterTile().GetWorldPosition(), new Vector3(Stats.Width * Stats.TileSize, zBound, Stats.Height * Stats.TileSize));
+	}
+
+	public void HighlightValidBuildTiles () {
+		foreach (MapTileBehaviour tile in Board) {
+			if (tile.CanPlaceTower()) {
+				tile.SetToValidBuildColor();
+				highlightedTiles.Add(tile);
+			}
+		}
+	}
+
+	public void UnhighlightValidBuildsTiles () {
+		foreach (MapTileBehaviour tile in highlightedTiles) {
+			tile.SetToIlluminatedColor();
+		}
+		highlightedTiles.Clear();
 	}
 
 	public MapTileBehaviour GetCenterTile () {
@@ -172,13 +191,14 @@ public class MapController : MannBehaviour, IMapController {
 	}
 		
 	protected override void FetchReferences () {
-		// Nothing
+		if (SingletonUtil.IsSingleton(Instance, this)) {
+			world = WorldController.Instance;
+			GenerateBoard(world);
+		}
 	}
 
 	protected override void SetReferences () {
-		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
-			GenerateBoard();
-		}
+		SingletonUtil.TryInit(ref Instance, this, gameObject);
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
