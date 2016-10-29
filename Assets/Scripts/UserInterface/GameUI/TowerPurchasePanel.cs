@@ -54,11 +54,16 @@ public class TowerPurchasePanel : MannBehaviour, IBeginDragHandler, IDragHandler
 		controller.HandlePurchaseSelected(this);
 	}
 
-	public void Deselect () {
-		showAsUnselected();
-		stopShowInvalidPurchase();
-		cannotPurchaseInteractionOccuring = false;
-		isSelected = false;
+	public bool TryDeselect () {
+		if (isSelected) {
+			showAsUnselected();
+			stopShowInvalidPurchase();
+			cannotPurchaseInteractionOccuring = false;
+			isSelected = false;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void OnPointerClick (PointerEventData pointerEvent) {

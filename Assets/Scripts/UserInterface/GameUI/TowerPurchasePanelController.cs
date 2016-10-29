@@ -41,7 +41,7 @@ public class TowerPurchasePanelController : UIController {
 
 	public bool TryDeselectSelectedPanel () {
 		if (this.selectedPurchasePanel) {
-			this.selectedPurchasePanel.Deselect();
+			this.selectedPurchasePanel.TryDeselect();
 			this.selectedPurchasePanel = null;
 			map.UnhighlightValidBuildsTiles();
 			return true;
@@ -100,12 +100,14 @@ public class TowerPurchasePanelController : UIController {
 	}
 
 	public void SetTowers (Tower[] towers) {
+		if (TryDeselectSelectedPanel()) {
+			map.UnhighlightValidBuildsTiles();
+		}
 		int panelIndex = 0;
 		for (int i = 0; i <  towers.Length; i++) {
 			if (towers[i].Unlocked(DataController.Instance.IPlayer)) {
 				towerPuchasePanels[panelIndex].SetTower(towers[i]);
 				towerPuchasePanels[panelIndex].Show();
-				towerPuchasePanels[panelIndex].Deselect();
 				panelIndex++;
 			}
 		}
