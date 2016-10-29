@@ -35,7 +35,7 @@ public class StatsPanelController : UIController {
 	}
 
 	public void ResetManaTextColor () {
-		SetManaTextColor(Color.white);
+		SetManaTextColor(defaultTextColor);
 	}
 
 	public void SetWave (int waveIndex) {

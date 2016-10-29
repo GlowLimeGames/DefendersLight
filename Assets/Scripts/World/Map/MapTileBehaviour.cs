@@ -150,6 +150,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 					tower.PlayBuildSound();
 				}
 			}
+			agent.ToggleActive(true);
 			agent.ToggleColliders(true);
 		} else {
 			// TODO: Collect in object pool instead of destroying

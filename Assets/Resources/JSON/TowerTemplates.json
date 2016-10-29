@@ -225,7 +225,7 @@
          {
            "Type" : "Palliside",
            "Class" : "Barricade",
-           "Health" : 10,
+           "Health" : 100,
            "IlluminationRadius" : 0,
            "Reflectivitiy" : 0,
            "AttackDamage" : 0,
@@ -242,7 +242,7 @@
          {
            "Type" : "Wooden Wall",
            "Class" : "Barricade",
-           "Health" : 75,
+           "Health" : 200,
            "IlluminationRadius" : 0,
            "Reflectivitiy" : 0,
            "AttackDamage" : 0,
@@ -259,7 +259,7 @@
          {
            "Type" : "Stone Wall",
            "Class" : "Barricade",
-           "Health" : 125,
+           "Health" : 300,
            "IlluminationRadius" : 0,
            "Reflectivitiy" : 0,
            "AttackDamage" : 0,
@@ -276,7 +276,7 @@
          {
            "Type" : "Iron Wall",
            "Class" : "Barricade",
-           "Health" : 200,
+           "Health" : 400,
            "IlluminationRadius" : 0,
            "Reflectivitiy" : 0,
            "AttackDamage" : 0,
@@ -293,7 +293,7 @@
          {
            "Type" : "Crystal Wall",
            "Class" : "Barricade",
-           "Health" : 450,
+           "Health" : 500,
            "IlluminationRadius" : "Variable",
            "Reflectivitiy" : 0.75,
            "AttackDamage" : 0,

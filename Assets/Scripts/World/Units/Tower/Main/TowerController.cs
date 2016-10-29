@@ -126,7 +126,6 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		if (previousHighlightedMapTile && previousHighlightedMapTile.CanPlaceTower()) {
 			previousHighlightedMapTile.PlaceStaticAgent(potentialPurchaseTower);
 			towerPanel.OnPurchased();
-			potentialPurchaseTower.ToggleActive(true);
 		} else {
 			// TODO: Collect in object pool instead of destroying
 			Destroy(potentialPurchaseTower.gameObject);
