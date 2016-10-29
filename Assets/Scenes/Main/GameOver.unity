@@ -534,7 +534,7 @@ GameObject:
   - 114: {fileID: 1088411042}
   - 114: {fileID: 1088411041}
   m_Layer: 5
-  m_Name: CorbOrbDestroyedText
+  m_Name: CoreOrbDestroyedText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -604,7 +604,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Corb Orb Destroyed
+  m_Text: Core Orb Destroyed
 --- !u!222 &1088411043
 CanvasRenderer:
   m_ObjectHideFlags: 0
