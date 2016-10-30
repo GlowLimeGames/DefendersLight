@@ -9,8 +9,6 @@ using System.Collections.Generic;
 
 public class TutorialController : SingletonController<TutorialController> {
 	public const string INTRO_TUTORIAL_KEY = "IntroductoryTutorial";
-	DataController data;
-	WorldController world;
 	CanvasGroup canvas;
 
 	[SerializeField]
@@ -113,8 +111,6 @@ public class TutorialController : SingletonController<TutorialController> {
 	protected override void FetchReferences () {
 		if (isSingleton) {
 			base.FetchReferences ();
-			data = DataController.Instance;
-			world = WorldController.Instance;
 			tutorials = loadTutorials(false, TutorialKeys);
 			if (autoStartIntroTutorial) {
 				PlayTutorial(INTRO_TUTORIAL_KEY);
