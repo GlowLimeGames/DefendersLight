@@ -18,7 +18,7 @@
 			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
-			"Volume": 100
+			"Volume": 90
 		},
 		{
 			"Name":"Defender's Light Soundtrack 2_4",
@@ -38,17 +38,17 @@
 			"Loop":true,
 			"Type": "Ambience",
 			"Channel":2,
-			"Volume": 50
+			"Volume": 40
 		},
 		{
 			"Name":"Defender's Light Ambience 1",
 			"Groups":[],
-			"Events":["NotAssigned"],
+			"Events":["LoadGame"],
 			"StopEvents":[],
 			"Loop":true,
 			"Type": "Ambience",
 			"Channel":2,
-			"Volume": 50
+			"Volume": 30
 		},
 
 		{
