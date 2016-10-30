@@ -1,7 +1,7 @@
 {
 	"Files": [
 		{
-			"Name":"Warlock",
+			"Name":"Warlock WAV",
 			"Groups":[],
 			"Events":["LoadStart", "LoadGameOver"],
 			"StopEvents":[],
