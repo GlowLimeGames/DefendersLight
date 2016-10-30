@@ -17,11 +17,11 @@ public class SingletonController<T> : Controller where T : class {
 	}
 
 	protected override void FetchReferences () {
-		// NOTHING
+		base.FetchReferences();
 	}
 		
 	protected override void HandleNamedEvent (string eventName) {
-		// NOTHING
+		
 	}
 
 	bool tryInit (ref T singleton, T instance, GameObject gameObject, bool dontDestroyOnLoad = false) {
