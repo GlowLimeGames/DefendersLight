@@ -82,6 +82,7 @@ public class PlayerData : IPlayerData {
 
     public void LevelUpCheat() {
         this._level++;
+		this._xp = 0;
     }
 
 	public bool ReadyToLevelUp () {

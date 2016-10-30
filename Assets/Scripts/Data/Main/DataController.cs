@@ -119,6 +119,10 @@ public class DataController : Controller, IDataController {
 			callOnLevelUp(currentPlayerData.LevelUp());
 		}
 	}
+
+	public void AutoLevelUp () {
+		currentPlayerData.LevelUpCheat();
+	}
 		
 	public void SubscribeToOnLevelUp (EventActionInt onLevelUp) {
 		levelUp += onLevelUp;
@@ -289,7 +293,7 @@ public class DataController : Controller, IDataController {
 		SaveWorldState();
 	}
 
-	void ResetPlayerData () {
+	public void ResetPlayerData () {
 		currentPlayerData = new PlayerData(PlayerDataFilePath);
 		currentPlayerData.SetXPEquation(XPEquation);
 		SavePlayerData();

@@ -49,6 +49,11 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public LinearEquation EnemySpawnCountEquation;
+	public bool OverrideTowerLevelRequirement {get; private set;}
+
+	public void UnlockAllTowers () {
+		OverrideTowerLevelRequirement = true;
+	}
 
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
@@ -118,10 +123,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		statsPanel.SetLevel(newLevel);
 		onEarnXP(0);
 	}
-
-    public void LevelUpCheat() {
-        dataController.LevelUpCheat();
-    }
 
 	void onEarnXP (int xpEarned) {
 		statsPanel.SetXP(dataController.XP, dataController.XPForLevel);

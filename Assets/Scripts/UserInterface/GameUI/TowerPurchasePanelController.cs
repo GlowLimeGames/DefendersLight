@@ -105,7 +105,7 @@ public class TowerPurchasePanelController : UIController {
 		}
 		int panelIndex = 0;
 		for (int i = 0; i <  towers.Length; i++) {
-			if (towers[i].Unlocked(DataController.Instance.IPlayer)) {
+			if (world.OverrideTowerLevelRequirement || towers[i].Unlocked(DataController.Instance.IPlayer)) {
 				towerPuchasePanels[panelIndex].SetTower(towers[i]);
 				towerPuchasePanels[panelIndex].Show();
 				panelIndex++;
