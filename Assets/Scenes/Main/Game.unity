@@ -3841,7 +3841,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Enemies: 1'
+  m_Text: 'Enemies: 0'
 --- !u!222 &852621155
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -76,6 +76,11 @@ public class TowerPurchasePanelController : UIController {
 		}
 	}
 
+	protected override void CleanupReferences () {
+		base.CleanupReferences ();
+		SingletonUtil.TryCleanupSingleton(ref Instance, this);
+	}
+
 	Tower[] GetTowers (TowerType type) {
 		return WorldController.Instance.GetTowersOfType(type);
 	}
