@@ -30,4 +30,8 @@ public static class SingletonUtil {
 			return false;
 		}
 	}
+
+	public static bool IsSingleton<T> (T singleton, T instance) where T : System.IComparable {
+		return singleton.CompareTo(instance) == 0;
+	}
 }

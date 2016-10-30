@@ -10,7 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class DataController : Controller, IDataController {
 	EventActionInt levelUp;
 	EventActionInt earnXP;
-
+	public int StartingMana = 100;
 	const string JSON_DIRECTORY = "JSON";
 	const string SAVE_DIRECTORY = "Save";
 	const string WORLD_STATE_FILE_NAME = "WorldState.dat";
@@ -119,6 +119,10 @@ public class DataController : Controller, IDataController {
 			callOnLevelUp(currentPlayerData.LevelUp());
 		}
 	}
+
+	public void AutoLevelUp () {
+		currentPlayerData.LevelUpCheat();
+	}
 		
 	public void SubscribeToOnLevelUp (EventActionInt onLevelUp) {
 		levelUp += onLevelUp;
@@ -190,7 +194,7 @@ public class DataController : Controller, IDataController {
 			file.Close();
 			return currentWorldState;
 		} catch {
-			currentWorldState = new WorldState(WorldStateFilePath);
+			currentWorldState = new WorldState(WorldStateFilePath, StartingMana);
 			return currentWorldState;
 		}
 	}
@@ -208,7 +212,7 @@ public class DataController : Controller, IDataController {
 			file = File.Create(WorldStateFilePath);
 		}
 		if (currentWorldState == null) {
-			currentWorldState = new WorldState(WorldStateFilePath);
+			currentWorldState = new WorldState(WorldStateFilePath, StartingMana);
 		}
 		binaryFormatter.Serialize(file, currentWorldState);
 		file.Close();
@@ -285,11 +289,11 @@ public class DataController : Controller, IDataController {
 	}
 
 	void ResetWorldState () {
-		currentWorldState = new WorldState(WorldStateFilePath);
+		currentWorldState = new WorldState(WorldStateFilePath, StartingMana);
 		SaveWorldState();
 	}
 
-	void ResetPlayerData () {
+	public void ResetPlayerData () {
 		currentPlayerData = new PlayerData(PlayerDataFilePath);
 		currentPlayerData.SetXPEquation(XPEquation);
 		SavePlayerData();

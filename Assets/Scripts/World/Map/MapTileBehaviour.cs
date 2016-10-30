@@ -4,20 +4,30 @@
  */
 
 using UnityEngine;
+using System.Collections;
 
 public class MapTileBehaviour : EnvironmentalObjectBehaviour {
+	WorldController world;
 	[SerializeField]
 	StaticAgentBehaviour containedAgent;
 	Color hightlightColor = Color.green;
+	Color validBuildColor = Color.Lerp(Color.green, Color.yellow, 0.75f);
 	Color cannotBuildColor = Color.red;
 	Color illuminatedColor = Color.yellow;
 	Color standardColor = Color.black;
+	Color previousColor;
+	public bool IIsIlluminated {
+		get {
+			return isIlluminated;
+		}
+	}
+
 	bool isIlluminated;
-	Renderer meshRenderer;
 	SpriteRenderer spriteRenderer;
 	[SerializeField]
 	public MapQuadrant Quadrant {private set; get;}
 	MapController controller;
+
 	public int X {
 		get {
 			return Location.X;
@@ -87,13 +97,24 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		return X == toTile.X ^ Y == toTile.Y;
 	}
 
+	public void SetToValidBuildColor () {
+		SetTileColor(validBuildColor);
+	}
+
+	public void SetToIlluminatedColor () {
+		SetTileColor(illuminatedColor);
+	}
+
 	void SetTileColor (Color color) {
-		meshRenderer.material.color = color;
+		previousColor = spriteRenderer.color;
 		spriteRenderer.color = color;
 	}
 
+	void setToPreviousColor() {
+		SetTileColor(previousColor);
+	}
+
 	void Awake () {
-		meshRenderer = GetComponent<MeshRenderer>();
 		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 		SetTileColor(standardColor);
 	}
@@ -102,15 +123,17 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		return containedAgent;
 	}
 
-	public void Setup (MapController controller, MapLocation location, MapQuadrant quadrant) {
+	public void Setup (MapController controller, WorldController world, MapLocation location, MapQuadrant quadrant) {
+		this.Location = location;
 		this.controller = controller;
+		this.world = world;
 		this.Quadrant = quadrant;
 	}
-
-	public void Highlight () {
-		SetTileColor(Color.blue);
-	}
 		
+	public void ShowValidBuild () {
+		SetTileColor(validBuildColor);
+	}
+
 	public void PlaceStaticAgent (StaticAgentBehaviour agent, bool shouldPlaySound = true) {
 		if (isIlluminated || agent is CoreOrbBehaviour) {
 			containedAgent = agent;
@@ -127,6 +150,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 					tower.PlayBuildSound();
 				}
 			}
+			agent.ToggleActive(true);
 			agent.ToggleColliders(true);
 		} else {
 			// TODO: Collect in object pool instead of destroying
@@ -175,15 +199,15 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	}
 
 	public void Unhighlight () {
-		if (isIlluminated) {
+		if (HasAgent()) {
 			SetTileColor(illuminatedColor);
 		} else {
-			SetTileColor(standardColor);
+			setToPreviousColor();
 		}
 	}
 
 	public void RemoveAgent () {
-
+		containedAgent = null;
 	}
 
 	public float GetDistance (Vector3 fromWorldPosition) {
@@ -194,6 +218,19 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		return string.Format ("[MapTileBehaviour: ({0}, {1})]", Location.X, Location.Y);
 	}
 
+	public bool CanPlaceTower () {
+		return isIlluminated && !HasAgent();
+	}
+
+	public bool TryPlaceSelectedTower () {
+		if (CanPlaceTower() && world.HasTowerToPlace) {		
+			PlaceStaticAgent(world.GetPurchaseTowerToPlace());
+			return true;
+		} else {
+			return false;
+		}
+	}
+		
 	protected override void FetchReferences () {
 
     }

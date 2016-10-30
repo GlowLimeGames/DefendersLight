@@ -66,10 +66,15 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		if (potentialPurchaseTower != null) {
 			Destroy(potentialPurchaseTower);
 		}
-		potentialPurchaseTower = Instantiate(worldController.GetTowerPrefab(towerPanel.TowerType)).GetComponent<TowerBehaviour>();
-		potentialPurchaseTower.ToggleColliders(false);
-		potentialPurchaseTower.SetTower(towerPanel.GetTower());
-		potentialPurchaseTower.ToggleActive(false);
+		this.potentialPurchaseTower = GetTowerBehaviourFromTower(towerPanel.GetTower(), false);
+	}
+
+	public TowerBehaviour GetTowerBehaviourFromTower (Tower tower, bool shouldStartActive = false) {
+		TowerBehaviour potentialPurchaseTower = Instantiate(worldController.GetTowerPrefab(tower.TowerType)).GetComponent<TowerBehaviour>();
+		potentialPurchaseTower.ToggleColliders(shouldStartActive);
+		potentialPurchaseTower.SetTower(tower);
+		potentialPurchaseTower.ToggleActive(shouldStartActive);
+		return potentialPurchaseTower;
 	}
 
 	public void HandleDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
@@ -118,10 +123,9 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	}
 
 	public void HandleEndDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
-		if (previousHighlightedMapTile && !previousHighlightedMapTile.HasAgent()) {
+		if (previousHighlightedMapTile && previousHighlightedMapTile.CanPlaceTower()) {
 			previousHighlightedMapTile.PlaceStaticAgent(potentialPurchaseTower);
 			towerPanel.OnPurchased();
-			potentialPurchaseTower.ToggleActive(true);
 		} else {
 			// TODO: Collect in object pool instead of destroying
 			Destroy(potentialPurchaseTower.gameObject);

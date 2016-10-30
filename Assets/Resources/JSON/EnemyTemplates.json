@@ -3,7 +3,7 @@
           {
             "Type" : "Undead",
             "Health" : 100,
-            "AttackDamage" : 50,
+            "AttackDamage" : 25,
             "AttackCooldown" : 1,
             "AttackRange" : 1,
             "AttackRadius" : 1,

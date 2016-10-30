@@ -5,6 +5,7 @@
 
 public abstract class UIController : MannBehaviour, IUIController {
 	protected InputController input;
+	protected DataController data;
 
 	public void LoadStartScreen () {
 		SceneController.LoadStart();
@@ -28,6 +29,7 @@ public abstract class UIController : MannBehaviour, IUIController {
 
 	protected override void FetchReferences () {
 		input = InputController.Instance;
+		data = DataController.Instance;
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

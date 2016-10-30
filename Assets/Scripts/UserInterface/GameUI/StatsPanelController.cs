@@ -9,7 +9,7 @@ using System.Collections;
 
 public class StatsPanelController : UIController {
 	public static StatsPanelController Instance;
-
+	Color defaultTextColor = Color.white;
 	const string WAVE = "Wave";
 	const string ENEMIES = "Enemies";
 	const string MANA = "Mana";
@@ -26,6 +26,17 @@ public class StatsPanelController : UIController {
 	Text levelText;
 	[SerializeField]
 	Text xpText;
+	[SerializeField]
+	Image manaIcon;
+
+	public void SetManaTextColor (Color color) {
+		manaText.color = color;
+		manaIcon.color = color;
+	}
+
+	public void ResetManaTextColor () {
+		SetManaTextColor(defaultTextColor);
+	}
 
 	public void SetWave (int waveIndex) {
 		waveText.text = getWaveText(waveIndex);
@@ -70,6 +81,11 @@ public class StatsPanelController : UIController {
 	protected override void SetReferences () {
 		base.SetReferences();
 		SingletonUtil.TryInit(ref Instance, this, gameObject);
+	}
+
+	protected override void FetchReferences () {
+		base.FetchReferences ();
+		SetMana(DataController.Instance.Mana);
 	}
 
 	protected override void CleanupReferences () {
