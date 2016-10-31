@@ -6,7 +6,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameOverUIController : UIController, IUIController {
+public class GameOverUIController : UIController {
 	[SerializeField]
 	Text enemiesKilled;
 	[SerializeField]
