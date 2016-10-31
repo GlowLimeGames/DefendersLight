@@ -26,6 +26,12 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	int currentWaveIndex = 1;
 	int spawnPointCount = 1;
 	EnemyWave currentWave = null;
+	public EnemyWave ICurrentWave {
+		get {
+			return this.currentWave;
+		}
+	}
+
 	MathEquation spawnCountEquation = LinearEquation.Default;
     HashSet<EnemyBehaviour> activeEnemies = new HashSet<EnemyBehaviour>();
 	public int ICurrentWaveIndex {

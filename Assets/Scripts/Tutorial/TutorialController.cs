@@ -112,7 +112,8 @@ public class TutorialController : SingletonController<TutorialController> {
 		if (isSingleton) {
 			base.FetchReferences ();
 			tutorials = loadTutorials(false, TutorialKeys);
-			if (autoStartIntroTutorial) {
+			// Don't show the tutorial on replay
+			if (autoStartIntroTutorial && !SceneController.IsPlayAgain) {
 				PlayTutorial(INTRO_TUTORIAL_KEY);
 			}
 		}
