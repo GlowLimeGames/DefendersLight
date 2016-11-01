@@ -211,7 +211,7 @@
 			"Volume": 100
 		},
 		{
-			"Name":"Enemies_Approaching",
+			"Name":"Enemies_Approaching_2",
 			"Groups":[],
 			"Events":["EnemiesApproaching"],
 			"StopEvents":[],
@@ -531,7 +531,7 @@
 			"Volume": 80
 		},
 		{
-			"Name":"Orb_Attack_A",
+			"Name":"Orb_Attack_A2",
 			"Groups":["OrbAttack"],
 			"Events":[],
 			"StopEvents":[],
@@ -541,7 +541,7 @@
 			"Volume": 100
 		},
 		{
-			"Name":"Orb_Attack_B",
+			"Name":"Orb_Attack_B2",
 			"Groups":["OrbAttack"],
 			"Events":[],
 			"StopEvents":[],
@@ -551,7 +551,7 @@
 			"Volume": 100
 		},
 		{
-			"Name":"Orb_Attack_C",
+			"Name":"Orb_Attack_C2",
 			"Groups":["OrbAttack"],
 			"Events":[],
 			"StopEvents":[],
