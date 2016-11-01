@@ -74,7 +74,11 @@ public class InputController : Controller {
 			GameObject objectPressedOn;
 			if (GetObjectFromPointer(primaryPointer, out objectPressedOn)) {
 				TowerBehaviour tower;
-				if ((tower = objectPressedOn.GetComponent<TowerBehaviour>())) {
+				MapTileBehaviour tile;
+				if ((tile = objectPressedOn.GetComponent<MapTileBehaviour>())) {
+					HandlePointerPressedOnTile(tile);
+				}
+				else if ((tower = objectPressedOn.GetComponent<TowerBehaviour>())) {
 					HandlePointerPressedOnTower(tower);
 				}
 			}
@@ -83,6 +87,10 @@ public class InputController : Controller {
 
 	void HandlePointerPressedOnTower (TowerBehaviour tower) {
 		tower.SelectTower();	
+	}
+
+	void HandlePointerPressedOnTile (MapTileBehaviour tile) {
+		tile.TryPlaceSelectedTower();
 	}
 
 	// Tracks any touches and left click down

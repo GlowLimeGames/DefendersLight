@@ -8,7 +8,7 @@ using System.Linq;
 
 public class CheatController : Controller, ICheatController {
 	const string MINI_ORB_CHEAT_ID = "Increase Mini Orbs";
-
+	StatsPanelController statsPanel;
 	public int MiniOrbCheatIncreaseAmount = 10000; //changed
 	ICheatCommand miniOrbCheat = null;
 	public List<ICheatCommand> cheats {get; private set;}
@@ -21,27 +21,29 @@ public class CheatController : Controller, ICheatController {
 		}
 	}
     public void LevelUpCheat() {
-        WorldController.Instance.LevelUpCheat();
+		data.LevelUpCheat();
+		statsPanel.SetLevel(data.PlayerLevel);
+		statsPanel.SetXP(data.XP, data.XPForLevel);
     }
 
 	public void HealAllTowers() { 
-		WorldController.Instance.HealAllTowers ();
+		world.HealAllTowers ();
 	}
     
     public void KillAllEnemies() {
-        WorldController.Instance.KillAllEnemies();
+		world.KillAllEnemies();
     }
 
     public void GodMode() {
-        WorldController.Instance.ToggleGodMode();
+		world.ToggleGodMode();
     }
 
     public void setWave(int waveIndex) {
-        WorldController.Instance.setWave(waveIndex);
+		world.setWave(waveIndex);
     }
 
     public void DestroyAllTowers() {
-        WorldController.Instance.DestroyAllTowers();
+		world.DestroyAllTowers();
     }
 
 	public void RunMiniOrbCheat () {
@@ -50,6 +52,16 @@ public class CheatController : Controller, ICheatController {
 
 	public void Run(ICheatCommand command) {
 		command.Run();
+	}
+
+	public void UnlockAllTowers () {
+		world.UnlockAllTowers();
+	}
+
+	public void ResetLevel () {
+		data.ResetPlayerData();	
+		statsPanel.SetLevel(data.PlayerLevel);
+		statsPanel.SetXP(data.XP, data.XPForLevel);;
 	}
 
 	public ICheatCommand GetCheat(string id) {
@@ -61,8 +73,10 @@ public class CheatController : Controller, ICheatController {
 	}
 
 	protected override void FetchReferences () {
+		base.FetchReferences();
 		miniOrbCheat = new MiniOrbCheat(MINI_ORB_CHEAT_ID, MiniOrbCheatIncreaseAmount, WorldController.Instance);
 		cheats.Add(miniOrbCheat);
+		statsPanel = StatsPanelController.Instance;
 	}
 
 	protected override void CleanupReferences () {

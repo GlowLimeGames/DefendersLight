@@ -14,13 +14,13 @@ public class RangedAttackBehaviour : AttackBehaviour {
 	}
 
 	void OnTriggerEnter (Collider collider) {
-		if (isActive) {
+		if (isActive && parentObject.IIsActive) {
 			parentObject.HandleColliderEnterTrigger(collider);
 		}
 	}
 
 	void OnTriggerStay (Collider collider) {
-		if (isActive) {
+		if (isActive && parentObject.IIsActive) {
 			parentObject.HandleColliderStayTrigger(collider);
 		}
 	}

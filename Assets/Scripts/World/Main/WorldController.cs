@@ -24,6 +24,12 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			return towerController.CoreOrbInstance;
 		}
 	}
+	public bool HasTowerToPlace {
+		get {
+			return currentlySelectedPurchaseTower != null;
+		}
+	}
+	Tower currentlySelectedPurchaseTower = null;
 
 	SeasonList seasons;
 	Season _currentSeason;
@@ -43,6 +49,11 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public LinearEquation EnemySpawnCountEquation;
+	public bool OverrideTowerLevelRequirement {get; private set;}
+
+	public void UnlockAllTowers () {
+		OverrideTowerLevelRequirement = true;
+	}
 
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
@@ -55,6 +66,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	UnitController[] unitControllers;
 	DataController dataController;
 	StatsPanelController statsPanel;
+	TowerPurchasePanelController purchasePanel;
 	InputController input;
 
 	int spawnPoints = 1;
@@ -112,10 +124,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		onEarnXP(0);
 	}
 
-    public void LevelUpCheat() {
-        dataController.LevelUpCheat();
-    }
-
 	void onEarnXP (int xpEarned) {
 		statsPanel.SetXP(dataController.XP, dataController.XPForLevel);
 	}
@@ -151,18 +159,18 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		enemyController.SpawnWave();
 	}
 		
-	public void CollectMiniOrbs (int count) {
-		dataController.CollectMiniOrbs(count);
-		statsPanel.SetMiniOrbs(dataController.MiniOrbCount);
+	public void CollectMana (int count) {
+		dataController.CollectMana(count);
+		statsPanel.SetMana(dataController.Mana);
 	}
 
 	public void EarnXP (int xpEarned) {
 		dataController.EarnXP(xpEarned);
 	}
 
-	public bool TrySpendMiniOrbs (int count) {
-		if (dataController.TrySpendMiniOrbs(count)) {
-			statsPanel.SetMiniOrbs(dataController.MiniOrbCount); 
+	public bool TrySpendMana (int count) {
+		if (dataController.TrySpendMana(count)) {
+			statsPanel.SetMana(dataController.Mana); 
 			return true;
 		} else {
 			return false;
@@ -258,6 +266,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		input.ToggleDraggingObject(true);
 		if (dragEvent != null) {
 			towerController.HandleBeginDragPurchase(dragEvent, towerPanel);
+			mapController.HighlightValidBuildTiles();
 		}
 	}
 
@@ -271,6 +280,25 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		input.ToggleDraggingObject(false);
 		if (dragEvent != null) {
 			towerController.HandleEndDragPurchase(dragEvent, towerPanel);
+			mapController.UnhighlightValidBuildsTiles();
+		}
+	}
+
+	public void HandleTowerPurchaseSelected (Tower tower) {
+		this.currentlySelectedPurchaseTower = tower;
+		mapController.HighlightValidBuildTiles();
+	}
+
+	public TowerBehaviour GetPurchaseTowerToPlace (bool purchaseLock = false) {
+		if (TrySpendMana(currentlySelectedPurchaseTower.ICost)) {
+			Tower purchaseTower = currentlySelectedPurchaseTower;
+			if (!purchaseLock) {
+				currentlySelectedPurchaseTower = null;
+				purchasePanel.TryDeselectSelectedPanel();
+			}
+			return towerController.GetTowerBehaviourFromTower(purchaseTower);
+		} else {
+			return null;
 		}
 	}
 
@@ -284,6 +312,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		enemyController = EnemyController.Instance;
 		mapController = MapController.Instance;
 		statsPanel = StatsPanelController.Instance;
+		purchasePanel = TowerPurchasePanelController.Instance;
 		input = InputController.Instance;
 		setupDataControllerCallbacks();
 		setupUI();
@@ -309,13 +338,13 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	void handleUnitEvent (string eventName, Unit unit) {
 		if (eventName == EventType.EnemyDestroyed) {
 			if (unit.Type == "Undead") {
-				CollectMiniOrbs(25);
+				CollectMana(25);
 				EarnXP(10);
 			} else if (unit.Type == "Brute") {
-				CollectMiniOrbs(100);
+				CollectMana(100);
 				EarnXP(50);
 			} else if (unit.Type == "Shade") {
-				CollectMiniOrbs(200);
+				CollectMana(200);
 				EarnXP(100);
 			}
 		}

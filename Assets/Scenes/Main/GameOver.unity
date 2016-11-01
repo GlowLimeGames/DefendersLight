@@ -199,14 +199,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1913978624}
         m_MethodName: LoadGame
-        m_Mode: 1
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 1913978624}
         m_MethodName: PlayClickSound
@@ -534,7 +534,7 @@ GameObject:
   - 114: {fileID: 1088411042}
   - 114: {fileID: 1088411041}
   m_Layer: 5
-  m_Name: CorbOrbDestroyedText
+  m_Name: CoreOrbDestroyedText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -555,8 +555,8 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14.2, y: -37}
-  m_SizeDelta: {x: 405.8, y: 92.2}
+  m_AnchoredPosition: {x: 154, y: -37}
+  m_SizeDelta: {x: 686, y: 92}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1088411041
 MonoBehaviour:
@@ -604,7 +604,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Corb Orb Destroyed
+  m_Text: Core Orb Destroyed
 --- !u!222 &1088411043
 CanvasRenderer:
   m_ObjectHideFlags: 0

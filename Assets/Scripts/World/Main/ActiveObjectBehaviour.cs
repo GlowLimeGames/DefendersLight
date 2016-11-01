@@ -31,6 +31,11 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 			return _maxHealth;
 		}
 	}
+	public bool IAtFullHealth {
+		get {
+			return Health == IMaxHealth;
+		}
+	}
 	Unit unit;
 
 	EventAction onDestroyed;
@@ -43,7 +48,12 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	protected HealthBarBehaviour HealthBar;
 
 	protected bool attackCooldownActive = false;
-
+	protected bool isActive = true;
+	public bool IIsActive {
+		get {
+			return isActive;
+		}
+	}
 	[SerializeField]
 	bool debugging;
 
@@ -62,6 +72,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	protected override void CleanupReferences () {
+		base.CleanupReferences();
 		if (onDestroyed != null) {	
 			onDestroyed();
 		}
@@ -71,8 +82,6 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		StartCoroutine(AttackCooldown());
 		activeAgent.Damage(damage);
 	}
-
-	public abstract ActiveObjectBehaviour SelectTarget();
 
 	public virtual void Damage(int damage) {
         if (!isInvulnerable) {
@@ -160,5 +169,9 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	protected void setUnit (Unit unit) {
 		this.unit = unit;
 		this.Health = unit.Health;
+	}
+
+	public virtual void ToggleActive (bool isActive) {
+		this.isActive = isActive;
 	}
 }

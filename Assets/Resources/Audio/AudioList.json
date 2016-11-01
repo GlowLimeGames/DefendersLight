@@ -1,7 +1,7 @@
 {
 	"Files": [
 		{
-			"Name":"Warlock",
+			"Name":"Warlock WAV",
 			"Groups":[],
 			"Events":["LoadStart", "LoadGameOver"],
 			"StopEvents":[],
@@ -18,7 +18,7 @@
 			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
-			"Volume": 100
+			"Volume": 90
 		},
 		{
 			"Name":"Defender's Light Soundtrack 2_4",
@@ -38,17 +38,17 @@
 			"Loop":true,
 			"Type": "Ambience",
 			"Channel":2,
-			"Volume": 50
+			"Volume": 40
 		},
 		{
 			"Name":"Defender's Light Ambience 1",
 			"Groups":[],
-			"Events":["NotAssigned"],
+			"Events":["LoadGame"],
 			"StopEvents":[],
 			"Loop":true,
 			"Type": "Ambience",
 			"Channel":2,
-			"Volume": 50
+			"Volume": 30
 		},
 
 		{
@@ -211,7 +211,7 @@
 			"Volume": 100
 		},
 		{
-			"Name":"Enemies_Approaching",
+			"Name":"Enemies_Approaching_2",
 			"Groups":[],
 			"Events":["EnemiesApproaching"],
 			"StopEvents":[],
@@ -531,7 +531,7 @@
 			"Volume": 80
 		},
 		{
-			"Name":"Orb_Attack_A",
+			"Name":"Orb_Attack_A2",
 			"Groups":["OrbAttack"],
 			"Events":[],
 			"StopEvents":[],
@@ -541,7 +541,7 @@
 			"Volume": 100
 		},
 		{
-			"Name":"Orb_Attack_B",
+			"Name":"Orb_Attack_B2",
 			"Groups":["OrbAttack"],
 			"Events":[],
 			"StopEvents":[],
@@ -551,7 +551,7 @@
 			"Volume": 100
 		},
 		{
-			"Name":"Orb_Attack_C",
+			"Name":"Orb_Attack_C2",
 			"Groups":["OrbAttack"],
 			"Events":[],
 			"StopEvents":[],

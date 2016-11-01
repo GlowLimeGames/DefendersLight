@@ -75,16 +75,12 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		EventController.Event(EventType.BuildTower);
 	}
 
-	public override ActiveObjectBehaviour SelectTarget() {
-		return null;
-	}
-
 	protected override void HandleNamedEvent (string eventName) {
 
 	}
 
 	public void Sell () {
-		WorldController.Instance.CollectMiniOrbs(sellValue);
+		WorldController.Instance.CollectMana(sellValue);
 		Destroy(gameObject);
 	}
 
@@ -114,7 +110,9 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	public override void HandleColliderEnterTrigger (Collider collider) {
 		base.HandleColliderEnterTrigger (collider);
-		checkToAttack(collider);
+		if (isActive) {
+			checkToAttack(collider);
+		}
 	}
 
 	public override void HandleColliderStayTrigger (Collider collider)	{

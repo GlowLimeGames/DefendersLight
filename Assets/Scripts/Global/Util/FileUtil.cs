@@ -38,11 +38,15 @@ public static class FileUtil {
 	}
 
 	public static void WriteStringToPath (string text, string path) {
-		File.WriteAllText(path, text);
+		#if !UNITY_WEBPLAYER
+			File.WriteAllText(path, text);
+		#endif
 	}
 
 	public static void AppendStringToPath (string text, string path) {
-		File.AppendAllText(path, text);
+		#if !UNITY_WEBPLAYER
+			File.AppendAllText(path, text);
+		#endif
 	}
 
 	public static bool FileExistsAtPath (string path) {

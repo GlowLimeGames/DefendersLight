@@ -19,7 +19,7 @@ public class ShadeBehaviour : EnemyBehaviour {
 	}
 
 	protected override bool canHealTarget (ActiveObjectBehaviour target) {
-		return base.canHealTarget(target) && isEnemy(target);
+		return base.canHealTarget(target) && isEnemy(target) && !target.IAtFullHealth;
 	}
 
 	void OnTriggerEnter (Collider collider) {
@@ -41,7 +41,7 @@ public class ShadeBehaviour : EnemyBehaviour {
 	void checkToHeal (Collider collider) {
 		if (!healingIsCoolingDown) {
 			ActiveObjectBehaviour activeObject = collider.GetComponent<ActiveObjectBehaviour>();
-			if (activeObject != null && canHealTarget(activeObject)) {
+			if (activeObject != null && activeObject != this && canHealTarget(activeObject)) {
 				HealTarget(activeObject, Mathf.Clamp(HealRate, 0, Health));
 			}
 		}

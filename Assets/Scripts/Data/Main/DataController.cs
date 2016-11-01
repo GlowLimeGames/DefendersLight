@@ -10,7 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class DataController : Controller, IDataController {
 	EventActionInt levelUp;
 	EventActionInt earnXP;
-
+	public int StartingMana = 100;
 	const string JSON_DIRECTORY = "JSON";
 	const string SAVE_DIRECTORY = "Save";
 	const string WORLD_STATE_FILE_NAME = "WorldState.dat";
@@ -119,6 +119,10 @@ public class DataController : Controller, IDataController {
 			callOnLevelUp(currentPlayerData.LevelUp());
 		}
 	}
+
+	public void AutoLevelUp () {
+		currentPlayerData.LevelUpCheat();
+	}
 		
 	public void SubscribeToOnLevelUp (EventActionInt onLevelUp) {
 		levelUp += onLevelUp;
@@ -165,9 +169,9 @@ public class DataController : Controller, IDataController {
 
 	#region World State
 
-	public int MiniOrbCount {
+	public int Mana {
 		get {
-			return currentWorldState.IMiniOrbs;
+			return currentWorldState.IMana;
 		}
 	}
 	public int EnemiesKilled {
@@ -190,7 +194,7 @@ public class DataController : Controller, IDataController {
 			file.Close();
 			return currentWorldState;
 		} catch {
-			currentWorldState = new WorldState(WorldStateFilePath);
+			currentWorldState = new WorldState(WorldStateFilePath, StartingMana);
 			return currentWorldState;
 		}
 	}
@@ -208,22 +212,22 @@ public class DataController : Controller, IDataController {
 			file = File.Create(WorldStateFilePath);
 		}
 		if (currentWorldState == null) {
-			currentWorldState = new WorldState(WorldStateFilePath);
+			currentWorldState = new WorldState(WorldStateFilePath, StartingMana);
 		}
 		binaryFormatter.Serialize(file, currentWorldState);
 		file.Close();
 	}
 
-	public void CollectMiniOrbs (int miniOrbCount) {
-		this.currentWorldState.CollectMiniOrbs(miniOrbCount);
+	public void CollectMana (int mana) {
+		this.currentWorldState.CollectMana(mana);
 	}
 
-	public bool TrySpendMiniOrbs (int miniOrbCount) {
-		return this.currentWorldState.TrySpendMiniOrbs(miniOrbCount);
+	public bool TrySpendMana (int mana) {
+		return this.currentWorldState.TrySpendMana(mana);
 	}
 
-	public bool HasSufficientMiniOrbs (int miniOrbCount) {
-		return this.currentWorldState.HasSufficientMiniOrbs(miniOrbCount);
+	public bool HasSufficientMana (int mana) {
+		return this.currentWorldState.HasSufficientMana(mana);
 	}
 
 	public void NextWave () {
@@ -285,11 +289,11 @@ public class DataController : Controller, IDataController {
 	}
 
 	void ResetWorldState () {
-		currentWorldState = new WorldState(WorldStateFilePath);
+		currentWorldState = new WorldState(WorldStateFilePath, StartingMana);
 		SaveWorldState();
 	}
 
-	void ResetPlayerData () {
+	public void ResetPlayerData () {
 		currentPlayerData = new PlayerData(PlayerDataFilePath);
 		currentPlayerData.SetXPEquation(XPEquation);
 		SavePlayerData();
