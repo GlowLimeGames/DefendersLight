@@ -4,17 +4,19 @@
  */
 
 using UnityEngine;
+using System;
 using System.Collections;
 
 public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	WorldController world;
 	[SerializeField]
 	StaticAgentBehaviour containedAgent;
-	Color hightlightColor = Color.green;
-	Color validBuildColor = Color.Lerp(Color.green, Color.yellow, 0.75f);
-	Color cannotBuildColor = Color.red;
-	Color illuminatedColor = Color.yellow;
-	Color standardColor = Color.black;
+	static Color hightlightColor = Color.green;
+	static Color validBuildColor = Color.Lerp(Color.green, Color.yellow, 0.75f);
+	static Color cannotBuildColor = Color.red;
+	static Color illuminatedColor = Color.yellow;
+	static Color standardColor = Color.black;
+	static Color[] tempColors = new Color[]{hightlightColor, cannotBuildColor};
 	Color previousColor;
 	public bool IIsIlluminated {
 		get {
@@ -106,7 +108,10 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	}
 
 	void SetTileColor (Color color) {
-		previousColor = spriteRenderer.color;
+		// Only track permanent colors (not highlighting colors)
+		if (!Array.Exists(tempColors, instanceClor => instanceClor == spriteRenderer.color)) {
+			previousColor = spriteRenderer.color;
+		}
 		spriteRenderer.color = color;
 	}
 

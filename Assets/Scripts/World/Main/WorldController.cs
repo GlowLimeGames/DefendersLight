@@ -321,7 +321,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			Tower purchaseTower = currentlySelectedPurchaseTower;
 			if (!purchaseLock) {
 				currentlySelectedPurchaseTower = null;
-				purchasePanel.TryDeselectSelectedPanel();
+				purchasePanel.TryDeselectSelectedPanel(false);
 			}
 			return towerController.GetTowerBehaviourFromTower(purchaseTower, startingPosition);
 		} else {
