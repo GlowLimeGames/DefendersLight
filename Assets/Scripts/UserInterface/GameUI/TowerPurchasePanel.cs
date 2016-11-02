@@ -54,12 +54,14 @@ public class TowerPurchasePanel : MannBehaviour, IBeginDragHandler, IDragHandler
 		controller.HandlePurchaseSelected(this);
 	}
 
-	public bool TryDeselect () {
+	public bool TryDeselect (bool switchSelection = true) {
 		if (isSelected) {
 			showAsUnselected();
 			stopShowInvalidPurchase();
 			cannotPurchaseInteractionOccuring = false;
-			isSelected = false;
+			if (switchSelection) {
+				isSelected = false;
+			}
 			return true;
 		} else {
 			return false;
@@ -73,14 +75,16 @@ public class TowerPurchasePanel : MannBehaviour, IBeginDragHandler, IDragHandler
 			} else {
 				cannotPurchaseInteractionOccuring = true;	
 				startShowInvalidPurchase(cannotPurchaseSelectHighlightTime);
+				controller.TryDeselectSelectedPanel();
 			}
 		} else {
-			showAsUnselected();
+			controller.TryDeselectSelectedPanel(shouldSwitchSelected:false);
 		}
 		isSelected = !isSelected;
 	}
 
 	public void OnBeginDrag (PointerEventData pointerEvent) {
+		controller.TryDeselectSelectedPanel(false);
 		if (data.HasSufficientMana(cost)) {
 			HandleCanPurchaseBeginDrag(pointerEvent);
 		} else {
@@ -95,7 +99,7 @@ public class TowerPurchasePanel : MannBehaviour, IBeginDragHandler, IDragHandler
 
 	void showAsSelected () {
 		image.color = selectColor;
-		transform.localScale *= selectedScale;
+		transform.localScale = scalarVector(selectedScale);
 	}
 
 	void showAsUnselected () {
@@ -103,7 +107,7 @@ public class TowerPurchasePanel : MannBehaviour, IBeginDragHandler, IDragHandler
 		if (cannotPurchaseInteractionOccuring) {
 			StatsPanelController.Instance.ResetManaTextColor();			
 		} else {
-			transform.localScale /= selectedScale;
+			transform.localScale = Vector3.one;
 		}
 	}
 		

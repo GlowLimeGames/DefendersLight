@@ -39,11 +39,11 @@ public class TowerPurchasePanelController : UIController {
 		world.HandleTowerPurchaseSelected(towerPanel.GetTower());
 	}
 
-	public bool TryDeselectSelectedPanel () {
+	public bool TryDeselectSelectedPanel (bool shouldSwitchSelected = true) {
 		if (this.selectedPurchasePanel) {
-			this.selectedPurchasePanel.TryDeselect();
-			this.selectedPurchasePanel = null;
 			map.UnhighlightValidBuildsTiles();
+			this.selectedPurchasePanel.TryDeselect(shouldSwitchSelected);
+			this.selectedPurchasePanel = null;
 			return true;
 		} else {
 			return false;
