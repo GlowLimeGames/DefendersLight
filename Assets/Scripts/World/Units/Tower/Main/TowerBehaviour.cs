@@ -55,12 +55,17 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		}
 	}
 
-	protected override void CleanupReferences () {
-		base.CleanupReferences();
+	public override void Destroy () {
+		base.Destroy ();
 		if (WorldController.Instance) {
 			WorldController.Instance.RemoveActiveTower(this);
 		}
 		EventController.Event(EventType.TowerDestroyed);
+
+	}
+
+	protected override void CleanupReferences () {
+		base.CleanupReferences();
 	}
 
 	public void SelectTower () {
@@ -81,7 +86,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	public void Sell () {
 		WorldController.Instance.CollectMana(sellValue);
-		Destroy(gameObject);
+		unitController.HandleObjectDestroyed(this);
 	}
 
 	public override void Attack(ActiveObjectBehaviour activeAgent, int damage) {

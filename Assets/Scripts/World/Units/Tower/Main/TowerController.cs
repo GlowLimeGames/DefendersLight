@@ -66,24 +66,40 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		if (potentialPurchaseTower != null) {
 			Destroy(potentialPurchaseTower);
 		}
-		this.potentialPurchaseTower = GetTowerBehaviourFromTower(towerPanel.GetTower(), false);
+		Vector3 startPosition = getDragPosition(dragEvent, towerPanel.transform.position);
+		this.potentialPurchaseTower = GetTowerBehaviourFromTower(towerPanel.GetTower(), startPosition, false);
 	}
 
-	public TowerBehaviour GetTowerBehaviourFromTower (Tower tower, bool shouldStartActive = false) {
-		TowerBehaviour potentialPurchaseTower = Instantiate(worldController.GetTowerPrefab(tower.TowerType)).GetComponent<TowerBehaviour>();
+	public TowerBehaviour GetTowerBehaviourFromTower (Tower tower, Vector3 startPosition, bool shouldStartActive = false) {
+		TowerBehaviour potentialPurchaseTower = SpawnTower(tower, startPosition);
+		potentialPurchaseTower.Setup(this);
 		potentialPurchaseTower.ToggleColliders(shouldStartActive);
 		potentialPurchaseTower.SetTower(tower);
 		potentialPurchaseTower.ToggleActive(shouldStartActive);
+		potentialPurchaseTower.OnSpawn();
 		return potentialPurchaseTower;
 	}
 
+	TowerBehaviour SpawnTower (Tower tower, Vector3 startingPosition) {
+		ActiveObjectBehaviour behaviour;
+		if (TryGetActiveObject(tower.IType, startingPosition, out behaviour)) {
+			return behaviour as TowerBehaviour;
+		} else {
+			return Instantiate(worldController.GetTowerPrefab(tower.TowerType)).GetComponent<TowerBehaviour>();
+		}
+	}
+		
 	public void HandleDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
-		Vector3 dragPosition = dragEvent.position;
-		dragPosition.z = towerPanel.transform.position.z - Camera.main.transform.position.z;
+		potentialPurchaseTower.transform.position = getDragPosition(dragEvent, towerPanel.transform.position);
+		HighlightSpotToPlace(potentialPurchaseTower.transform.position);
+	}
+
+	Vector3 getDragPosition (PointerEventData pointerEvent, Vector3 panelPosition) {
+		Vector3 dragPosition = pointerEvent.position;
+		dragPosition.z = panelPosition.z - Camera.main.transform.position.z;
 		dragPosition = Camera.main.ScreenToWorldPoint(dragPosition);
 		dragPosition.y = DRAG_HEIGHT_OFFSET;
-		potentialPurchaseTower.transform.position = dragPosition;
-		HighlightSpotToPlace(dragPosition);
+		return dragPosition;
 	}
 
 	void HighlightSpotToPlace (Vector3 dragPosition) {

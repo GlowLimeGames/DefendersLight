@@ -114,6 +114,7 @@ public class TowerPurchasePanel : MannBehaviour, IBeginDragHandler, IDragHandler
 
 	void HandleCannotPurchaesBeginDrag () {
 		cannotPurchaseInteractionOccuring = true;
+		showAsCannotPurchase();
 	}
 
 	public void OnDrag (PointerEventData pointerEvent) {

@@ -9,6 +9,30 @@ using System.Collections.Generic;
 
 public abstract class UnitController : MannBehaviour {
 	public abstract Unit[] GetUnits();
+
+	protected WorldController worldController;
+	protected DataController dataController;
+	protected MapController mapController;
+
+	protected bool TryGetActiveObject (string objectType, Vector3 objectStartingPosition, out ActiveObjectBehaviour activeObject) {
+		bool successful = worldController.TryPullFromSpawnPool(objectType, out activeObject);
+		if (successful) {
+			activeObject.transform.position = objectStartingPosition;
+			activeObject.gameObject.SetActive(true);
+		}
+		return successful;
+	}
+
+	public void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
+		activeObject.gameObject.SetActive(false);
+		worldController.AddToSpawnPool(activeObject);
+	}
+
+	public virtual void Setup (WorldController worldController, DataController dataController, MapController mapController) {
+		this.worldController = worldController;
+		this.dataController = dataController;
+		this.mapController = mapController;
+	}
 }
 
 public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitController 
@@ -32,15 +56,9 @@ public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitContro
 			return _units;
 		}
 	}
-		
-	protected WorldController worldController;
-	protected DataController dataController;
-	protected MapController mapController;
 
 	public virtual void Setup (WorldController worldController, DataController dataController, MapController mapController, string unitTemplateJSONPath) {
-		this.worldController = worldController;
-		this.dataController = dataController;
-		this.mapController = mapController;
+		Setup(worldController, dataController, mapController);
 		string unitTemplateJSON = dataController.RetrieveJSONFromResources(unitTemplateJSONPath);
 		CreateUnitTemplates(unitTemplateJSON);
 	}
@@ -67,7 +85,7 @@ public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitContro
 	}
 
 	protected override void FetchReferences() {
-
+		
 	}
 
 	protected override void CleanupReferences () {

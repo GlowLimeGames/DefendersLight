@@ -62,7 +62,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		spawnPoint.transform.SetParent(spawnPointParent);
 		return spawnPoint.GetComponent<EnemySpawnPoint>();
 	}
-
+		
 	void refreshSpawnPointsForWave () {
 		foreach (EnemySpawnPoint spawnPoint in spawnPoints) {
 			spawnPoint.ChooseStartingTile();
@@ -176,8 +176,10 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	public void SpawnEnemy (EnemySpawnPoint spawnPoint, Direction spawnDirection, string enemyKey) {
 		if (orderedEnemyPrefabs.ContainsKey(enemyKey)) {
-			GameObject enemy = (GameObject) Instantiate(orderedEnemyPrefabs[enemyKey], spawnPoint.GetPosition(), Quaternion.identity);
-			EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+			EnemyBehaviour enemyBehaviour = GetEnemyObject(enemyKey, spawnPoint.GetPosition());
+			enemyBehaviour.Setup(this);
+			GameObject enemy = enemyBehaviour.gameObject;
+			enemyBehaviour.ToggleColliders(true);
             AddActiveEnemy(enemyBehaviour);
 			enemyBehaviour.SetEnemy(templateUnits[enemyKey]);
 			enemyBehaviour.SetPath(new Queue<MapTileBehaviour>(spawnPoint.CurrentPath));
@@ -192,12 +194,22 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 				angle.eulerAngles = new Vector3(0, yRotation, 0);
 			}
 			enemy.transform.eulerAngles = angle.eulerAngles;
+			enemyBehaviour.OnSpawn();
 			enemyBehaviour.NavigatePath();
 		} else {
 			Debug.LogErrorFormat("ERROR: No enemy of type {0}", enemyKey);
 		}
 	}
 		
+	EnemyBehaviour GetEnemyObject (string enemyKey, Vector3 startPosition) {
+		ActiveObjectBehaviour behaviour;
+		if (!TryGetActiveObject(enemyKey, startPosition, out behaviour)) {
+			behaviour = Instantiate(orderedEnemyPrefabs[enemyKey]).GetComponent<EnemyBehaviour>();
+			behaviour.transform.position = startPosition;
+		}
+		return behaviour as EnemyBehaviour;
+	}
+
 	protected override void SetReferences() {
 		if (!SingletonUtil.TryInit(ref Instance, this, gameObject)) {
 			Destroy(gameObject);

@@ -135,6 +135,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	}
 
 	public void PlaceStaticAgent (StaticAgentBehaviour agent, bool shouldPlaySound = true) {
+		agent.SetTile(this);
 		if (isIlluminated || agent is CoreOrbBehaviour) {
 			containedAgent = agent;
 			agent.transform.SetParent(transform);
@@ -161,11 +162,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		}
 		Unhighlight();
 	}
-
-	public void PositionMobileAgent (MobileAgentBehaviour agent) {
-
-	}
-
+		
 	public void IlluminateSquare (bool shouldPlaySound = true) {
 		if (!isIlluminated) {
 			isIlluminated = true;
@@ -224,7 +221,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 
 	public bool TryPlaceSelectedTower () {
 		if (CanPlaceTower() && world.HasTowerToPlace) {		
-			PlaceStaticAgent(world.GetPurchaseTowerToPlace());
+			PlaceStaticAgent(world.GetPurchaseTowerToPlace(transform.position));
 			return true;
 		} else {
 			return false;
