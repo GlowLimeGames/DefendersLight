@@ -15,13 +15,18 @@ public class ShadeBehaviour : EnemyBehaviour {
 
 	protected override void SetReferences () {
 		base.SetReferences ();
+		OnSpawn();
+	}
+
+	public override void OnSpawn () {
+		base.OnSpawn ();
 		StartCoroutine(healthDrain());
 	}
 
 	protected override bool canHealTarget (ActiveObjectBehaviour target) {
 		return base.canHealTarget(target) && isEnemy(target) && !target.IAtFullHealth;
 	}
-
+		
 	void OnTriggerEnter (Collider collider) {
 		if (collider.gameObject.tag == TowerController.TOWER_TAG && isMoving) {
 			Halt();

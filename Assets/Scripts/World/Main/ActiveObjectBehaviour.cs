@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
+	protected UnitController unitController;
 	public string Name;
 	public int Health;
 	public int BaseDamage;
@@ -34,6 +35,11 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public bool IAtFullHealth {
 		get {
 			return Health == IMaxHealth;
+		}
+	}
+	public string IType {
+		get {
+			return unit.Type;
 		}
 	}
 	Unit unit;
@@ -73,11 +79,12 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	protected override void CleanupReferences () {
 		base.CleanupReferences();
-		if (onDestroyed != null) {	
-			onDestroyed();
-		}
 	}
-		
+
+	public virtual void Setup (UnitController unitController) {
+		this.unitController = unitController;
+	}
+
 	public virtual void Attack(ActiveObjectBehaviour activeAgent, int damage) {
 		StartCoroutine(AttackCooldown());
 		activeAgent.Damage(damage);
@@ -99,6 +106,15 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		updateHealthBar();
 	}
     
+	public virtual void OnSpawn () {
+		ResetStats();
+	}
+
+	public virtual void ResetStats () {
+		Health = IMaxHealth;
+		updateHealthBar();
+	}
+
 	void updateHealthBar () {
 		if (HealthBar) {
 			HealthBar.SetHealthDisplay(
@@ -117,7 +133,10 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	public virtual void Destroy() {
-		DestroyObject(gameObject);
+		unitController.HandleObjectDestroyed(this);	
+		if (onDestroyed != null) {	
+			onDestroyed();
+		}
 	}
 
 	public virtual bool InRange(ActiveObjectBehaviour activeAgent) {

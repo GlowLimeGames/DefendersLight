@@ -30,7 +30,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 	}
 	Tower currentlySelectedPurchaseTower = null;
-
+	Dictionary<string, Stack<ActiveObjectBehaviour>> spawnPools = new Dictionary<string, Stack<ActiveObjectBehaviour>>();
 	SeasonList seasons;
 	Season _currentSeason;
 	Season currentSeason {
@@ -53,6 +53,33 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	public void UnlockAllTowers () {
 		OverrideTowerLevelRequirement = true;
+	}
+
+	public void AddToSpawnPool (ActiveObjectBehaviour activeObject) {
+		Stack<ActiveObjectBehaviour> pool;
+		if (spawnPools.TryGetValue(activeObject.IType, out pool)) {
+			pool.Push(activeObject);
+		} else {
+			pool = new Stack<ActiveObjectBehaviour>();
+			pool.Push(activeObject);
+			spawnPools.Add(activeObject.IType, pool);
+		}
+	}
+
+	public bool TryPullFromSpawnPool (string objectType, out ActiveObjectBehaviour activeObject) {
+		Stack<ActiveObjectBehaviour> pool;
+		if (spawnPools.TryGetValue(objectType, out pool)) {
+			if (pool.Count > 0) {
+				activeObject = pool.Pop();
+				return true;
+			} else {
+				activeObject = null;
+				return false;
+			}
+		} else {
+			activeObject = null;
+			return false;
+		}
 	}
 
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
@@ -289,14 +316,14 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		mapController.HighlightValidBuildTiles();
 	}
 
-	public TowerBehaviour GetPurchaseTowerToPlace (bool purchaseLock = false) {
+	public TowerBehaviour GetPurchaseTowerToPlace (Vector3 startingPosition, bool purchaseLock = false) {
 		if (TrySpendMana(currentlySelectedPurchaseTower.ICost)) {
 			Tower purchaseTower = currentlySelectedPurchaseTower;
 			if (!purchaseLock) {
 				currentlySelectedPurchaseTower = null;
 				purchasePanel.TryDeselectSelectedPanel();
 			}
-			return towerController.GetTowerBehaviourFromTower(purchaseTower);
+			return towerController.GetTowerBehaviourFromTower(purchaseTower, startingPosition);
 		} else {
 			return null;
 		}

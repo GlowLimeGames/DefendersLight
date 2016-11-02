@@ -42,12 +42,6 @@ public class EnemySpawnPoint : MannBehaviour {
 	public void SetPath (MapTileBehaviour[] path) {
 		this.CurrentPath = path;
 	}
-
-	public void SpawnEnemies (EnemyBehaviour[] enemies) {
-		foreach (EnemyBehaviour enemy in enemies) {
-			currentSpawnPoint.PositionMobileAgent(enemy);
-		}
-	}
 		
 	protected override void SetReferences () {
 		// NOTHING
