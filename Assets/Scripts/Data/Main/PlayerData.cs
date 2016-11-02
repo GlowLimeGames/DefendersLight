@@ -3,8 +3,11 @@
  * Description: Stores data about the player
  */
 
+using System.Collections;
+using UnityEngine;
+
 [System.Serializable]
-public class PlayerData : IPlayerData {
+public class PlayerData : MonoBehaviour, IPlayerData {
 	MathEquation xpEquation;
 
 	int _xp;
@@ -76,6 +79,7 @@ public class PlayerData : IPlayerData {
 		if (ReadyToLevelUp()) {
 			this._xp -= IXPForLevel;
 			this._level++;
+            LeveledUp = true;
 		}	
 		return this._level;
 	}
@@ -83,9 +87,45 @@ public class PlayerData : IPlayerData {
     public void LevelUpCheat() {
         this._level++;
 		this._xp = 0;
+        LeveledUp = true;
     }
 
-	public bool ReadyToLevelUp () {
+    bool LeveledUp = false;
+    bool CalledWait = false;
+
+    void Window(int ID)
+    {
+        
+    }
+    void Start()
+    {
+        LeveledUp = false;
+    }
+    void Update()
+    {
+        if (LeveledUp && !CalledWait)
+        {
+            CalledWait = true;
+            StartCoroutine(Wait());
+        }
+    }
+    void OnGUI()
+    {
+        //LeveledUp = GUI.Toggle(new Rect(10, 10, 100, 20), LeveledUp, "Window 0");
+        if (LeveledUp)
+        {
+            GUI.Window(0, new Rect(200, 200, 200, 60), Window , "LEVEL UP!");            
+        }
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(5);
+        LeveledUp = !LeveledUp;
+        CalledWait = false;
+    }
+
+    public bool ReadyToLevelUp () {
 		return IXPForLevel <= this._xp;
 	}
 
