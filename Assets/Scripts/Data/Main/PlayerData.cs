@@ -103,8 +103,10 @@ public class PlayerData : MonoBehaviour, IPlayerData {
     }
     void Update()
     {
+        
         if (LeveledUp && !CalledWait)
         {
+            OnGUI();
             CalledWait = true;
             StartCoroutine(Wait());
         }
