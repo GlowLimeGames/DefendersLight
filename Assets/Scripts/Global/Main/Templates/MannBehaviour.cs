@@ -91,7 +91,7 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 			return -1;
 		}
 	}
-
+		
 	protected Vector3 scalarVector (float value) {
 		return Vector3.one * value;
 	}
