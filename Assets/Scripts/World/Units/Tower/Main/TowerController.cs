@@ -22,7 +22,11 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	MapTileBehaviour previousHighlightedMapTile = null;
 	HashSet<TowerBehaviour> activeTowers = new HashSet<TowerBehaviour>();
 	Dictionary<TowerType, List<Tower>> towerTemplatesByType = new Dictionary<TowerType, List<Tower>>();
-
+	public Dictionary<TowerType, List<Tower>> ITowerTemplatesByType {
+		get {
+			return towerTemplatesByType;
+		}
+	}
 	public override void Setup (WorldController worldController, DataController dataController, MapController mapController, string unitTemplateJSONPath) {
 		base.Setup(worldController, dataController, mapController, unitTemplateJSONPath);
 		towerTemplatesByType = sortTowers(templateUnits.Values.ToArray());

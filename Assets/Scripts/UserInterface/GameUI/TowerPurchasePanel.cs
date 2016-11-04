@@ -8,7 +8,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TowerPurchasePanel : MannBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
+public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
 	Color cannotPurchaseColor = Color.red;
 	Color selectColor = Color.Lerp(Color.blue, Color.white, 0.25f);
 	public TowerType TowerType;
@@ -138,10 +138,11 @@ public class TowerPurchasePanel : MannBehaviour, IBeginDragHandler, IDragHandler
 	}
 
 	protected override void FetchReferences () {
-
+		base.FetchReferences();
 	}
 
 	protected override void SetReferences () {
+		base.SetReferences();
 		image = GetComponent<Image>();
 		standardColor = image.color;
 		SetCost(cost);
@@ -190,10 +191,10 @@ public class TowerPurchasePanel : MannBehaviour, IBeginDragHandler, IDragHandler
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-
+		base.HandleNamedEvent(eventName);
 	}
 
 	protected override void CleanupReferences () {
-
+		base.CleanupReferences();
 	}
 }

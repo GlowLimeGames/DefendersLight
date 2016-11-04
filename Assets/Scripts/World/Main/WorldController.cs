@@ -51,6 +51,26 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	public LinearEquation EnemySpawnCountEquation;
 	public bool OverrideTowerLevelRequirement {get; private set;}
 
+	Dictionary<string, Unit[]> _unitsByClass;
+	public Dictionary<string, Unit[]> UnitsByClass {
+		get {
+			if (_unitsByClass == null) {
+				_unitsByClass = determineUnitsByClass();
+			}
+			return _unitsByClass;
+		}
+	}
+
+	Dictionary<string, Unit[]> determineUnitsByClass () {
+		Dictionary<string, Unit[]> unitsByClass = new Dictionary<string, Unit[]>();
+		foreach (TowerType towerClass in towerController.ITowerTemplatesByType.Keys) {
+			unitsByClass.Add(towerClass.ToString(), towerController.ITowerTemplatesByType[towerClass].ToArray());
+		}
+		unitsByClass.Add(EnemyController.ENEMY_TAG, enemyController.ITemplateUnits);
+		return unitsByClass;
+	}
+
+
 	public void UnlockAllTowers () {
 		OverrideTowerLevelRequirement = true;
 	}
@@ -528,6 +548,14 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	public Sprite GetTowerSprite (string towerKey) {
 		return towerController.GetTowerSprite(towerKey);
+	}
+
+	#endregion
+
+	#region Enemy Controller
+
+	public Sprite GetEnemySprite (string enemyKey) {
+		return enemyController.GetEnemySprite(enemyKey);
 	}
 
 	#endregion

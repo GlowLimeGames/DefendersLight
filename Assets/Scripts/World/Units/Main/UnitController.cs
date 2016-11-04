@@ -4,6 +4,7 @@
  */
 
 using UnityEngine;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -41,6 +42,11 @@ public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitContro
 	where UnitList:UnitCollection<UnitType> {
 
 	protected Dictionary<string, UnitType> templateUnits;
+	public Unit[] ITemplateUnits {
+		get {
+			return templateUnits.Values.ToArray();
+		}
+	}
 	protected IList<UnitType> _activeUnits;
 	public UnitType[] ActiveUnits{
 		get {

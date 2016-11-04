@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyController {
 	EventActionInt waveAdvance;
@@ -323,5 +324,12 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	public IEnemyWave GetWave(int waveNumber) {
 		throw new System.NotImplementedException();
+	}
+
+	public Sprite GetEnemySprite (string enemyKey) {
+		// Remove special characters from tower key (to produce filename)
+		Regex rgx = new Regex("[^a-zA-Z0-9 -]");
+		enemyKey = rgx.Replace(enemyKey, "");
+		return Resources.Load<Sprite>(System.IO.Path.Combine(ENEMY_TAG, enemyKey.ToLower().Replace(" ", string.Empty)));
 	}
 }
