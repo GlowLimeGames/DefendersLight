@@ -100,7 +100,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		}
 		missileBehavior.SetTower(tower);
 		missileBehavior.SetTarget(activeAgent);
-		StartCoroutine(trackMissile(missileBehavior.transform, 1f));
+		// StartCoroutine(trackMissile(missileBehavior.transform, 1f));
 	}
 
 	IEnumerator trackMissile (Transform missileTransform, float time) {
