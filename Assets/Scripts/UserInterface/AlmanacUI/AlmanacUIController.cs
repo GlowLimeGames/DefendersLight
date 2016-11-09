@@ -19,6 +19,9 @@ public class AlmanacUIController : UIController {
 	}
 
 	[SerializeField]
+	Text unitClassText;
+
+	[SerializeField]
 	UIButton leftButton;
 
 	[SerializeField]
@@ -53,6 +56,7 @@ public class AlmanacUIController : UIController {
 	}
 
 	public void LoadUnitClass (string unitClass) {
+		this.unitClassText.text = unitClass;
 		Unit[] unitsInClass;
 		if (unitsByClass.TryGetValue(unitClass, out unitsInClass)) {
 			toggleSingleUnitSelected(false);
