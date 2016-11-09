@@ -6,11 +6,20 @@
 using UnityEngine;
 
 public class PauseUIController : UIController {
+	WorldController world;
 	[SerializeField]
 	GameObject pauseScreen;
 	[SerializeField]
 	GameObject cheatPanel;
 
+	public void TogglePause () {
+		world.TogglePause();	
+	}
+
+	protected override void FetchReferences () {
+		base.FetchReferences ();
+		world = WorldController.Instance;
+	}
 	public void TogglePauseScreen () {
 		pauseScreen.SetActive(!pauseScreen.activeSelf);
 		if (!pauseScreen.activeSelf) {
