@@ -379,7 +379,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		// Nothing
+
 	}
 		
 	void handleUnitEvent (string eventName, Unit unit) {
