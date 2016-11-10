@@ -43,7 +43,7 @@ GameObject:
   - 114: {fileID: 11468174}
   - 65: {fileID: 6525924}
   m_Layer: 0
-  m_Name: CoreOrb
+  m_Name: Core Orb
   m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,6 +211,7 @@ MonoBehaviour:
   Range: 3
   LevelString: Level 0
   AttackDelay: 3
+  isInvulnerable: 0
   AttackType: 1
   hasAttack: 1
   canHeal: 0

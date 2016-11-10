@@ -47,6 +47,10 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		createSpawnPoints();
 	}
 
+	public EnemyBehaviour GetPrefab (Tower tower) {
+		return loadPrefab(FileUtil.CreatePath(ENEMY_TAG, PREFABS_DIR, tower.Type)) as EnemyBehaviour;
+	}
+
 	#region Spawn Points
 
 	void createSpawnPoints () {

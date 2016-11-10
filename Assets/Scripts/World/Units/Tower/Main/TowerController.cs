@@ -84,6 +84,10 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		return potentialPurchaseTower;
 	}
 
+	public TowerBehaviour GetPrefab (Tower tower) {
+		return loadPrefab(FileUtil.CreatePath(TOWER_TAG, PREFABS_DIR, tower.Type)) as TowerBehaviour;
+	}
+
 	TowerBehaviour SpawnTower (Tower tower, Vector3 startingPosition) {
 		ActiveObjectBehaviour behaviour;
 		if (TryGetActiveObject(tower.IType, startingPosition, out behaviour)) {
@@ -211,6 +215,6 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		// Remove special characters from tower key (to produce filename)
 		Regex rgx = new Regex("[^a-zA-Z0-9 -]");
 		towerKey = rgx.Replace(towerKey, "");
-		return Resources.Load<Sprite>(Path.Combine(TOWER_TAG, towerKey.ToLower().Replace(" ", string.Empty)));
+		return Resources.Load<Sprite>(Path.Combine(TOWER_TAG, (Path.Combine(SPRITES_DIR, towerKey.ToLower().Replace(" ", string.Empty)))));
 	}
 }

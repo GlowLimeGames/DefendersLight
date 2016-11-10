@@ -4,17 +4,17 @@
           {
                "Title" : "Core Orb",
                "Body" : "This is the Core Orb. It is your job to protect it from the enemies lurking in the woods. The game ends if the Core Orb gets destroyed.",
-               "Image" : "Tower/coreorb"
+               "Image" : "Tower/Sprites/coreorb"
           },
           {
                "Title" : "Building Towers",
                "Body" : "The Core Orb is able to attack enemies, but it can’t protect itself for long. You protect the Core Orb by building towers to defend the orb from enemies. There are different kinds of towers which deal different amounts of damage, have different reload times, and have different ranges. Be aware that towers can only be built in areas of the map which have been illuminated.",
-               "Image" : "Tower/ballistae"
+               "Image" : "Tower/Sprites/ballistae"
           },
           {
                "Title" : "Illumination",
                "Body" : "You can illuminate more of the map by building Illumination towers. Illumination towers may only be built in parts of the map which have been illuminated. There are different kinds of Illumination Towers which illuminate larger and smaller areas.",
-               "Image" : "Tower/torchcluster"
+               "Image" : "Tower/Sprites/torchcluster"
           },
           {
                "Title" : "Mana",
@@ -34,7 +34,7 @@
           {
                "Title" : "Enemy Variants",
                "Body" : "There are multiple kinds of enemies, each with their own abilities and strengths. Harder enemies appear the more waves you survive. Good luck.",
-               "Image" : "Enemy/undead"
+               "Image" : "Enemy/Sprites/undead"
           }
      ]
 }

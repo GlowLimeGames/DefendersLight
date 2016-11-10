@@ -9,6 +9,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public abstract class UnitController : MannBehaviour {
+	protected const string SPRITES_DIR = "Sprites";
+	protected const string PREFABS_DIR = "Prefabs";
+
 	public abstract Unit[] GetUnits();
 
 	protected WorldController worldController;
@@ -34,6 +37,11 @@ public abstract class UnitController : MannBehaviour {
 		this.dataController = dataController;
 		this.mapController = mapController;
 	}
+		
+	protected ActiveObjectBehaviour loadPrefab (string pathInResources) {
+		return Resources.Load<ActiveObjectBehaviour>(pathInResources);
+	} 
+	
 }
 
 public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitController 
