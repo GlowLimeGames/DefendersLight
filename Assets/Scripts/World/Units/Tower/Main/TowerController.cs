@@ -93,7 +93,12 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		if (TryGetActiveObject(tower.IType, startingPosition, out behaviour)) {
 			return behaviour as TowerBehaviour;
 		} else {
-			return Instantiate(worldController.GetTowerPrefab(tower.TowerType)).GetComponent<TowerBehaviour>();
+			TowerBehaviour prefabInResources = GetPrefab(tower);
+			if (prefabInResources) {
+				return Instantiate(prefabInResources);
+			} else {
+				return Instantiate(worldController.GetTowerPrefab(tower.TowerType)).GetComponent<TowerBehaviour>();
+			}
 		}
 	}
 		

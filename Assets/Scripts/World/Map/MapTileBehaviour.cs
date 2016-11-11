@@ -11,6 +11,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	WorldController world;
 	[SerializeField]
 	StaticAgentBehaviour containedAgent;
+	const float TOWER_HEIGHT_OFFSET = 1;
 	static Color hightlightColor = Color.green;
 	static Color validBuildColor = Color.Lerp(Color.green, Color.yellow, 0.75f);
 	static Color cannotBuildColor = Color.red;
@@ -158,6 +159,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 			}
 			agent.ToggleActive(true);
 			agent.ToggleColliders(true);
+			agent.transform.position += Vector3.up * TOWER_HEIGHT_OFFSET;
 		} else {
 			// TODO: Collect in object pool instead of destroying
 			if (shouldPlaySound) {

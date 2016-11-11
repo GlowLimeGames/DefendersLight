@@ -31,7 +31,9 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	}
 	public virtual void SetTower (Tower tower) {
 		this.tower = tower;
-		spriteRenderer.sprite = tower.GetSprite();
+		if (spriteRenderer) {
+			spriteRenderer.sprite = tower.GetSprite();
+		}
 		if (attackModule) {
 			attackModule.SetUnit(tower);
 		}
