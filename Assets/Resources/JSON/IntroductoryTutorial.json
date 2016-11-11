@@ -23,7 +23,7 @@
           },
           {
                "Title" : "Building",
-               "Body" : "Towers may be built any time during a wave and between waves. To build a tower, you select the kind of tower you want to build from the buttons at the bottom of the screen, then click and drag the tower you want from the menu and place it on the map.",
+               "Body" : "Towers may be built any time during a wave and between waves. To build a tower, you select the kind of tower you want to build from the buttons at the bottom of the screen, then either click and drag the tower you want from the menu and place it on the map or tap on the tower you want to build and then tap the location on the map where you want to build that tower.",
                "Image" : "Icon/hammer-icon"
           },
           {
