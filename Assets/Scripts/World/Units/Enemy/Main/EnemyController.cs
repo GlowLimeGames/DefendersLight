@@ -47,6 +47,10 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		createSpawnPoints();
 	}
 
+	public EnemyBehaviour GetPrefab (string enemyKey) {
+		return loadPrefab(FileUtil.CreatePath(ENEMY_TAG, PREFABS_DIR, enemyKey)) as EnemyBehaviour;
+	}
+
 	#region Spawn Points
 
 	void createSpawnPoints () {
@@ -205,7 +209,13 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	EnemyBehaviour GetEnemyObject (string enemyKey, Vector3 startPosition) {
 		ActiveObjectBehaviour behaviour;
 		if (!TryGetActiveObject(enemyKey, startPosition, out behaviour)) {
-			behaviour = Instantiate(orderedEnemyPrefabs[enemyKey]).GetComponent<EnemyBehaviour>();
+			EnemyBehaviour enemyPrefab = GetPrefab(enemyKey);
+			if (enemyPrefab) {
+				behaviour = Instantiate(enemyPrefab);
+			} else {
+				behaviour = Instantiate(orderedEnemyPrefabs[enemyKey]).GetComponent<EnemyBehaviour>();
+
+			}
 			behaviour.transform.position = startPosition;
 		}
 		return behaviour as EnemyBehaviour;
