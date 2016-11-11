@@ -712,7 +712,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 106022}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -767,7 +767,7 @@ MonoBehaviour:
   AttackDelay: 0
   isInvulnerable: 0
   AttackType: 1
-  hasAttack: 0
+  hasAttack: 1
   canHeal: 0
   HealthBar: {fileID: 11418768}
   debugging: 0
