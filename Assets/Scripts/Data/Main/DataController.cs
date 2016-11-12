@@ -84,7 +84,6 @@ public class DataController : Controller, IDataController {
 		binaryFormatter.Serialize(file, currentPlayerData);
 		file.Close();
 	}
-
 	public int PlayerLevel {
 		get {
 			return currentPlayerData.ILevel;
@@ -111,7 +110,7 @@ public class DataController : Controller, IDataController {
 			return currentPlayerData.IHighestWave;
 		}
 	}
-
+    
 	public void EarnXP (int xpEarned) {
 		currentPlayerData.EarnXP(xpEarned);
 		callOnXPEarned(xpEarned);
@@ -119,6 +118,7 @@ public class DataController : Controller, IDataController {
 			callOnLevelUp(currentPlayerData.LevelUp());
 		}
 	}
+
 
 	public void AutoLevelUp () {
 		currentPlayerData.LevelUpCheat();
