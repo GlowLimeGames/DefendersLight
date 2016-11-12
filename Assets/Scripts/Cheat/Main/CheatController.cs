@@ -20,6 +20,9 @@ public class CheatController : Controller, ICheatController {
 			return runningCheats;
 		}
 	}
+    public void EndGame() {
+        SceneController.LoadGameOver();
+    }
     public void LevelUpCheat() {
 		data.LevelUpCheat();
 		statsPanel.SetLevel(data.PlayerLevel);
