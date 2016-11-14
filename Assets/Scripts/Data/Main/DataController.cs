@@ -242,6 +242,11 @@ public class DataController : Controller, IDataController {
 		this.currentWorldState.UpdateXPEarned(deltaXP);
 	}
 
+	public void GiveReward (RewardAmount reward) {
+		CollectMana(reward.Mana);
+		UpdateXPEarned(reward.XP);
+	}
+
 	#endregion
 
 	public void Save(IData data) {

@@ -23,10 +23,13 @@ public class Enemy : Unit {
 	public int Frequency;
 	public int Quantity;
 	public string FlavorText;
+	public int ManaReward;
+	public int XPReward;
+	public int WaveSpawnedAt;
 
 	public RewardAmount IDeathReward {
 		get {
-			return this.DeathReward;
+			return new RewardAmount(ManaReward, XPReward);
 		}
 	}
 

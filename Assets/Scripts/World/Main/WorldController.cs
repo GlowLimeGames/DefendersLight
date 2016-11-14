@@ -2,6 +2,7 @@
  * Author(s): Isaiah Mann
  * Description: Controls the set up and behaviour of the game world
  */
+
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -384,16 +385,10 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		
 	void handleUnitEvent (string eventName, Unit unit) {
 		if (eventName == EventType.EnemyDestroyed) {
-			if (unit.Type == "Undead") {
-				CollectMana(25);
-				EarnXP(10);
-			} else if (unit.Type == "Brute") {
-				CollectMana(100);
-				EarnXP(50);
-			} else if (unit.Type == "Shade") {
-				CollectMana(200);
-				EarnXP(100);
-			}
+			Enemy enemy = unit as Enemy;
+			dataController.GiveReward(enemy.IDeathReward);
+			statsPanel.SetMana(dataController.Mana);
+			statsPanel.SetXP(dataController.XP, dataController.XPForLevel);
 		}
 	}
 
