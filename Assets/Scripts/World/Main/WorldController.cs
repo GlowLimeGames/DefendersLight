@@ -93,6 +93,10 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		return unitsByClass;
 	}
 
+	public void OnSellTower (Tower tower) {
+		CollectMana((int)((float)tower.Cost * tuning.SellValueFraction));
+		refreshManaDisplay();
+	}
 
 	public void UnlockAllTowers () {
 		OverrideTowerLevelRequirement = true;

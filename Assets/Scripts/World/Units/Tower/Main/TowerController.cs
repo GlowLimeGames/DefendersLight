@@ -32,6 +32,10 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		towerTemplatesByType = sortTowers(templateUnits.Values.ToArray());
 	}
 
+	public void SellTower (Tower tower) {
+		worldController.OnSellTower(tower);
+	}
+
 	public void PlaceCoreOrb (MapTileBehaviour mapTile) {
 		GameObject coreOrb = (GameObject) Instantiate(CoreOrbPrefab);
 		CoreOrbInstance = coreOrb;
