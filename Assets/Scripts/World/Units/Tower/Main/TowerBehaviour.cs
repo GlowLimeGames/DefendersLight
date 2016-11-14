@@ -87,7 +87,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	}
 
 	public void Sell () {
-		WorldController.Instance.CollectMana(sellValue);
+		(unitController as TowerController).SellTower(this.tower);
 		unitController.HandleObjectDestroyed(this);
 	}
 
