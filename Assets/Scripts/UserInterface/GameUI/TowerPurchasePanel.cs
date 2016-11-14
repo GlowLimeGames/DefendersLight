@@ -154,11 +154,11 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 		this.canvasGroup.blocksRaycasts = isActive;
 	}
 
-	public void Hide () {
+	public override void Hide () {
 		Toggle(false);
 	}
 
-	public void Show () {
+	public override void Show () {
 		Toggle(true);
 	}
 
