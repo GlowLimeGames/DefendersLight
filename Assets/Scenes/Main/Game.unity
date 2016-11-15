@@ -5734,6 +5734,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1282894673}
   - 114: {fileID: 1282894674}
+  - 114: {fileID: 1282894675}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -5782,6 +5783,19 @@ MonoBehaviour:
   EnemySpawnCountEquation:
     Slope: 2
     YIntercept: 1
+--- !u!114 &1282894675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1282894672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7ff41d8bf51a724c8b05c2a47a146e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newCanvas: {fileID: 1434286727}
+  text: {fileID: 62885673}
 --- !u!1001 &1358028103
 Prefab:
   m_ObjectHideFlags: 0
@@ -6187,14 +6201,13 @@ GameObject:
   - 223: {fileID: 1434286731}
   - 114: {fileID: 1434286730}
   - 114: {fileID: 1434286729}
-  - 114: {fileID: 1434286732}
   m_Layer: 0
   m_Name: LevelUpRewardScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1434286728
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6220,7 +6233,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1434286727}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
@@ -6270,18 +6283,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &1434286732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1434286727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7ff41d8bf51a724c8b05c2a47a146e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: {fileID: 62885673}
 --- !u!1 &1435268239
 GameObject:
   m_ObjectHideFlags: 0
@@ -8440,7 +8441,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22463764, guid: 716932ad8e5214199ae5bb43ff464826, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 22463764, guid: 716932ad8e5214199ae5bb43ff464826, type: 2}
       propertyPath: m_AnchoredPosition.x
