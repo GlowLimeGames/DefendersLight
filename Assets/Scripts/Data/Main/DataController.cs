@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public class DataController : Controller, IDataController {
+	public TuningController tuning {get; private set;}
 	EventActionInt levelUp;
 	EventActionInt earnXP;
 	public int StartingMana = 100;
@@ -238,8 +239,14 @@ public class DataController : Controller, IDataController {
 		this.currentWorldState.UpdateEnemiesKilled(deltaEnemiesKilled);
 	}
 
+	// Just meant for record keeping: Does not actually reward the player with more XP
 	public void UpdateXPEarned (int deltaXP) {
 		this.currentWorldState.UpdateXPEarned(deltaXP);
+	}
+
+	public void GiveReward (RewardAmount reward) {
+		CollectMana(reward.Mana);
+		EarnXP(reward.XP);
 	}
 
 	#endregion
@@ -316,6 +323,7 @@ public class DataController : Controller, IDataController {
 		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
 			LoadGame();
 			DontDestroyOnLoad(gameObject);
+			tuning = GetComponent<TuningController>();
 		}
 	}
 

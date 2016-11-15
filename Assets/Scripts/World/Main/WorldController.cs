@@ -2,6 +2,7 @@
  * Author(s): Isaiah Mann
  * Description: Controls the set up and behaviour of the game world
  */
+
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -61,6 +62,28 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 	}
 
+	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
+	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
+	const string SEASONS_DATA_FILE_NAME = "Seasons";
+
+	Dictionary<System.Type, Stack<GameObject>> unitSpawnpool = new Dictionary<System.Type, Stack<GameObject>>();
+
+	#region Singleton Refs
+
+	TowerController towerController;
+	EnemyController enemyController;
+	MapController mapController;
+	UnitController[] unitControllers;
+	DataController dataController;
+	StatsPanelController statsPanel;
+	TowerPurchasePanelController purchasePanel;
+	InputController input;
+	TuningController tuning;
+
+	#endregion
+		
+	int spawnPoints = 1;
+
 	Dictionary<string, Unit[]> determineUnitsByClass () {
 		Dictionary<string, Unit[]> unitsByClass = new Dictionary<string, Unit[]>();
 		foreach (TowerType towerClass in towerController.ITowerTemplatesByType.Keys) {
@@ -70,6 +93,10 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		return unitsByClass;
 	}
 
+	public void OnSellTower (Tower tower) {
+		CollectMana((int)((float)tower.Cost * tuning.SellValueFraction));
+		refreshManaDisplay();
+	}
 
 	public void UnlockAllTowers () {
 		OverrideTowerLevelRequirement = true;
@@ -101,22 +128,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			return false;
 		}
 	}
-
-	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
-	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
-	const string SEASONS_DATA_FILE_NAME = "Seasons";
-
-	Dictionary<System.Type, Stack<GameObject>> unitSpawnpool = new Dictionary<System.Type, Stack<GameObject>>();
-	TowerController towerController;
-	EnemyController enemyController;
-	MapController mapController;
-	UnitController[] unitControllers;
-	DataController dataController;
-	StatsPanelController statsPanel;
-	TowerPurchasePanelController purchasePanel;
-	InputController input;
-
-	int spawnPoints = 1;
 
 	public void Create() {
 		createRules();
@@ -172,7 +183,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	void onEarnXP (int xpEarned) {
-		statsPanel.SetXP(dataController.XP, dataController.XPForLevel);
+		refreshXPDisplay();
 	}
 
 	void changeSeason (int newSeasonIndex) {
@@ -201,6 +212,9 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 		
 	public void StartWave () {
+		if (dataController.WavesSurvivied > 1) {
+			EarnXP(tuning.XPBonusPerWave * (dataController.WavesSurvivied - 1));
+		}
 		dataController.NextWave();
 		enemyController.SetSpawnPointCount(getEnemySpawnPointCount());
 		enemyController.SpawnWave();
@@ -217,7 +231,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	public bool TrySpendMana (int count) {
 		if (dataController.TrySpendMana(count)) {
-			statsPanel.SetMana(dataController.Mana); 
+			refreshManaDisplay();
 			return true;
 		} else {
 			return false;
@@ -361,6 +375,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		statsPanel = StatsPanelController.Instance;
 		purchasePanel = TowerPurchasePanelController.Instance;
 		input = InputController.Instance;
+		tuning = dataController.tuning;
 		setupDataControllerCallbacks();
 		setupUI();
 		Create();
@@ -381,19 +396,21 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	protected override void HandleNamedEvent (string eventName) {
 		// Nothing
 	}
-		
+
+	void refreshXPDisplay () {
+		statsPanel.SetXP(dataController.XP, dataController.XPForLevel);
+	}
+
+	void refreshManaDisplay () {
+		statsPanel.SetMana(dataController.Mana);
+	}
+
 	void handleUnitEvent (string eventName, Unit unit) {
 		if (eventName == EventType.EnemyDestroyed) {
-			if (unit.Type == "Undead") {
-				CollectMana(25);
-				EarnXP(10);
-			} else if (unit.Type == "Brute") {
-				CollectMana(100);
-				EarnXP(50);
-			} else if (unit.Type == "Shade") {
-				CollectMana(200);
-				EarnXP(100);
-			}
+			Enemy enemy = unit as Enemy;
+			dataController.GiveReward(enemy.IDeathReward);
+			refreshXPDisplay();
+			refreshManaDisplay();
 		}
 	}
 
