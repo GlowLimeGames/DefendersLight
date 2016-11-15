@@ -1,27 +1,38 @@
 ﻿using UnityEngine;
+using UnityEngine.UI; 
 using System.Collections;
 
 public class LevelUpRewardScreenController : UIController {
-    [SerializeField]
-    GameObject LevelUpScreen;
 
-    public static LevelUpRewardScreenController Instance;
+    public Text text;
+
+    public static bool Leveled;
 
     void Start()
-    {
-        Instantiate(LevelUpScreen);
+    {       
+        text.text = "";
+        Leveled = false;
     }
 
-    public void toggleLevelUpScreen()
+    void Update()
     {
-        LevelUpScreen.SetActive(true);
-        StartCoroutine(toggle());
+        if (Leveled)
+        {
+            Leveled = false;
+            toggleScreen();
+        }
     }
 
-    IEnumerator toggle()
+    public void toggleScreen()
     {
-        LevelUpScreen.SetActive(true);
+        StartCoroutine(toggler());               
+    }
+
+    IEnumerator toggler()
+    {
+        text.text = "LEVEL UP!";
         yield return new WaitForSeconds(5);
-        LevelUpScreen.SetActive(false);
+        text.text = "";
     }
+
 }
