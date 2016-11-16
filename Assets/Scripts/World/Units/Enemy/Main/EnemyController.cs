@@ -340,6 +340,6 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		// Remove special characters from tower key (to produce filename)
 		Regex rgx = new Regex("[^a-zA-Z0-9 -]");
 		enemyKey = rgx.Replace(enemyKey, "");
-		return Resources.Load<Sprite>(System.IO.Path.Combine(ENEMY_TAG, enemyKey.ToLower().Replace(" ", string.Empty)));
+		return Resources.Load<Sprite>(System.IO.Path.Combine(ENEMY_TAG, System.IO.Path.Combine(SPRITES_DIR, enemyKey.ToLower().Replace(" ", string.Empty))));
 	}
 }
