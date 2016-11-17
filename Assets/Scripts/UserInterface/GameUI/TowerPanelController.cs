@@ -24,16 +24,41 @@ public class TowerPanelController : UIController {
 	[SerializeField]
 	Button SellButton;
 
+	[SerializeField]
+	Image towerImage;
+
+	[SerializeField]
+	Image healthBar;
+
 	public void SelectTower (TowerBehaviour tower) {
 		if (selectedTower) {
-			selectedTower.UnusubscribeFromDestruction(ClosePanel);
+			DeselectTower();
 		}
+		Tower towerStats = tower.ITower;
 		selectedTower = tower;
 		gameObject.SetActive(true);
 		TowerName.text = tower.IName;
 		TowerLevel.text = tower.LevelString;
 		SellButton.gameObject.SetActive(!(tower is CoreOrbBehaviour));
 		tower.SubscribeToDestruction(ClosePanel);
+		tower.SubscribeUpdateHealth(updateHealthBar);
+		towerImage.sprite = towerStats.GetSprite();
+		updateHealthBar(selectedTower.IHealthFraction);
+	}
+
+	public void DeselectTower () {
+		selectedTower.UnusubscribeFromDestruction(ClosePanel);
+		selectedTower.UnsubscribeUpdateHealth(updateHealthBar);
+		selectedTower = null;
+		TowerName.text = string.Empty;
+		TowerLevel.text = string.Empty;
+		SellButton.gameObject.SetActive(false);
+		towerImage.sprite = null;
+		updateHealthBar(1.0f);
+	}
+
+	void updateHealthBar (float healthFraction) {
+		healthBar.fillAmount = healthFraction;
 	}
 
 	public void ClosePanel () {

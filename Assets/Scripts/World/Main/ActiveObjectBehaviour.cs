@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
+	EventActionf onUpdateHealth;
 	protected UnitController unitController;
 	public string Name;
 	public int Health;
@@ -73,6 +74,14 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	void SetStats () {
 	}
 
+	public void SubscribeUpdateHealth (EventActionf eventAction) {
+		onUpdateHealth += eventAction;
+	}
+
+	public void UnsubscribeUpdateHealth (EventActionf eventAction) {
+		onUpdateHealth -= eventAction;
+	}
+
 	protected override void SetReferences () {
 		SetStats();
 	}
@@ -93,6 +102,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public virtual void Damage(int damage) {
         if (!isInvulnerable) {
             Health -= damage;
+			callUpdateHealth((float) Health / (float) IMaxHealth);
         }
 		if (Health <= 0) {
 			Destroy();
@@ -121,6 +131,12 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 				(float) Health /
 				(float) this.unit.Health
 			);
+		}
+	}
+
+	void callUpdateHealth (float healthFraction) {
+		if (onUpdateHealth != null) {
+			onUpdateHealth(healthFraction);
 		}
 	}
 
