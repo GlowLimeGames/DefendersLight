@@ -261,7 +261,7 @@ Transform:
   m_GameObject: {fileID: 160906}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 458132}
@@ -590,7 +590,6 @@ MonoBehaviour:
   debugging: 0
   spriteRenderer: {fileID: 0}
   MissilePrefab: {fileID: 185974, guid: 3581d8a813a9e4f2595c1e54cd94244e, type: 2}
-  sellValue: 2
 --- !u!212 &21273904
 SpriteRenderer:
   m_ObjectHideFlags: 1

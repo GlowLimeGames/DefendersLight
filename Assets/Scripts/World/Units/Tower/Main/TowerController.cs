@@ -14,7 +14,8 @@ using System.Text.RegularExpressions;
 
 public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerController {
 	public const string TOWER_TAG = "Tower";
-	const float DRAG_HEIGHT_OFFSET = 1.25f;
+	const float DRAG_HEIGHT_OFFSET = 3f;
+	CameraController gameCamera;
 
 	public GameObject CoreOrbPrefab;
 	public GameObject CoreOrbInstance;
@@ -115,13 +116,19 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		Vector3 dragPosition = pointerEvent.position;
 		dragPosition.z = panelPosition.z - Camera.main.transform.position.z;
 		dragPosition = Camera.main.ScreenToWorldPoint(dragPosition);
-		dragPosition.y = DRAG_HEIGHT_OFFSET;
-		return dragPosition;
+		// dragPosition.y = DRAG_HEIGHT_OFFSET;
+		float angle = gameCamera.ICameraAngleRad;
+		Vector3 offset = new Vector3(
+			0,
+			-Mathf.Cos(angle) * DRAG_HEIGHT_OFFSET,
+			Mathf.Sin(angle) * DRAG_HEIGHT_OFFSET
+		);
+		return dragPosition + offset;
 	}
 
 	void HighlightSpotToPlace (Vector3 dragPosition) {
 		RaycastHit hit;
-		if (Physics.Raycast(dragPosition, Vector3.down, out hit)) {
+		if (Physics.Raycast(dragPosition, gameCamera.ICameraDirection, out hit)) {
 			MapTileBehaviour mapTile;
 			if (hit.collider != null && (mapTile = hit.collider.GetComponent<MapTileBehaviour>()) != null) {
 				if (previousHighlightedMapTile) {
@@ -218,6 +225,11 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		if (!SingletonUtil.TryInit(ref Instance, this, gameObject)) {
 			Destroy(gameObject);
 		}
+	}
+
+	protected override void FetchReferences () {
+		base.FetchReferences ();
+		gameCamera = CameraController.Instance;
 	}
 
 	protected override void CleanupReferences () {

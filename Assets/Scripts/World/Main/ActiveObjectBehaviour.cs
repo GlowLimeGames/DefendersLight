@@ -129,7 +129,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		if (HealthBar) {
 			HealthBar.SetHealthDisplay(
 				(float) Health /
-				(float) this.unit.Health
+				(float) IMaxHealth
 			);
 		}
 	}
