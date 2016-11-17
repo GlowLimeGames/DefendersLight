@@ -27,7 +27,7 @@ public abstract class UnitController : MannBehaviour {
 		return successful;
 	}
 
-	public void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
+	public virtual void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
 		activeObject.gameObject.SetActive(false);
 		worldController.AddToSpawnPool(activeObject);
 	}
