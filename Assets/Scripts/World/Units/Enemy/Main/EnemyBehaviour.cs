@@ -23,7 +23,11 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 	public override int IMaxHealth {
 		get {
-			return enemy.Health;
+			if (enemy != null) {
+				return enemy.Health;
+			} else {
+				return 0;
+			}
 		}
 	}
     public int ISpeed{
