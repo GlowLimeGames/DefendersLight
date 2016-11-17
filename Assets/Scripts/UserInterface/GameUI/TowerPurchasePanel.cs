@@ -84,7 +84,7 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 	}
 
 	public void OnBeginDrag (PointerEventData pointerEvent) {
-		controller.TryDeselectSelectedPanel(false);
+		controller.TryDeselectSelectedPanel(shouldSwitchSelected:true);
 		if (data.HasSufficientMana(cost)) {
 			HandleCanPurchaseBeginDrag(pointerEvent);
 		} else {
