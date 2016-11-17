@@ -14,9 +14,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	[SerializeField]
 	GameObject MissilePrefab;
 
-	[SerializeField]
-	int sellValue = 2;
-
 	RangedAttackBehaviour attackModule = null;
 
 	public override float IAttackDelay {
@@ -29,6 +26,17 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 			return tower.Health;
 		}
 	}
+	public Tower ITower {
+		get {
+			return this.tower;
+		}
+	}
+	public float IHealthFraction {
+		get {
+			return (float) this.Health / (float) tower.Health;
+		}
+	}
+
 	public virtual void SetTower (Tower tower) {
 		this.tower = tower;
 		if (spriteRenderer) {

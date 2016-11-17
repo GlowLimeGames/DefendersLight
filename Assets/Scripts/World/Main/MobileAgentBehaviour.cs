@@ -19,9 +19,11 @@ public abstract class MobileAgentBehaviour : ActiveObjectBehaviour {
 	}
 
 	public virtual void NavigatePath (Queue<MapTileBehaviour> path, float timePerStep) {
-		haltMovementCoroutine();
-		movementCoroutine = runPathNavigation(path, timePerStep);
-		StartCoroutine(movementCoroutine);
+		if (gameObject.activeSelf) {
+			haltMovementCoroutine();
+			movementCoroutine = runPathNavigation(path, timePerStep);
+			StartCoroutine(movementCoroutine);
+		}
 	}
 
 	protected virtual void haltMovementCoroutine () {
