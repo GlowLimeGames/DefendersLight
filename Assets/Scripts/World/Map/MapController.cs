@@ -198,11 +198,12 @@ public class MapController : MannBehaviour, IMapController {
 	}
 
 	protected override void SetReferences () {
-		SingletonUtil.TryInit(ref Instance, this, gameObject);
+		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
+		}
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		if (eventName == EventType.TowerDestroyed) {
+		if (eventName == EventType.TowerDestroyed || eventName == EventType.TowerSold) {
 			RefreshIlluminations();
 		}
 	}

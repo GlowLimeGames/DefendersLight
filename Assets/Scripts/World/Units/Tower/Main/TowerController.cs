@@ -155,6 +155,11 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		}
 	}
 
+	public override void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
+		base.HandleObjectDestroyed (activeObject);
+		activeTowers.Remove(activeObject as TowerBehaviour);
+	}
+
 	public void HandleEndDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		if (previousHighlightedMapTile && previousHighlightedMapTile.CanPlaceTower()) {
 			previousHighlightedMapTile.PlaceStaticAgent(potentialPurchaseTower);

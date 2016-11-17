@@ -97,9 +97,16 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	public void Sell () {
 		(unitController as TowerController).SellTower(this.tower);
 		unitController.HandleObjectDestroyed(this);
+		tile.RemoveAgent();
+		EventController.Event(EventType.TowerSold);
 	}
 
 	public override void Attack(ActiveObjectBehaviour activeAgent, int damage) {
+		// Tower cannot attack if its square is not illuminated:
+		if (!tile.IIsIlluminated) {
+			return;
+		}
+
 		StartCoroutine(AttackCooldown());
 		ProjectileBehaviour missileBehavior;
 		if (ProjectilePool.Instance && !ProjectilePool.Instance.IsEmpty) {

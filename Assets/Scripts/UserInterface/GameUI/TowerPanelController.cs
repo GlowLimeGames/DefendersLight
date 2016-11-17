@@ -34,8 +34,8 @@ public class TowerPanelController : UIController {
 	[SerializeField]
 	Image healthBar;
 
-	protected override void FetchReferences () {
-		base.FetchReferences ();
+
+	void OnEnable () {
 		world = WorldController.Instance;
 	}
 

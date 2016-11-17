@@ -259,6 +259,11 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
         activeEnemies.Clear();
     }
 
+	public override void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
+		base.HandleObjectDestroyed (activeObject);
+		activeEnemies.Remove(activeObject as EnemyBehaviour);
+	}
+
 	void HandleEnemyKilled () {
 		enemiesAlive = Mathf.Clamp(enemiesAlive - 1, 0, int.MaxValue);
 		if (enemiesAlive == 0) {
