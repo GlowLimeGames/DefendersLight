@@ -9,7 +9,8 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class TowerPanelController : UIController {
-
+	WorldController world;
+	const string MANA_FORMAT = "Sell: {0} Mana";
 	TowerBehaviour selectedTower;
 
 	[SerializeField]
@@ -25,10 +26,18 @@ public class TowerPanelController : UIController {
 	Button SellButton;
 
 	[SerializeField]
+	Text sellValue;
+
+	[SerializeField]
 	Image towerImage;
 
 	[SerializeField]
 	Image healthBar;
+
+	protected override void FetchReferences () {
+		base.FetchReferences ();
+		world = WorldController.Instance;
+	}
 
 	public void SelectTower (TowerBehaviour tower) {
 		if (selectedTower) {
@@ -39,7 +48,12 @@ public class TowerPanelController : UIController {
 		gameObject.SetActive(true);
 		TowerName.text = tower.IName;
 		TowerLevel.text = tower.LevelString;
-		SellButton.gameObject.SetActive(!(tower is CoreOrbBehaviour));
+		if (!(tower is CoreOrbBehaviour)) {
+			SellButton.gameObject.SetActive(true);
+			sellValue.text = string.Format(MANA_FORMAT, world.GetTowerSellValue(towerStats));
+		} else {
+			SellButton.gameObject.SetActive(false);
+		}
 		tower.SubscribeToDestruction(ClosePanel);
 		tower.SubscribeUpdateHealth(updateHealthBar);
 		towerImage.sprite = towerStats.GetSprite();
