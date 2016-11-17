@@ -6,6 +6,7 @@
 using UnityEngine;
 
 public class CameraController : Controller {
+	public static CameraController Instance;
 	public float MinimumZoom = 0.5f;
 	public float MaximumZoom = 2.5f;
 	public float MaxZoomSpeed = 1f;
@@ -15,6 +16,19 @@ public class CameraController : Controller {
 	float zoomToSizeRatio;
 	MapController map;
 	new Camera camera;
+
+	public Vector3 ICameraDirection {
+		get {
+			float angle = ICameraAngleRad;
+			return new Vector3(0, -Mathf.Cos(angle), Mathf.Sin(angle)); 
+		}
+	}
+
+	public float ICameraAngleRad {
+		get {
+			return (90 - transform.rotation.eulerAngles.x) * Mathf.Deg2Rad;
+		}
+	}
 
 	public void Pan (Vector3 panDirection) {
 		if (map.InBounds(transform.position + panDirection)) {
@@ -34,19 +48,24 @@ public class CameraController : Controller {
 
 
 	protected override void SetReferences () {
+		Instance = this;
 		camera = GetComponent<Camera>();
 		zoomToSizeRatio =  camera.orthographicSize * currentZoom;
 	}
 
 	protected override void FetchReferences () {
+		base.FetchReferences();
 		map = MapController.Instance;
 	}
-
+		
 	protected override void CleanupReferences () {
-
+		base.CleanupReferences();
+		if (Instance == this) {
+			Instance = null;
+		}
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-
+		// NOTHING
 	}
 }
