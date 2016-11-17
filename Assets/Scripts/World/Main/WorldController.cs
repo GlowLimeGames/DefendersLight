@@ -94,8 +94,12 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void OnSellTower (Tower tower) {
-		CollectMana((int)((float)tower.Cost * tuning.SellValueFraction));
+		CollectMana(GetTowerSellValue(tower));
 		refreshManaDisplay();
+	}
+
+	public int GetTowerSellValue (Tower tower) {
+		return (int)((float)tower.Cost * tuning.SellValueFraction);
 	}
 
 	public void UnlockAllTowers () {
