@@ -15,6 +15,8 @@ public class PauseUIController : UIController {
 	ToggleableUIButton sfxToggle;
 	[SerializeField]
 	ToggleableUIButton musicToggle;
+	[SerializeField]
+	UISwipeToClose swipeToClosePause;
 
 	protected override void SetReferences () {
 		base.SetReferences();
@@ -32,10 +34,17 @@ public class PauseUIController : UIController {
 		world.TogglePause();	
 	}
 
+	public void Unpause () {
+		world.Resume();
+	}
+
 	protected override void FetchReferences () {
 		base.FetchReferences ();
 		world = WorldController.Instance;
+		swipeToClosePause.SubscribeToClose(Unpause);
+		swipeToClosePause.SubscribeToClose(TogglePauseScreen);
 	}
+
 	public void TogglePauseScreen () {
 		pauseScreen.SetActive(!pauseScreen.activeSelf);
 		if (!pauseScreen.activeSelf) {
