@@ -11,6 +11,22 @@ public class PauseUIController : UIController {
 	GameObject pauseScreen;
 	[SerializeField]
 	GameObject cheatPanel;
+	[SerializeField]
+	ToggleableUIButton sfxToggle;
+	[SerializeField]
+	ToggleableUIButton musicToggle;
+
+	protected override void SetReferences () {
+		base.SetReferences();
+		if (SettingsUtil.SFXMuted) {
+			sfxToggle.RefreshReferences();
+			sfxToggle.Toggle();
+		}
+		if (SettingsUtil.MusicMuted) {
+			musicToggle.RefreshReferences();
+			musicToggle.Toggle();
+		}
+	}
 
     public void TogglePause () {
 		world.TogglePause();	

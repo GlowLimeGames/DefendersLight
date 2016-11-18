@@ -1205,9 +1205,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_HighlightedColor: {r: 0.39705884, g: 0.76346153, b: 1, a: 1}
+    m_PressedColor: {r: 0.15679064, g: 0.32067305, b: 0.42647058, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3897,9 +3897,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_HighlightedColor: {r: 0.41787413, g: 0.7492859, b: 0.9632353, a: 1}
+    m_PressedColor: {r: 0.13494807, g: 0.33891398, b: 0.4705882, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -4713,6 +4713,7 @@ GameObject:
   - 222: {fileID: 991877510}
   - 114: {fileID: 991877509}
   - 114: {fileID: 991877508}
+  - 114: {fileID: 991877511}
   m_Layer: 5
   m_Name: ToggleSFX
   m_TagString: Untagged
@@ -4758,9 +4759,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_HighlightedColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_PressedColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -4835,6 +4836,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 991877506}
+--- !u!114 &991877511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 991877506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb57a289250f4fb5a58b9bec9ed9b58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowToggle: 1
 --- !u!1 &1004811601
 GameObject:
   m_ObjectHideFlags: 0
@@ -5764,7 +5777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -6367,9 +6380,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.99264705, g: 0.36494377, b: 0.40390465, a: 1}
+    m_HighlightedColor: {r: 0.99264705, g: 0.7809797, b: 0.7809797, a: 1}
+    m_PressedColor: {r: 0.61764705, g: 0.2225346, b: 0.24722911, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -7598,6 +7611,7 @@ GameObject:
   - 222: {fileID: 1642440541}
   - 114: {fileID: 1642440540}
   - 114: {fileID: 1642440539}
+  - 114: {fileID: 1642440542}
   m_Layer: 5
   m_Name: ToggleMusic
   m_TagString: Untagged
@@ -7643,9 +7657,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_HighlightedColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_PressedColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -7720,6 +7734,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1642440537}
+--- !u!114 &1642440542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1642440537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb57a289250f4fb5a58b9bec9ed9b58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowToggle: 1
 --- !u!1 &1680064415
 GameObject:
   m_ObjectHideFlags: 0
@@ -8294,9 +8320,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_HighlightedColor: {r: 0.36937714, g: 0.69004524, b: 0.89705884, a: 1}
+    m_PressedColor: {r: 0.18003894, g: 0.40128678, b: 0.5441177, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -9506,6 +9532,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseScreen: {fileID: 1066574182}
   cheatPanel: {fileID: 1415387288}
+  sfxToggle: {fileID: 991877511}
+  musicToggle: {fileID: 1642440542}
 --- !u!1 &2029710706
 GameObject:
   m_ObjectHideFlags: 0

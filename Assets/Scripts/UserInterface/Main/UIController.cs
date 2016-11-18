@@ -27,10 +27,6 @@ public abstract class UIController : MannBehaviour {
 		SceneController.LoadSettings();
 	}
 
-	protected override void SetReferences () {
-		// NOTHING
-	}
-
 	protected override void FetchReferences () {
 		input = InputController.Instance;
 		data = DataController.Instance;
