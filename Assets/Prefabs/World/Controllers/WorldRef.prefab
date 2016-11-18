@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &171030
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 437002}
+  - 114: {fileID: 11492660}
+  - 114: {fileID: 11453328}
+  - 114: {fileID: 11439174}
+  m_Layer: 0
+  m_Name: WorldRef
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &437002
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171030}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11439174
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 597db0013683c4f0fa95a02ac322b4d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inGame: 0
+  spawnPointPrefab: {fileID: 0}
+  spawnPointParent: {fileID: 0}
+  EnemyPrefabs: []
+--- !u!114 &11453328
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca6e39c7f37f84659ae16d2ee4486b47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inGame: 0
+  CoreOrbPrefab: {fileID: 0}
+  CoreOrbInstance: {fileID: 0}
+--- !u!114 &11492660
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6079bb3a12cc34747866b919463e6273, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inGame: 0
+  TowerPrefab: {fileID: 0}
+  AssaulTowerPrefab: {fileID: 0}
+  BarricadeTowerPrefab: {fileID: 0}
+  IlluminationTowerPrefab: {fileID: 0}
+  EnemyPrefab: {fileID: 0}
+  EnemySpawnCountEquation:
+    Slope: 0
+    YIntercept: 0
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 171030}
+  m_IsPrefabParent: 1

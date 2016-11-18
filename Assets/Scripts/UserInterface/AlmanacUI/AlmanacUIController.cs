@@ -9,6 +9,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class AlmanacUIController : UIController {
+	[SerializeField]
+	bool loadPreviousSceneOnClose;
+
 	const string DEFAULT_PAGE = "Enemy";
 	Dictionary<string, Unit[]> unitsByClass = new Dictionary<string, Unit[]>();
 	WorldController world;
@@ -104,6 +107,14 @@ public class AlmanacUIController : UIController {
 	public void Previous () {
 		if (HasPrevious()) {
 			DisplayUnit(currentUnits[--currentUnitIndex]);
+		}
+	}
+
+	public void Close () {
+		if (loadPreviousSceneOnClose) {
+			LoadPreviousScene();
+		} else {
+			Hide();
 		}
 	}
 
