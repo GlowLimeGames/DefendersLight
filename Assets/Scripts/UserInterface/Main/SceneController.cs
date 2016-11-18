@@ -14,35 +14,53 @@ public class SceneController : MannBehaviour {
 	const string ABOUT_SCENE = "About";
 	const string CREDITS_SCENE = "Credits";
 	const string SETTINGS_SCENE = "Settings";
+	const string ALMANAC_SCENE = "Almanac";
+	// Loads start if a previous scene has not yet been set
+	const string DEFAULT_PREVIOUS_SCENE = START_SCENE_NAME;
+	static string previousScene = DEFAULT_PREVIOUS_SCENE;
 
 	public static void LoadGame (bool isPlayAgain = false) {
-		SceneManager.LoadScene(GAME_SCENE_NAME);
+		LoadScene(GAME_SCENE_NAME);
 		IsPlayAgain = isPlayAgain;
 	}
 
 	public static void LoadGameOver () {
 		cleanupInGameReferences();
-		SceneManager.LoadScene(GAME_OVER_SCENE_NAME);
+		LoadScene(GAME_OVER_SCENE_NAME);
 	}
 
 	public static void LoadStart () {
 		cleanupInGameReferences();
 		IsLoadingScene = true;
-		SceneManager.LoadScene(START_SCENE_NAME);
+		LoadScene(START_SCENE_NAME);
 	}
 
 	public static void LoadAbout () {
 		cleanupInGameReferences();
-		SceneManager.LoadScene(ABOUT_SCENE);
+		LoadScene(ABOUT_SCENE);
 	}
 
 	public static void LoadCredits () {
 		cleanupInGameReferences();
-		SceneManager.LoadScene(CREDITS_SCENE);
+		LoadScene(CREDITS_SCENE);
 	}
 
 	public static void LoadSettings () {
-		SceneManager.LoadScene(SETTINGS_SCENE);
+		LoadScene(SETTINGS_SCENE);
+	}
+
+	public static void LoadAlmanac () {
+		LoadScene(ALMANAC_SCENE);
+	}
+
+	public static void LoadScene (string sceneName) {
+		previousScene = SceneManager.GetActiveScene().name;
+		SceneManager.LoadScene(sceneName);
+	}
+
+	// Loads start if a previous scene has not yet been set
+	public static void LoadPreviousScene () {
+		LoadScene(previousScene);
 	}
 
 	public static void ReportSceneLoadComplete () {

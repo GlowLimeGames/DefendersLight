@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class WorldController : MannBehaviour, IWorldController, IObjectPool<GameObject> {
+	[SerializeField]
+	bool inGame = true;
+
 	public static WorldController Instance;
 	bool isPaused;
 	public GameObject TowerPrefab;
@@ -134,10 +137,14 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void Create() {
-		createRules();
+		if (inGame) {
+			createRules();
+		}
 		SetupUnitControllers();
-		PlaceCoreOrb();
-		setupUnitControllerCallbacks();
+		if (inGame) {
+			PlaceCoreOrb();
+			setupUnitControllerCallbacks();
+		}
 	}
 
 	void createRules () {
@@ -375,16 +382,22 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		dataController = DataController.Instance;
 		towerController = TowerController.Instance;
 		enemyController = EnemyController.Instance;
-		mapController = MapController.Instance;
-		statsPanel = StatsPanelController.Instance;
-		purchasePanel = TowerPurchasePanelController.Instance;
-		input = InputController.Instance;
-		tuning = dataController.tuning;
+		if (inGame) {
+			mapController = MapController.Instance;
+			statsPanel = StatsPanelController.Instance;
+			purchasePanel = TowerPurchasePanelController.Instance;
+			input = InputController.Instance;
+			tuning = dataController.tuning;
+		}
 		setupDataControllerCallbacks();
-		setupUI();
+		if (inGame) {
+			setupUI();
+		}
 		Create();
-		StartWave();
-		EventController.Event(EventType.LoadGame);
+		if (inGame) {
+			StartWave();
+			EventController.Event(EventType.LoadGame);
+		}
 	}
 
 	void setupUI () {

@@ -4,15 +4,7 @@
  */
 
 public abstract class UIElement : MannBehaviour {
-	protected override void SetReferences () {
-		// NOTHING
-	}
-
 	protected override void FetchReferences () {
-		// NOTHING
-	}
-
-	protected override void CleanupReferences () {
 		// NOTHING
 	}
 

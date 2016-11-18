@@ -43,8 +43,10 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	public virtual void Setup (WorldController worldController, DataController dataController, MapController mapController, string unitTemplateJSONPath, MathEquation spawnCountEquation) {
 		base.Setup(worldController, dataController, mapController, unitTemplateJSONPath);
-		this.spawnCountEquation = spawnCountEquation;
-		createSpawnPoints();
+		if (inGame) {
+			this.spawnCountEquation = spawnCountEquation;
+			createSpawnPoints();
+		}
 	}
 
 	public EnemyBehaviour GetPrefab (string enemyKey) {

@@ -472,6 +472,80 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 58331335}
+--- !u!1 &62885671
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 62885672}
+  - 222: {fileID: 62885674}
+  - 114: {fileID: 62885673}
+  m_Layer: 0
+  m_Name: LevelUpText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &62885672
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 62885671}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 1434286728}
+  m_RootOrder: 0
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 30.07, y: -81.95}
+  m_SizeDelta: {x: 500, y: 500}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &62885673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 62885671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 90
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 100
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Level Up!
+--- !u!222 &62885674
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 62885671}
 --- !u!1 &78852617
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,6 +933,7 @@ GameObject:
   - 224: {fileID: 178548853}
   - 222: {fileID: 178548855}
   - 114: {fileID: 178548854}
+  - 114: {fileID: 178548856}
   m_Layer: 5
   m_Name: ManaText
   m_TagString: Untagged
@@ -923,6 +998,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 178548852}
+--- !u!114 &178548856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 178548852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda941a8f54c14a80a076cb8790b4609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultTextColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &236486481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,9 +1205,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_HighlightedColor: {r: 0.39705884, g: 0.76346153, b: 1, a: 1}
+    m_PressedColor: {r: 0.15679064, g: 0.32067305, b: 0.42647058, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -3810,9 +3897,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_HighlightedColor: {r: 0.41787413, g: 0.7492859, b: 0.9632353, a: 1}
+    m_PressedColor: {r: 0.13494807, g: 0.33891398, b: 0.4705882, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -4626,6 +4713,7 @@ GameObject:
   - 222: {fileID: 991877510}
   - 114: {fileID: 991877509}
   - 114: {fileID: 991877508}
+  - 114: {fileID: 991877511}
   m_Layer: 5
   m_Name: ToggleSFX
   m_TagString: Untagged
@@ -4671,9 +4759,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_HighlightedColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_PressedColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -4748,6 +4836,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 991877506}
+--- !u!114 &991877511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 991877506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb57a289250f4fb5a58b9bec9ed9b58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowToggle: 1
 --- !u!1 &1004811601
 GameObject:
   m_ObjectHideFlags: 0
@@ -5677,7 +5777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5976,6 +6076,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1282894673}
   - 114: {fileID: 1282894674}
+  - 114: {fileID: 1282894675}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -6001,6 +6102,7 @@ Transform:
   - {fileID: 288982415}
   - {fileID: 941592119}
   - {fileID: 1544529572}
+  - {fileID: 1434286728}
   m_Father: {fileID: 0}
   m_RootOrder: 1
 --- !u!114 &1282894674
@@ -6023,6 +6125,21 @@ MonoBehaviour:
   EnemySpawnCountEquation:
     Slope: 2
     YIntercept: 1
+--- !u!114 &1282894675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1282894672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7ff41d8bf51a724c8b05c2a47a146e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  newCanvas: {fileID: 1434286727}
+  text: {fileID: 62885673}
+  textToDisplay: Level Up!
+  secondsToWait: 5
 --- !u!1001 &1358028103
 Prefab:
   m_ObjectHideFlags: 0
@@ -6263,9 +6380,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.99264705, g: 0.36494377, b: 0.40390465, a: 1}
+    m_HighlightedColor: {r: 0.99264705, g: 0.7809797, b: 0.7809797, a: 1}
+    m_PressedColor: {r: 0.61764705, g: 0.2225346, b: 0.24722911, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -6417,6 +6534,99 @@ RectTransform:
   m_AnchoredPosition: {x: 299, y: 94.843}
   m_SizeDelta: {x: 183, y: 251.78}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1434286727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 1434286728}
+  - 223: {fileID: 1434286731}
+  - 114: {fileID: 1434286730}
+  - 114: {fileID: 1434286729}
+  m_Layer: 0
+  m_Name: LevelUpRewardScreen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1434286728
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1434286727}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 62885672}
+  m_Father: {fileID: 1282894673}
+  m_RootOrder: 7
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &1434286729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1434286727}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1434286730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1434286727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+--- !u!223 &1434286731
+Canvas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1434286727}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &1435268239
 GameObject:
   m_ObjectHideFlags: 0
@@ -7401,6 +7611,7 @@ GameObject:
   - 222: {fileID: 1642440541}
   - 114: {fileID: 1642440540}
   - 114: {fileID: 1642440539}
+  - 114: {fileID: 1642440542}
   m_Layer: 5
   m_Name: ToggleMusic
   m_TagString: Untagged
@@ -7446,9 +7657,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_HighlightedColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_PressedColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -7523,6 +7734,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1642440537}
+--- !u!114 &1642440542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1642440537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb57a289250f4fb5a58b9bec9ed9b58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowToggle: 1
 --- !u!1 &1680064415
 GameObject:
   m_ObjectHideFlags: 0
@@ -8097,9 +8320,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_NormalColor: {r: 0.2901961, g: 0.6, b: 0.8000001, a: 1}
+    m_HighlightedColor: {r: 0.36937714, g: 0.69004524, b: 0.89705884, a: 1}
+    m_PressedColor: {r: 0.18003894, g: 0.40128678, b: 0.5441177, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -9309,6 +9532,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseScreen: {fileID: 1066574182}
   cheatPanel: {fileID: 1415387288}
+  sfxToggle: {fileID: 991877511}
+  musicToggle: {fileID: 1642440542}
 --- !u!1 &2029710706
 GameObject:
   m_ObjectHideFlags: 0
@@ -9366,10 +9591,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveText: {fileID: 2093635081}
   enemyText: {fileID: 852621154}
-  manaText: {fileID: 178548854}
+  manaText: {fileID: 178548856}
   levelText: {fileID: 1919437875}
   xpText: {fileID: 728198138}
   manaIcon: {fileID: 314139171}
+  manaCountTime: 0.5
+  manaColor: {r: 0.06666667, g: 0.48627454, b: 0.7607844, a: 1}
+  loseManaColor: {r: 0.9191176, g: 0.47983345, b: 0.47983345, a: 1}
 --- !u!1 &2038070216
 GameObject:
   m_ObjectHideFlags: 0

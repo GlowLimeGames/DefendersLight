@@ -11,9 +11,12 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 	public delegate void EventActionf(float floatingPointNumber);
 	public delegate void EventActionKey(string key);
 	public delegate void EventActionFlag(bool flag);
+	protected bool referencesSet {get; private set;}
 
 	void Awake () {
-		SetReferences();
+		if (!referencesSet) {
+			SetReferences();
+		}
 		SubscribeEvents();
 	}
 
@@ -74,7 +77,9 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 		EventController.OnNamedEvent -= HandleNamedEvent;
 	}
 
-	protected abstract void SetReferences ();
+	protected virtual void SetReferences () {
+		referencesSet = true;
+	}
 
 	protected abstract void FetchReferences ();
 
@@ -92,6 +97,10 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 		}
 	}
 		
+	public virtual void RefreshReferences () {
+		SetReferences();
+	}
+
 	protected Vector3 scalarVector (float value) {
 		return Vector3.one * value;
 	}

@@ -12,16 +12,17 @@ public class StatsPanelController : UIController {
 	Color defaultTextColor = Color.white;
 	const string WAVE = "Wave";
 	const string ENEMIES = "Enemies";
-	const string MANA = "Mana";
+	const string MANA = "Mana: ";
 	const string LEVEL = "Level";
 	const string XP = "XP";
 
+	[Header("Refs")]
 	[SerializeField]
 	Text waveText;
 	[SerializeField]
 	Text enemyText;
 	[SerializeField]
-	Text manaText;
+	UIAnimatedCount manaText;
 	[SerializeField]
 	Text levelText;
 	[SerializeField]
@@ -29,8 +30,18 @@ public class StatsPanelController : UIController {
 	[SerializeField]
 	Image manaIcon;
 
+	[Header("Tuning")]
+	[SerializeField]
+	float manaCountTime = 0.5f;
+	[SerializeField]
+	Color manaColor = Color.cyan;
+	[SerializeField]
+	Color loseManaColor = Color.red;
+
+	int mostRecentManaValue = 0;
+
 	public void SetManaTextColor (Color color) {
-		manaText.color = color;
+		manaText.SetColor(color);
 		manaIcon.color = color;
 	}
 
@@ -47,7 +58,8 @@ public class StatsPanelController : UIController {
 	}
 
 	public void SetMana (int mana) {
-		manaText.text = getManaText(mana);
+		manaText.StartCount(mana, manaCountTime, mostRecentManaValue <= mana ? manaColor : loseManaColor);
+		mostRecentManaValue = mana;
 	}
 
 	public void SetLevel (int level) {
@@ -81,6 +93,7 @@ public class StatsPanelController : UIController {
 	protected override void SetReferences () {
 		base.SetReferences();
 		SingletonUtil.TryInit(ref Instance, this, gameObject);
+		manaText.SetPrefixText(MANA);
 	}
 
 	protected override void FetchReferences () {
