@@ -6516,6 +6516,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 11467188, guid: e652f9844b75e474ba57f365880b2114, type: 2}
+      propertyPath: XPEquation.Slope
+      value: 1500
+      objectReference: {fileID: 0}
+    - target: {fileID: 11467188, guid: e652f9844b75e474ba57f365880b2114, type: 2}
+      propertyPath: XPEquation.YIntercept
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e652f9844b75e474ba57f365880b2114, type: 2}
   m_IsPrefabParent: 0
