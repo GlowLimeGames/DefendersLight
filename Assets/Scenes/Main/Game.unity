@@ -1756,6 +1756,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 348581779}
   - 114: {fileID: 348581780}
+  - 114: {fileID: 348581781}
   m_Layer: 5
   m_Name: TowerPanel
   m_TagString: Untagged
@@ -1807,6 +1808,23 @@ MonoBehaviour:
   sellValue: {fileID: 279516555}
   towerImage: {fileID: 1748743280}
   healthBar: {fileID: 31123345}
+--- !u!114 &348581781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 348581778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a8d95ae7eb4bb0bf4756931b0b91f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragThresold: 100
+  exitDistance: 600
+  resetPositionOnClose: 1
+  orientation: 0
+  dragDirection: 3
+  autoCloseSpeed: 500
 --- !u!1 &370429771
 GameObject:
   m_ObjectHideFlags: 0
@@ -3788,6 +3806,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6e39c7f37f84659ae16d2ee4486b47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 1
   CoreOrbPrefab: {fileID: 142064, guid: b7cb049f7d89048c8b309f3a38b0dab5, type: 2}
   CoreOrbInstance: {fileID: 0}
 --- !u!1 &782338259
@@ -6116,6 +6135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6079bb3a12cc34747866b919463e6273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 1
   TowerPrefab: {fileID: 106030, guid: f01af0329bc7d405c972be942a8bb31b, type: 2}
   AssaulTowerPrefab: {fileID: 106030, guid: 46d4db1cc97f44460bb7bac01f25f839, type: 2}
   BarricadeTowerPrefab: {fileID: 106030, guid: 140e1c3eccf884645938072881ec44e0, type: 2}
@@ -6712,6 +6732,7 @@ GameObject:
   - 222: {fileID: 1481821234}
   - 114: {fileID: 1481821233}
   - 225: {fileID: 1481821235}
+  - 114: {fileID: 1481821236}
   m_Layer: 5
   m_Name: TowerHolderPanel
   m_TagString: Untagged
@@ -6784,6 +6805,23 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &1481821236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1481821231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a8d95ae7eb4bb0bf4756931b0b91f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragThresold: 100
+  exitDistance: 500
+  resetPositionOnClose: 1
+  orientation: 0
+  dragDirection: 1
+  autoCloseSpeed: 500
 --- !u!1 &1484349564 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 189458, guid: b250baad274d14994a097923cd13e569, type: 2}
@@ -8140,6 +8178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 597db0013683c4f0fa95a02ac322b4d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inGame: 1
   spawnPointPrefab: {fileID: 153068, guid: 34ffb407b093141dcbf9bf6ac2a0db3c, type: 2}
   spawnPointParent: {fileID: 78852618}
   EnemyPrefabs:
@@ -8859,6 +8898,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: {fileID: 2043032123}
   towerPage: {fileID: 1481821235}
+  close: {fileID: 1481821236}
 --- !u!225 &1924913054
 CanvasGroup:
   m_ObjectHideFlags: 0

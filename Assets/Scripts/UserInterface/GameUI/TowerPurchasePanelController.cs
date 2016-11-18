@@ -18,6 +18,8 @@ public class TowerPurchasePanelController : UIController {
 	CanvasGroup towerPage;
 	WorldController world;
 	MapController map;
+	[SerializeField]
+	UISwipeToClose close;
 
 	public void HandleBeginDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		TogglePurchaseCanvasVisible(false);
@@ -62,6 +64,7 @@ public class TowerPurchasePanelController : UIController {
 				towerPanel.InitWithController(this);
 			}
 			purchaseCanvas = GetComponent<CanvasGroup>();
+			close.SubscribeToClose(CloseTowerPage);
 		}
 	}
 
