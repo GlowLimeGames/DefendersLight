@@ -34,6 +34,7 @@ public class TowerPanelController : UIController {
 	[SerializeField]
 	Image healthBar;
 
+	UISwipeToClose close;
 
 	void OnEnable () {
 		world = WorldController.Instance;
@@ -90,5 +91,11 @@ public class TowerPanelController : UIController {
 
 	public TowerBehaviour GetSelectedTower () {
 		return selectedTower;
+	}
+
+	protected override void SetReferences () {
+		base.SetReferences ();
+		close = GetComponent<UISwipeToClose>();
+		close.SubscribeToClose(Hide);
 	}
 }

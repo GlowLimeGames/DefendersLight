@@ -589,6 +589,26 @@
 			"Type": "FX",
 			"Channel":1,
 			"Volume": 100
+		},
+		{
+			"Name":"error_sound1",
+			"Groups":[],
+			"Events":["CannotPurchase"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"error_sound2",
+			"Groups":[],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
 		}
 	],
 	"Groups" : [

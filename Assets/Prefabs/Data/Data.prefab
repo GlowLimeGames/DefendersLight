@@ -54,8 +54,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartingMana: 100
   XPEquation:
-    Slope: 200
-    YIntercept: 100
+    Slope: 1500
+    YIntercept: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
