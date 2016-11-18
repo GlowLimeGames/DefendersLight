@@ -15,13 +15,18 @@ public class ShadeBehaviour : EnemyBehaviour {
 
 	protected override void SetReferences () {
 		base.SetReferences ();
+		OnSpawn();
+	}
+
+	public override void OnSpawn () {
+		base.OnSpawn ();
 		StartCoroutine(healthDrain());
 	}
 
 	protected override bool canHealTarget (ActiveObjectBehaviour target) {
-		return base.canHealTarget(target) && isEnemy(target);
+		return base.canHealTarget(target) && isEnemy(target) && !target.IAtFullHealth;
 	}
-
+		
 	void OnTriggerEnter (Collider collider) {
 		if (collider.gameObject.tag == TowerController.TOWER_TAG && isMoving) {
 			Halt();
@@ -41,7 +46,7 @@ public class ShadeBehaviour : EnemyBehaviour {
 	void checkToHeal (Collider collider) {
 		if (!healingIsCoolingDown) {
 			ActiveObjectBehaviour activeObject = collider.GetComponent<ActiveObjectBehaviour>();
-			if (activeObject != null && canHealTarget(activeObject)) {
+			if (activeObject != null && activeObject != this && canHealTarget(activeObject)) {
 				HealTarget(activeObject, Mathf.Clamp(HealRate, 0, Health));
 			}
 		}

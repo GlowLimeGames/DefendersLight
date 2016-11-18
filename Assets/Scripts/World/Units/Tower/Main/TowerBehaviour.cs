@@ -14,9 +14,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	[SerializeField]
 	GameObject MissilePrefab;
 
-	[SerializeField]
-	int sellValue = 2;
-
 	RangedAttackBehaviour attackModule = null;
 
 	public override float IAttackDelay {
@@ -29,9 +26,22 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 			return tower.Health;
 		}
 	}
+	public Tower ITower {
+		get {
+			return this.tower;
+		}
+	}
+	public float IHealthFraction {
+		get {
+			return (float) this.Health / (float) tower.Health;
+		}
+	}
+
 	public virtual void SetTower (Tower tower) {
 		this.tower = tower;
-		spriteRenderer.sprite = tower.GetSprite();
+		if (spriteRenderer) {
+			spriteRenderer.sprite = tower.GetSprite();
+		}
 		if (attackModule) {
 			attackModule.SetUnit(tower);
 		}
@@ -55,12 +65,17 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		}
 	}
 
-	protected override void CleanupReferences () {
-		base.CleanupReferences();
+	public override void Destroy () {
+		base.Destroy ();
 		if (WorldController.Instance) {
 			WorldController.Instance.RemoveActiveTower(this);
 		}
 		EventController.Event(EventType.TowerDestroyed);
+
+	}
+
+	protected override void CleanupReferences () {
+		base.CleanupReferences();
 	}
 
 	public void SelectTower () {
@@ -75,20 +90,23 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		EventController.Event(EventType.BuildTower);
 	}
 
-	public override ActiveObjectBehaviour SelectTarget() {
-		return null;
-	}
-
 	protected override void HandleNamedEvent (string eventName) {
 
 	}
 
 	public void Sell () {
-		WorldController.Instance.CollectMiniOrbs(sellValue);
-		Destroy(gameObject);
+		(unitController as TowerController).SellTower(this.tower);
+		unitController.HandleObjectDestroyed(this);
+		tile.RemoveAgent();
+		EventController.Event(EventType.TowerSold);
 	}
 
 	public override void Attack(ActiveObjectBehaviour activeAgent, int damage) {
+		// Tower cannot attack if its square is not illuminated:
+		if (!tile.IIsIlluminated) {
+			return;
+		}
+
 		StartCoroutine(AttackCooldown());
 		ProjectileBehaviour missileBehavior;
 		if (ProjectilePool.Instance && !ProjectilePool.Instance.IsEmpty) {
@@ -99,7 +117,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		}
 		missileBehavior.SetTower(tower);
 		missileBehavior.SetTarget(activeAgent);
-		StartCoroutine(trackMissile(missileBehavior.transform, 1f));
+		// StartCoroutine(trackMissile(missileBehavior.transform, 1f));
 	}
 
 	IEnumerator trackMissile (Transform missileTransform, float time) {
@@ -114,7 +132,9 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	public override void HandleColliderEnterTrigger (Collider collider) {
 		base.HandleColliderEnterTrigger (collider);
-		checkToAttack(collider);
+		if (isActive) {
+			checkToAttack(collider);
+		}
 	}
 
 	public override void HandleColliderStayTrigger (Collider collider)	{

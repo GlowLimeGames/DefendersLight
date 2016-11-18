@@ -10,10 +10,6 @@ public class AssaultTowerBehaviour : TowerBehaviour {
 	const string LIGHTNING_TOWER_KEY = "Lightning Tower";
 	const string FLAME_TOWER_KEY = "Flame Tower";
 
-	protected override void SetReferences () {
-		base.SetReferences ();
-	}
-		
 	public override void SetTower (Tower tower) {
 		base.SetTower (tower);
 		if (tower.Type == LIGHTNING_TOWER_KEY || tower.Type == FLAME_TOWER_KEY) {

@@ -3,30 +3,37 @@
  * Description: The base class that UIController's inherit from
  */
 
-public abstract class UIController : MannBehaviour, IUIController {
+public abstract class UIController : MannBehaviour {
+	protected InputController input;
+	protected DataController data;
+
 	public void LoadStartScreen () {
 		SceneController.LoadStart();
 	}
 
-	public void LoadGame () {
-		SceneController.LoadGame();
+	public void LoadGame (bool isPlayAgain) {
+		SceneController.LoadGame(isPlayAgain);
 	}
 
+	public void LoadAbout () {
+		SceneController.LoadAbout();
+	}
+
+	public void LoadCredits () {
+		SceneController.LoadCredits();
+	}
 
 	protected override void SetReferences () {
-
+		// NOTHING
 	}
 
 	protected override void FetchReferences () {
-
-	}
-
-	protected override void CleanupReferences () {
-
+		input = InputController.Instance;
+		data = DataController.Instance;
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-
+		// NOTHING
 	}
 
 	public void PlayClickSound () {
@@ -41,31 +48,8 @@ public abstract class UIController : MannBehaviour, IUIController {
 		SettingsUtil.ToggleSFXMuted();
 	}
 
-	public void AddElement(IUIElement element) {
-		throw new System.NotImplementedException();
+	public void OpenURL (string url) {
+		UnityEngine.Application.OpenURL(url);
 	}
-
-	public void RemoveElement(IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public void ShowElement(IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public void HideElement(IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public IUIElement GetElementByID(string id) {
-		throw new System.NotImplementedException();
-	}
-
-	public IUIElement GetParent (IUIElement element) {
-		throw new System.NotImplementedException();
-	}
-
-	public IUIElement[] GetChildren (IUIElement element) {
-		throw new System.NotImplementedException();
-	}
+		
 }

@@ -137,7 +137,6 @@ public static class ArrayUtil {
 				return true;
 			}
 		}
-
 		return false;
 	}
 

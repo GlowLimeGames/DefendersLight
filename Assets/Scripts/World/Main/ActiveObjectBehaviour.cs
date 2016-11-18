@@ -7,13 +7,15 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
+	EventActionf onUpdateHealth;
+	protected UnitController unitController;
 	public string Name;
 	public int Health;
 	public int BaseDamage;
 	public int Range;
 	public string LevelString;
 	public float AttackDelay;
-	int _maxHealth;
+	int _maxHealth = 0;
     public bool isInvulnerable = false;
 	public AttackType AttackType;
 	public virtual float IAttackDelay {
@@ -31,6 +33,16 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 			return _maxHealth;
 		}
 	}
+	public bool IAtFullHealth {
+		get {
+			return Health == IMaxHealth;
+		}
+	}
+	public string IType {
+		get {
+			return unit.Type;
+		}
+	}
 	Unit unit;
 
 	EventAction onDestroyed;
@@ -43,7 +55,12 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	protected HealthBarBehaviour HealthBar;
 
 	protected bool attackCooldownActive = false;
-
+	protected bool isActive = true;
+	public bool IIsActive {
+		get {
+			return isActive;
+		}
+	}
 	[SerializeField]
 	bool debugging;
 
@@ -57,26 +74,35 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	void SetStats () {
 	}
 
+	public void SubscribeUpdateHealth (EventActionf eventAction) {
+		onUpdateHealth += eventAction;
+	}
+
+	public void UnsubscribeUpdateHealth (EventActionf eventAction) {
+		onUpdateHealth -= eventAction;
+	}
+
 	protected override void SetReferences () {
 		SetStats();
 	}
 
 	protected override void CleanupReferences () {
-		if (onDestroyed != null) {	
-			onDestroyed();
-		}
+		base.CleanupReferences();
 	}
-		
+
+	public virtual void Setup (UnitController unitController) {
+		this.unitController = unitController;
+	}
+
 	public virtual void Attack(ActiveObjectBehaviour activeAgent, int damage) {
 		StartCoroutine(AttackCooldown());
 		activeAgent.Damage(damage);
 	}
 
-	public abstract ActiveObjectBehaviour SelectTarget();
-
 	public virtual void Damage(int damage) {
         if (!isInvulnerable) {
             Health -= damage;
+			callUpdateHealth((float) Health / (float) IMaxHealth);
         }
 		if (Health <= 0) {
 			Destroy();
@@ -90,12 +116,27 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		updateHealthBar();
 	}
     
+	public virtual void OnSpawn () {
+		ResetStats();
+	}
+
+	public virtual void ResetStats () {
+		Health = IMaxHealth;
+		updateHealthBar();
+	}
+
 	void updateHealthBar () {
 		if (HealthBar) {
 			HealthBar.SetHealthDisplay(
 				(float) Health /
-				(float) this.unit.Health
+				(float) IMaxHealth
 			);
+		}
+	}
+
+	void callUpdateHealth (float healthFraction) {
+		if (onUpdateHealth != null) {
+			onUpdateHealth(healthFraction);
 		}
 	}
 
@@ -108,7 +149,10 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	public virtual void Destroy() {
-		DestroyObject(gameObject);
+		unitController.HandleObjectDestroyed(this);	
+		if (onDestroyed != null) {	
+			onDestroyed();
+		}
 	}
 
 	public virtual bool InRange(ActiveObjectBehaviour activeAgent) {
@@ -160,5 +204,9 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	protected void setUnit (Unit unit) {
 		this.unit = unit;
 		this.Health = unit.Health;
+	}
+
+	public virtual void ToggleActive (bool isActive) {
+		this.isActive = isActive;
 	}
 }

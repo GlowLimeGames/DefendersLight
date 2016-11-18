@@ -8,25 +8,46 @@ using System.Collections;
 using UnityEngine.EventSystems;
 
 public class TowerPurchasePanelController : UIController {
+	public static TowerPurchasePanelController Instance;
 	CanvasGroup purchaseCanvas;
 	TowerPurchasePanel[] towerPuchasePanels;
+	TowerPurchasePanel selectedPurchasePanel;
 	[SerializeField]
 	UnityEngine.UI.Text title;
 	[SerializeField]
 	CanvasGroup towerPage;
+	WorldController world;
+	MapController map;
 
 	public void HandleBeginDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		TogglePurchaseCanvasVisible(false);
-		WorldController.Instance.HandleBeginDragPurchase(dragEvent, towerPanel);
+		world.HandleBeginDragPurchase(dragEvent, towerPanel);
 	}
 
 	public void HandleDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
-		WorldController.Instance.HandleDragPurchase(dragEvent, towerPanel);
+		world.HandleDragPurchase(dragEvent, towerPanel);
 	}
 
 	public void HandleEndDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		TogglePurchaseCanvasVisible(true);
-		WorldController.Instance.HandleEndDragPurchase(dragEvent, towerPanel);
+		world.HandleEndDragPurchase(dragEvent, towerPanel);
+	}
+
+	public void HandlePurchaseSelected (TowerPurchasePanel towerPanel) {
+		TryDeselectSelectedPanel();
+		this.selectedPurchasePanel = towerPanel;
+		world.HandleTowerPurchaseSelected(towerPanel.GetTower());
+	}
+
+	public bool TryDeselectSelectedPanel (bool shouldSwitchSelected = true) {
+		if (this.selectedPurchasePanel) {
+			map.UnhighlightValidBuildsTiles();
+			this.selectedPurchasePanel.TryDeselect(shouldSwitchSelected);
+			this.selectedPurchasePanel = null;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	void TogglePurchaseCanvasVisible (bool isVisible) {
@@ -34,14 +55,31 @@ public class TowerPurchasePanelController : UIController {
 	}
 
 	protected override void SetReferences () {
-		base.SetReferences();
-		towerPuchasePanels =  GetComponentsInChildren<TowerPurchasePanel>();
-		foreach (TowerPurchasePanel towerPanel in towerPuchasePanels) {
-			towerPanel.InitWithController(this);
+		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
+			base.SetReferences();
+			towerPuchasePanels =  GetComponentsInChildren<TowerPurchasePanel>();
+			foreach (TowerPurchasePanel towerPanel in towerPuchasePanels) {
+				towerPanel.InitWithController(this);
+			}
+			purchaseCanvas = GetComponent<CanvasGroup>();
 		}
-		purchaseCanvas = GetComponent<CanvasGroup>();
 	}
 
+	protected override void FetchReferences () {
+		if (SingletonUtil.IsSingleton(Instance, this)) {
+			base.FetchReferences ();
+			world = WorldController.Instance;
+			map = MapController.Instance;
+			foreach (TowerPurchasePanel towerPanel in towerPuchasePanels) {
+				towerPanel.Setup(input, data);
+			}
+		}
+	}
+
+	protected override void CleanupReferences () {
+		base.CleanupReferences ();
+		SingletonUtil.TryCleanupSingleton(ref Instance, this);
+	}
 
 	Tower[] GetTowers (TowerType type) {
 		return WorldController.Instance.GetTowersOfType(type);
@@ -67,17 +105,22 @@ public class TowerPurchasePanelController : UIController {
 	}
 
 	public void SetTowers (Tower[] towers) {
-		for (int i = 0; i <  towerPuchasePanels.Length; i++) {
-			if (i >= towers.Length) {
-				towerPuchasePanels[i].Hide();
-			} else {
-				towerPuchasePanels[i].SetTower(towers[i]);
-				towerPuchasePanels[i].Show();
+		if (TryDeselectSelectedPanel()) {
+			map.UnhighlightValidBuildsTiles();
+		}
+		int panelIndex = 0;
+		for (int i = 0; i <  towers.Length; i++) {
+			if (world.OverrideTowerLevelRequirement || towers[i].Unlocked(DataController.Instance.IPlayer)) {
+				towerPuchasePanels[panelIndex].SetTower(towers[i]);
+				towerPuchasePanels[panelIndex].Show();
+				panelIndex++;
 			}
 		}
+		for (int j = panelIndex; j < towerPuchasePanels.Length; j++) {
+			towerPuchasePanels[j].Hide();
+		}
 	}
-
-
+		
 	void ToggleTowerPage (bool isActive) {
 		towerPage.alpha = isActive ? 1 : 0;
 		towerPage.blocksRaycasts = isActive;

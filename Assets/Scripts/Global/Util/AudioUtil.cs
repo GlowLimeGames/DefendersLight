@@ -27,10 +27,9 @@ public static class AudioUtil {
 	}
 
 	public static AudioType AudioTypeFromString (string audioType) {
-
 		switch (audioType) {
-
 		case "FX":
+		case "Ambience":
 			return AudioType.FX;
 		case "Music":
 			return AudioType.Music;

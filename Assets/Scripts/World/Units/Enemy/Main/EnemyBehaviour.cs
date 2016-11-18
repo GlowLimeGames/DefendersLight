@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyBehaviour : MobileAgentBehaviour {
 	public Direction DirectionFacing;
@@ -22,22 +23,50 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 	public override int IMaxHealth {
 		get {
-			return enemy.Health;
+			if (enemy != null) {
+				return enemy.Health;
+			} else {
+				return 0;
+			}
 		}
 	}
+    public int ISpeed{
+        get{
+            return enemy.Speed;
+        }
+    }
+	public bool HasPath {
+		get {
+			return path != null && path.Count > 0;
+		}
+	}
+	float _placeholderMovementSpeed = 0.5f;
+	float movementSpeed {
+		get {
+			// TODO: Implement actual speed value in JSON
+			return _placeholderMovementSpeed;
+		}
+	}
+
+	Queue<MapTileBehaviour> path = null;
+
 	public void SetEnemy (Enemy enemy) {
 		this.enemy = enemy;
 		setUnit(enemy);
 	}
 
-	protected override void SetReferences() {
-		base.SetReferences();
-    }
+	public void SetPath (Queue<MapTileBehaviour> path) {
+		this.path = path;
+	}
+		
+	protected override void updateCurrentLocation (MapTileBehaviour currentTile) {
+		base.updateCurrentLocation (currentTile);
+	}
 
 	protected override void FetchReferences() {}
 
-	protected override void CleanupReferences () {
-		base.CleanupReferences();
+	public override void Destroy () {
+		base.Destroy ();
 		EventController.Event(EventType.EnemyDestroyed);
 		EventController.Event(EventType.EnemyDestroyed, enemy);
 		if (WorldController.Instance) {
@@ -49,9 +78,25 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 
 		
 	void ResumeMoving () {
-		if (WorldController.Instance && WorldController.Instance.ICoreOrbInstance != null) {
-			SetTarget(WorldController.Instance.ICoreOrbInstance);
+		if (this && WorldController.Instance && WorldController.Instance.ICoreOrbInstance != null) {
+			NavigatePath();
 		}
+	}
+
+	public override void NavigatePath (Queue<MapTileBehaviour> path, float timePerStep) {
+		base.NavigatePath (path, timePerStep);
+		isMoving = true;
+	}
+
+	public void NavigatePath () {
+		if (path != null) {
+			NavigatePath(path, movementSpeed);
+		}
+	}
+
+	protected override void haltMovementCoroutine () {
+		base.haltMovementCoroutine ();
+		isMoving = false;
 	}
 
     public override void MoveTo(MapLocation location) {
@@ -59,11 +104,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			SetTarget(WorldController.Instance.ICoreOrbInstance);
 		}
     }
-
-	public override ActiveObjectBehaviour SelectTarget() {
-		throw new System.NotImplementedException();
-	}
-
+		
 	public void SetTarget (GameObject target) {
 		if (this != null && gameObject != null) {
 			if (gameObject.activeInHierarchy) {
@@ -74,10 +115,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	public void Halt () {
-		if (movementCoroutine != null) {
-			StopCoroutine(movementCoroutine);
-			isMoving = false;
-		}
+		haltMovementCoroutine();
 	}
 
 	public override void Attack (ActiveObjectBehaviour activeAgent, int damage) {
@@ -93,7 +131,9 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	IEnumerator MoveTowardsTarget (GameObject target) {
 		float stop = Random.Range(0.1f, 0.5f);
 		while (target != null && Vector3.Distance(transform.position, target.transform.position) > stop) {
-			transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 0.05f);
+			if (!WorldController.Instance.IsPaused) {
+				transform.position = Vector3.MoveTowards(transform.position, target.transform.position, 0.05f);
+			}
 			yield return new WaitForEndOfFrame();
 		}
 		yield return new WaitForEndOfFrame();

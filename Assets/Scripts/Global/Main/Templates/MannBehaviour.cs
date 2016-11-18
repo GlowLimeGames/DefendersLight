@@ -7,6 +7,11 @@ using UnityEngine;
 
 public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 	public delegate void EventAction();
+	public delegate void EventActionInt(int integer);
+	public delegate void EventActionf(float floatingPointNumber);
+	public delegate void EventActionKey(string key);
+	public delegate void EventActionFlag(bool flag);
+
 	void Awake () {
 		SetReferences();
 		SubscribeEvents();
@@ -73,7 +78,9 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 
 	protected abstract void FetchReferences ();
 
-	protected abstract void CleanupReferences ();
+	protected virtual void CleanupReferences () {
+		StopAllCoroutines();
+	}
 
 	protected abstract void HandleNamedEvent (string eventName);
 
@@ -83,5 +90,9 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 		} else {
 			return -1;
 		}
+	}
+		
+	protected Vector3 scalarVector (float value) {
+		return Vector3.one * value;
 	}
 }

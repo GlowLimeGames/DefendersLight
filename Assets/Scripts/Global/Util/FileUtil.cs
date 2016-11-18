@@ -8,6 +8,20 @@ using System.Collections;
 using System.IO;
 
 public static class FileUtil {
+	
+	public static string CreatePath (params string[] directories) {
+		if (directories.Length >= 2) {
+			string path = Path.Combine(directories[0], directories[1]);
+			for (int i = 2; i < directories.Length; i++) {
+				path = Path.Combine(path, directories[i]);
+			}
+			return path;
+		} else if (directories.Length == 1) {
+			return Path.Combine(directories[0], string.Empty);
+		} else {
+			return Path.Combine(string.Empty, string.Empty);
+		}
+	}
 
 	public static string FileText (string path) {
 		return convertQuotationMarks(
@@ -38,11 +52,15 @@ public static class FileUtil {
 	}
 
 	public static void WriteStringToPath (string text, string path) {
-		File.WriteAllText(path, text);
+		#if !UNITY_WEBPLAYER
+			File.WriteAllText(path, text);
+		#endif
 	}
 
 	public static void AppendStringToPath (string text, string path) {
-		File.AppendAllText(path, text);
+		#if !UNITY_WEBPLAYER
+			File.AppendAllText(path, text);
+		#endif
 	}
 
 	public static bool FileExistsAtPath (string path) {
