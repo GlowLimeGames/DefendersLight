@@ -1,0 +1,585 @@
+{
+	"Files": [
+		{
+			"Name":"Warlock",
+			"Groups":[],
+			"Events":["LoadStart", "LoadGameOver"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "Music",
+			"Channel":2,
+			"Volume": 100
+		},
+		{
+			"Name":"Defender's Light Soundtrack 1_2",
+			"Groups":[],
+			"Events":["LoadGame"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "Music",
+			"Channel":2,
+			"Volume": 100
+		},
+		{
+			"Name":"ArchersTower_Attack_A",
+			"Groups":["ArchersTowerAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"ArchersTower_Attack_B",
+			"Groups":["ArchersTowerAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"ArchersTower_Attack_C",
+			"Groups":["ArchersTowerAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Ballistae_Attack_A",
+			"Groups":["BallistaeAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Ballistae_Attack_B",
+			"Groups":["BallistaeAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},{
+			"Name":"Ballistae_Attack_C",
+			"Groups":["BallistaeAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Build_Illumination_A2",
+			"Groups":["BuildIllumination"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Build_Illumination_B2",
+			"Groups":["BuildIllumination"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Build_Tower_A2",
+			"Groups":["BuildTower"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Build_Tower_B2",
+			"Groups":["BuildTower"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Catapult_Attack_A",
+			"Groups":["CatapultAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Catapult_Attack_B",
+			"Groups":["CatapultAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Catapult_Attack_C",
+			"Groups":["CatapultAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Destroy_Tower_A",
+			"Groups":["DestroyTower"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Destroy_Tower_B",
+			"Groups":["DestroyTower"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Destroy_Tower_C",
+			"Groups":["DestroyTower"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemies_DealDamage_A",
+			"Groups":["EnemiesDealDamage"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemies_DealDamage_B",
+			"Groups":["EnemiesDealDamage"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemies_DealDamage_C",
+			"Groups":["EnemiesDealDamage"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemies_DealDamage_D",
+			"Groups":["EnemiesDealDamage"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemies_TakeDamage_A2",
+			"Groups":["EnemiesTakeDamage"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemies_TakeDamage_B2",
+			"Groups":["EnemiesTakeDamage"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemies_TakeDamage_C2",
+			"Groups":["EnemiesTakeDamage"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemies_TakeDamage_D2",
+			"Groups":["EnemiesTakeDamage"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemy_Death_A",
+			"Groups":["EnemyDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemy_Death_B",
+			"Groups":["EnemyDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemy_Death_C",
+			"Groups":["EnemyDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemy_Death_D",
+			"Groups":["EnemyDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemy_Death_E",
+			"Groups":["EnemyDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"FlameTower_Attack_Loop",
+			"Groups":[],
+			"Events":["FlameTowerAttack"],
+			"StopEvents":["FlameTowerNoAttack"],
+			"Loop":true,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Game_Over_2",
+			"Groups":[],
+			"Events":["GameOver"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Gui_Click_2",
+			"Groups":[],
+			"Events":["GuiClick"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"HailfireArrows_Attack_A2",
+			"Groups":["HailfireArrowsAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"HailfireArrows_Attack_B2",
+			"Groups":["HailfireArrowsAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"HailfireArrows_Attack_C2",
+			"Groups":["HailfireArrowsAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Illumination_Off",
+			"Groups":[],
+			"Events":["IlluminationOff"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Illumination_On",
+			"Groups":[],
+			"Events":["IlluminationOn"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"InGame_Reward",
+			"Groups":[],
+			"Events":["InGameReward"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Leaper_Jump_1",
+			"Groups":["LeaperJump"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Leaper_Jump_2",
+			"Groups":["LeaperJump"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Leaper_Jump_3",
+			"Groups":["LeaperJump"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Leaper_Jump_4",
+			"Groups":["LeaperJump"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"levelup2",
+			"Groups":[],
+			"Events":["LevelUp"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Lightning_Attack_A2",
+			"Groups":["LightningAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 80
+		},
+		{
+			"Name":"Lightning_Attack_B2",
+			"Groups":["LightningAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 80
+		},
+		{
+			"Name":"Lightning_Attack_C2",
+			"Groups":["LightningAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 80
+		},
+		{
+			"Name":"Lightning_Attack_D2",
+			"Groups":["LightningAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 80
+		},
+		{
+			"Name":"Shade_Healing_Loop",
+			"Groups":[],
+			"Events":["ShadeHealing"],
+			"StopEvents":["ShadeNotHealing"],
+			"Loop":true,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Tower_Cannot_Place",
+			"Groups":[],
+			"Events":["TowerCannotPlace"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Tower_Unlocked_2",
+			"Groups":[],
+			"Events":["TowerUnlocked"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		}
+	],
+	"Groups" : [
+		{
+			"Name":"ArchersTowerAttack",
+			"Type":"Random",
+			"Events":["ArchersTowerAttack"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"BuildIllumination",
+			"Type":"Random",
+			"Events":["BuildIllumination"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"BuildTower",
+			"Type":"Random",
+			"Events":["BuildTower"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"CatapultAttack",
+			"Type":"Random",
+			"Events":["CatapultAttack"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"DestroyTower",
+			"Type":"Random",
+			"Events":["TowerDestroyed"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"EnemiesDealDamage",
+			"Type":"Random",
+			"Events":["EnemiesDealDamage"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"EnemiesTakeDamage",
+			"Type":"Random",
+			"Events":["EnemiesTakeDamage"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"EnemyDeath",
+			"Type":"Random",
+			"Events":["EnemyDeath"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"HailfireArrowsAttack",
+			"Type":"Random",
+			"Events":["HailfireArrowsAttack"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"LightningAttack",
+			"Type":"Random",
+			"Events":["LightningAttack"],
+			"StopEvents":[]
+		}
+	]
+}
