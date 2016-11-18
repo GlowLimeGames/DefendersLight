@@ -5,12 +5,16 @@
  */
 
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDragHandler {
+	const float FAKE_DELTA_TIME = 0.04166666667f;
 	EventAction onCloseCallback;
-
+	CanvasGroup canvas;
+	bool autoScrollLock = false;
 	[SerializeField]
 	float dragThresold;
 	[SerializeField]
@@ -37,6 +41,11 @@ public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDra
 		onCloseCallback += action;
 	}
 
+	protected override void SetReferences () {
+		base.SetReferences ();
+		canvas = GetComponent<CanvasGroup>();
+	}
+
 	protected override void FetchReferences () {
 		base.FetchReferences ();
 		startingPosition = transform.position;
@@ -48,6 +57,10 @@ public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDra
 	}
 
 	public void OnDrag (PointerEventData pointerEvent) {
+		if (autoScrollLock) {
+			return;
+		}
+
 		Vector3 pointer = pointerEvent.position;
 		Vector3 pos = transform.position;
 		if (orientation == Orientation.Vertical) {
@@ -77,6 +90,8 @@ public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDra
 	}
 
 	IEnumerator completeClose () {
+		canvas.interactable = false;
+		autoScrollLock = true;
 		float timer = 0;
 		Vector3 beginPosition = transform.position;
 		Vector3 endingPosition = startingPosition;
@@ -93,12 +108,18 @@ public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDra
 		while (timer <= time) {
 			transform.position = Vector3.Lerp(beginPosition, endingPosition, timer / time);
 			yield return new WaitForEndOfFrame();
-			timer += Time.deltaTime;
+			if (Time.timeScale == 0) {
+				timer += FAKE_DELTA_TIME;
+			} else {
+				timer += Time.deltaTime;
+			}
 		}
 		callOnCloseCallback();
 		if (resetPositionOnClose) {
 			ResetPosition();
 		}
+		canvas.interactable = true;
+		autoScrollLock = false;
 	}
 
 	void callOnCloseCallback () {
