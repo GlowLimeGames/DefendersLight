@@ -149,6 +149,7 @@ public class InputController : Controller {
 
 	public bool GetObjectFromPointer (InputPointer pointer, out GameObject hitObject) {
 		RaycastHit hit;
+		Debug.DrawRay(GetPointerRaycastPosition(pointer), camera.ICameraDirection, Color.green, 0.0f, false);
 		if (Physics.Raycast(GetPointerRaycastPosition(pointer), camera.ICameraDirection, out hit)) {
 			hitObject = hit.collider.gameObject;
 			return true;
