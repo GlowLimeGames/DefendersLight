@@ -9,22 +9,12 @@ public class LevelUpRewardScreenController : UIController {
     public string textToDisplay;
     public int secondsToWait = 5;
 
-    public static bool Leveled;    
+    public static LevelUpRewardScreenController Instance;    
 
     void Start()
     {
         newCanvas.SetActive(false);        
-        Leveled = false;
-    }
-
-    void Update()
-    {       
-        if (Leveled)
-        {
-            newCanvas.SetActive(true);
-            Leveled = false;
-            toggleScreen();
-        }
+        
     }
 
     public void toggleScreen()
@@ -34,6 +24,7 @@ public class LevelUpRewardScreenController : UIController {
 
     IEnumerator toggler()
     {
+        newCanvas.SetActive(true);
         text.text = textToDisplay;
         yield return new WaitForSeconds(secondsToWait);
         text.text = "";

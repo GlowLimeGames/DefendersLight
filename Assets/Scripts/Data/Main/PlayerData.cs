@@ -76,7 +76,7 @@ public class PlayerData : IPlayerData {
 		if (ReadyToLevelUp()) {
 			this._xp -= IXPForLevel;
 			this._level++;
-            LevelUpRewardScreenController.Leveled = true;
+            LevelUpRewardScreenController.Instance.toggleScreen();
         }	
 		return this._level;
 	}
@@ -84,7 +84,7 @@ public class PlayerData : IPlayerData {
     public void LevelUpCheat() {
         this._level++;
 		this._xp = 0;
-        LevelUpRewardScreenController.Leveled = true;
+        LevelUpRewardScreenController.Instance.toggleScreen();
     }
 
 	public bool ReadyToLevelUp () {
