@@ -10,6 +10,8 @@ public class WorldState : IWorldState, ISessionData {
 	public int EnemiesKilled;
 	public int CurrentWave;
 	public int XPEarned;
+	public bool HighestWaveReachedInSession;
+
 	string filePath;
 	public string IFilePath {
 		get {
@@ -45,6 +47,7 @@ public class WorldState : IWorldState, ISessionData {
 		EnemiesKilled = 0;
 		CurrentWave = 1;
 		XPEarned = 0;
+		HighestWaveReachedInSession = false;
 	}
 
 	public void CollectMana (int mana) {

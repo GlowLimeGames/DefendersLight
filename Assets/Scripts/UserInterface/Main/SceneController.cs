@@ -13,6 +13,7 @@ public class SceneController : MannBehaviour {
 	const string GAME_OVER_SCENE_NAME = "GameOver";
 	const string ABOUT_SCENE = "About";
 	const string CREDITS_SCENE = "Credits";
+	const string SETTINGS_SCENE = "Settings";
 
 	public static void LoadGame (bool isPlayAgain = false) {
 		SceneManager.LoadScene(GAME_SCENE_NAME);
@@ -38,6 +39,10 @@ public class SceneController : MannBehaviour {
 	public static void LoadCredits () {
 		cleanupInGameReferences();
 		SceneManager.LoadScene(CREDITS_SCENE);
+	}
+
+	public static void LoadSettings () {
+		SceneManager.LoadScene(SETTINGS_SCENE);
 	}
 
 	public static void ReportSceneLoadComplete () {

@@ -23,6 +23,10 @@ public abstract class UIController : MannBehaviour {
 		SceneController.LoadCredits();
 	}
 
+	public void LoadSettings () {
+		SceneController.LoadSettings();
+	}
+
 	protected override void SetReferences () {
 		// NOTHING
 	}
