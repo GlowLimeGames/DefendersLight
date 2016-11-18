@@ -109,6 +109,7 @@ public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDra
 			transform.position = Vector3.Lerp(beginPosition, endingPosition, timer / time);
 			yield return new WaitForEndOfFrame();
 			if (Time.timeScale == 0) {
+				// Necessary if the game is paused because Time.deltaTime will always equal 0 if the timeScale is 0
 				timer += FAKE_DELTA_TIME;
 			} else {
 				timer += Time.deltaTime;
