@@ -605,7 +605,7 @@ RectTransform:
   m_Children:
   - {fileID: 279516554}
   m_Father: {fileID: 348581779}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_AnchorMin: {x: 0, y: 0.15949069}
   m_AnchorMax: {x: 1, y: 0.26152793}
   m_AnchoredPosition: {x: 0, y: -0.099609375}
@@ -1690,11 +1690,11 @@ RectTransform:
   - {fileID: 1135114675}
   - {fileID: 1148551705}
   - {fileID: 582519055}
+  - {fileID: 551920235}
   - {fileID: 1957194650}
   - {fileID: 383236062}
   - {fileID: 122891401}
   - {fileID: 1698745423}
-  - {fileID: 551920235}
   m_Father: {fileID: 599696509}
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0.23187031}
@@ -1895,7 +1895,7 @@ RectTransform:
   m_Children:
   - {fileID: 245516393}
   m_Father: {fileID: 348581779}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_AnchorMin: {x: 0, y: 0.31349075}
   m_AnchorMax: {x: 1, y: 0.41115117}
   m_AnchoredPosition: {x: -0.00001835823, y: 0}
@@ -2315,7 +2315,7 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 189458, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_PrefabInternal: {fileID: 603024285}
---- !u!114 &463251894
+--- !u!114 &463251897
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -2469,10 +2469,10 @@ RectTransform:
   m_Children:
   - {fileID: 31123344}
   m_Father: {fileID: 348581779}
-  m_RootOrder: 7
+  m_RootOrder: 3
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 102.09}
+  m_AnchoredPosition: {x: 0, y: 116}
   m_SizeDelta: {x: 219, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &551920236
@@ -3701,7 +3701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6e39c7f37f84659ae16d2ee4486b47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CoreOrbPrefab: {fileID: 118346, guid: b7cb049f7d89048c8b309f3a38b0dab5, type: 2}
+  CoreOrbPrefab: {fileID: 142064, guid: b7cb049f7d89048c8b309f3a38b0dab5, type: 2}
   CoreOrbInstance: {fileID: 0}
 --- !u!1 &782338259
 GameObject:
@@ -3740,7 +3740,7 @@ RectTransform:
 GameObject:
   m_PrefabParentObject: {fileID: 189458, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_PrefabInternal: {fileID: 557755349}
---- !u!114 &793113584
+--- !u!114 &793113587
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -3902,7 +3902,7 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 189458, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_PrefabInternal: {fileID: 342543231}
---- !u!114 &825097628
+--- !u!114 &825097631
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -4532,7 +4532,7 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 189458, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_PrefabInternal: {fileID: 1594655550}
---- !u!114 &949999899
+--- !u!114 &949999902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -5177,7 +5177,7 @@ GameObject:
 GameObject:
   m_PrefabParentObject: {fileID: 189458, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_PrefabInternal: {fileID: 394443238}
---- !u!114 &1115543891
+--- !u!114 &1115543894
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -6578,7 +6578,7 @@ CanvasGroup:
 GameObject:
   m_PrefabParentObject: {fileID: 189458, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_PrefabInternal: {fileID: 1148667749}
---- !u!114 &1484349565
+--- !u!114 &1484349568
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -7563,7 +7563,7 @@ RectTransform:
 GameObject:
   m_PrefabParentObject: {fileID: 189458, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_PrefabInternal: {fileID: 1521223634}
---- !u!114 &1694594939
+--- !u!114 &1694594942
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -7608,7 +7608,7 @@ RectTransform:
   m_Children:
   - {fileID: 685039623}
   m_Father: {fileID: 348581779}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_AnchorMin: {x: 0, y: 0.924}
   m_AnchorMax: {x: 0.16673517, y: 1}
   m_AnchoredPosition: {x: 0.0000076293945, y: 0}
@@ -7714,7 +7714,7 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 189458, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_PrefabInternal: {fileID: 1635941807}
---- !u!114 &1700512591
+--- !u!114 &1700512594
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -8976,7 +8976,7 @@ RectTransform:
   m_Children:
   - {fileID: 1748743282}
   m_Father: {fileID: 348581779}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_AnchorMin: {x: 0, y: 0.4805093}
   m_AnchorMax: {x: 1, y: 0.74300003}
   m_AnchoredPosition: {x: -0.000019788742, y: 0}

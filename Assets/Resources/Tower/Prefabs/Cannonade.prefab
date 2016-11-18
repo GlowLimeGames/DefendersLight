@@ -394,7 +394,6 @@ MonoBehaviour:
   debugging: 0
   spriteRenderer: {fileID: 0}
   MissilePrefab: {fileID: 185974, guid: 3581d8a813a9e4f2595c1e54cd94244e, type: 2}
-  sellValue: 2
 --- !u!114 &11492420
 MonoBehaviour:
   m_ObjectHideFlags: 1
