@@ -156,6 +156,7 @@ public class DataController : Controller, IDataController {
 	public bool CheckToUpdateHighestWave (int waveReached) {
 		if (currentPlayerData.NewHighestWave(waveReached)) {
 			currentPlayerData.UpdateHighestWave(waveReached);
+			currentWorldState.HighestWaveReachedInSession = true;
 			return true;
 		} else {
 			return false;
@@ -183,6 +184,11 @@ public class DataController : Controller, IDataController {
 	public int WavesSurvivied {
 		get {
 			return currentWorldState.CurrentWave;
+		}
+	}
+	public bool HighestWaveReachedInSession {
+		get {
+			return currentWorldState.HighestWaveReachedInSession;
 		}
 	}
 
@@ -233,6 +239,7 @@ public class DataController : Controller, IDataController {
 
 	public void NextWave () {
 		this.currentWorldState.NextWave();
+		CheckToUpdateHighestWave(this.currentWorldState.CurrentWave);
 	}
 
 	public void UpdateEnemiesKilled (int deltaEnemiesKilled) {

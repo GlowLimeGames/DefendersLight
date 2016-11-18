@@ -28,4 +28,8 @@ public abstract class UIElement : MannBehaviour {
 	public virtual void Show () {
 		gameObject.SetActive(true);
 	}
+
+	public void PlayClickSound () {
+		EventController.Event(EventType.Click);
+	}
 }
