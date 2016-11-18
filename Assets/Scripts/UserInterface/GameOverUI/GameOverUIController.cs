@@ -13,6 +13,7 @@ public class GameOverUIController : UIController {
 	Text wavesSurvivied;
 	[SerializeField]
 	GameObject newHighestWave;
+
 	protected override void FetchReferences () {
 		base.FetchReferences();
 		DataController data;
@@ -20,7 +21,7 @@ public class GameOverUIController : UIController {
 		if (data = DataController.Instance) {
 			enemiesKilled.text = string.Format(enemiesKilled.text, data.EnemiesKilled);
 			wavesSurvivied.text = string.Format(wavesSurvivied.text, data.WavesSurvivied);
-			newHighestWave.SetActive(data.CheckToUpdateHighestWave());
+			newHighestWave.SetActive(data.HighestWaveReachedInSession);
 			data.ResetWorld();
 		}
 		EventController.Event(EventType.LoadGameOver);
