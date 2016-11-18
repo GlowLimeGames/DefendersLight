@@ -12,7 +12,7 @@ public class PauseUIController : UIController {
 	[SerializeField]
 	GameObject cheatPanel;
 
-	public void TogglePause () {
+    public void TogglePause () {
 		world.TogglePause();	
 	}
 
@@ -35,4 +35,6 @@ public class PauseUIController : UIController {
 		Time.timeScale = 1;
 		LoadStartScreen();
 	}
+
+    
 }

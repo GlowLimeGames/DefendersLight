@@ -71,18 +71,20 @@ public class PlayerData : IPlayerData {
 		this._xp += xpEarned;
 	}
 
-	// Returns new player level
-	public int LevelUp () {
+    // Returns new player level
+    public int LevelUp () {
 		if (ReadyToLevelUp()) {
 			this._xp -= IXPForLevel;
 			this._level++;
-		}	
+            LevelUpRewardScreenController.Instance.toggleScreen();
+        }	
 		return this._level;
 	}
 
     public void LevelUpCheat() {
         this._level++;
 		this._xp = 0;
+        LevelUpRewardScreenController.Instance.toggleScreen();
     }
 
 	public bool ReadyToLevelUp () {
