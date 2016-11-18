@@ -77,6 +77,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		}
 		Vector3 startPosition = getDragPosition(dragEvent, towerPanel.transform.position);
 		this.potentialPurchaseTower = GetTowerBehaviourFromTower(towerPanel.GetTower(), startPosition, false);
+
 	}
 
 	public TowerBehaviour GetTowerBehaviourFromTower (Tower tower, Vector3 startPosition, bool shouldStartActive = false) {
@@ -92,7 +93,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	public TowerBehaviour GetPrefab (Tower tower) {
 		return loadPrefab(FileUtil.CreatePath(TOWER_TAG, PREFABS_DIR, tower.Type)) as TowerBehaviour;
 	}
-
+		
 	TowerBehaviour SpawnTower (Tower tower, Vector3 startingPosition) {
 		ActiveObjectBehaviour behaviour;
 		if (TryGetActiveObject(tower.IType, startingPosition, out behaviour)) {
@@ -162,7 +163,28 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		}
 	}
 
-	public override void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
+
+    public void compareTowerLevels() {
+
+
+        foreach (Tower tower in templateUnits.Values) {
+
+            if (tower.UnlockLevel == dataController.PlayerLevel) {
+
+
+                TowerUnlockedScreen.towerUnlocked = true;
+                TowerUnlockedScreen.textToDisplay = "Tower Unlocked.";
+
+
+            }
+
+
+
+        }
+
+    }
+
+    public override void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
 		base.HandleObjectDestroyed (activeObject);
 		activeTowers.Remove(activeObject as TowerBehaviour);
 	}
