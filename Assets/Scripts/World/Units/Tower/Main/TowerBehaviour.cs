@@ -14,9 +14,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	[SerializeField]
 	GameObject MissilePrefab;
 
-	[SerializeField]
-	int sellValue = 2;
-
 	RangedAttackBehaviour attackModule = null;
 
 	public override float IAttackDelay {
@@ -29,6 +26,17 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 			return tower.Health;
 		}
 	}
+	public Tower ITower {
+		get {
+			return this.tower;
+		}
+	}
+	public float IHealthFraction {
+		get {
+			return (float) this.Health / (float) tower.Health;
+		}
+	}
+
 	public virtual void SetTower (Tower tower) {
 		this.tower = tower;
 		if (spriteRenderer) {
@@ -89,9 +97,16 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	public void Sell () {
 		(unitController as TowerController).SellTower(this.tower);
 		unitController.HandleObjectDestroyed(this);
+		tile.RemoveAgent();
+		EventController.Event(EventType.TowerSold);
 	}
 
 	public override void Attack(ActiveObjectBehaviour activeAgent, int damage) {
+		// Tower cannot attack if its square is not illuminated:
+		if (!tile.IIsIlluminated) {
+			return;
+		}
+
 		StartCoroutine(AttackCooldown());
 		ProjectileBehaviour missileBehavior;
 		if (ProjectilePool.Instance && !ProjectilePool.Instance.IsEmpty) {

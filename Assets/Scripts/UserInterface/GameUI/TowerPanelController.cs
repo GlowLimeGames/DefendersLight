@@ -9,7 +9,8 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class TowerPanelController : UIController {
-
+	WorldController world;
+	const string MANA_FORMAT = "Sell: {0} Mana";
 	TowerBehaviour selectedTower;
 
 	[SerializeField]
@@ -24,16 +25,54 @@ public class TowerPanelController : UIController {
 	[SerializeField]
 	Button SellButton;
 
+	[SerializeField]
+	Text sellValue;
+
+	[SerializeField]
+	Image towerImage;
+
+	[SerializeField]
+	Image healthBar;
+
+
+	void OnEnable () {
+		world = WorldController.Instance;
+	}
+
 	public void SelectTower (TowerBehaviour tower) {
 		if (selectedTower) {
-			selectedTower.UnusubscribeFromDestruction(ClosePanel);
+			DeselectTower();
 		}
+		Tower towerStats = tower.ITower;
 		selectedTower = tower;
 		gameObject.SetActive(true);
 		TowerName.text = tower.IName;
 		TowerLevel.text = tower.LevelString;
-		SellButton.gameObject.SetActive(!(tower is CoreOrbBehaviour));
+		if (!(tower is CoreOrbBehaviour)) {
+			SellButton.gameObject.SetActive(true);
+			sellValue.text = string.Format(MANA_FORMAT, world.GetTowerSellValue(towerStats));
+		} else {
+			SellButton.gameObject.SetActive(false);
+		}
 		tower.SubscribeToDestruction(ClosePanel);
+		tower.SubscribeUpdateHealth(updateHealthBar);
+		towerImage.sprite = towerStats.GetSprite();
+		updateHealthBar(selectedTower.IHealthFraction);
+	}
+
+	public void DeselectTower () {
+		selectedTower.UnusubscribeFromDestruction(ClosePanel);
+		selectedTower.UnsubscribeUpdateHealth(updateHealthBar);
+		selectedTower = null;
+		TowerName.text = string.Empty;
+		TowerLevel.text = string.Empty;
+		SellButton.gameObject.SetActive(false);
+		towerImage.sprite = null;
+		updateHealthBar(1.0f);
+	}
+
+	void updateHealthBar (float healthFraction) {
+		healthBar.fillAmount = healthFraction;
 	}
 
 	public void ClosePanel () {

@@ -94,8 +94,12 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void OnSellTower (Tower tower) {
-		CollectMana((int)((float)tower.Cost * tuning.SellValueFraction));
+		CollectMana(GetTowerSellValue(tower));
 		refreshManaDisplay();
+	}
+
+	public int GetTowerSellValue (Tower tower) {
+		return (int)((float)tower.Cost * tuning.SellValueFraction);
 	}
 
 	public void UnlockAllTowers () {
@@ -355,7 +359,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			Tower purchaseTower = currentlySelectedPurchaseTower;
 			if (!purchaseLock) {
 				currentlySelectedPurchaseTower = null;
-				purchasePanel.TryDeselectSelectedPanel(false);
+				purchasePanel.TryDeselectSelectedPanel(shouldSwitchSelected:true);
 			}
 			return towerController.GetTowerBehaviourFromTower(purchaseTower, startingPosition);
 		} else {

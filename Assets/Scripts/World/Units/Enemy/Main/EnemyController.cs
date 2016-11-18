@@ -259,6 +259,11 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
         activeEnemies.Clear();
     }
 
+	public override void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
+		base.HandleObjectDestroyed (activeObject);
+		activeEnemies.Remove(activeObject as EnemyBehaviour);
+	}
+
 	void HandleEnemyKilled () {
 		enemiesAlive = Mathf.Clamp(enemiesAlive - 1, 0, int.MaxValue);
 		if (enemiesAlive == 0) {
@@ -340,6 +345,6 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		// Remove special characters from tower key (to produce filename)
 		Regex rgx = new Regex("[^a-zA-Z0-9 -]");
 		enemyKey = rgx.Replace(enemyKey, "");
-		return Resources.Load<Sprite>(System.IO.Path.Combine(ENEMY_TAG, enemyKey.ToLower().Replace(" ", string.Empty)));
+		return Resources.Load<Sprite>(System.IO.Path.Combine(ENEMY_TAG, System.IO.Path.Combine(SPRITES_DIR, enemyKey.ToLower().Replace(" ", string.Empty))));
 	}
 }

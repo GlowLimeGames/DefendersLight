@@ -24,4 +24,8 @@ public class CoreOrbBehaviour : IlluminationTowerBehaviour {
 		base.Attack (activeAgent, damage);
 		EventController.Event(EventType.CoreOrbAttack);
 	}
+
+	public override void Destroy () {
+		CleanupReferences();	
+	}
 }
