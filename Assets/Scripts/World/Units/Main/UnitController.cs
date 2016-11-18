@@ -9,6 +9,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public abstract class UnitController : MannBehaviour {
+	[SerializeField]
+	protected bool inGame = true;
+
 	protected const string SPRITES_DIR = "Sprites";
 	protected const string PREFABS_DIR = "Prefabs";
 

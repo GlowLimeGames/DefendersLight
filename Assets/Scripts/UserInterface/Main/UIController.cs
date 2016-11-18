@@ -27,6 +27,14 @@ public abstract class UIController : MannBehaviour {
 		SceneController.LoadSettings();
 	}
 
+	public void LoadAlmanac () {
+		SceneController.LoadAlmanac();
+	}
+
+	public void LoadPreviousScene () {
+		SceneController.LoadPreviousScene();
+	}
+
 	protected override void FetchReferences () {
 		input = InputController.Instance;
 		data = DataController.Instance;
@@ -51,5 +59,12 @@ public abstract class UIController : MannBehaviour {
 	public void OpenURL (string url) {
 		UnityEngine.Application.OpenURL(url);
 	}
-		
+
+	public virtual void Hide () {
+		gameObject.SetActive(false);
+	}
+
+	public virtual void Show () {
+		gameObject.SetActive(true);
+	}
 }
