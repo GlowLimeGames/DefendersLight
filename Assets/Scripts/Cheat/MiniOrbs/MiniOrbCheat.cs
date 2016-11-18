@@ -25,7 +25,7 @@ public class MiniOrbCheat : ICheatCommand {
 	}
 
 	public void Run () {
-		controller.CollectMiniOrbs(increaseAmount);
+		controller.CollectMana(increaseAmount);
 	}
 
 	public void SetArguments (object[] arguments) {

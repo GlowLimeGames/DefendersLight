@@ -1,25 +1,56 @@
 {
 	"Files": [
 		{
-			"Name":"Warlock",
+			"Name":"Warlock WAV",
 			"Groups":[],
 			"Events":["LoadStart", "LoadGameOver"],
 			"StopEvents":[],
-			"Loop":false,
+			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
 			"Volume": 100
 		},
 		{
-			"Name":"Defender's Light Soundtrack 1_2",
+			"Name":"Defender's Light SoundTrack 1_1",
 			"Groups":[],
 			"Events":["LoadGame"],
 			"StopEvents":[],
-			"Loop":false,
+			"Loop":true,
+			"Type": "Music",
+			"Channel":2,
+			"Volume": 90
+		},
+		{
+			"Name":"Defender's Light Soundtrack 2_4",
+			"Groups":[],
+			"Events":["NotAssigned"],
+			"StopEvents":[],
+			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
 			"Volume": 100
 		},
+		{
+			"Name":"Defender's Light Bass Drone 2",
+			"Groups":[],
+			"Events":["LoadGame"],
+			"StopEvents":[],
+			"Loop":true,
+			"Type": "Ambience",
+			"Channel":2,
+			"Volume": 40
+		},
+		{
+			"Name":"Defender's Light Ambience 1",
+			"Groups":[],
+			"Events":["LoadGame"],
+			"StopEvents":[],
+			"Loop":true,
+			"Type": "Ambience",
+			"Channel":2,
+			"Volume": 30
+		},
+
 		{
 			"Name":"ArchersTower_Attack_A",
 			"Groups":["ArchersTowerAttack"],
@@ -180,6 +211,16 @@
 			"Volume": 100
 		},
 		{
+			"Name":"Enemies_Approaching_2",
+			"Groups":[],
+			"Events":["EnemiesApproaching"],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
 			"Name":"Enemies_DealDamage_A",
 			"Groups":["EnemiesDealDamage"],
 			"Events":[],
@@ -330,7 +371,7 @@
 			"Volume": 100
 		},
 		{
-			"Name":"Gui_Click_2",
+			"Name":"Gui_Click_3",
 			"Groups":[],
 			"Events":["GuiClick"],
 			"StopEvents":[],
@@ -490,6 +531,36 @@
 			"Volume": 80
 		},
 		{
+			"Name":"Orb_Attack_A2",
+			"Groups":["OrbAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":5,
+			"Volume": 100
+		},
+		{
+			"Name":"Orb_Attack_B2",
+			"Groups":["OrbAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":5,
+			"Volume": 100
+		},
+		{
+			"Name":"Orb_Attack_C2",
+			"Groups":["OrbAttack"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":5,
+			"Volume": 100
+		},
+		{
 			"Name":"Shade_Healing_Loop",
 			"Groups":[],
 			"Events":["ShadeHealing"],
@@ -579,6 +650,12 @@
 			"Name":"LightningAttack",
 			"Type":"Random",
 			"Events":["LightningAttack"],
+			"StopEvents":[]
+		},
+		{
+			"Name":"OrbAttack",
+			"Type":"Random",
+			"Events":["OrbAttack"],
 			"StopEvents":[]
 		}
 	]

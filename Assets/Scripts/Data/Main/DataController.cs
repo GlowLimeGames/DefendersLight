@@ -8,6 +8,10 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public class DataController : Controller, IDataController {
+	public TuningController tuning {get; private set;}
+	EventActionInt levelUp;
+	EventActionInt earnXP;
+	public int StartingMana = 100;
 	const string JSON_DIRECTORY = "JSON";
 	const string SAVE_DIRECTORY = "Save";
 	const string WORLD_STATE_FILE_NAME = "WorldState.dat";
@@ -27,11 +31,18 @@ public class DataController : Controller, IDataController {
 			return Path.Combine(SaveDirectory, PLAYER_DATA_FILE_NAME);
 		}
 	}
+	public PlayerData IPlayer {
+		get {
+			return currentPlayerData;
+		}
+	}
 
 	WorldState currentWorldState;
 	PlayerData currentPlayerData;
 
 	public static DataController Instance;
+
+	public LinearEquation XPEquation = new LinearEquation(200, 100);
 
 	#region Player Data
 
@@ -42,11 +53,12 @@ public class DataController : Controller, IDataController {
 			file = File.Open(PlayerDataFilePath, FileMode.Open);
 			currentPlayerData = (PlayerData) binaryFormatter.Deserialize(file);
 			file.Close();
-			return currentPlayerData;
 		} catch {
 			currentPlayerData = new PlayerData(PlayerDataFilePath);
-			return currentPlayerData;
 		}
+		currentPlayerData.SetXPEquation(XPEquation);
+		return currentPlayerData;
+
 	}
 
 	public void SavePlayerData () {
@@ -74,13 +86,94 @@ public class DataController : Controller, IDataController {
 		file.Close();
 	}
 
+	public int PlayerLevel {
+		get {
+			return currentPlayerData.ILevel;
+		}
+	}
+    public void LevelUpCheat() {
+        currentPlayerData.LevelUpCheat();
+    }
+	public int XP {
+		get {
+			return currentPlayerData.IXP;
+		}
+	}
+
+	// The total amount of data needed to level up
+	public int XPForLevel {
+		get {
+			return currentPlayerData.IXPForLevel;
+		}
+	}
+
+	public int HighestWave {
+		get {
+			return currentPlayerData.IHighestWave;
+		}
+	}
+
+	public void EarnXP (int xpEarned) {
+		currentPlayerData.EarnXP(xpEarned);
+		callOnXPEarned(xpEarned);
+		if (currentPlayerData.ReadyToLevelUp()) {
+			callOnLevelUp(currentPlayerData.LevelUp());
+		}
+	}
+
+	public void AutoLevelUp () {
+		currentPlayerData.LevelUpCheat();
+	}
+		
+	public void SubscribeToOnLevelUp (EventActionInt onLevelUp) {
+		levelUp += onLevelUp;
+	}
+
+	public void UnsubscribeFromOnLevelUp (EventActionInt onLevelUp) {
+		levelUp -= onLevelUp;
+	}
+
+	void callOnLevelUp (int newLevel) {
+		if (levelUp != null) {
+			levelUp(newLevel);
+		}
+	}
+
+	public void SubscribeToOnXPEarned (EventActionInt onXPEarned) {
+		earnXP += onXPEarned;
+	}
+
+	public void UnsubscribeFromOnXPEarned (EventActionInt onXPEarned) {
+		earnXP -= onXPEarned;
+	}
+
+	void callOnXPEarned (int xpEarned) {
+		if (this.earnXP != null) {
+			this.earnXP(xpEarned);
+		}
+	}
+
+	public bool CheckToUpdateHighestWave (int waveReached) {
+		if (currentPlayerData.NewHighestWave(waveReached)) {
+			currentPlayerData.UpdateHighestWave(waveReached);
+			currentWorldState.HighestWaveReachedInSession = true;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public bool CheckToUpdateHighestWave () {
+		return CheckToUpdateHighestWave(currentWorldState.CurrentWave);
+	}
+
 	#endregion
 
 	#region World State
 
-	public int MiniOrbCount {
+	public int Mana {
 		get {
-			return currentWorldState.IMiniOrbs;
+			return currentWorldState.IMana;
 		}
 	}
 	public int EnemiesKilled {
@@ -93,7 +186,12 @@ public class DataController : Controller, IDataController {
 			return currentWorldState.CurrentWave;
 		}
 	}
-		
+	public bool HighestWaveReachedInSession {
+		get {
+			return currentWorldState.HighestWaveReachedInSession;
+		}
+	}
+
 	public WorldState LoadWorldState () {
 		BinaryFormatter binaryFormatter = new BinaryFormatter();
 		FileStream file;
@@ -103,7 +201,7 @@ public class DataController : Controller, IDataController {
 			file.Close();
 			return currentWorldState;
 		} catch {
-			currentWorldState = new WorldState(WorldStateFilePath);
+			currentWorldState = new WorldState(WorldStateFilePath, StartingMana);
 			return currentWorldState;
 		}
 	}
@@ -121,54 +219,41 @@ public class DataController : Controller, IDataController {
 			file = File.Create(WorldStateFilePath);
 		}
 		if (currentWorldState == null) {
-			currentWorldState = new WorldState(WorldStateFilePath);
+			currentWorldState = new WorldState(WorldStateFilePath, StartingMana);
 		}
 		binaryFormatter.Serialize(file, currentWorldState);
 		file.Close();
 	}
 
-	public void CollectMiniOrbs (int miniOrbCount) {
-		this.currentWorldState.CollectMiniOrbs(miniOrbCount);
+	public void CollectMana (int mana) {
+		this.currentWorldState.CollectMana(mana);
 	}
 
-	public bool TrySpendMiniOrbs (int miniOrbCount) {
-		return this.currentWorldState.TrySpendMiniOrbs(miniOrbCount);
+	public bool TrySpendMana (int mana) {
+		return this.currentWorldState.TrySpendMana(mana);
 	}
 
-	public bool HasSufficientMiniOrbs (int miniOrbCount) {
-		return this.currentWorldState.HasSufficientMiniOrbs(miniOrbCount);
+	public bool HasSufficientMana (int mana) {
+		return this.currentWorldState.HasSufficientMana(mana);
 	}
-	
+
 	public void NextWave () {
 		this.currentWorldState.NextWave();
+		CheckToUpdateHighestWave(this.currentWorldState.CurrentWave);
 	}
 
 	public void UpdateEnemiesKilled (int deltaEnemiesKilled) {
 		this.currentWorldState.UpdateEnemiesKilled(deltaEnemiesKilled);
 	}
 
+	// Just meant for record keeping: Does not actually reward the player with more XP
 	public void UpdateXPEarned (int deltaXP) {
 		this.currentWorldState.UpdateXPEarned(deltaXP);
 	}
-		
-	#endregion
 
-	#region Player Data
-
-	public int PlayerLevel {
-		get {
-			return currentPlayerData.ILevel;
-		}
-	}
-	public int XP {
-		get {
-			return currentPlayerData.IXP;
-		}
-	}
-	public int HighestWave {
-		get {
-			return currentPlayerData.IHighestWave;
-		}
+	public void GiveReward (RewardAmount reward) {
+		CollectMana(reward.Mana);
+		EarnXP(reward.XP);
 	}
 
 	#endregion
@@ -195,10 +280,20 @@ public class DataController : Controller, IDataController {
 		ResetPlayerData();
 	}
 
+	public void ResetWorld () {
+		CheckSaveDirectory();
+		ResetWorldState();
+	}
+
 	public void LoadGame () {
 		CheckSaveDirectory();
 		LoadWorldState();
 		LoadPlayerData();
+		setPlayerLevel();
+	}
+
+	void setPlayerLevel () {
+		callOnLevelUp(PlayerLevel);
 	}
 
 	public void SaveGame () {
@@ -208,12 +303,13 @@ public class DataController : Controller, IDataController {
 	}
 
 	void ResetWorldState () {
-		currentWorldState = new WorldState(WorldStateFilePath);
+		currentWorldState = new WorldState(WorldStateFilePath, StartingMana);
 		SaveWorldState();
 	}
 
-	void ResetPlayerData () {
+	public void ResetPlayerData () {
 		currentPlayerData = new PlayerData(PlayerDataFilePath);
+		currentPlayerData.SetXPEquation(XPEquation);
 		SavePlayerData();
 	}
 
@@ -234,6 +330,7 @@ public class DataController : Controller, IDataController {
 		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
 			LoadGame();
 			DontDestroyOnLoad(gameObject);
+			tuning = GetComponent<TuningController>();
 		}
 	}
 
@@ -247,7 +344,7 @@ public class DataController : Controller, IDataController {
 
 	protected override void HandleNamedEvent (string eventName) {
 		if (eventName == EventType.LoadStart) {
-			ResetGame();
+			ResetWorldState();
 		}
 	}
 }

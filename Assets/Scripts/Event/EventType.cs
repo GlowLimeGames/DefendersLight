@@ -22,6 +22,7 @@ public static class EventType {
 	public const string FlameTowerStopAttack = "FlameTowerNoAttack";
 	public const string HailfireArrowsAttack = "HailfireArrowsAttack";
 	public const string LightningAttack = "LightningAttack";
+	public const string CoreOrbAttack = "OrbAttack";
 
 	#endregion
 
@@ -31,6 +32,7 @@ public static class EventType {
 	public const string EnemiesTakeDamage = "EnemiesTakeDamage";
 	public const string LeaperJump = "LeaperJump";
 	public const string ShadeHealing = "ShadeHealing";
+	public const string EnemiesApproaching = "EnemiesApproaching";
 
 	#endregion
 
@@ -39,6 +41,7 @@ public static class EventType {
 	public const string BuildIlluminationTower = "BuildIllumination";
 	public const string BuildTower = "BuildTower";
 	public const string TowerCannotPlace = "TowerCannotPlace";
+	public const string TowerSold = "TowerSold";
 
 	#endregion
 

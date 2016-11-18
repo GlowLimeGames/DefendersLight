@@ -2,6 +2,7 @@
  * Author(s): Isaiah Mann
  * Description: Controls the set up and behaviour of the game world
  */
+
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -24,37 +25,217 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			return towerController.CoreOrbInstance;
 		}
 	}
+	public bool HasTowerToPlace {
+		get {
+			return currentlySelectedPurchaseTower != null;
+		}
+	}
+	Tower currentlySelectedPurchaseTower = null;
+	Dictionary<string, Stack<ActiveObjectBehaviour>> spawnPools = new Dictionary<string, Stack<ActiveObjectBehaviour>>();
+	SeasonList seasons;
+	Season _currentSeason;
+	Season currentSeason {
+		get {
+			return _currentSeason;
+		}
+		set {
+			_currentSeason = value;
+		}
+	}
 
-	// TODO: Make this a tuning variable in a centralized tuning script
-	public int MiniOrbsFromKillingEnemy = 25;
+	public bool IsPaused {
+		get {
+			return Time.timeScale == 0;
+		}
+	}
+
+	public LinearEquation EnemySpawnCountEquation;
+	public bool OverrideTowerLevelRequirement {get; private set;}
+
+	Dictionary<string, Unit[]> _unitsByClass;
+	public Dictionary<string, Unit[]> UnitsByClass {
+		get {
+			if (_unitsByClass == null) {
+				_unitsByClass = determineUnitsByClass();
+			}
+			return _unitsByClass;
+		}
+	}
 
 	const string TOWER_UNIT_TEMPLATE_FILE_NAME = "TowerTemplates";
 	const string ENEMY_UNIT_TEMPLATE_FILE_NAME = "EnemyTemplates";
+	const string SEASONS_DATA_FILE_NAME = "Seasons";
 
 	Dictionary<System.Type, Stack<GameObject>> unitSpawnpool = new Dictionary<System.Type, Stack<GameObject>>();
+
+	#region Singleton Refs
+
 	TowerController towerController;
 	EnemyController enemyController;
 	MapController mapController;
 	UnitController[] unitControllers;
 	DataController dataController;
+	StatsPanelController statsPanel;
+	TowerPurchasePanelController purchasePanel;
+	InputController input;
+	TuningController tuning;
+
+	#endregion
+		
+	int spawnPoints = 1;
+
+	Dictionary<string, Unit[]> determineUnitsByClass () {
+		Dictionary<string, Unit[]> unitsByClass = new Dictionary<string, Unit[]>();
+		foreach (TowerType towerClass in towerController.ITowerTemplatesByType.Keys) {
+			unitsByClass.Add(towerClass.ToString(), towerController.ITowerTemplatesByType[towerClass].ToArray());
+		}
+		unitsByClass.Add(EnemyController.ENEMY_TAG, enemyController.ITemplateUnits);
+		return unitsByClass;
+	}
+
+	public void OnSellTower (Tower tower) {
+		CollectMana(GetTowerSellValue(tower));
+		refreshManaDisplay();
+	}
+
+	public int GetTowerSellValue (Tower tower) {
+		return (int)((float)tower.Cost * tuning.SellValueFraction);
+	}
+
+	public void UnlockAllTowers () {
+		OverrideTowerLevelRequirement = true;
+	}
+
+	public void AddToSpawnPool (ActiveObjectBehaviour activeObject) {
+		Stack<ActiveObjectBehaviour> pool;
+		if (spawnPools.TryGetValue(activeObject.IType, out pool)) {
+			pool.Push(activeObject);
+		} else {
+			pool = new Stack<ActiveObjectBehaviour>();
+			pool.Push(activeObject);
+			spawnPools.Add(activeObject.IType, pool);
+		}
+	}
+
+	public bool TryPullFromSpawnPool (string objectType, out ActiveObjectBehaviour activeObject) {
+		Stack<ActiveObjectBehaviour> pool;
+		if (spawnPools.TryGetValue(objectType, out pool)) {
+			if (pool.Count > 0) {
+				activeObject = pool.Pop();
+				return true;
+			} else {
+				activeObject = null;
+				return false;
+			}
+		} else {
+			activeObject = null;
+			return false;
+		}
+	}
 
 	public void Create() {
+		createRules();
 		SetupUnitControllers();
 		PlaceCoreOrb();
+		setupUnitControllerCallbacks();
 	}
 
+	void createRules () {
+		seasons = JsonUtility.FromJson<SeasonList>(dataController.RetrieveJSONFromResources(SEASONS_DATA_FILE_NAME));
+		currentSeason = seasons[0];
+	}
+
+	void checkForSeasonAdvance (int waveIndex) {
+		if (waveIndex > currentSeason.EndingWave) {
+			changeSeason(currentSeason.Index + 1);
+			increaseSpawnPoints();
+		} else if (waveIndex > currentSeason.MiddleWave) {
+			// TODO: Implement behaviour if the wave has passed the midway point (increased spawn points)
+			increaseSpawnPoints();
+		}
+	}
+
+	void setupUnitControllerCallbacks () {
+		if (enemyController) {
+			enemyController.SubscribeToWaveAdvance(checkForSeasonAdvance);
+		}
+	}
+
+	void teardownUnitControllerCallbacks () {
+		if (enemyController) {
+			enemyController.UnusubscribeFromWaveAdvance(checkForSeasonAdvance);
+		}
+	}
+
+	void setupDataControllerCallbacks () {
+		if (dataController) {
+			dataController.SubscribeToOnLevelUp(onLevelUp);
+			dataController.SubscribeToOnXPEarned(onEarnXP);
+		}
+	}
+
+	void teardownDataControllerCallbacks () {
+		if (dataController) {
+			dataController.UnsubscribeFromOnLevelUp(onLevelUp);
+			dataController.UnsubscribeFromOnXPEarned(onEarnXP);
+		}
+	}
+
+	void onLevelUp (int newLevel) {
+		statsPanel.SetLevel(newLevel);
+		onEarnXP(0);
+	}
+
+	void onEarnXP (int xpEarned) {
+		refreshXPDisplay();
+	}
+
+	void changeSeason (int newSeasonIndex) {
+		currentSeason = seasons[newSeasonIndex];
+	}
+
+	void increaseSpawnPoints () {
+		spawnPoints++;
+	}
+
+	int getEnemySpawnPointCount () {
+		int spawnPoints = 1;
+		int currentWave = enemyController.ICurrentWaveIndex;
+		for (int i = 0; i < seasons.Length; i++) {
+			if (currentWave < seasons[i].StartingWave) {
+				break;
+			}
+			if (currentWave > seasons[i].MiddleWave) {
+				spawnPoints++;
+			}
+			if (currentWave > seasons[i].EndingWave) {
+				spawnPoints++;
+			}
+		}
+		return spawnPoints;
+	}
+		
 	public void StartWave () {
+		if (dataController.WavesSurvivied > 1) {
+			EarnXP(tuning.XPBonusPerWave * (dataController.WavesSurvivied - 1));
+		}
+		dataController.NextWave();
+		enemyController.SetSpawnPointCount(getEnemySpawnPointCount());
 		enemyController.SpawnWave();
 	}
-
-	public void CollectMiniOrbs (int count) {
-		dataController.CollectMiniOrbs(count);
-		StatsPanelController.Instance.SetMiniOrbs(dataController.MiniOrbCount);
+		
+	public void CollectMana (int count) {
+		dataController.CollectMana(count);
+		statsPanel.SetMana(dataController.Mana);
 	}
 
-	public bool TrySpendMiniOrbs (int count) {
-		if (dataController.TrySpendMiniOrbs(count)) {
-			StatsPanelController.Instance.SetMiniOrbs(dataController.MiniOrbCount); 
+	public void EarnXP (int xpEarned) {
+		dataController.EarnXP(xpEarned);
+	}
+
+	public bool TrySpendMana (int count) {
+		if (dataController.TrySpendMana(count)) {
+			refreshManaDisplay();
 			return true;
 		} else {
 			return false;
@@ -84,8 +265,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	void SetupUnitControllers () {
-		towerController.Setup(this, dataController, TOWER_UNIT_TEMPLATE_FILE_NAME);
-		enemyController.Setup(this, dataController, ENEMY_UNIT_TEMPLATE_FILE_NAME);
+		towerController.Setup(this, dataController, mapController, TOWER_UNIT_TEMPLATE_FILE_NAME);
+		enemyController.Setup(this, dataController, mapController, ENEMY_UNIT_TEMPLATE_FILE_NAME, EnemySpawnCountEquation);
 		unitControllers = new UnitController[]{towerController, enemyController};
 	}
 
@@ -94,7 +275,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void SendIlluminationToMap (IlluminationTowerBehaviour illuminationTower, bool shouldPlaySound = true) {
-		MapController.Instance.Illuminate(illuminationTower.GetLocation(), illuminationTower.IlluminationRadius, shouldPlaySound);
+		mapController.Illuminate(illuminationTower.GetLocation(), illuminationTower.IlluminationRadius, shouldPlaySound);
 	}
 
 	// Cleans up/destroys the world
@@ -147,8 +328,10 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 		
 	public void HandleBeginDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
+		input.ToggleDraggingObject(true);
 		if (dragEvent != null) {
 			towerController.HandleBeginDragPurchase(dragEvent, towerPanel);
+			mapController.HighlightValidBuildTiles();
 		}
 	}
 
@@ -159,8 +342,28 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void HandleEndDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
+		input.ToggleDraggingObject(false);
 		if (dragEvent != null) {
 			towerController.HandleEndDragPurchase(dragEvent, towerPanel);
+			mapController.UnhighlightValidBuildsTiles();
+		}
+	}
+
+	public void HandleTowerPurchaseSelected (Tower tower) {
+		this.currentlySelectedPurchaseTower = tower;
+		mapController.HighlightValidBuildTiles();
+	}
+
+	public TowerBehaviour GetPurchaseTowerToPlace (Vector3 startingPosition, bool purchaseLock = false) {
+		if (TrySpendMana(currentlySelectedPurchaseTower.ICost)) {
+			Tower purchaseTower = currentlySelectedPurchaseTower;
+			if (!purchaseLock) {
+				currentlySelectedPurchaseTower = null;
+				purchasePanel.TryDeselectSelectedPanel(shouldSwitchSelected:true);
+			}
+			return towerController.GetTowerBehaviourFromTower(purchaseTower, startingPosition);
+		} else {
+			return null;
 		}
 	}
 
@@ -173,30 +376,45 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		towerController = TowerController.Instance;
 		enemyController = EnemyController.Instance;
 		mapController = MapController.Instance;
+		statsPanel = StatsPanelController.Instance;
+		purchasePanel = TowerPurchasePanelController.Instance;
+		input = InputController.Instance;
+		tuning = dataController.tuning;
+		setupDataControllerCallbacks();
+		setupUI();
 		Create();
 		StartWave();
 		EventController.Event(EventType.LoadGame);
 	}
 
+	void setupUI () {
+		onLevelUp(dataController.PlayerLevel);
+	}
+
 	protected override void CleanupReferences () {
 		Instance = null;
+		teardownDataControllerCallbacks();
+		teardownUnitControllerCallbacks();
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		if (eventName == EventType.EnemyDestroyed) {
-			CollectMiniOrbs(MiniOrbsFromKillingEnemy);
-		}
+		// Nothing
 	}
-		
+
+	void refreshXPDisplay () {
+		statsPanel.SetXP(dataController.XP, dataController.XPForLevel);
+	}
+
+	void refreshManaDisplay () {
+		statsPanel.SetMana(dataController.Mana);
+	}
+
 	void handleUnitEvent (string eventName, Unit unit) {
 		if (eventName == EventType.EnemyDestroyed) {
-			if (unit.Type == "Undead") {
-				CollectMiniOrbs(25);
-			} else if (unit.Type == "Brute") {
-				CollectMiniOrbs(100);
-			} else if (unit.Type == "Shade") {
-				CollectMiniOrbs(200);
-			}
+			Enemy enemy = unit as Enemy;
+			dataController.GiveReward(enemy.IDeathReward);
+			refreshXPDisplay();
+			refreshManaDisplay();
 		}
 	}
 
@@ -351,6 +569,14 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	public Sprite GetTowerSprite (string towerKey) {
 		return towerController.GetTowerSprite(towerKey);
+	}
+
+	#endregion
+
+	#region Enemy Controller
+
+	public Sprite GetEnemySprite (string enemyKey) {
+		return enemyController.GetEnemySprite(enemyKey);
 	}
 
 	#endregion

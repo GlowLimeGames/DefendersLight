@@ -4,11 +4,44 @@
  */
 
 using UnityEngine;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
 public abstract class UnitController : MannBehaviour {
+	protected const string SPRITES_DIR = "Sprites";
+	protected const string PREFABS_DIR = "Prefabs";
+
 	public abstract Unit[] GetUnits();
+
+	protected WorldController worldController;
+	protected DataController dataController;
+	protected MapController mapController;
+
+	protected bool TryGetActiveObject (string objectType, Vector3 objectStartingPosition, out ActiveObjectBehaviour activeObject) {
+		bool successful = worldController.TryPullFromSpawnPool(objectType, out activeObject);
+		if (successful) {
+			activeObject.transform.position = objectStartingPosition;
+			activeObject.gameObject.SetActive(true);
+		}
+		return successful;
+	}
+
+	public virtual void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
+		activeObject.gameObject.SetActive(false);
+		worldController.AddToSpawnPool(activeObject);
+	}
+
+	public virtual void Setup (WorldController worldController, DataController dataController, MapController mapController) {
+		this.worldController = worldController;
+		this.dataController = dataController;
+		this.mapController = mapController;
+	}
+		
+	protected ActiveObjectBehaviour loadPrefab (string pathInResources) {
+		return Resources.Load<ActiveObjectBehaviour>(pathInResources);
+	} 
+	
 }
 
 public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitController 
@@ -17,6 +50,11 @@ public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitContro
 	where UnitList:UnitCollection<UnitType> {
 
 	protected Dictionary<string, UnitType> templateUnits;
+	public Unit[] ITemplateUnits {
+		get {
+			return templateUnits.Values.ToArray();
+		}
+	}
 	protected IList<UnitType> _activeUnits;
 	public UnitType[] ActiveUnits{
 		get {
@@ -32,13 +70,9 @@ public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitContro
 			return _units;
 		}
 	}
-		
-	protected WorldController worldController;
-	protected DataController dataController;
 
-	public virtual void Setup (WorldController worldController, DataController dataController, string unitTemplateJSONPath) {
-		this.worldController = worldController;
-		this.dataController = dataController;
+	public virtual void Setup (WorldController worldController, DataController dataController, MapController mapController, string unitTemplateJSONPath) {
+		Setup(worldController, dataController, mapController);
 		string unitTemplateJSON = dataController.RetrieveJSONFromResources(unitTemplateJSONPath);
 		CreateUnitTemplates(unitTemplateJSON);
 	}
@@ -65,7 +99,7 @@ public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitContro
 	}
 
 	protected override void FetchReferences() {
-
+		
 	}
 
 	protected override void CleanupReferences () {

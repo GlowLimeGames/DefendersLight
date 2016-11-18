@@ -23,7 +23,7 @@ public class AudioController : Controller, IAudioController {
 
 	// Stores all the audio sources and audio data inside dictionaries
 	Dictionary<int, AudioSource> channels = new Dictionary<int, AudioSource>();
-	Dictionary<string, AudioData> data = new Dictionary<string, AudioData>();
+	Dictionary<string, AudioData> audioData = new Dictionary<string, AudioData>();
 
 	// Stores all the audio events inside dictionaries
 	Dictionary<string, List<AudioData>> playEvents = new Dictionary<string, List<AudioData>>();
@@ -165,7 +165,7 @@ public class AudioController : Controller, IAudioController {
 
 	void InitFileDictionary (AudioList audioFiles) {
 		for (int i = 0; i < audioFiles.Length; i++) {
-			data.Add (
+			audioData.Add (
 				audioFiles[i].Name,
 				audioFiles[i]
 			);

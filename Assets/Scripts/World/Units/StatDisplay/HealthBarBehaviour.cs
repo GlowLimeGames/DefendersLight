@@ -14,6 +14,10 @@ public class HealthBarBehaviour : MannBehaviour {
 
 	// Float must be between 0 and 1
 	public void SetHealthDisplay (float healthFraction) {
+		if (float.IsNaN(healthFraction)) {
+			return;
+		}
+			
 		Vector3 current = healthBarFill.localScale;
 		healthBarFill.localScale = new Vector3(healthFraction, current.y, current.z);
 		healthBarFill.localPosition = healthBarOrigin;;

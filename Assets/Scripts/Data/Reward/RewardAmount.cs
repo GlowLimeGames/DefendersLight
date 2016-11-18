@@ -5,6 +5,11 @@
 
 [System.Serializable]
 public struct RewardAmount {
-	public int MiniOrbs;
+	public int Mana;
 	public int XP;
+
+	public RewardAmount(int mana, int xp) {
+		this.Mana = mana;
+		this.XP = xp;
+	}
 }

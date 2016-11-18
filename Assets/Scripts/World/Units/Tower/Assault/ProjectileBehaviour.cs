@@ -11,6 +11,11 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	float maxLifespan = 3.5f;
 	ActiveObjectBehaviour _target;
 	Tower tower;
+	ActiveObjectBehaviour ITarget {
+		get {
+			return _target;
+		}
+	}
 
 	protected override void SetReferences() {
 		base.SetReferences();
@@ -27,6 +32,10 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 
 	protected override void HandleNamedEvent (string eventName) {
 		
+	}
+
+	public override void MoveTo (MapLocation location) {
+		throw new System.NotImplementedException();
 	}
 
 	// Sets the tower that spawned this projectile
@@ -49,14 +58,6 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 		StartCoroutine(TimedReturnToPool(0.25f));
 	}
 
-	public override ActiveObjectBehaviour SelectTarget () {
-		return this._target;
-	}
-
-	public override void MoveTo (MapLocation location) {
-		
-	}
-		
 	public override void Attack (ActiveObjectBehaviour activeAgent, int damage) {
 		base.Attack (activeAgent, tower.AttackDamage);
 	}

@@ -72,6 +72,20 @@ public class Tower : Unit {
 		}
 	}
 
+	public string AlmanacFlavorText;
+	public string IAlmanacFlavorText {
+		get {
+			return AlmanacFlavorText;
+		}
+	}
+
+	public string AlmanacStatDescriptions;
+	public string IAlmanacStatDescriptions {
+		get {
+			return AlmanacStatDescriptions;
+		}
+	}
+
 	// Should calculate illumination radius if the tower has reflectivity
 	int CalculateVariableIlluminationRadius () {
 		// TODO: Actually implement this method
@@ -100,7 +114,7 @@ public class Tower : Unit {
 
 	}
 
-	public UnityEngine.Sprite GetSprite () {
+	public override UnityEngine.Sprite GetSprite () {
 		UnityEngine.Sprite sprite;
 		if (towerSprites.TryGetValue(Type, out sprite)) {
 			return sprite;
@@ -113,4 +127,11 @@ public class Tower : Unit {
 		}
 	}
 
+	public bool Unlocked (PlayerData player) {
+		return player.ILevel >= UnlockLevel;
+	}
+
+	public override string GetDescription () {
+		return string.Format("{0}\n\n{1}", AlmanacFlavorText, AlmanacStatDescriptions);
+	}
 }

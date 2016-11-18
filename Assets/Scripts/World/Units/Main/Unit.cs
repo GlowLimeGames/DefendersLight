@@ -167,7 +167,8 @@ public abstract class Unit : IUnit {
 
 	#endregion
 
-
+	public abstract Sprite GetSprite ();
+		
 	public virtual void Copy (Unit unit) {
 		this.Type = unit.Type;
 		this.Health = unit.Health;
@@ -180,5 +181,7 @@ public abstract class Unit : IUnit {
 		this.controller = unit.controller;
 		this._id = unit._id;
 	}
+
+	public abstract string GetDescription();
 }
 	

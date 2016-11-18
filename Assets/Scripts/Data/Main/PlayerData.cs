@@ -76,17 +76,14 @@ public class PlayerData : IPlayerData {
 		if (ReadyToLevelUp()) {
 			this._xp -= IXPForLevel;
 			this._level++;
+        	TowerController.Instance.compareTowerLevels();
 		}
-        
-        TowerController.Instance.compareTowerLevels();
-
         return this._level;
 	}
 
     public void LevelUpCheat() {
         this._level++;
 		this._xp = 0;
-        
         TowerController.Instance.compareTowerLevels();
     }
 

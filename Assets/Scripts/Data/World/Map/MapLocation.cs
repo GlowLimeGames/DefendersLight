@@ -55,4 +55,12 @@ public class MapLocation : IMapLocation {
 	public override string ToString () {
 		return string.Format ("(X={0}, Y={1})", X, Y);
 	}
+
+	public MapLocation Translate (int x, int y) {
+		return new MapLocation(this.X + x, this.Y + y);
+	}
+
+	public MapLocation Difference (MapLocation from) {
+		return new MapLocation(from.X - this.X, from.Y - this.Y);
+	}
 }
