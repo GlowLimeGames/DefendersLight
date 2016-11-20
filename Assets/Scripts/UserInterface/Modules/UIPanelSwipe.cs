@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDragHandler {
+public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragHandler {
 	const float FAKE_DELTA_TIME = 0.04166666667f;
 	EventAction onCloseCallback;
 	CanvasGroup canvas;
@@ -21,7 +21,9 @@ public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDra
 	float exitDistance = 200;
 	[SerializeField]
 	bool resetPositionOnClose;
-
+	[SerializeField]
+	bool startsClosed = true;
+	bool closed = true;
 	Vector3 startingPosition;
 
 	[SerializeField] 
@@ -30,6 +32,9 @@ public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDra
 	Direction dragDirection; // Potential Values if Horizontal: East, West; Potential Values if Vertical: North, South
 	[SerializeField]
 	float autoCloseSpeed; // Measured in Units per second
+	[SerializeField]
+	float enterSpeed = 1;
+	bool closedOnDrag = false;
 
 	InputController input;
 
@@ -44,14 +49,23 @@ public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDra
 	protected override void SetReferences () {
 		base.SetReferences ();
 		canvas = GetComponent<CanvasGroup>();
+		closed = startsClosed;
 	}
 
 	protected override void FetchReferences () {
 		base.FetchReferences ();
 		startingPosition = transform.position;
+		if (closed) {
+			setToClosedPosition();
+		}
 		input = InputController.Instance;
 	}
 
+	// Should only be called after startingPosition is set correctly
+	void setToClosedPosition () {
+		transform.position = startingPosition + (Vector3) DirectionUtil.VectorFromDirection(dragDirection) * exitDistance;
+	}
+		
 	public void OnBeginDrag (PointerEventData pointerEvent) {
 		input.ToggleInputEnabled(false);
 	}
@@ -64,15 +78,26 @@ public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDra
 		Vector3 pointer = pointerEvent.position;
 		Vector3 pos = transform.position;
 		if (orientation == Orientation.Vertical) {
-			transform.Translate(new Vector3(0, pointer.y - pos.y, 0));
+			float deltaY = pointer.y - pos.y;
+			if (dragDirection == Direction.North && deltaY > 0 || dragDirection == Direction.South && deltaY < 0) {
+				transform.Translate(new Vector3(0, deltaY, 0));
+			}
 		} else if (orientation == Orientation.Horizontal) {
-			transform.Translate(new Vector3(pointer.x - pos.x, 0, 0));
+			float deltaX = pointer.x - pos.x;
+			if (dragDirection == Direction.West && deltaX < 0 || dragDirection == Direction.East && deltaX > 0) {
+				transform.Translate(new Vector3(deltaX, 0, 0));
+			}
 		}
 		checkToCompleteClose();
 	}
 
 	public void OnEndDrag (PointerEventData pointerEvent) {
 		input.ToggleInputEnabled(true);
+		if (!closedOnDrag) {
+			StartCoroutine(snapBack());
+		} else {
+			closedOnDrag = false;
+		}
 	}
 
 	public void ResetPosition () {
@@ -86,7 +111,28 @@ public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDra
 	void checkToCompleteClose () {
 		if (shouldCompleteClose()) {
 			StartCoroutine(completeClose());
+			closedOnDrag = true;
 		}
+	}
+		
+	IEnumerator snapBack () {
+		autoScrollLock = true;
+		float timer = 0;
+		Vector3 beginPosition = transform.position;
+		Vector3 endingPosition = startingPosition;
+		float time = Vector3.Distance(beginPosition, endingPosition) / autoCloseSpeed;
+		while (time != 0 && timer <= time) {
+			transform.position = Vector3.Lerp(beginPosition, endingPosition, timer / time);
+			yield return new WaitForEndOfFrame();
+			if (Time.timeScale == 0) {
+				// Necessary if the game is paused because Time.deltaTime will always equal 0 if the timeScale is 0
+				timer += FAKE_DELTA_TIME;
+			} else {
+				timer += Time.deltaTime;
+			}
+		}
+		ResetPosition();
+		autoScrollLock = false;
 	}
 
 	IEnumerator completeClose () {
@@ -121,6 +167,35 @@ public class UISwipeToClose : UIModule, IBeginDragHandler, IDragHandler, IEndDra
 		}
 		canvas.interactable = true;
 		autoScrollLock = false;
+		closed = true;
+	}
+
+	IEnumerator animatedOpen () {
+		canvas.interactable = false;
+		autoScrollLock = true;
+		float timer = 0;
+		Vector3 beginPosition = transform.position;
+		Vector3 endingPosition = startingPosition;
+		float time = Vector3.Distance(beginPosition, endingPosition) / enterSpeed;
+		while (time != 0 && timer <= time) {
+			transform.position = Vector3.Lerp(beginPosition, endingPosition, timer / time);
+			yield return new WaitForEndOfFrame();
+			if (Time.timeScale == 0) {
+				// Necessary if the game is paused because Time.deltaTime will always equal 0 if the timeScale is 0
+				timer += FAKE_DELTA_TIME;
+			} else {
+				timer += Time.deltaTime;
+			}
+		}
+		canvas.interactable = true;
+		autoScrollLock = false;
+		closed = false;
+	}
+		
+	public void RequestOpen () {
+		if (closed) {
+			StartCoroutine(animatedOpen());
+		}
 	}
 
 	void callOnCloseCallback () {

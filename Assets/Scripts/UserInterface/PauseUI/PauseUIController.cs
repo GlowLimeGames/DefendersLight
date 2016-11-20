@@ -16,7 +16,7 @@ public class PauseUIController : UIController {
 	[SerializeField]
 	ToggleableUIButton musicToggle;
 	[SerializeField]
-	UISwipeToClose swipeToClosePause;
+	UIPanelSwipe swipeToClosePause;
 
 	protected override void SetReferences () {
 		base.SetReferences();
@@ -49,6 +49,8 @@ public class PauseUIController : UIController {
 		pauseScreen.SetActive(!pauseScreen.activeSelf);
 		if (!pauseScreen.activeSelf) {
 			cheatPanel.SetActive(false);
+		} else {
+			swipeToClosePause.RequestOpen();
 		}
 	}
 
