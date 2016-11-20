@@ -10,6 +10,15 @@ public class ToggleableUIButton : UILabledButton {
 	Color buttonUnselectedColor;
 	Color buttonSelectedColor;
 
+	[SerializeField]
+	bool shouldToggleImage;
+	[SerializeField]
+	Image toggleImage;
+	[SerializeField]
+	Sprite imageOn;
+	[SerializeField]
+	Sprite imageOff;
+
 	public bool ShowToggle;
 	bool toggled = false;
 	EventAction toggleOffAction;
@@ -32,8 +41,14 @@ public class ToggleableUIButton : UILabledButton {
 		toggled = !toggled;
 		if (ShowToggle) {
 			if (toggled) {
+				if (shouldToggleImage) {
+					toggleImage.sprite = imageOn;
+				}
 				buttonImage.color = buttonSelectedColor;
 			} else {
+				if (shouldToggleImage) {
+					toggleImage.sprite = imageOff;
+				}
 				buttonImage.color = buttonUnselectedColor;
 			}
 		}
