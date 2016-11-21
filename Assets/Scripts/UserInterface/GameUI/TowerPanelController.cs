@@ -34,7 +34,10 @@ public class TowerPanelController : UIController {
 	[SerializeField]
 	Image healthBar;
 
-	UISwipeToClose close;
+	UIPanelSwipe panelSwipe;
+	CanvasGroup canvas;
+
+	bool open = false;
 
 	void OnEnable () {
 		world = WorldController.Instance;
@@ -46,7 +49,6 @@ public class TowerPanelController : UIController {
 		}
 		Tower towerStats = tower.ITower;
 		selectedTower = tower;
-		gameObject.SetActive(true);
 		TowerName.text = tower.IName;
 		TowerLevel.text = tower.LevelString;
 		if (!(tower is CoreOrbBehaviour)) {
@@ -59,6 +61,9 @@ public class TowerPanelController : UIController {
 		tower.SubscribeUpdateHealth(updateHealthBar);
 		towerImage.sprite = towerStats.GetSprite();
 		updateHealthBar(selectedTower.IHealthFraction);
+		if (!open) {
+			OpenPanel();
+		}
 	}
 
 	public void DeselectTower () {
@@ -76,12 +81,29 @@ public class TowerPanelController : UIController {
 		healthBar.fillAmount = healthFraction;
 	}
 
+	public void OpenPanel () {
+		Show();	
+		panelSwipe.RequestOpen();
+		open = true;
+	}
+
+	public override void Show () {
+		base.Show ();
+		toggleCanvasGroup(canvas, true);
+	}
+
 	public void ClosePanel () {
 		if (this != null && gameObject != null) {
-			gameObject.SetActive(false);
+			Hide();
+			open = false;
 		}
 	}
 		
+	public override void Hide () {
+		base.Hide ();
+		toggleCanvasGroup(canvas, false);
+	}
+
 	public void SellTower () {
 		if (selectedTower) {
 			selectedTower.Sell();
@@ -95,7 +117,8 @@ public class TowerPanelController : UIController {
 
 	protected override void SetReferences () {
 		base.SetReferences ();
-		close = GetComponent<UISwipeToClose>();
-		close.SubscribeToClose(Hide);
+		panelSwipe = GetComponent<UIPanelSwipe>();
+		canvas = GetComponent<CanvasGroup>();
+		panelSwipe.SubscribeToClose(ClosePanel);
 	}
 }

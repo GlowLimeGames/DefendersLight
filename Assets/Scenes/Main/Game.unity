@@ -1685,12 +1685,12 @@ GameObject:
   - 114: {fileID: 348581781}
   - 225: {fileID: 348581782}
   m_Layer: 5
-  m_Name: TowerPanel
+  m_Name: TowerInfoPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &348581779
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1743,15 +1743,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 348581778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd1a8d95ae7eb4bb0bf4756931b0b91f, type: 3}
+  m_Script: {fileID: 11500000, guid: 34f37d786b53a49c98400817334fff6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dragThresold: 100
   exitDistance: 600
-  resetPositionOnClose: 1
+  enterOffset: 200
+  resetPositionOnClose: 0
+  startsClosed: 1
   orientation: 0
   dragDirection: 3
   autoCloseSpeed: 500
+  enterSpeed: 2000
 --- !u!225 &348581782
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1759,7 +1762,7 @@ CanvasGroup:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 348581778}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -4990,7 +4993,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1066574183
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5632,15 +5635,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1153773156}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd1a8d95ae7eb4bb0bf4756931b0b91f, type: 3}
+  m_Script: {fileID: 11500000, guid: 34f37d786b53a49c98400817334fff6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dragThresold: 25
   exitDistance: 200
-  resetPositionOnClose: 1
+  enterOffset: 0
+  resetPositionOnClose: 0
+  startsClosed: 1
   orientation: 1
   dragDirection: 2
   autoCloseSpeed: 200
+  enterSpeed: 800
 --- !u!225 &1153773161
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5648,9 +5654,9 @@ CanvasGroup:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1153773156}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1 &1161679927
 GameObject:
@@ -6824,15 +6830,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1481821231}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd1a8d95ae7eb4bb0bf4756931b0b91f, type: 3}
+  m_Script: {fileID: 11500000, guid: 34f37d786b53a49c98400817334fff6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dragThresold: 100
   exitDistance: 500
-  resetPositionOnClose: 1
+  enterOffset: 200
+  resetPositionOnClose: 0
+  startsClosed: 1
   orientation: 0
   dragDirection: 1
   autoCloseSpeed: 500
+  enterSpeed: 2000
 --- !u!1 &1484349564 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 189458, guid: b250baad274d14994a097923cd13e569, type: 2}
@@ -8912,7 +8921,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: {fileID: 2043032123}
   towerPage: {fileID: 1481821235}
-  close: {fileID: 1481821236}
+  panelSwipe: {fileID: 1481821236}
 --- !u!225 &1924913054
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9462,7 +9471,7 @@ GameObject:
   - 224: {fileID: 2029710707}
   - 114: {fileID: 2029710708}
   m_Layer: 5
-  m_Name: StatsPanel
+  m_Name: StatsTopPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
