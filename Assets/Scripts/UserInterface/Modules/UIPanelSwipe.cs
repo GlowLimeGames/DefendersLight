@@ -187,6 +187,7 @@ public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragH
 				timer += Time.deltaTime;
 			}
 		}
+		ResetPosition();
 		canvas.interactable = true;
 		autoScrollLock = false;
 		closed = false;
