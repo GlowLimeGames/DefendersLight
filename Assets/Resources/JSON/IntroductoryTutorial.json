@@ -8,12 +8,12 @@
           },
           {
                "Title" : "Building Towers",
-               "Body" : "The Core Orb is able to attack enemies, but it can’t protect itself for long. You protect the Core Orb by building towers to defend the orb from enemies. There are different kinds of towers which deal different amounts of damage, have different reload times, and have different ranges. Be aware that towers can only be built in areas of the map which have been illuminated.",
+               "Body" : "The Core Orb is able to attack enemies, but it can’t protect itself for long. You protect the Core Orb by building towers to defend the orb from enemies. Be aware that towers can only be built in areas of the map which have been illuminated.",
                "Image" : "Tower/Sprites/ballistae"
           },
           {
                "Title" : "Illumination",
-               "Body" : "You can illuminate more of the map by building Illumination towers. Illumination towers may only be built in parts of the map which have been illuminated. There are different kinds of Illumination Towers which illuminate larger and smaller areas.",
+               "Body" : "You can illuminate more of the map by building Illumination towers. Illumination towers may only be built in parts of the map which have been illuminated.",
                "Image" : "Tower/Sprites/torchcluster"
           },
           {
@@ -23,8 +23,8 @@
           },
           {
                "Title" : "Building",
-               "Body" : "Towers may be built any time during a wave and between waves. To build a tower, you select the kind of tower you want to build from the buttons at the bottom of the screen, then either click and drag the tower you want from the menu and place it on the map or tap on the tower you want to build and then tap the location on the map where you want to build that tower.",
-               "Image" : "Icon/hammer-icon"
+               "Body" : "Towers may be built any time during a wave and between waves. To build a tower, you select the kind of tower you want to build from the buttons at the bottom of the screen, then either click and drag the tower you want from the menu and place it on the map or click on the tower you want and tap the spot on the map where you want to place it.",
+               "Image" : "Icon/build-tower-button"
           },
           {
                "Title" : "Enemy Waves",
