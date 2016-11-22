@@ -39,7 +39,8 @@ public class TowerPanelController : UIController {
 
 	bool open = false;
 
-	void OnEnable () {
+	protected override void FetchReferences () {
+		base.FetchReferences ();
 		world = WorldController.Instance;
 	}
 
