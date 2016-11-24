@@ -131,6 +131,24 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1b76efca60ccc41b78689ce8e6454942, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &8715990 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 156446, guid: b250baad274d14994a097923cd13e569, type: 2}
+  m_PrefabInternal: {fileID: 603024285}
+--- !u!114 &8715995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 8715990}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &22540270
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,7 +1027,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eda941a8f54c14a80a076cb8790b4609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frameWaitCount: 3
   defaultTextColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!1 &214442071 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 156446, guid: b250baad274d14994a097923cd13e569, type: 2}
+  m_PrefabInternal: {fileID: 1594655550}
+--- !u!114 &214442076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 214442071}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &236486481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1665,6 +1702,14 @@ Prefab:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.y
+      value: 2.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_IsPrefabParent: 0
@@ -1748,7 +1793,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragThresold: 100
   exitDistance: 600
-  enterOffset: 200
   resetPositionOnClose: 0
   startsClosed: 1
   orientation: 0
@@ -2207,6 +2251,14 @@ Prefab:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.y
+      value: 2.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_IsPrefabParent: 0
@@ -2598,6 +2650,14 @@ Prefab:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.y
+      value: 2.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_IsPrefabParent: 0
@@ -2900,6 +2960,14 @@ Prefab:
     - target: {fileID: 11498870, guid: b250baad274d14994a097923cd13e569, type: 2}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.y
+      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b250baad274d14994a097923cd13e569, type: 2}
@@ -3437,6 +3505,24 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 733067879}
+--- !u!1 &746142606 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 156446, guid: b250baad274d14994a097923cd13e569, type: 2}
+  m_PrefabInternal: {fileID: 1521223634}
+--- !u!114 &746142611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 746142606}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &761877215
 GameObject:
   m_ObjectHideFlags: 0
@@ -4166,6 +4252,24 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 852621152}
+--- !u!1 &911020146 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 156446, guid: b250baad274d14994a097923cd13e569, type: 2}
+  m_PrefabInternal: {fileID: 1635941807}
+--- !u!114 &911020151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 911020146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &935397449
 GameObject:
   m_ObjectHideFlags: 0
@@ -5543,6 +5647,14 @@ Prefab:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.y
+      value: 2.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b250baad274d14994a097923cd13e569, type: 2}
   m_IsPrefabParent: 0
@@ -5640,7 +5752,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragThresold: 25
   exitDistance: 200
-  enterOffset: 0
   resetPositionOnClose: 0
   startsClosed: 1
   orientation: 1
@@ -6820,7 +6931,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 0
   m_Interactable: 0
-  m_BlocksRaycasts: 0
+  m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!114 &1481821236
 MonoBehaviour:
@@ -6835,7 +6946,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragThresold: 100
   exitDistance: 500
-  enterOffset: 200
   resetPositionOnClose: 0
   startsClosed: 1
   orientation: 0
@@ -7027,6 +7137,14 @@ Prefab:
     - target: {fileID: 11498870, guid: b250baad274d14994a097923cd13e569, type: 2}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.y
+      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b250baad274d14994a097923cd13e569, type: 2}
@@ -7281,6 +7399,14 @@ Prefab:
     - target: {fileID: 11498870, guid: b250baad274d14994a097923cd13e569, type: 2}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.y
+      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b250baad274d14994a097923cd13e569, type: 2}
@@ -7648,6 +7774,14 @@ Prefab:
     - target: {fileID: 11498870, guid: b250baad274d14994a097923cd13e569, type: 2}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446174, guid: b250baad274d14994a097923cd13e569, type: 2}
+      propertyPath: towerLockOutlineSize.y
+      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b250baad274d14994a097923cd13e569, type: 2}
@@ -8184,6 +8318,24 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7351696d4657642e68a96be3f879a460, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1746754972 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 156446, guid: b250baad274d14994a097923cd13e569, type: 2}
+  m_PrefabInternal: {fileID: 1148667749}
+--- !u!114 &1746754977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1746754972}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1748743279
 GameObject:
   m_ObjectHideFlags: 0
@@ -8518,6 +8670,24 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1777024678}
+--- !u!1 &1799775273 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 156446, guid: b250baad274d14994a097923cd13e569, type: 2}
+  m_PrefabInternal: {fileID: 557755349}
+--- !u!114 &1799775278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1799775273}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1817270499
 GameObject:
   m_ObjectHideFlags: 0
@@ -8922,6 +9092,8 @@ MonoBehaviour:
   title: {fileID: 2043032123}
   towerPage: {fileID: 1481821235}
   panelSwipe: {fileID: 1481821236}
+  clickThresholdForTowerLock: 2
+  towerLockEnabled: 1
 --- !u!225 &1924913054
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9461,6 +9633,24 @@ MonoBehaviour:
   sfxToggle: {fileID: 991877511}
   musicToggle: {fileID: 1642440542}
   swipeToClosePause: {fileID: 1153773160}
+--- !u!1 &1976657005 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 156446, guid: b250baad274d14994a097923cd13e569, type: 2}
+  m_PrefabInternal: {fileID: 394443238}
+--- !u!114 &1976657010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1976657005}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2029710706
 GameObject:
   m_ObjectHideFlags: 0
@@ -9800,6 +9990,24 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2043032121}
+--- !u!1 &2050811709 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 156446, guid: b250baad274d14994a097923cd13e569, type: 2}
+  m_PrefabInternal: {fileID: 342543231}
+--- !u!114 &2050811714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2050811709}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2078888417
 GameObject:
   m_ObjectHideFlags: 0

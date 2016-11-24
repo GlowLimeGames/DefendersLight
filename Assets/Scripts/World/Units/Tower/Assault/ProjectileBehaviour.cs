@@ -23,15 +23,16 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	}
 
 	protected override void FetchReferences() {
-		
+		// NOTHING
 	}
 
 	protected override void CleanupReferences () {
-		
+		base.CleanupReferences();
+		checkToUnsubscribeCleanup();
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		
+		// NOTHING
 	}
 
 	public override void MoveTo (MapLocation location) {
@@ -46,8 +47,32 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 
 	public void SetTarget (ActiveObjectBehaviour target) {
 		this._target = target;
+		this._target.SubscribeToDestruction(cleanup);
 		StartCoroutine(MoveTo(target.gameObject, 0.5f));
 		StartCoroutine(DelayedAttack(target, 0.5f));
+	}
+
+	void checkToUnsubscribeCleanup () {
+		// Don't try to call the cleanup method if this object has destroyed
+		if (_target) {
+			_target.UnusubscribeFromDestruction(cleanup);
+		}
+	}
+
+	void cleanup () {
+		checkToUnsubscribeCleanup();
+		StopAllCoroutines();
+		tryReclaimInSpawnPool();
+	}
+
+	bool tryReclaimInSpawnPool () {
+		if (ProjectilePool.Instance) {
+			ProjectilePool.Instance.Give(this);
+		} else {
+			Destroy(gameObject);
+		}
+		// Returns whether the projecttile pool exists
+		return ProjectilePool.Instance;
 	}
 
 	IEnumerator DelayedAttack (ActiveObjectBehaviour target, float waitTime) {
@@ -55,7 +80,7 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 		if (target) {
 			Attack(target, tower.AttackDamage);
 		}
-		StartCoroutine(TimedReturnToPool(0.25f));
+		if (isActiveAndEnabled) StartCoroutine(TimedReturnToPool(0.25f));
 	}
 
 	public override void Attack (ActiveObjectBehaviour activeAgent, int damage) {
@@ -64,10 +89,6 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 		
 	IEnumerator TimedReturnToPool (float waitTime = 0.5f) {
 		yield return new WaitForSeconds(waitTime);
-		if (ProjectilePool.Instance) {
-			ProjectilePool.Instance.Give(this);
-		} else {
-			Destroy(gameObject);
-		}
+		tryReclaimInSpawnPool();
 	}
 }
