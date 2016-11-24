@@ -13,6 +13,7 @@ using UnityEngine.EventSystems;
 using System.Text.RegularExpressions;
 
 public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerController {
+	public static TowerController Instance;
 	public const string TOWER_TAG = "Tower";
 	const float DRAG_HEIGHT_OFFSET = 3f;
 	CameraController gameCamera;
@@ -165,23 +166,12 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 
 
     public void compareTowerLevels() {
-
-
         foreach (Tower tower in templateUnits.Values) {
-
             if (tower.UnlockLevel == dataController.PlayerLevel) {
-
-
-                TowerUnlockedScreen.towerUnlocked = true;
+				EventController.Event(EventType.TowerUnlocked);
                 TowerUnlockedScreen.textToDisplay = "Tower Unlocked.";
-
-
             }
-
-
-
         }
-
     }
 
     public override void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
@@ -199,8 +189,6 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		}
 		potentialPurchaseTower = null;
 	}
-
-	public static TowerController Instance;
 
 	public Tower[] GetActive() {
 		throw new System.NotImplementedException ();
