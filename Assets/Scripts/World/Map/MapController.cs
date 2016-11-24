@@ -205,6 +205,8 @@ public class MapController : MannBehaviour, IMapController {
 	protected override void HandleNamedEvent (string eventName) {
 		if (eventName == EventType.TowerDestroyed || eventName == EventType.TowerSold) {
 			RefreshIlluminations();
+		} else if (eventName == EventType.TowerPanelDeselected) {
+			UnhighlightValidBuildsTiles();
 		}
 	}
 

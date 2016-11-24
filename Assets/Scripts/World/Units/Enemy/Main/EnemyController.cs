@@ -23,11 +23,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	Dictionary<string, GameObject> orderedEnemyPrefabs = new Dictionary<string, GameObject>();
 	List<EnemySpawnPoint> spawnPoints;
 	public static EnemyController Instance;
-	int enemiesAlive {
-		get {
-			return activeEnemies.Count;
-		}
-	}
+	int enemiesAlive = 0;
 	int currentWaveIndex = 1;
 	int spawnPointCount = 1;
 	EnemyWave currentWave = null;
@@ -142,6 +138,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	IEnumerator RunSpawnWave (int waveIndex, float spawnDelay) {
 		int enemiesInWaveCount = GetEnemyCount(waveIndex);
+		enemiesAlive += enemiesInWaveCount;
 		string[] enemyTypes = GetEnemyTypes(waveIndex);
 		for (int i = 0; i < enemiesInWaveCount; i++) {
 			SpawnEnemy(randomSpawnPoint(), (Direction)(i%4), enemyTypes[i]);
@@ -270,6 +267,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	}
 
 	void HandleEnemyKilled () {
+		enemiesAlive = Mathf.Clamp(enemiesAlive - 1, 0, int.MaxValue);
 		if (enemiesAlive == 0) {
 			transitionToNextWave();
 		}

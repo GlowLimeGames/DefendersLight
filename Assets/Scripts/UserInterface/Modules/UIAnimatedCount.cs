@@ -10,8 +10,9 @@ using System.Collections;
 [RequireComponent(typeof(Text))]
 public class UIAnimatedCount : UIElement {
 	[SerializeField]
+	int frameWaitCount = 1;
+	[SerializeField]
 	Color defaultTextColor = Color.white;
-
 	IEnumerator countCoroutine;
 	Text text;
 	string prefix;
@@ -25,11 +26,15 @@ public class UIAnimatedCount : UIElement {
 			return _currentValue;
 		}
 	}
-		
+
 	protected override  void SetReferences () {
 		base.SetReferences();
 		text = GetComponent<Text>();
 		UpdateCount();
+	}
+
+	protected override void FetchReferences () {
+		base.FetchReferences ();
 	}
 
 	void UpdateCount () {
@@ -69,12 +74,13 @@ public class UIAnimatedCount : UIElement {
 	IEnumerator CountTo (int targetValue, float time, Color colorOnFinish) {
 		UpdateCount();
 		float timer = 0;
-		float frames = time/Time.fixedDeltaTime;
-		int step = Mathf.Clamp((int)(((float)(targetValue-currentValue))/frames), 1, int.MaxValue);
+		int startValue = currentValue;
 		while (timer < time && currentValue != targetValue) {
-			currentValue += step;
-			timer += Time.fixedDeltaTime;
-			yield return new WaitForFixedUpdate();
+			currentValue = (int) Mathf.Lerp(startValue, targetValue, timer / time);
+			timer += WorldController.Paused ? FAKE_DELTA_TIME : Time.fixedDeltaTime;
+			for (int i = 0; i < frameWaitCount; i++) {
+				yield return new WaitForEndOfFrame();
+			}
 		}
 		currentValue = targetValue;
 		SetColor(colorOnFinish);

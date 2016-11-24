@@ -11,6 +11,8 @@ using UnityEngine.UI;
 public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
 	Color cannotPurchaseColor = Color.red;
 	Color selectColor = Color.Lerp(Color.blue, Color.white, 0.25f);
+	Color lockColor = Color.Lerp(Color.cyan, Color.white, 0.25f);
+
 	public TowerType TowerType;
 	Tower tower;
 	CanvasGroup canvasGroup;
@@ -25,10 +27,19 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 	Text purchaseCostText;
 	[SerializeField]
 	int cost;
+	Outline towerOutline;
+	[SerializeField]
+	Vector2 selectedOutlineSize = new Vector2(1, 1);
+	[SerializeField]
+	Vector2 towerLockOutlineSize = new Vector2(2, 2);
 	bool cannotPurchaseInteractionOccuring = false;
-	bool isSelected;
+	bool _isSelected;
 	IEnumerator showInvalidPurchaseCoroutine;
-
+	public bool IsSelected {
+		get {
+			return _isSelected;
+		}
+	}
 	public void InitWithController (TowerPurchasePanelController controller) {
 		this.controller = controller;
 	}
@@ -50,17 +61,21 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 	}
 		
 	public void SelectPanel () {
-		showAsSelected();
+		showAsSelected(controller.CheckForTowerSelectLock(this, onClick:true));
 		controller.HandlePurchaseSelected(this);
 	}
 
-	public bool TryDeselect (bool switchSelection = true) {
-		if (isSelected) {
+	public bool TryDeselect (bool switchSelection = true, bool towerPanelChange = false, bool onClick = false) {
+		// Don't deselect if tower select lock
+		if (controller.CheckForTowerSelectLock(this, onClick) && !towerPanelChange) {
+			return false;
+		}
+		if (_isSelected) {
 			showAsUnselected();
 			stopShowInvalidPurchase();
 			cannotPurchaseInteractionOccuring = false;
 			if (switchSelection) {
-				isSelected = false;
+				_isSelected = false;
 			}
 			return true;
 		} else {
@@ -69,19 +84,32 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 	}
 
 	public void OnPointerClick (PointerEventData pointerEvent) {
-		if (!isSelected) {
-			if (data.HasSufficientMana(cost)) {
-				SelectPanel();
-			} else {
-				cannotPurchaseInteractionOccuring = true;	
-				startShowInvalidPurchase(cannotPurchaseSelectHighlightTime);
-				controller.TryDeselectSelectedPanel();
-				EventController.Event(EventType.CannotPurchase);
-			}
+		if (controller.TowerSelectLock && controller.CheckForTowerSelectLock(this, true) && _isSelected) {
+			_isSelected = false;
+			showAsUnselected();
+			EventController.Event(EventType.TowerPanelDeselected);
 		} else {
-			controller.TryDeselectSelectedPanel(shouldSwitchSelected:false);
+			if (!_isSelected) {
+				if (data.HasSufficientMana(cost)) {
+					SelectPanel();
+				} else {
+					cannotPurchaseInteractionOccuring = true;	
+					startShowInvalidPurchase(cannotPurchaseSelectHighlightTime);
+					controller.TryDeselectSelectedPanel(shouldSwitchSelected:true, towerPanelChange:false, onClick:true);
+					EventController.Event(EventType.CannotPurchase);
+				}
+				_isSelected = true;
+			} else {
+				bool towerLock = controller.CheckForTowerSelectLock(this, true);
+				if (towerLock) {
+					showAsSelected(towerLock:true);
+				} else {
+					_isSelected = false;
+					controller.TryDeselectSelectedPanel(true, true, false);
+				}
+			}
 		}
-		isSelected = !isSelected;
+
 	}
 
 	public void OnBeginDrag (PointerEventData pointerEvent) {
@@ -99,12 +127,17 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 		controller.HandleBeginDragPurchase(pointerEvent, this);
 	}
 
-	void showAsSelected () {
-		image.color = selectColor;
-		transform.localScale = scalarVector(selectedScale);
+	void showAsSelected (bool towerLock = false) {
+		towerOutline.enabled = true;
+		// image.color = towerLock ? lockColor : selectColor;
+		towerOutline.effectDistance = towerLock ? towerLockOutlineSize : selectedOutlineSize;
+		if (!towerLock) {
+			transform.localScale = scalarVector(selectedScale);
+		}
 	}
 
 	void showAsUnselected () {
+		towerOutline.enabled = false;
 		image.color = standardColor;
 		if (cannotPurchaseInteractionOccuring) {
 			StatsPanelController.Instance.ResetManaTextColor();			
@@ -149,6 +182,8 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 		standardColor = image.color;
 		SetCost(cost);
 		canvasGroup = GetComponent<CanvasGroup>();
+		towerOutline = GetComponent<Outline>();
+		towerOutline.enabled = false;
 	}
 
 	void Toggle (bool isActive) {
@@ -192,10 +227,12 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		base.HandleNamedEvent(eventName);
-	}
-
-	protected override void CleanupReferences () {
-		base.CleanupReferences();
+		if (eventName == EventType.CannotPurchase || eventName == EventType.TowerCannotPlace) {
+			if (_isSelected) {
+				TryDeselect(switchSelection:true, towerPanelChange:true);
+			}
+		} else {
+			base.HandleNamedEvent(eventName);
+		}
 	}
 }

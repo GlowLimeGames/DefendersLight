@@ -11,7 +11,6 @@ using System.Collections;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragHandler {
-	const float FAKE_DELTA_TIME = 0.04166666667f;
 	EventAction onCloseCallback;
 	CanvasGroup canvas;
 	bool autoScrollLock = false;
@@ -124,12 +123,7 @@ public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragH
 		while (time != 0 && timer <= time) {
 			transform.position = Vector3.Lerp(beginPosition, endingPosition, timer / time);
 			yield return new WaitForEndOfFrame();
-			if (Time.timeScale == 0) {
-				// Necessary if the game is paused because Time.deltaTime will always equal 0 if the timeScale is 0
-				timer += FAKE_DELTA_TIME;
-			} else {
-				timer += Time.deltaTime;
-			}
+			timer += WorldController.Paused ? FAKE_DELTA_TIME : Time.fixedDeltaTime;
 		}
 		ResetPosition();
 		autoScrollLock = false;
@@ -154,12 +148,7 @@ public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragH
 		while (timer <= time) {
 			transform.position = Vector3.Lerp(beginPosition, endingPosition, timer / time);
 			yield return new WaitForEndOfFrame();
-			if (Time.timeScale == 0) {
-				// Necessary if the game is paused because Time.deltaTime will always equal 0 if the timeScale is 0
-				timer += FAKE_DELTA_TIME;
-			} else {
-				timer += Time.deltaTime;
-			}
+			timer += WorldController.Paused ? FAKE_DELTA_TIME : Time.fixedDeltaTime;
 		}
 		callOnCloseCallback();
 		if (resetPositionOnClose) {
@@ -180,12 +169,7 @@ public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragH
 		while (time != 0 && timer <= time) {
 			transform.position = Vector3.Lerp(beginPosition, endingPosition, timer / time);
 			yield return new WaitForEndOfFrame();
-			if (Time.timeScale == 0) {
-				// Necessary if the game is paused because Time.deltaTime will always equal 0 if the timeScale is 0
-				timer += FAKE_DELTA_TIME;
-			} else {
-				timer += Time.deltaTime;
-			}
+			timer += WorldController.Paused ? FAKE_DELTA_TIME : Time.fixedDeltaTime;
 		}
 		ResetPosition();
 		canvas.interactable = true;

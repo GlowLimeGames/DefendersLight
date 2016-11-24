@@ -45,7 +45,11 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			_currentSeason = value;
 		}
 	}
-
+	public static bool Paused {
+		get {
+			return Instance && Instance.IsPaused;
+		}
+	}
 	public bool IsPaused {
 		get {
 			return Time.timeScale == 0;
@@ -62,6 +66,11 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 				_unitsByClass = determineUnitsByClass();
 			}
 			return _unitsByClass;
+		}
+	}
+	bool purchaseLock {
+		get {
+			return purchasePanel && purchasePanel.TowerSelectLock;
 		}
 	}
 
@@ -362,17 +371,21 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		mapController.HighlightValidBuildTiles();
 	}
 
-	public TowerBehaviour GetPurchaseTowerToPlace (Vector3 startingPosition, bool purchaseLock = false) {
+	public TowerBehaviour GetPurchaseTowerToPlace (Vector3 startingPosition) {
 		if (TrySpendMana(currentlySelectedPurchaseTower.ICost)) {
 			Tower purchaseTower = currentlySelectedPurchaseTower;
-			if (!purchaseLock) {
-				currentlySelectedPurchaseTower = null;
+			if (!(purchaseLock && dataController.HasSufficientMana(currentlySelectedPurchaseTower.ICost))) {
+				clearSelectedTower();
 				purchasePanel.TryDeselectSelectedPanel(shouldSwitchSelected:true);
 			}
 			return towerController.GetTowerBehaviourFromTower(purchaseTower, startingPosition);
 		} else {
 			return null;
 		}
+	}
+
+	void clearSelectedTower () {
+		currentlySelectedPurchaseTower = null;
 	}
 
 	protected override void SetReferences () {
@@ -412,7 +425,9 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		// Nothing
+		if (eventName == EventType.TowerPanelDeselected) {
+			clearSelectedTower();
+		}
 	}
 
 	void refreshXPDisplay () {
@@ -445,7 +460,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 				worldAsJSON += unit.SerializeAsJSON();
 			}
 		}
-		print(worldAsJSON);
 		return worldAsJSON;
 	}
 

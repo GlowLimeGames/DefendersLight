@@ -56,4 +56,11 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 		yield return new WaitForSeconds(delayTime);
 		gameObject.SetActive(isActive);
 	}
+
+	public virtual void ToggleColliders (bool areCollidersEnabled) {
+		foreach (Collider collider in GetComponentsInChildren<Collider>()) {
+			collider.enabled = areCollidersEnabled;
+		}
+	}
+
 }

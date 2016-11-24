@@ -26,11 +26,9 @@ public class PauseUIController : UIController {
 	protected override void SetReferences () {
 		base.SetReferences();
 		if (SettingsUtil.SFXMuted) {
-			sfxToggle.RefreshReferences();
 			sfxToggle.Toggle();
 		}
 		if (SettingsUtil.MusicMuted) {
-			musicToggle.RefreshReferences();
 			musicToggle.Toggle();
 		}
 		pauseScreenCanvas = GetComponentInChildren<CanvasGroup>();

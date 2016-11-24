@@ -231,6 +231,9 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 			PlaceStaticAgent(world.GetPurchaseTowerToPlace(transform.position));
 			return true;
 		} else {
+			if (!world.HasTowerToPlace) {
+				EventController.Event(EventType.TowerCannotPlace);
+			}
 			return false;
 		}
 	}

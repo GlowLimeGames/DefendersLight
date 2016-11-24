@@ -16,6 +16,8 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public string LevelString;
 	public float AttackDelay;
 	int _maxHealth = 0;
+	// Makes sure that we don't keep calling events related to a destroyed unit
+	bool hasBeenDestroyed = false;
     public bool isInvulnerable = false;
 	public AttackType AttackType;
 	public virtual float IAttackDelay {
@@ -100,7 +102,11 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	public virtual void Damage(int damage) {
-        if (!isInvulnerable) {
+		if (hasBeenDestroyed) {
+			return;
+		}
+
+		if (!isInvulnerable) {
             Health -= damage;
 			callUpdateHealth((float) Health / (float) IMaxHealth);
         }
@@ -122,6 +128,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	public virtual void ResetStats () {
 		Health = IMaxHealth;
+		hasBeenDestroyed = false;
 		updateHealthBar();
 	}
 
@@ -150,6 +157,8 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	public virtual void Destroy() {
 		unitController.HandleObjectDestroyed(this);	
+		hasBeenDestroyed = true;
+		ToggleColliders(false);
 		if (onDestroyed != null) {	
 			onDestroyed();
 		}
@@ -175,12 +184,6 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		attackCooldownActive = true;
 		yield return new WaitForSeconds(unit.AttackCooldown);
 		attackCooldownActive = false;
-	}
-
-	public void ToggleColliders (bool areCollidersEnabled) {
-		foreach (Collider collider in GetComponents<Collider>()) {
-			collider.enabled = areCollidersEnabled;
-		}
 	}
 
 	public void SubscribeToDestruction (EventAction action) {
