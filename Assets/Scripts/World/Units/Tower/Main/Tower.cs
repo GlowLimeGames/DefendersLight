@@ -62,13 +62,23 @@ public class Tower : Unit {
 		}
 	}
 	public string IlluminationRadius;
+	public bool IlluminationRadiusIsVariable {
+		get {
+			return IlluminationRadius == VARIABLE_KEY;
+		}
+	}
 	public int IIlluminationRadius {
 		get {
-			if (IlluminationRadius == VARIABLE_KEY) {
-				return CalculateVariableIlluminationRadius();
+			if (IlluminationRadiusIsVariable) {
+				return INVALID_VALUE;
 			} else {
 				return int.Parse(IlluminationRadius);
 			}
+		}
+	}
+	public bool HasIllumination {
+		get {
+			return IIlluminationRadius > NONE_VALUE || IsReflective;
 		}
 	}
 
@@ -86,12 +96,17 @@ public class Tower : Unit {
 		}
 	}
 
-	// Should calculate illumination radius if the tower has reflectivity
-	int CalculateVariableIlluminationRadius () {
-		// TODO: Actually implement this method
-		return 0;
+	public float Reflectivitiy;
+	public float IReflectivitiy {
+		get {
+			return Reflectivitiy;
+		}
 	}
-		
+	public bool IsReflective {
+		get {
+			return IReflectivitiy > NONE_VALUE;
+		}
+	}
 
 	public override void Copy (Unit unit) {
 		base.Copy(unit);

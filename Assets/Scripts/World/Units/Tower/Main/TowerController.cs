@@ -211,12 +211,13 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	}
 
     public void DestroyAllTowers() {
-        foreach (TowerBehaviour tower in activeTowers) {         
-            if (!(tower is CoreOrbBehaviour)) {
-                tower.Destroy();
-            }
-
-        }
+        
+		for (int i = 0; i < activeTowers.Count; i++) {
+			TowerBehaviour tower = activeTowers.ElementAt(i) as TowerBehaviour;
+			if (!(tower is CoreOrbBehaviour)) {
+				tower.Destroy();
+			}
+		}
 		activeTowers.Clear();
 		activeTowers.Add(CoreOrbInstance.GetComponent<CoreOrbBehaviour>());
     }

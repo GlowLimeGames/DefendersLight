@@ -7,6 +7,9 @@ using UnityEngine;
 
 [System.Serializable]
 public abstract class Unit : IUnit {
+	protected const int INVALID_VALUE = -1;
+	protected const int NONE_VALUE = 0;
+
 	#region Properties
 
 	protected IWorldController controller;

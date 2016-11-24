@@ -83,14 +83,15 @@ public class MapController : MannBehaviour, IMapController {
 		WorldController.Instance.AddActiveTower(tower);
 	}
 
-	public void Illuminate (MapLocation location, int radius, bool shouldPlaySound = true) {
+	public void Illuminate (MapLocation location, ILightSource light, bool shouldPlaySound = true, bool onTowerPlace = false) {
+		int radius = light.IlluminationRadius;
 		int diameter = radius * 2;
 		int zeroOffset = 1;
 		int startX = Mathf.Clamp(location.X - radius, 0, Stats.Width);
 		int startY = Mathf.Clamp(location.Y - radius, 0, Stats.Height);
 		for (int x = startX; x < startX + diameter + zeroOffset && x < Stats.Width; x++) {
 			for (int y = startY; y < startY + diameter + zeroOffset && y < Stats.Height; y++) {
-				Board[x, y].IlluminateSquare(shouldPlaySound);
+				Board[x, y].IlluminateSquare(light, shouldPlaySound, onTowerPlace);
 			}
 		}
 	}
