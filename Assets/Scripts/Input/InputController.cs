@@ -9,7 +9,6 @@ using System.Collections.Generic;
 
 public class InputController : Controller {
 	public static InputController Instance;
-	const float DRAG_HEIGHT_OFFSET = 3f;
 	const int MOUSE_ID = int.MaxValue;
 	const string SCROLL_WHEEL_KEY = "Mouse ScrollWheel";
 
