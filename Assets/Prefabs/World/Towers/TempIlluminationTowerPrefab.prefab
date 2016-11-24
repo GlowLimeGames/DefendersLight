@@ -144,6 +144,7 @@ MonoBehaviour:
   Range: 0
   LevelString: Level 0
   AttackDelay: 0
+  isInvulnerable: 0
   AttackType: 0
   hasAttack: 0
   canHeal: 0
@@ -151,7 +152,6 @@ MonoBehaviour:
   debugging: 0
   spriteRenderer: {fileID: 21246020}
   MissilePrefab: {fileID: 0}
-  sellValue: 8
 --- !u!114 &11486420
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -171,7 +171,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 106030}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 5
