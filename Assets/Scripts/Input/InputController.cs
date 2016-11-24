@@ -261,7 +261,7 @@ public class InputController : Controller {
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-
+		// NOTHING
 	}
 
 	#endregion

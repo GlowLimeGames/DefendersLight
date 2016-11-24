@@ -76,6 +76,7 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 				cannotPurchaseInteractionOccuring = true;	
 				startShowInvalidPurchase(cannotPurchaseSelectHighlightTime);
 				controller.TryDeselectSelectedPanel();
+				EventController.Event(EventType.CannotPurchase);
 			}
 		} else {
 			controller.TryDeselectSelectedPanel(shouldSwitchSelected:false);
@@ -88,6 +89,7 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 		if (data.HasSufficientMana(cost)) {
 			HandleCanPurchaseBeginDrag(pointerEvent);
 		} else {
+			EventController.Event(EventType.CannotPurchase);
 			HandleCannotPurchaesBeginDrag();
 			input.ToggleDraggingObject(true);
 		}
@@ -178,8 +180,7 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 			StopCoroutine(showInvalidPurchaseCoroutine);
 		}
 	}
-
-
+		
 	IEnumerator runShowInvalidPurchase (float forTime) {
 		showAsCannotPurchase();
 		yield return new WaitForSeconds(forTime);

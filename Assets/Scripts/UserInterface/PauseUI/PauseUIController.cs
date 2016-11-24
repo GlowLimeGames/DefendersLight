@@ -15,7 +15,14 @@ public class PauseUIController : UIController {
 	ToggleableUIButton sfxToggle;
 	[SerializeField]
 	ToggleableUIButton musicToggle;
-
+	[SerializeField]
+	UIPanelSwipe swipeToClosePause;
+	CanvasGroup pauseScreenCanvas;
+	bool isPaused {
+		get {
+			return world.IsPaused;
+		}
+	}
 	protected override void SetReferences () {
 		base.SetReferences();
 		if (SettingsUtil.SFXMuted) {
@@ -26,25 +33,37 @@ public class PauseUIController : UIController {
 			musicToggle.RefreshReferences();
 			musicToggle.Toggle();
 		}
+		pauseScreenCanvas = GetComponentInChildren<CanvasGroup>();
 	}
 
     public void TogglePause () {
 		world.TogglePause();	
 	}
 
+	public void Unpause () {
+		world.Resume();
+	}
+
 	protected override void FetchReferences () {
 		base.FetchReferences ();
 		world = WorldController.Instance;
+		swipeToClosePause.SubscribeToClose(Unpause);
+		swipeToClosePause.SubscribeToClose(TogglePauseScreen);
 	}
+
 	public void TogglePauseScreen () {
-		pauseScreen.SetActive(!pauseScreen.activeSelf);
-		if (!pauseScreen.activeSelf) {
+		pauseScreen.SetActive(isPaused);
+		toggleCanvasGroup(pauseScreenCanvas, isPaused);
+		if (isPaused) {
+			swipeToClosePause.RequestOpen();
+		} else {
 			cheatPanel.SetActive(false);
 		}
 	}
 
 	public void ToggleCheatPanel () {
 		cheatPanel.SetActive(!cheatPanel.activeSelf);
+
 	}
 
 	public void QuitGame () {

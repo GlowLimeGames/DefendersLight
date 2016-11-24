@@ -13,6 +13,7 @@ using UnityEngine.EventSystems;
 using System.Text.RegularExpressions;
 
 public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerController {
+	public static TowerController Instance;
 	public const string TOWER_TAG = "Tower";
 	const float DRAG_HEIGHT_OFFSET = 3f;
 	CameraController gameCamera;
@@ -77,6 +78,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		}
 		Vector3 startPosition = getDragPosition(dragEvent, towerPanel.transform.position);
 		this.potentialPurchaseTower = GetTowerBehaviourFromTower(towerPanel.GetTower(), startPosition, false);
+
 	}
 
 	public TowerBehaviour GetTowerBehaviourFromTower (Tower tower, Vector3 startPosition, bool shouldStartActive = false) {
@@ -92,7 +94,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	public TowerBehaviour GetPrefab (Tower tower) {
 		return loadPrefab(FileUtil.CreatePath(TOWER_TAG, PREFABS_DIR, tower.Type)) as TowerBehaviour;
 	}
-
+		
 	TowerBehaviour SpawnTower (Tower tower, Vector3 startingPosition) {
 		ActiveObjectBehaviour behaviour;
 		if (TryGetActiveObject(tower.IType, startingPosition, out behaviour)) {
@@ -162,7 +164,17 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		}
 	}
 
-	public override void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
+
+    public void compareTowerLevels() {
+        foreach (Tower tower in templateUnits.Values) {
+            if (tower.UnlockLevel == dataController.PlayerLevel) {
+				EventController.Event(EventType.TowerUnlocked);
+                TowerUnlockedScreen.textToDisplay = "Tower Unlocked.";
+            }
+        }
+    }
+
+    public override void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
 		base.HandleObjectDestroyed (activeObject);
 		activeTowers.Remove(activeObject as TowerBehaviour);
 	}
@@ -177,8 +189,6 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		}
 		potentialPurchaseTower = null;
 	}
-
-	public static TowerController Instance;
 
 	public Tower[] GetActive() {
 		throw new System.NotImplementedException ();

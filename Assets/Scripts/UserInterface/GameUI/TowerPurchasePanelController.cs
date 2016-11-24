@@ -19,7 +19,8 @@ public class TowerPurchasePanelController : UIController {
 	WorldController world;
 	MapController map;
 	[SerializeField]
-	UISwipeToClose close;
+	UIPanelSwipe panelSwipe;
+	TowerType currentTowerType;
 
 	public void HandleBeginDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		TogglePurchaseCanvasVisible(false);
@@ -56,6 +57,21 @@ public class TowerPurchasePanelController : UIController {
 		purchaseCanvas.alpha = isVisible ? 1 : 0;
 	}
 
+	void refreshTowerPanel () {
+		SetTowers(currentTowerType);
+	}
+
+	protected override void HandleNamedEvent (string eventName) {
+		if (eventName == EventType.RefreshTowerPanel) {
+			refreshTowerPanel();
+		} else if (eventName == EventType.TowerUnlocked) {
+			// Trigger the refresh event if we see the unlock 
+			EventController.Event(EventType.RefreshTowerPanel);
+		} else {
+			base.HandleNamedEvent (eventName);
+		}
+	}
+
 	protected override void SetReferences () {
 		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
 			base.SetReferences();
@@ -64,7 +80,7 @@ public class TowerPurchasePanelController : UIController {
 				towerPanel.InitWithController(this);
 			}
 			purchaseCanvas = GetComponent<CanvasGroup>();
-			close.SubscribeToClose(CloseTowerPage);
+			panelSwipe.SubscribeToClose(CloseTowerPage);
 		}
 	}
 
@@ -105,6 +121,7 @@ public class TowerPurchasePanelController : UIController {
 		if (title) {
 			title.text = type.ToString();
 		}
+		this.currentTowerType = type;
 	}
 
 	public void SetTowers (Tower[] towers) {
@@ -132,6 +149,7 @@ public class TowerPurchasePanelController : UIController {
 
 	public void OpenTowerPage () {
 		ToggleTowerPage(true);
+		panelSwipe.RequestOpen();
 	}
 
 	public void CloseTowerPage () {

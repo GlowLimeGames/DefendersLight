@@ -67,4 +67,10 @@ public abstract class UIController : MannBehaviour {
 	public virtual void Show () {
 		gameObject.SetActive(true);
 	}
+
+	protected void toggleCanvasGroup (UnityEngine.CanvasGroup group, bool active) {
+		group.alpha = active ? 1 : 0;
+		group.interactable = active;
+		group.blocksRaycasts = active;
+	}
 }

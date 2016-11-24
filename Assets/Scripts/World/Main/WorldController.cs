@@ -107,6 +107,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	public void UnlockAllTowers () {
 		OverrideTowerLevelRequirement = true;
+		EventController.Event(EventType.TowerUnlocked);
 	}
 
 	public void AddToSpawnPool (ActiveObjectBehaviour activeObject) {
