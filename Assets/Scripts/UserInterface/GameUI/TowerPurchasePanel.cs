@@ -10,9 +10,6 @@ using UnityEngine.UI;
 
 public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
 	Color cannotPurchaseColor = Color.red;
-	Color selectColor = Color.Lerp(Color.blue, Color.white, 0.25f);
-	Color lockColor = Color.Lerp(Color.cyan, Color.white, 0.25f);
-
 	public TowerType TowerType;
 	Tower tower;
 	CanvasGroup canvasGroup;
@@ -40,6 +37,7 @@ public class TowerPurchasePanel : UIElement, IBeginDragHandler, IDragHandler, IE
 			return _isSelected;
 		}
 	}
+
 	public void InitWithController (TowerPurchasePanelController controller) {
 		this.controller = controller;
 	}

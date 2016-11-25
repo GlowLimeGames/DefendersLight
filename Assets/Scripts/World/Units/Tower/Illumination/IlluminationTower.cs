@@ -17,7 +17,5 @@ public class IlluminationTower : Tower {
 		Copy(towerData);
 	}
 
-	public override void DeserializeFromJSONAtPath(string jsonPath) {
-
-	}
+	public override void DeserializeFromJSONAtPath(string jsonPath) {}
 }

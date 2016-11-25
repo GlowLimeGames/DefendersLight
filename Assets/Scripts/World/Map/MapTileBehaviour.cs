@@ -6,6 +6,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	WorldController world;
@@ -18,14 +19,24 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	static Color illuminatedColor = Color.yellow;
 	static Color standardColor = Color.black;
 	static Color[] tempColors = new Color[]{hightlightColor, cannotBuildColor};
+	HashSet<ILightSource> lightSources = new HashSet<ILightSource>();
 	Color previousColor;
 	public bool IIsIlluminated {
 		get {
 			return isIlluminated;
 		}
 	}
-
-	bool isIlluminated;
+	int _illuminationSourceCount = 0;
+	public int IllumninationCount {
+		get {
+			return _illuminationSourceCount;
+		}
+	}
+	bool isIlluminated {
+		get {
+			return IllumninationCount > NONE_VALUE;
+		}
+	}
 	SpriteRenderer spriteRenderer;
 	[SerializeField]
 	public MapQuadrant Quadrant {private set; get;}
@@ -143,51 +154,89 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	public void PlaceStaticAgent (StaticAgentBehaviour agent, bool shouldPlaySound = true) {
 		agent.SetTile(this);
 		if (isIlluminated || agent is CoreOrbBehaviour) {
-			containedAgent = agent;
+			this.containedAgent = agent;
 			agent.transform.SetParent(transform);
 			agent.transform.localPosition = Vector3.zero;
 			agent.SetLocation(this.Location);
-			if (agent is IlluminationTowerBehaviour) {
-				MapController.Instance.Illuminate(this.Location, (agent as IlluminationTowerBehaviour).IlluminationRadius, shouldPlaySound);
-			}
 			if (agent is TowerBehaviour) {
-				TowerBehaviour tower = agent as TowerBehaviour;
-				MapController.Instance.AddActiveTower(tower);
-				if (shouldPlaySound) {
-					tower.PlayBuildSound();
-				}
+				handlePlaceTower(agent as TowerBehaviour, shouldPlaySound);
 			}
 			agent.ToggleActive(true);
 			agent.ToggleColliders(true);
 			agent.transform.position += Vector3.up * TOWER_HEIGHT_OFFSET;
 		} else {
-			// TODO: Collect in object pool instead of destroying
 			if (shouldPlaySound) {
 				EventController.Event(EventType.TowerCannotPlace);
 			}
-			Destroy(agent.gameObject);
+			if (agent is TowerBehaviour) {
+				controller.HandleTowerNotPlaced(agent as TowerBehaviour);
+			} else {
+				// TODO: Collect in object pool instead of destroying
+				Destroy(agent.gameObject);
+			}
 		}
 		Unhighlight();
 	}
 		
-	public void IlluminateSquare (bool shouldPlaySound = true) {
+	void handlePlaceTower (TowerBehaviour tower, bool shouldPlaySound) {
+		if (tower.HasIllumination) {
+			handleIllumination(tower, shouldPlaySound);
+		}
+		MapController.Instance.AddActiveTower(tower);
+		// Should be called last in order for illumination to refresh correctly
+		if (shouldPlaySound) {
+			tower.CallBuildEvent();
+		}
+	}
+
+	void handleIllumination (ILightSource light, bool shoudPlaySound, bool onTowerPlace = true) {
+		controller.Illuminate(this.Location, light, shoudPlaySound, onTowerPlace);
+	}
+
+	bool checkToUpdateIllumination (ILightSource light) {
+		if (light == null && this.containedAgent is TowerBehaviour) light = this.containedAgent as TowerBehaviour;
+		if (light is TowerBehaviour) {
+			TowerBehaviour tower = light as TowerBehaviour;
+			if (tower.ShouldReculateIllumination()) {
+				tower.UpdateIlluminationRadius();
+				handleIllumination(tower, shoudPlaySound:false);
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void IlluminateSquare (ILightSource light, bool shouldPlaySound = true, bool onTowerPlace = false) {
+		// Terminates if the light is already counted
+		if (lightSources.Contains(light)) {
+			return;
+		} else {
+			lightSources.Add(light);
+		}
+
 		if (!isIlluminated) {
-			isIlluminated = true;
 			SetTileColor(illuminatedColor);
 			if (shouldPlaySound) {
 				EventController.Event(EventType.IlluminationOn);
 			}
 		}
+		_illuminationSourceCount++;
+		if (!(light == null || light as StaticAgentBehaviour == containedAgent || onTowerPlace)) {
+			checkToUpdateIllumination(light);
+		}
 	}
 
 	public void DelluminateSquare (bool shouldPlaySound = true) {
 		if (isIlluminated) {
-			isIlluminated = false;
+			_illuminationSourceCount = 0;
+			lightSources.Clear();
 			SetTileColor(standardColor);
 			if (shouldPlaySound) {
 				EventController.Event(EventType.IlluminationOff);
 			}
 		}
+		checkToUpdateIllumination(null);
 	}
 
 	public void HightlightToPlace (StaticAgentBehaviour agent) {

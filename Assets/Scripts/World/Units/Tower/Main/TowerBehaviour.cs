@@ -6,7 +6,7 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class TowerBehaviour : StaticAgentBehaviour {
+public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 	protected Tower tower;
 	[SerializeField]
 	SpriteRenderer spriteRenderer;
@@ -36,6 +36,15 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 			return (float) this.Health / (float) tower.Health;
 		}
 	}
+	public bool HasIllumination {
+		get {
+			if (tower == null) {
+				return false;
+			} else {
+				return tower.HasIllumination;
+			}
+		}
+	}
 
 	public virtual void SetTower (Tower tower) {
 		this.tower = tower;
@@ -54,6 +63,24 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		}
 	}
 
+	public int IlluminationRadius {
+		get {
+			// The core orb can be illuminated even if there is nothing else illuminating it
+			if (tower == null || (!(tile.IIsIlluminated || this is CoreOrbBehaviour))) {
+				return NONE_VALUE;
+			} else {
+				if (tower.IlluminationRadiusIsVariable) {
+					return CalculateVariableIlluminationRadius();
+				} else {
+					return tower.IIlluminationRadius;
+				}
+			}
+		}
+	}
+
+	int mostRecentIlluminationCount = NONE_VALUE;
+	int mostRecentIlluminationRadius = NONE_VALUE;
+
 	protected override void SetReferences () {
 		base.SetReferences ();
 		attackModule = GetComponentInChildren<RangedAttackBehaviour>();
@@ -71,7 +98,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 			WorldController.Instance.RemoveActiveTower(this);
 		}
 		EventController.Event(EventType.TowerDestroyed);
-
 	}
 
 	protected override void CleanupReferences () {
@@ -86,8 +112,8 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	}
 
-	public virtual void PlayBuildSound () {
-		EventController.Event(EventType.BuildTower);
+	public virtual void CallBuildEvent () {
+		EventController.Event(EventType.TowerBuilt);
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
@@ -117,7 +143,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		}
 		missileBehavior.SetTower(tower);
 		missileBehavior.SetTarget(activeAgent);
-		// StartCoroutine(trackMissile(missileBehavior.transform, 1f));
 	}
 
 	IEnumerator trackMissile (Transform missileTransform, float time) {
@@ -140,6 +165,32 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	public override void HandleColliderStayTrigger (Collider collider)	{
 		base.HandleColliderStayTrigger (collider);
 		checkToAttack(collider);
+	}
+
+	public int UpdateIlluminationRadius () {
+		if (tile) {
+			mostRecentIlluminationCount = tile.IllumninationCount;
+		} else {
+			mostRecentIlluminationCount = NONE_VALUE;
+		}
+		mostRecentIlluminationRadius = IlluminationRadius;
+		return mostRecentIlluminationRadius;
+	}
+		
+	public bool ShouldReculateIllumination () {
+		if (tile) {
+			return mostRecentIlluminationCount != tile.IllumninationCount && mostRecentIlluminationRadius != IlluminationRadius;
+		} else {
+			return false;
+		}
+	}
+
+	public int CalculateVariableIlluminationRadius () {
+		if (tower.IsReflective) {
+			return Mathf.CeilToInt((float)tile.IllumninationCount * tower.IReflectivitiy);
+		} else {
+			return NONE_VALUE;
+		}
 	}
 
 	void checkToAttack (Collider collider) {

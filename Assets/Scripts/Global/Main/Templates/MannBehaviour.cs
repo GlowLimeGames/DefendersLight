@@ -8,6 +8,7 @@ using UnityEngine;
 public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 	// Simulates delta time while game is paused
 	protected const int INVALID_VALUE = -1;
+	protected const int NONE_VALUE = 0;
 	protected const float DEFAULT_FRAME_RATE = 30f;
 	protected static float FAKE_DELTA_TIME;
 
