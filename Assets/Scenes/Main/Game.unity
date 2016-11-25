@@ -8403,14 +8403,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 11455654, guid: 7351696d4657642e68a96be3f879a460, type: 2}
-      propertyPath: PanSpeed
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11455654, guid: 7351696d4657642e68a96be3f879a460, type: 2}
-      propertyPath: PinchZoomSpeed
-      value: 0.01
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7351696d4657642e68a96be3f879a460, type: 2}
   m_IsPrefabParent: 0
