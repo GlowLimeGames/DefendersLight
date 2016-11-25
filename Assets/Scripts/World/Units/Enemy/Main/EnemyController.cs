@@ -46,7 +46,12 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 
-	public virtual void Setup (WorldController worldController, DataController dataController, MapController mapController, string unitTemplateJSONPath, MathEquation spawnCountEquation) {
+	public virtual void Setup (
+		WorldController worldController, 
+		DataController dataController, 
+		MapController mapController, 
+		string unitTemplateJSONPath, 
+		MathEquation spawnCountEquation) {
 		base.Setup(worldController, dataController, mapController, unitTemplateJSONPath);
 		if (inGame) {
 			this.spawnCountEquation = spawnCountEquation;
@@ -62,7 +67,6 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	void createSpawnPoints () {
 		spawnPoints = new List<EnemySpawnPoint>();
-		spawnPointCount = 8;
 		for (int i = 0; i < spawnPointCount; i++) {
 			MapQuadrant spawnQuadrant = (MapQuadrant) (i % 4);
 			spawnPoints.Add(createNewSpawnPoint());
