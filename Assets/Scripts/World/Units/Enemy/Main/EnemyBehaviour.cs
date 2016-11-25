@@ -140,11 +140,15 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	void OnTriggerEnter (Collider collider) {
-		checkToAttack(collider);
+		if (!collider.isTrigger) {
+			checkToAttack(collider);
+		}
 	}
 
 	void OnTriggerStay (Collider collider) {
-		checkToAttack(collider);
+		if (!collider.isTrigger) {
+			checkToAttack(collider);
+		}
 	}
 
 	void checkToAttack (Collider collider) {
