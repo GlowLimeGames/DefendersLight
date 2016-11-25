@@ -11,6 +11,7 @@ using System.Collections;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragHandler {
+	EventAction onBeginCloseCallback;
 	EventAction onCloseCallback;
 	CanvasGroup canvas;
 	bool autoScrollLock = false;
@@ -37,10 +38,18 @@ public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragH
 
 	InputController input;
 
+	public void SubscribeToBeginClose (EventAction action) {
+		onBeginCloseCallback += action;
+	}
+		
 	public void SubscribeToClose (EventAction action) {
 		onCloseCallback += action;
 	}
 
+	public void UnsubscribeFromBeginClose (EventAction action) {
+		onBeginCloseCallback -= action;
+	}
+		
 	public void UnsubscribeFromClose (EventAction action) {
 		onCloseCallback += action;
 	}
@@ -67,6 +76,15 @@ public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragH
 		
 	public void OnBeginDrag (PointerEventData pointerEvent) {
 		input.ToggleInputEnabled(false);
+		if (!closed) {
+			callOnBeginClose();
+		}
+	}
+
+	void callOnBeginClose () {
+		if (onBeginCloseCallback != null) {
+			onBeginCloseCallback();
+		}
 	}
 
 	public void OnDrag (PointerEventData pointerEvent) {

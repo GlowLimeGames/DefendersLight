@@ -47,6 +47,11 @@ public class PauseUIController : UIController {
 		world = WorldController.Instance;
 		swipeToClosePause.SubscribeToClose(Unpause);
 		swipeToClosePause.SubscribeToClose(TogglePauseScreen);
+		swipeToClosePause.SubscribeToBeginClose(delegate () {
+			if (cheatPanelIsOpen()) {
+				ToggleCheatPanel();	
+			}
+		});
 	}
 
 	public void TogglePauseScreen () {
@@ -62,6 +67,10 @@ public class PauseUIController : UIController {
 	public void ToggleCheatPanel () {
 		cheatPanel.SetActive(!cheatPanel.activeSelf);
 
+	}
+
+	bool cheatPanelIsOpen () {
+		return cheatPanel.activeSelf;
 	}
 
 	public void QuitGame () {
