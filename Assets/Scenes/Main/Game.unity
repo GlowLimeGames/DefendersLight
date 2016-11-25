@@ -1808,7 +1808,7 @@ MonoBehaviour:
   resetPositionOnClose: 0
   startsClosed: 1
   orientation: 0
-  dragDirection: 3
+  dragDirection: 6
   autoCloseSpeed: 500
   enterSpeed: 2000
 --- !u!225 &348581782
@@ -5815,7 +5815,7 @@ MonoBehaviour:
   resetPositionOnClose: 0
   startsClosed: 1
   orientation: 1
-  dragDirection: 2
+  dragDirection: 4
   autoCloseSpeed: 200
   enterSpeed: 800
 --- !u!225 &1153773161
@@ -7009,7 +7009,7 @@ MonoBehaviour:
   resetPositionOnClose: 0
   startsClosed: 1
   orientation: 0
-  dragDirection: 1
+  dragDirection: 2
   autoCloseSpeed: 500
   enterSpeed: 2000
 --- !u!1 &1484349564 stripped
