@@ -159,6 +159,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			PlaceCoreOrb();
 			setupUnitControllerCallbacks();
 		}
+		_unitsByClass = determineUnitsByClass();
 	}
 
 	void createRules () {
