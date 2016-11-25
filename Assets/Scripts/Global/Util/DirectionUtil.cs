@@ -62,7 +62,9 @@ public static class DirectionUtil {
 		
 	public static Direction OppositeDirection (Direction direction) {
 		int directionIndex = (int) direction;
-		int directionCount = System.Enum.GetNames(typeof(Direction)).Length;
+		int dontCountZeroDirection = 1;
+		// Zero direction interfereces with the math
+		int directionCount = System.Enum.GetNames(typeof(Direction)).Length - dontCountZeroDirection;
 		int oppositeDirectionDifference = directionCount/2;
 		directionIndex += oppositeDirectionDifference;
 		directionIndex %= directionCount;
@@ -80,6 +82,22 @@ public static class DirectionUtil {
 			currentDirectionIndex %= numDirections;
 		}
 		return degrees;
+	}
+
+	// Degrees to rotate from North
+	public static int GetAngleFromDirection (Direction direction) {
+		if (direction == Direction.North) {
+			return 0;
+		} else if (direction == Direction.West) {
+			return 90;
+		} else if (direction == Direction.South) {
+			return 180;
+		} else if (direction == Direction.East) {
+			return 170;
+		} else {
+			// TODO: Implement the rest of the directions later
+			return 0;
+		}
 	}
 
 	public static Direction GetDirection (MapLocation directionVector) {
@@ -106,6 +124,40 @@ public static class DirectionUtil {
 				return Direction.West;
 			} else {
 				return Direction.SouthWest;
+			}
+		}
+	}
+
+	public static Direction DirectionFromVector (Vector3 vector) {
+		return DirectionFromVector((Vector2) vector);
+	}
+
+	public static Direction DirectionFromVector (Vector2 vector) {
+		float x = vector.x;
+		float y = vector.y;
+		if (Mathf.Sign(x) == 1) {
+			if (Mathf.Sign(y) == 1) {
+				return Direction.NorthEast;
+			} else if (Mathf.Sign(y) == -1) {
+				return Direction.SouthEast;
+			} else {
+				return Direction.East;
+			}
+		} else if (Mathf.Sign(x) == -1) {
+			if (Mathf.Sign(y) == 1) {
+				return Direction.NorthWest;
+			} else if (Mathf.Sign(y) == -1) {
+				return Direction.SouthWest;
+			} else {
+				return Direction.West;
+			}
+		} else {
+			if (Mathf.Sign(y) == 1) {
+				return Direction.North;
+			} else if (Mathf.Sign(y) == -1) {
+				return Direction.South;
+			} else {
+				return Direction.Zero;
 			}
 		}
 	}

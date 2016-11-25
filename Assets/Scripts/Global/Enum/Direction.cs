@@ -4,13 +4,13 @@
  */
 
 public enum Direction {
-     North,
-     East,
-	South,
-     West,
+    North,
 	NorthEast,
-	NorthWest,
+    East,
 	SouthEast,
+	South,
 	SouthWest,
+    West,
+	NorthWest,
 	Zero
 }
