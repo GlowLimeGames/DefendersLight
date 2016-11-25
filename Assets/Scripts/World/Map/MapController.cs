@@ -22,7 +22,7 @@ public class MapController : MannBehaviour, IMapController {
 	[SerializeField]
 	MapTileBehaviour[,] Board;
 	Bounds mapBounds;
-	float zBound = 10f;
+	float zBound = 100f;
 	List<MapTileBehaviour> highlightedTiles = new List<MapTileBehaviour>();
 
 	void GenerateBoard (WorldController world) {

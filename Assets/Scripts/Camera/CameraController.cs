@@ -16,7 +16,11 @@ public class CameraController : Controller {
 	float zoomToSizeRatio;
 	MapController map;
 	new Camera camera;
-
+	public Vector3 Position {
+		get {
+			return transform.position;
+		}
+	}
 	public Vector3 ICameraDirection {
 		get {
 			float angle = ICameraAngleRad;

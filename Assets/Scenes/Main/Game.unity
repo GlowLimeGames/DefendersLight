@@ -4884,7 +4884,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0
   far clip plane: 1000
   field of view: 70
   orthographic: 1
@@ -4909,7 +4909,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1004811601}
   m_LocalRotation: {x: 0.5735765, y: 0, z: 0, w: 0.819152}
-  m_LocalPosition: {x: 0, y: 5, z: -0.45}
+  m_LocalPosition: {x: 0, y: 15, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
   m_Children: []
@@ -4929,7 +4929,7 @@ MonoBehaviour:
   MinimumZoom: 0.25
   MaximumZoom: 2.5
   MaxZoomSpeed: 0.75
-  ZoomAcceleration: 0.0075
+  ZoomAcceleration: 0.075
 --- !u!1 &1042334087
 GameObject:
   m_ObjectHideFlags: 0
