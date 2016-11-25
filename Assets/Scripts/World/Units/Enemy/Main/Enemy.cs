@@ -12,6 +12,7 @@ public class Enemy : Unit {
 
 	static Dictionary<string, UnityEngine.Sprite> enemySprites = new Dictionary<string, UnityEngine.Sprite>();
 	public const string REWARDS_KEY = "Death Rewards";
+	const string GRUNT_TYPE = "Undead";
 
 	#endregion
 
@@ -30,6 +31,12 @@ public class Enemy : Unit {
 	public RewardAmount IDeathReward {
 		get {
 			return new RewardAmount(ManaReward, XPReward);
+		}
+	}
+
+	public bool IsGruntType {
+		get {
+			return IType == GRUNT_TYPE;
 		}
 	}
 

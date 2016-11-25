@@ -445,10 +445,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 153360}
-  m_LocalRotation: {x: 0.5042571, y: 0.4957034, z: -0.4955321, w: 0.50443137}
-  m_LocalPosition: {x: -0.186, y: 0.79, z: 0.131}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
+  m_LocalPosition: {x: 0, y: 1, z: 0.9}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
-  m_LocalEulerAnglesHint: {x: 89.980194, y: 89, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_Children:
   - {fileID: 22402682}
   - {fileID: 22444146}
@@ -636,7 +636,7 @@ MonoBehaviour:
   canHeal: 0
   HealthBar: {fileID: 11425120}
   debugging: 0
-  DirectionFacing: 1
+  DirectionFacing: 0
 --- !u!114 &11425120
 MonoBehaviour:
   m_ObjectHideFlags: 1
