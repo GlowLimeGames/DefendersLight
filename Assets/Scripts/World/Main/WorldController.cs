@@ -130,6 +130,10 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 	}
 
+	public void HandleTowerNotPlaced (TowerBehaviour tower) {
+		towerController.HandleObjectDestroyed(tower);
+	}
+
 	public bool TryPullFromSpawnPool (string objectType, out ActiveObjectBehaviour activeObject) {
 		Stack<ActiveObjectBehaviour> pool;
 		if (spawnPools.TryGetValue(objectType, out pool)) {

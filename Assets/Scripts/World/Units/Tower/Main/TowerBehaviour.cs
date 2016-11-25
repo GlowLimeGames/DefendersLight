@@ -63,6 +63,24 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 		}
 	}
 
+	public int IlluminationRadius {
+		get {
+			// The core orb can be illuminated even if there is nothing else illuminating it
+			if (tower == null || (!(tile.IIsIlluminated || this is CoreOrbBehaviour))) {
+				return NONE_VALUE;
+			} else {
+				if (tower.IlluminationRadiusIsVariable) {
+					return CalculateVariableIlluminationRadius();
+				} else {
+					return tower.IIlluminationRadius;
+				}
+			}
+		}
+	}
+
+	int mostRecentIlluminationCount = NONE_VALUE;
+	int mostRecentIlluminationRadius = NONE_VALUE;
+
 	protected override void SetReferences () {
 		base.SetReferences ();
 		attackModule = GetComponentInChildren<RangedAttackBehaviour>();
@@ -94,8 +112,8 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 
 	}
 
-	public virtual void PlayBuildSound () {
-		EventController.Event(EventType.BuildTower);
+	public virtual void CallBuildEvent () {
+		EventController.Event(EventType.TowerBuilt);
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
@@ -125,7 +143,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 		}
 		missileBehavior.SetTower(tower);
 		missileBehavior.SetTarget(activeAgent);
-		// StartCoroutine(trackMissile(missileBehavior.transform, 1f));
 	}
 
 	IEnumerator trackMissile (Transform missileTransform, float time) {
@@ -149,25 +166,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 		base.HandleColliderStayTrigger (collider);
 		checkToAttack(collider);
 	}
-
-	public int IlluminationRadius {
-		get {
-			// The core orb can be illuminated even if there is nothing else illuminating it
-			if (tower == null || (!(tile.IIsIlluminated || this is CoreOrbBehaviour))) {
-				return NONE_VALUE;
-			} else {
-				if (tower.IlluminationRadiusIsVariable) {
-					return CalculateVariableIlluminationRadius();
-				} else {
-					return tower.IIlluminationRadius;
-				}
-			}
-		}
-	}
-
-	int mostRecentIlluminationCount = NONE_VALUE;
-	int mostRecentIlluminationRadius = NONE_VALUE;
-
 
 	public int UpdateIlluminationRadius () {
 		if (tile) {

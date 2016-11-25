@@ -7,7 +7,7 @@ using UnityEngine;
 using System.Collections;
 
 public class IlluminationTowerBehaviour : TowerBehaviour {
-	public override void PlayBuildSound () {
+	public override void CallBuildEvent () {
 		EventController.Event(EventType.BuildIlluminationTower);
 	}
 }

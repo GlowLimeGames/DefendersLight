@@ -45,6 +45,10 @@ public class MapController : MannBehaviour, IMapController {
 		}
 	}
 
+	public void HandleTowerNotPlaced (TowerBehaviour tower) {
+		world.HandleTowerNotPlaced(tower);
+	}
+
 	public void UnhighlightValidBuildsTiles () {
 		foreach (MapTileBehaviour tile in highlightedTiles) {
 			tile.SetToIlluminatedColor();

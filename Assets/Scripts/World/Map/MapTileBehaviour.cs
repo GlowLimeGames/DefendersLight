@@ -6,6 +6,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	WorldController world;
@@ -18,6 +19,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	static Color illuminatedColor = Color.yellow;
 	static Color standardColor = Color.black;
 	static Color[] tempColors = new Color[]{hightlightColor, cannotBuildColor};
+	HashSet<ILightSource> lightSources = new HashSet<ILightSource>();
 	Color previousColor;
 	public bool IIsIlluminated {
 		get {
@@ -163,23 +165,28 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 			agent.ToggleColliders(true);
 			agent.transform.position += Vector3.up * TOWER_HEIGHT_OFFSET;
 		} else {
-			// TODO: Collect in object pool instead of destroying
 			if (shouldPlaySound) {
 				EventController.Event(EventType.TowerCannotPlace);
 			}
-			Destroy(agent.gameObject);
+			if (agent is TowerBehaviour) {
+				controller.HandleTowerNotPlaced(agent as TowerBehaviour);
+			} else {
+				// TODO: Collect in object pool instead of destroying
+				Destroy(agent.gameObject);
+			}
 		}
 		Unhighlight();
 	}
 		
 	void handlePlaceTower (TowerBehaviour tower, bool shouldPlaySound) {
-		if (shouldPlaySound) {
-			tower.PlayBuildSound();
-		}
 		if (tower.HasIllumination) {
 			handleIllumination(tower, shouldPlaySound);
 		}
 		MapController.Instance.AddActiveTower(tower);
+		// Should be called last in order for illumination to refresh correctly
+		if (shouldPlaySound) {
+			tower.CallBuildEvent();
+		}
 	}
 
 	void handleIllumination (ILightSource light, bool shoudPlaySound, bool onTowerPlace = true) {
@@ -201,6 +208,13 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	}
 
 	public void IlluminateSquare (ILightSource light, bool shouldPlaySound = true, bool onTowerPlace = false) {
+		// Terminates if the light is already counted
+		if (lightSources.Contains(light)) {
+			return;
+		} else {
+			lightSources.Add(light);
+		}
+
 		if (!isIlluminated) {
 			SetTileColor(illuminatedColor);
 			if (shouldPlaySound) {
@@ -208,7 +222,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 			}
 		}
 		_illuminationSourceCount++;
-		if (!(light as StaticAgentBehaviour == containedAgent || onTowerPlace)) {
+		if (!(light == null || light as StaticAgentBehaviour == containedAgent || onTowerPlace)) {
 			checkToUpdateIllumination(light);
 		}
 	}
@@ -216,6 +230,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	public void DelluminateSquare (bool shouldPlaySound = true) {
 		if (isIlluminated) {
 			_illuminationSourceCount = 0;
+			lightSources.Clear();
 			SetTileColor(standardColor);
 			if (shouldPlaySound) {
 				EventController.Event(EventType.IlluminationOff);

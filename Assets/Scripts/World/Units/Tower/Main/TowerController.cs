@@ -159,12 +159,11 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	public void RefreshIlluminations () {
 		foreach (TowerBehaviour tower in activeTowers) {
 			if (tower is IlluminationTowerBehaviour) {
-				worldController.SendIlluminationToMap(tower as IlluminationTowerBehaviour);
+				worldController.SendIlluminationToMap(tower as IlluminationTowerBehaviour, shouldPlaySound:false);
 			}
 		}
 	}
-
-
+		
     public void compareTowerLevels() {
         foreach (Tower tower in templateUnits.Values) {
             if (tower.UnlockLevel == dataController.PlayerLevel) {
@@ -184,8 +183,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 			previousHighlightedMapTile.PlaceStaticAgent(potentialPurchaseTower);
 			towerPanel.OnPurchased();
 		} else {
-			// TODO: Collect in object pool instead of destroying
-			Destroy(potentialPurchaseTower.gameObject);
+			HandleObjectDestroyed(potentialPurchaseTower);
 		}
 		potentialPurchaseTower = null;
 	}
