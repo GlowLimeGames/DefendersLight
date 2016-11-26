@@ -178,7 +178,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	int GetEnemyCount (int waveIndex) {
 		// TODO: Implement actual difficulty curve
-		return spawnCountEquation.Calculate(waveIndex);
+		return spawnCountEquation.CalculateAsInt(waveIndex);
 	}
 
     public void setWave(int waveIndex) {
@@ -188,7 +188,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
     }
 
 	string[] GetEnemyTypes (int waveIndex, bool shouldShuffle = true) {
-		int remainingEnemiesToSpawn = spawnCountEquation.Calculate(waveIndex);
+		int remainingEnemiesToSpawn = spawnCountEquation.CalculateAsInt(waveIndex);
 		List<string> wave = new List<string>();
 		for (int i = enemiesBySpawnLevel.Count - 1; i >= 0; i--) {
 			if (remainingEnemiesToSpawn <= 0) {
