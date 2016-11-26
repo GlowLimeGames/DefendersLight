@@ -13,7 +13,7 @@ using System;
 using UE = UnityEngine;
 
 public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyController {
-	static bool debugSpawnAllAtWave1 = true;
+	static bool debugSpawnAllAtWave1 = false;
 	EventActionInt waveAdvance;
 	[SerializeField]
 	GameObject spawnPointPrefab;
