@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EnemyBehaviour : MobileAgentBehaviour {
+	const float K_SPEED = 0.5f;
 	public Direction DirectionFacing;
 	TowerBehaviour previousTarget;
 	Enemy enemy;
@@ -30,7 +31,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			}
 		}
 	}
-    public int ISpeed{
+    public float ISpeed{
         get{
             return enemy.Speed;
         }
@@ -40,11 +41,9 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			return path != null && path.Count > 0;
 		}
 	}
-	float _placeholderMovementSpeed = 0.5f;
 	float movementSpeed {
 		get {
-			// TODO: Implement actual speed value in JSON
-			return _placeholderMovementSpeed;
+			return K_SPEED / enemy.Speed;
 		}
 	}
 

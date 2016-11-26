@@ -3,6 +3,7 @@
     {
       "Type" : "Undead",
       "Health" : 100,
+      "Speed" : 1,
       "AttackDamage" : 25,
       "AttackCooldown" : 1,
       "AttackRange" : 1,
@@ -21,6 +22,7 @@
     {
       "Type" : "Brute",
       "Health" : 175,
+      "Speed" : 0.25,
       "AttackDamage" : 75,
       "AttackCooldown" : 2.5,
       "AttackRange" : 1,
@@ -39,6 +41,7 @@
     {
       "Type" : "Lancer",
       "Health" : 250,
+      "Speed" : 2,
       "AttackDamage" : 75,
       "AttackCooldown" : 1.5,
       "AttackRange" : 2,
@@ -57,6 +60,7 @@
     {
       "Type" : "Rusher",
       "Health" : 40,
+      "Speed" : 4,
       "AttackDamage" : 20,
       "AttackCooldown" : 0.5,
       "AttackRange" : 1,
@@ -75,6 +79,7 @@
     {
       "Type" : "Spike Crawler",
       "Health" : 300,
+      "Speed" : 0.5,
       "AttackDamage" : 75,
       "AttackCooldown" : 2,
       "AttackRange" : 7,
@@ -92,7 +97,8 @@
     },
     {
       "Type" : "Shade",
-      "Health" : 150,
+      "Health" : 1000,
+      "Speed" : 0.75,
       "AttackDamage" : 0,
       "AttackCooldown" : 0,
       "AttackRange" : 5,
@@ -111,6 +117,7 @@
     {
       "Type" : "Leaper",
       "Health" : 25,
+      "Speed" : 1.5,
       "AttackDamage" : 15,
       "AttackCooldown" : 0.5,
       "AttackRange" : 1,
@@ -118,7 +125,7 @@
       "Ammo" : "null",
       "ManaReward" : 75,
       "XPReward" : 250,
-      "WaveSpawnedAt" : 1,
+      "WaveSpawnedAt" : 19,
       "Agression" : 1,
       "Frequency" : 5,
       "Quantity" : 2,

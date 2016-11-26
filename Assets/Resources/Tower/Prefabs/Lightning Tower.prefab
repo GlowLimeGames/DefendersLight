@@ -397,7 +397,7 @@ MonoBehaviour:
   LevelString: 
   AttackDelay: 0
   isInvulnerable: 0
-  AttackType: 0
+  AttackType: 1
   hasAttack: 1
   canHeal: 0
   HealthBar: {fileID: 11403248}

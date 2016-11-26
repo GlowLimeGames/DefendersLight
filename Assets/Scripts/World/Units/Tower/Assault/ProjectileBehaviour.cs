@@ -14,6 +14,11 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	}
 	[SerializeField]
 	float maxLifespan = 3.5f;
+	public float IMaxLifeSpan {
+		get {
+			return maxLifespan;
+		}
+	}
 	ActiveObjectBehaviour _target;
 	ActiveObjectBehaviour ITarget {
 		get {

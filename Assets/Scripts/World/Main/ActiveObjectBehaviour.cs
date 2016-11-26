@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
+	protected float attackDelay = 0;
 	EventActionf onUpdateHealth;
 	protected UnitController unitController;
 	// A child object that represents the enemies range (using a separate collider)
@@ -53,7 +54,13 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		}
 	}
 	protected Unit unit;
-
+	protected ActiveObjectBehaviour target;
+	public bool HasTarget {
+		get {
+			// MonoBehaviours autocast to bools for whether they exist in the world (returns false if null)
+			return target;
+		}
+	}
 	EventAction onDestroyed;
 	[SerializeField]
 	protected bool hasAttack;
@@ -102,22 +109,40 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		this.unitController = unitController;
 	}
 
+	protected void clearTarget () {
+		this.target = null;
+	}
+
 	public virtual void Attack(ActiveObjectBehaviour target, int damage) {
+		this.target = target;
+		// Ensures that the same event is not subscribed multiple times
+		target.UnusubscribeFromDestruction(clearTarget);
+		target.SubscribeToDestruction(clearTarget);
 		StartCoroutine(AttackCooldown());
 		if (AttackType == AttackType.Melee) {
-			handleMeleeAttack(target, damage);
+			StartCoroutine(handleMeleeAttack(target, damage));
 		} 
 		// Energy attacks are treated as ranged, however they're specialized because they can damage Shades (only towers with this ability)
 		else if (AttackType == AttackType.Energy || AttackType == AttackType.Projectile) {
-			handleRangedAttack(target, damage);
+			StartCoroutine(handleRangedAttack(target, damage));
 		}
 	}
+		
+	protected virtual IEnumerator handleMeleeAttack (ActiveObjectBehaviour target, int damage) {
+		yield return new WaitForSeconds(attackDelay);
+		meleeAttack(target, damage);
+	}
 
-	protected virtual void handleMeleeAttack (ActiveObjectBehaviour target, int damage) {
+	protected virtual void meleeAttack (ActiveObjectBehaviour target, int damage) {
 		target.Damage(damage);
 	}
 
-	protected virtual ProjectileBehaviour handleRangedAttack (ActiveObjectBehaviour target, int damage) {
+	protected virtual IEnumerator handleRangedAttack (ActiveObjectBehaviour target, int damage) {
+		yield return new WaitForSeconds(attackDelay);
+		rangedAttack(target, damage);
+	}
+
+	protected virtual ProjectileBehaviour rangedAttack (ActiveObjectBehaviour target, int damage) {
 		ProjectileBehaviour missileBehavior;
 		// Need a superclass ref to reuse the method inside WorldController for the spawn poolsb
 		ActiveObjectBehaviour missileStandIn;
@@ -131,7 +156,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		missileBehavior.SetTarget(target);
 		return missileBehavior;
 	}
-
+		
 	public virtual void Damage(int damage) {
 		if (hasBeenDestroyed) {
 			return;

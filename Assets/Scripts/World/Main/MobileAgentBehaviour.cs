@@ -42,6 +42,9 @@ public abstract class MobileAgentBehaviour : ActiveObjectBehaviour {
 			MapTileBehaviour currentTile = path.Dequeue();
 			Vector3 previousLocation = transform.position;
 			Vector3 targetLocation = currentTile.GetWorldPosition() + offset;
+			if (!isSprite) {
+				transform.rotation = Quaternion.LookRotation(targetLocation - previousLocation);
+			}
 			float timer = 0;
 			while (timer <= timePerStep) {
 				transform.position = Vector3.Lerp(previousLocation, targetLocation, timer / timePerStep);

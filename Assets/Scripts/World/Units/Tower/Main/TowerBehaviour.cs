@@ -7,6 +7,7 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
+	float DEFAULT_TOWER_ATTACK_DELAY = 0.5f;
 	protected TowerController controller;
 	protected Tower tower;
 	[SerializeField]
@@ -14,7 +15,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 
 	[SerializeField]
 	GameObject MissilePrefab;
-
+	protected bool isTrackingTarget;
 	public override float IAttackDelay {
 		get {
 			return tower.AttackCooldown;
@@ -83,6 +84,11 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 	int mostRecentIlluminationCount = NONE_VALUE;
 	int mostRecentIlluminationRadius = NONE_VALUE;
 
+	protected override void SetReferences () {
+		base.SetReferences ();
+		attackDelay = DEFAULT_TOWER_ATTACK_DELAY;
+	}
+
 	protected override void FetchReferences () {
 		base.FetchReferences();
 		this.controller = TowerController.Instance;
@@ -128,21 +134,45 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 		if (!tile.IIsIlluminated) {
 			return;
 		}
+		// Base method updates whether we should be tracking the enemy so should be called first
 		base.Attack(target, damage);
+		if (tower.IRotateToTarget && !isTrackingTarget) {
+			StartCoroutine(trackTarget(target.transform));
+		}
 	}
- 
+// 
 //	protected override ProjectileBehaviour handleRangedAttack (ActiveObjectBehaviour target, int damage) {
 //		ProjectileBehaviour missile = base.handleRangedAttack (target, damage);
-//		missile.SetTower(tower);
-//		missile.SetTarget(target);
+////		if (tower.IRotateToTarget) {
+////		//	StartCoroutine(trackMissile(missile.transform, missile.IMaxLifeSpan));
+////		}
 //		return missile;
 //	}
+
+	IEnumerator trackTarget (Transform targetTransform, bool smoothTransition = true) {
+		isTrackingTarget = true;
+		if (smoothTransition) {
+			Quaternion startingRotation = transform.rotation;
+			float timer = 0;
+			while (HasTarget && timer <= attackDelay) {
+				transform.rotation = Quaternion.Lerp(startingRotation, 
+					Quaternion.LookRotation(targetTransform.position - transform.position), 
+					timer / attackDelay);
+				yield return new WaitForEndOfFrame();
+				timer += Time.deltaTime;
+			}
+		}
+		while (HasTarget) {
+			transform.LookAt(targetTransform);
+			yield return new WaitForEndOfFrame();
+		}
+		isTrackingTarget = false;
+	}
 
 	IEnumerator trackMissile (Transform missileTransform, float time) {
 		float timer = 0;
 		while (timer <= time) {
-			spriteRenderer.transform.LookAt(missileTransform, Vector3.up);
-			spriteRenderer.transform.eulerAngles = new Vector3(90, spriteRenderer.transform.eulerAngles.y, spriteRenderer.transform.eulerAngles.z);
+			transform.LookAt(missileTransform, Vector3.up);
 			timer += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}

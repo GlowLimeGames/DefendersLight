@@ -146,6 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05d20a8e79e40d14ab114c4ea65f25ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSprite: 1
   Location:
     X: -2
     Y: 0
