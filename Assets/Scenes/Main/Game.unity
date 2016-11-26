@@ -122,7 +122,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 477660, guid: 1b76efca60ccc41b78689ce8e6454942, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 11468770, guid: 1b76efca60ccc41b78689ce8e6454942, type: 2}
       propertyPath: MiniOrbCheatIncreaseAmount
@@ -5203,7 +5203,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22497700, guid: 1f84e6b6408c741bfa4c237018117a2f, type: 2}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 22497700, guid: 1f84e6b6408c741bfa4c237018117a2f, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -6385,7 +6385,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 446692, guid: 617a22b68009a4f61af55452d7586adc, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 617a22b68009a4f61af55452d7586adc, type: 2}
@@ -6702,7 +6702,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 424000, guid: e652f9844b75e474ba57f365880b2114, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e652f9844b75e474ba57f365880b2114, type: 2}
@@ -8401,7 +8401,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 491694, guid: 7351696d4657642e68a96be3f879a460, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7351696d4657642e68a96be3f879a460, type: 2}
@@ -9230,7 +9230,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22463764, guid: 716932ad8e5214199ae5bb43ff464826, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 22463764, guid: 716932ad8e5214199ae5bb43ff464826, type: 2}
       propertyPath: m_AnchoredPosition.x

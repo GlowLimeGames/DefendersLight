@@ -7,7 +7,6 @@ using UnityEngine;
 using System.Collections;
 
 public class ProjectileBehaviour : MobileAgentBehaviour {
-	WorldController world;
 	public override string IType {
 		get {
 			return Name;
@@ -16,7 +15,6 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	[SerializeField]
 	float maxLifespan = 3.5f;
 	ActiveObjectBehaviour _target;
-	Tower tower;
 	ActiveObjectBehaviour ITarget {
 		get {
 			return _target;
@@ -44,13 +42,6 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	public override void MoveTo (MapLocation location) {
 		throw new System.NotImplementedException();
 	}
-
-	// Sets the tower that spawned this projectile
-	public void SetTower (Tower tower) {
-		this.tower = tower;
-		this.setUnit(tower);
-	}
-
 	public void SetTarget (ActiveObjectBehaviour target) {
 		this._target = target;
 		this._target.SubscribeToDestruction(cleanup);
@@ -83,13 +74,13 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	IEnumerator DelayedAttack (ActiveObjectBehaviour target, float waitTime) {
 		yield return new WaitForSeconds(waitTime);
 		if (target) {
-			Attack(target, tower.AttackDamage);
+			Attack(target, unit.AttackDamage);
 		}
 		if (isActiveAndEnabled) StartCoroutine(TimedReturnToPool(0.25f));
 	}
 
 	public override void Attack (ActiveObjectBehaviour activeAgent, int damage) {
-		base.Attack (activeAgent, tower.AttackDamage);
+		base.Attack (activeAgent, unit.AttackDamage);
 	}
 		
 	IEnumerator TimedReturnToPool (float waitTime = 0.5f) {

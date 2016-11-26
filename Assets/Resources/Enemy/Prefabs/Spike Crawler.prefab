@@ -30,6 +30,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &106508
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 457620}
+  - 114: {fileID: 11429572}
+  - 65: {fileID: 6598878}
+  m_Layer: 0
+  m_Name: Range
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &120432
 GameObject:
   m_ObjectHideFlags: 1
@@ -179,8 +196,8 @@ GameObject:
   - 54: {fileID: 5466852}
   - 65: {fileID: 6532194}
   m_Layer: 0
-  m_Name: SpikeCrawler
-  m_TagString: Untagged
+  m_Name: Spike Crawler
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -398,6 +415,7 @@ Transform:
   - {fileID: 441212}
   - {fileID: 493120}
   - {fileID: 446386}
+  - {fileID: 457620}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &437442
@@ -456,6 +474,19 @@ Transform:
   - {fileID: 22444146}
   m_Father: {fileID: 428496}
   m_RootOrder: 9
+--- !u!4 &457620
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 106508}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 428496}
+  m_RootOrder: 10
 --- !u!4 &465332
 Transform:
   m_ObjectHideFlags: 1
@@ -622,6 +653,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &6598878
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 106508}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &9509840
 Animator:
   serializedVersion: 3
@@ -660,8 +703,8 @@ MonoBehaviour:
   LevelString: 
   AttackDelay: 0
   isInvulnerable: 0
-  AttackType: 0
-  hasAttack: 0
+  AttackType: 1
+  hasAttack: 1
   canHeal: 0
   HealthBar: {fileID: 11425120}
   debugging: 0
@@ -678,6 +721,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarFill: {fileID: 22444146}
+--- !u!114 &11429572
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 106508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d6ebabde17e48de80218f7679e0de9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &21267828
 SpriteRenderer:
   m_ObjectHideFlags: 1

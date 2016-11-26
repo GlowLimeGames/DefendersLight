@@ -7,7 +7,6 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
-	protected WorldController world;
 	protected TowerController controller;
 	protected Tower tower;
 	[SerializeField]
@@ -15,8 +14,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 
 	[SerializeField]
 	GameObject MissilePrefab;
-
-	RangedAttackBehaviour attackModule = null;
 
 	public override float IAttackDelay {
 		get {
@@ -53,9 +50,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 		if (spriteRenderer) {
 			spriteRenderer.sprite = tower.GetSprite();
 		}
-		if (attackModule) {
-			attackModule.SetUnit(tower);
-		}
 		setUnit(tower);
 	}
 
@@ -83,17 +77,9 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 	int mostRecentIlluminationCount = NONE_VALUE;
 	int mostRecentIlluminationRadius = NONE_VALUE;
 
-	protected override void SetReferences () {
-		base.SetReferences ();
-		attackModule = GetComponentInChildren<RangedAttackBehaviour>();
-	}
-
 	protected override void FetchReferences () {
-		this.world = WorldController.Instance;
+		base.FetchReferences();
 		this.controller = TowerController.Instance;
-		if (hasAttack) {
-			attackModule = GetComponentInChildren<RangedAttackBehaviour>();
-		}
 	}
 
 	public override void Destroy () {
@@ -131,25 +117,20 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 		EventController.Event(EventType.TowerSold);
 	}
 
-	public override void Attack(ActiveObjectBehaviour activeAgent, int damage) {
+	public override void Attack(ActiveObjectBehaviour target, int damage) {
 		// Tower cannot attack if its square is not illuminated:
 		if (!tile.IIsIlluminated) {
 			return;
 		}
-
-		StartCoroutine(AttackCooldown());
-		ProjectileBehaviour missileBehavior;
-		// Need a superclass ref to reuse the method inside WorldController for the spawn poolsb
-		ActiveObjectBehaviour missileStandIn;
-		if (world && world.TryPullFromSpawnPool(IType, out missileStandIn)) {
-			missileBehavior = missileStandIn as ProjectileBehaviour;
-			missileBehavior.transform.position = transform.position;
-		} else {
-			missileBehavior = Instantiate(controller.loadProjectilePrefab(tower.IAmmo), transform.position, Quaternion.identity) as ProjectileBehaviour;
-		}
-		missileBehavior.SetTower(tower);
-		missileBehavior.SetTarget(activeAgent);
+		base.Attack(target, damage);
 	}
+ 
+//	protected override ProjectileBehaviour handleRangedAttack (ActiveObjectBehaviour target, int damage) {
+//		ProjectileBehaviour missile = base.handleRangedAttack (target, damage);
+//		missile.SetTower(tower);
+//		missile.SetTarget(target);
+//		return missile;
+//	}
 
 	IEnumerator trackMissile (Transform missileTransform, float time) {
 		float timer = 0;

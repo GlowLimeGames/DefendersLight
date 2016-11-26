@@ -63,8 +63,6 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		base.updateCurrentLocation (currentTile);
 	}
 
-	protected override void FetchReferences() {}
-
 	public override void Destroy () {
 		base.Destroy ();
 		EventController.Event(EventType.EnemyDestroyed);

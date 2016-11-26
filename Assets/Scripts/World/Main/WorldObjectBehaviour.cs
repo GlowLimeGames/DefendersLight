@@ -7,8 +7,13 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class WorldObjectBehaviour : MannBehaviour {
+	protected WorldController world;
 	[SerializeField]
 	protected MapLocation Location = new MapLocation(0, 0);
+
+	protected override void FetchReferences () {
+		world = WorldController.Instance;
+	}
 
 	public void SetLocation (int x, int y) {
 		Location.Set(x, y);

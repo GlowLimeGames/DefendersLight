@@ -9,6 +9,8 @@ using System.Collections;
 public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	EventActionf onUpdateHealth;
 	protected UnitController unitController;
+	// A child object that represents the enemies range (using a separate collider)
+	RangedAttackBehaviour attackModule = null;
 	public string Name;
 	public int Health;
 	public int BaseDamage;
@@ -45,7 +47,12 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 			return unit.Type;
 		}
 	}
-	Unit unit;
+	public string IAmmo {
+		get {
+			return unit.IAmmo;
+		}
+	}
+	protected Unit unit;
 
 	EventAction onDestroyed;
 	[SerializeField]
@@ -85,20 +92,44 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	protected override void SetReferences () {
-		SetStats();
-	}
-
-	protected override void CleanupReferences () {
-		base.CleanupReferences();
+		base.SetReferences ();
+		if (hasAttack) {
+			attackModule = GetComponentInChildren<RangedAttackBehaviour>();
+		}
 	}
 
 	public virtual void Setup (UnitController unitController) {
 		this.unitController = unitController;
 	}
 
-	public virtual void Attack(ActiveObjectBehaviour activeAgent, int damage) {
+	public virtual void Attack(ActiveObjectBehaviour target, int damage) {
 		StartCoroutine(AttackCooldown());
-		activeAgent.Damage(damage);
+		if (AttackType == AttackType.Melee) {
+			handleMeleeAttack(target, damage);
+		} 
+		// Energy attacks are treated as ranged, however they're specialized because they can damage Shades (only towers with this ability)
+		else if (AttackType == AttackType.Energy || AttackType == AttackType.Projectile) {
+			handleRangedAttack(target, damage);
+		}
+	}
+
+	protected virtual void handleMeleeAttack (ActiveObjectBehaviour target, int damage) {
+		target.Damage(damage);
+	}
+
+	protected virtual ProjectileBehaviour handleRangedAttack (ActiveObjectBehaviour target, int damage) {
+		ProjectileBehaviour missileBehavior;
+		// Need a superclass ref to reuse the method inside WorldController for the spawn poolsb
+		ActiveObjectBehaviour missileStandIn;
+		if (world && world.TryPullFromSpawnPool(IAmmo, out missileStandIn)) {
+			missileBehavior = missileStandIn as ProjectileBehaviour;
+			missileBehavior.transform.position = transform.position;
+		} else {
+			missileBehavior = Instantiate(unitController.loadProjectilePrefab(IAmmo), transform.position, Quaternion.identity) as ProjectileBehaviour;
+		}
+		missileBehavior.setUnit(this.unit);
+		missileBehavior.SetTarget(target);
+		return missileBehavior;
 	}
 
 	public virtual void Damage(int damage) {
@@ -207,6 +238,9 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	protected void setUnit (Unit unit) {
 		this.unit = unit;
 		this.Health = unit.Health;
+		if (attackModule) {
+			attackModule.SetUnit(unit);
+		}
 	}
 
 	public virtual void ToggleActive (bool isActive) {
