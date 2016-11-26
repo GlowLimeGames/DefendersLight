@@ -11,7 +11,7 @@ using System.Collections.Generic;
 public abstract class UnitController : MannBehaviour {
 	[SerializeField]
 	protected bool inGame = true;
-
+	protected const string PROJECTILE_DIR = "Projectile";
 	protected const string SPRITES_DIR = "Sprites";
 	protected const string PREFABS_DIR = "Prefabs";
 
@@ -44,6 +44,11 @@ public abstract class UnitController : MannBehaviour {
 	protected ActiveObjectBehaviour loadPrefab (string pathInResources) {
 		return Resources.Load<ActiveObjectBehaviour>(pathInResources);
 	} 
+
+	// Public so individuals units can access it
+	public ProjectileBehaviour loadProjectilePrefab (string projectileNamne) {
+		return loadPrefab(FileUtil.CreatePath(PROJECTILE_DIR, PREFABS_DIR, projectileNamne)) as ProjectileBehaviour;
+	}
 	
 }
 

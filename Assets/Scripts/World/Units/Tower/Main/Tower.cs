@@ -115,6 +115,7 @@ public class Tower : Unit {
 			this.Cost = towerData.Cost;
 			this.UnlockLevel = towerData.UnlockLevel;
 			this.IlluminationRadius = towerData.IlluminationRadius;
+			this.Reflectivitiy = towerData.Reflectivitiy;
 		} catch {
 			UnityEngine.Debug.LogWarningFormat("Unable to fully copy unit. Is not of type {0}", this.GetType());
 		}

@@ -40,7 +40,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 			return Health == IMaxHealth;
 		}
 	}
-	public string IType {
+	public virtual string IType {
 		get {
 			return unit.Type;
 		}
