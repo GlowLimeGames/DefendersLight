@@ -19,7 +19,7 @@ public class Enemy : Unit {
 	Sprite sprite;
 
 	public RewardAmount DeathReward;
-    public int Speed;
+    public float Speed;
     public int Agression;
 	public int Frequency;
 	public int Quantity;
@@ -41,7 +41,7 @@ public class Enemy : Unit {
 	}
 
 	public Enemy (string type, int health, int damage, float cooldown, int range, int attackRadius, MapLocation location, string description, RewardAmount deathReward,
-		IWorldController worldController, int speed, int agro) : 
+		IWorldController worldController, float speed, int agro) : 
 	base(type, health, damage, cooldown, range, attackRadius, location, description, worldController) {
 		this.DeathReward = deathReward;
         this.Speed = speed;

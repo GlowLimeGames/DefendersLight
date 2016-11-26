@@ -108,6 +108,14 @@ public class Tower : Unit {
 		}
 	}
 
+	// Whether or not the tower should rotate when firing at enemies
+	public bool RotateToTarget;
+	public bool IRotateToTarget {
+		get {
+			return RotateToTarget;
+		}
+	}
+
 	public override void Copy (Unit unit) {
 		base.Copy(unit);
 		try {

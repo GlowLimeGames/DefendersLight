@@ -13,6 +13,7 @@ using System;
 using UE = UnityEngine;
 
 public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyController {
+	static bool debugSpawnAllAtWave1 = true;
 	EventActionInt waveAdvance;
 	[SerializeField]
 	GameObject spawnPointPrefab;
@@ -77,6 +78,12 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	void sortEnemiesBySpawnLevel () {
 		enemiesBySpawnLevel = new List<Enemy>(templateUnits.Values);
 		enemiesBySpawnLevel.Sort(enemySorter.Compare);
+		// Debugging method to test different enemies at Wave 1 (remove for production builds)
+		if (debugSpawnAllAtWave1) {
+			foreach (Enemy e in enemiesBySpawnLevel) {
+				e.WaveSpawnedAt = 1;
+			}
+		}
 	}
 
 	public override void CreateUnitTemplates (string jsonText) {
@@ -312,6 +319,19 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
         }
     }
 
+	// Worth checking so we can end the wave if only shades remain
+	public bool OnlyNonLethalEnemiesAlive () {
+		bool onlyNonLethal = true;
+		foreach (EnemyBehaviour enemy in activeEnemies) {
+			onlyNonLethal &= enemy is ShadeBehaviour;
+			if (!onlyNonLethal) {
+				return false;
+			}
+		}
+		// Will always be true if it reaches this point
+		return onlyNonLethal;
+	}
+
     public void KillAllEnemies() {
         for (int i = 0; i < activeEnemies.Count; i++) {
             activeEnemies.ElementAt(i).Destroy();
@@ -326,6 +346,10 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	void HandleEnemyKilled () {
 		enemiesAlive = Mathf.Clamp(enemiesAlive - 1, 0, int.MaxValue);
+		if (OnlyNonLethalEnemiesAlive()) {
+			// Kills any shades still alive (because otherwise it slows down the gameflow unecessarily
+			KillAllEnemies();
+		}
 		if (enemiesAlive == 0) {
 			transitionToNextWave();
 		}

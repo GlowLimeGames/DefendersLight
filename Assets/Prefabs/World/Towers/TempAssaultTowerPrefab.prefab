@@ -202,6 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 846144f104e0c407289598901190cc1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSprite: 1
   Location:
     X: 0
     Y: 0
