@@ -55,6 +55,14 @@ public class Enemy : Unit {
 		try {
 			Enemy enemyData = (Enemy) unit;
 			this.DeathReward = enemyData.DeathReward;
+			this.Speed = enemyData.Speed;
+			this.Agression = enemyData.Agression;
+			this.Frequency = enemyData.Frequency;
+			this.Quantity = enemyData.Quantity;
+			this.FlavorText = enemyData.FlavorText;
+			this.ManaReward = enemyData.ManaReward;
+			this.XPReward = enemyData.XPReward;
+			this.WaveSpawnedAt = enemyData.WaveSpawnedAt;
 		} catch {
 			UnityEngine.Debug.LogWarningFormat("Unable to fully copy unit. Is not of type {0}", this.GetType());
 		}

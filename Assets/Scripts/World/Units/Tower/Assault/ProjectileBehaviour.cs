@@ -7,6 +7,12 @@ using UnityEngine;
 using System.Collections;
 
 public class ProjectileBehaviour : MobileAgentBehaviour {
+	WorldController world;
+	public override string IType {
+		get {
+			return Name;
+		}
+	}
 	[SerializeField]
 	float maxLifespan = 3.5f;
 	ActiveObjectBehaviour _target;
@@ -23,7 +29,7 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	}
 
 	protected override void FetchReferences() {
-		// NOTHING
+		world = WorldController.Instance;
 	}
 
 	protected override void CleanupReferences () {
@@ -66,13 +72,12 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	}
 
 	bool tryReclaimInSpawnPool () {
-		if (ProjectilePool.Instance) {
-			ProjectilePool.Instance.Give(this);
+		if (world) {
+			world.AddToSpawnPool(this);
+			return true;
 		} else {
-			Destroy(gameObject);
+			return false;
 		}
-		// Returns whether the projecttile pool exists
-		return ProjectilePool.Instance;
 	}
 
 	IEnumerator DelayedAttack (ActiveObjectBehaviour target, float waitTime) {

@@ -12,11 +12,12 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	WorldController world;
 	[SerializeField]
 	StaticAgentBehaviour containedAgent;
+	const float COLOR_DULLNESS = 0.425f;
 	const float TOWER_HEIGHT_OFFSET = 1;
-	static Color hightlightColor = Color.green;
-	static Color validBuildColor = Color.Lerp(Color.green, Color.yellow, 0.75f);
-	static Color cannotBuildColor = Color.red;
-	static Color illuminatedColor = Color.yellow;
+	static Color hightlightColor = Color.Lerp(Color.green, Color.gray, COLOR_DULLNESS);
+	static Color validBuildColor = Color.Lerp(Color.Lerp(Color.green, Color.yellow, 0.75f), Color.gray, COLOR_DULLNESS);
+	static Color cannotBuildColor = Color.Lerp(Color.red, Color.gray, COLOR_DULLNESS);
+	static Color illuminatedColor = Color.Lerp(Color.yellow, Color.gray, COLOR_DULLNESS);
 	static Color standardColor = Color.black;
 	static Color[] tempColors = new Color[]{hightlightColor, cannotBuildColor};
 	HashSet<ILightSource> lightSources = new HashSet<ILightSource>();

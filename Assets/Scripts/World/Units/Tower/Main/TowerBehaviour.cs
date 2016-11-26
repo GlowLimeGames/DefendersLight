@@ -7,6 +7,8 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
+	protected WorldController world;
+	protected TowerController controller;
 	protected Tower tower;
 	[SerializeField]
 	SpriteRenderer spriteRenderer;
@@ -87,6 +89,8 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 	}
 
 	protected override void FetchReferences () {
+		this.world = WorldController.Instance;
+		this.controller = TowerController.Instance;
 		if (hasAttack) {
 			attackModule = GetComponentInChildren<RangedAttackBehaviour>();
 		}
@@ -135,11 +139,13 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 
 		StartCoroutine(AttackCooldown());
 		ProjectileBehaviour missileBehavior;
-		if (ProjectilePool.Instance && !ProjectilePool.Instance.IsEmpty) {
-			missileBehavior = ProjectilePool.Instance.Take();
+		// Need a superclass ref to reuse the method inside WorldController for the spawn poolsb
+		ActiveObjectBehaviour missileStandIn;
+		if (world && world.TryPullFromSpawnPool(IType, out missileStandIn)) {
+			missileBehavior = missileStandIn as ProjectileBehaviour;
 			missileBehavior.transform.position = transform.position;
 		} else {
-			missileBehavior = ((GameObject) Instantiate(MissilePrefab, transform.position, Quaternion.identity)).GetComponent<ProjectileBehaviour>();
+			missileBehavior = Instantiate(controller.loadProjectilePrefab(tower.IAmmo), transform.position, Quaternion.identity) as ProjectileBehaviour;
 		}
 		missileBehavior.SetTower(tower);
 		missileBehavior.SetTarget(activeAgent);
