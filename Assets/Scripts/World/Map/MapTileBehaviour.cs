@@ -9,7 +9,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class MapTileBehaviour : EnvironmentalObjectBehaviour {
-	WorldController world;
 	[SerializeField]
 	StaticAgentBehaviour containedAgent;
 	const float COLOR_DULLNESS = 0.425f;

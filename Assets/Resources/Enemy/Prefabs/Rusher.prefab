@@ -394,7 +394,7 @@ GameObject:
   - 65: {fileID: 6542260}
   m_Layer: 0
   m_Name: Rusher
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -868,7 +868,7 @@ MonoBehaviour:
   AttackDelay: 0
   isInvulnerable: 0
   AttackType: 0
-  hasAttack: 0
+  hasAttack: 1
   canHeal: 0
   HealthBar: {fileID: 11433670}
   debugging: 0

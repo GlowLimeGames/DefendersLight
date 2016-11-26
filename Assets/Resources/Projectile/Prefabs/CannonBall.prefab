@@ -80,7 +80,7 @@ MonoBehaviour:
   LevelString: 
   AttackDelay: 1
   isInvulnerable: 0
-  AttackType: 1
+  AttackType: 0
   hasAttack: 0
   canHeal: 0
   HealthBar: {fileID: 0}

@@ -42,6 +42,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		GameObject coreOrb = (GameObject) Instantiate(CoreOrbPrefab);
 		CoreOrbInstance = coreOrb;
 		CoreOrbBehaviour coreOrbBehaviour = coreOrb.GetComponent<CoreOrbBehaviour>();
+		coreOrbBehaviour.Setup(this);
 		coreOrbBehaviour.SetTower(templateUnits[CoreOrbBehaviour.CORE_ORB_KEY]);
 		mapTile.PlaceStaticAgent(coreOrbBehaviour, false);
 	}

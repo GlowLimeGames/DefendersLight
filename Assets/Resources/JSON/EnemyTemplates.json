@@ -10,7 +10,7 @@
       "Ammo" : "null",
       "ManaReward" : 10,
       "XPReward" : 50,
-      "WaveSpawnedAt" : 1,
+      "WaveSpawnedAt" : 0,
       "Agression" : 0,
       "Frequency" : "",
       "Quantity" : "",
