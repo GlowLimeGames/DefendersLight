@@ -75,7 +75,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
     protected override void HandleNamedEvent(string eventName) {}
 
 		
-	void ResumeMoving () {
+	protected void resumeMoving () {
 		if (this && WorldController.Instance && WorldController.Instance.ICoreOrbInstance != null) {
 			NavigatePath();
 		}
@@ -155,7 +155,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			Halt();
 			Attack(currentTarget, enemy.AttackDamage);
 			if (previousTarget != currentTarget) {
-				currentTarget.SubscribeToDestruction(ResumeMoving);
+				currentTarget.SubscribeToDestruction(resumeMoving);
 				previousTarget = currentTarget;
 			}
 		}

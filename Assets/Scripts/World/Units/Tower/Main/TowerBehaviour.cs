@@ -74,6 +74,12 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 		}
 	}
 
+	public MapTileBehaviour ITile {
+		get {
+			return this.tile;
+		}
+	}
+
 	int mostRecentIlluminationCount = NONE_VALUE;
 	int mostRecentIlluminationRadius = NONE_VALUE;
 

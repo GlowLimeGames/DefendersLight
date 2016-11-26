@@ -24,7 +24,7 @@ public class PlayerData : IPlayerData {
 	public int IXPForLevel {
 		get {
 			if (xpEquation != null) {
-				return xpEquation.Calculate(_level);
+				return xpEquation.CalculateAsInt(_level);
 			} else {
 				return 0;
 			}

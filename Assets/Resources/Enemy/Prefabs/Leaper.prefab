@@ -395,11 +395,14 @@ MonoBehaviour:
   AttackDelay: 0
   isInvulnerable: 0
   AttackType: 0
-  hasAttack: 0
+  hasAttack: 1
   canHeal: 0
   HealthBar: {fileID: 11462088}
   debugging: 0
   DirectionFacing: 0
+  jumpHeight: 1
+  leapTime: 1
+  simulatePerspective: 1
 --- !u!114 &11462088
 MonoBehaviour:
   m_ObjectHideFlags: 1
