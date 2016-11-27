@@ -17,6 +17,10 @@ public class CameraController : Controller {
 	MapController map;
 	new Camera camera;
 
+    public void resetCameraPosition(){
+        camera.transform.position = new Vector3(0, 5f, -.45f);
+    }
+
 	public Vector3 ICameraDirection {
 		get {
 			float angle = ICameraAngleRad;
