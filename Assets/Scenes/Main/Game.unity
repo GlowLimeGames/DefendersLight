@@ -1757,6 +1757,7 @@ GameObject:
   - 224: {fileID: 348581779}
   - 114: {fileID: 348581780}
   - 114: {fileID: 348581781}
+  - 225: {fileID: 348581782}
   m_Layer: 5
   m_Name: TowerPanel
   m_TagString: Untagged
@@ -1825,6 +1826,17 @@ MonoBehaviour:
   orientation: 0
   dragDirection: 3
   autoCloseSpeed: 500
+--- !u!225 &348581782
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 348581778}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &370429771
 GameObject:
   m_ObjectHideFlags: 0
@@ -5753,6 +5765,8 @@ GameObject:
   - 224: {fileID: 1153773157}
   - 222: {fileID: 1153773159}
   - 114: {fileID: 1153773158}
+  - 114: {fileID: 1153773160}
+  - 225: {fileID: 1153773161}
   m_Layer: 5
   m_Name: BottomPanel
   m_TagString: Untagged
@@ -5817,6 +5831,34 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1153773156}
+--- !u!114 &1153773160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1153773156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1a8d95ae7eb4bb0bf4756931b0b91f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dragThresold: 25
+  exitDistance: 200
+  resetPositionOnClose: 1
+  orientation: 1
+  dragDirection: 2
+  autoCloseSpeed: 200
+--- !u!225 &1153773161
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1153773156}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1161679927
 GameObject:
   m_ObjectHideFlags: 0
@@ -9757,6 +9799,7 @@ MonoBehaviour:
   cheatPanel: {fileID: 1415387288}
   sfxToggle: {fileID: 991877511}
   musicToggle: {fileID: 1642440542}
+  swipeToClosePause: {fileID: 1153773160}
 --- !u!1 &2029710706
 GameObject:
   m_ObjectHideFlags: 0
