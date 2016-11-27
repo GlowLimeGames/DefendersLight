@@ -18,7 +18,7 @@
 			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
-			"Volume": 90
+			"Volume": 80
 		},
 		{
 			"Name":"Defender's Light Soundtrack 2_4",
@@ -28,7 +28,7 @@
 			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
-			"Volume": 100
+			"Volume": 80
 		},
 		{
 			"Name":"Defender's Light Soundtrack 3_3",
@@ -38,7 +38,7 @@
 			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
-			"Volume": 100
+			"Volume": 80
 		},
 		{
 			"Name":"Defender's Light Bass Drone 2",
@@ -48,7 +48,7 @@
 			"Loop":true,
 			"Type": "Ambience",
 			"Channel":2,
-			"Volume": 40
+			"Volume": 20
 		},
 		{
 			"Name":"Defender's Light Ambience 1",
@@ -58,7 +58,7 @@
 			"Loop":true,
 			"Type": "Ambience",
 			"Channel":2,
-			"Volume": 30
+			"Volume": 10
 		},
 
 		{
@@ -161,6 +161,56 @@
 			"Volume": 100
 		},
 		{
+			"Name":"Brute_Death_A",
+			"Groups":["BruteDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Brute_Death_B",
+			"Groups":["BruteDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Brute_Death_C",
+			"Groups":["BruteDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Brute_Death_D",
+			"Groups":["BruteDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
+			"Name":"Enemy_Death_E",
+			"Groups":["BruteDeath"],
+			"Events":[],
+			"StopEvents":[],
+			"Loop":false,
+			"Type": "FX",
+			"Channel":1,
+			"Volume": 100
+		},
+		{
 			"Name":"Catapult_Attack_A",
 			"Groups":["CatapultAttack"],
 			"Events":[],
@@ -228,7 +278,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 80
 		},
 		{
 			"Name":"Enemies_DealDamage_A",
@@ -428,7 +478,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 50
 		},
 		{
 			"Name":"Illumination_On",
