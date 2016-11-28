@@ -201,7 +201,7 @@
 			"Volume": 100
 		},
 		{
-			"Name":"Enemy_Death_E",
+			"Name":"Brute_Death_E",
 			"Groups":["BruteDeath"],
 			"Events":[],
 			"StopEvents":[],
