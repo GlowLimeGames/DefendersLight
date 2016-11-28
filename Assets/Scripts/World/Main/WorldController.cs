@@ -45,7 +45,11 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			_currentSeason = value;
 		}
 	}
-
+	public static bool Paused {
+		get {
+			return Instance && Instance.IsPaused;
+		}
+	}
 	public bool IsPaused {
 		get {
 			return Time.timeScale == 0;
@@ -62,6 +66,11 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 				_unitsByClass = determineUnitsByClass();
 			}
 			return _unitsByClass;
+		}
+	}
+	bool purchaseLock {
+		get {
+			return purchasePanel && purchasePanel.TowerSelectLock;
 		}
 	}
 
@@ -107,6 +116,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	public void UnlockAllTowers () {
 		OverrideTowerLevelRequirement = true;
+		EventController.Event(EventType.TowerUnlocked);
 	}
 
 	public void AddToSpawnPool (ActiveObjectBehaviour activeObject) {
@@ -118,6 +128,10 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			pool.Push(activeObject);
 			spawnPools.Add(activeObject.IType, pool);
 		}
+	}
+
+	public void HandleTowerNotPlaced (TowerBehaviour tower) {
+		towerController.HandleObjectDestroyed(tower);
 	}
 
 	public bool TryPullFromSpawnPool (string objectType, out ActiveObjectBehaviour activeObject) {
@@ -145,6 +159,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			PlaceCoreOrb();
 			setupUnitControllerCallbacks();
 		}
+		_unitsByClass = determineUnitsByClass();
 	}
 
 	void createRules () {
@@ -281,8 +296,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		towerController.RefreshIlluminations();
 	}
 
-	public void SendIlluminationToMap (IlluminationTowerBehaviour illuminationTower, bool shouldPlaySound = true) {
-		mapController.Illuminate(illuminationTower.GetLocation(), illuminationTower.IlluminationRadius, shouldPlaySound);
+	public void SendIlluminationToMap (IlluminationTowerBehaviour illuminationTower, bool shouldPlaySound = true, bool onTowerPlace = false) {
+		mapController.Illuminate(illuminationTower.GetLocation(), illuminationTower, shouldPlaySound, onTowerPlace);
 	}
 
 	// Cleans up/destroys the world
@@ -361,17 +376,21 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		mapController.HighlightValidBuildTiles();
 	}
 
-	public TowerBehaviour GetPurchaseTowerToPlace (Vector3 startingPosition, bool purchaseLock = false) {
+	public TowerBehaviour GetPurchaseTowerToPlace (Vector3 startingPosition) {
 		if (TrySpendMana(currentlySelectedPurchaseTower.ICost)) {
 			Tower purchaseTower = currentlySelectedPurchaseTower;
-			if (!purchaseLock) {
-				currentlySelectedPurchaseTower = null;
+			if (!(purchaseLock && dataController.HasSufficientMana(currentlySelectedPurchaseTower.ICost))) {
+				clearSelectedTower();
 				purchasePanel.TryDeselectSelectedPanel(shouldSwitchSelected:true);
 			}
 			return towerController.GetTowerBehaviourFromTower(purchaseTower, startingPosition);
 		} else {
 			return null;
 		}
+	}
+
+	void clearSelectedTower () {
+		currentlySelectedPurchaseTower = null;
 	}
 
 	protected override void SetReferences () {
@@ -411,7 +430,9 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		// Nothing
+		if (eventName == EventType.TowerPanelDeselected) {
+			clearSelectedTower();
+		}
 	}
 
 	void refreshXPDisplay () {
@@ -444,7 +465,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 				worldAsJSON += unit.SerializeAsJSON();
 			}
 		}
-		print(worldAsJSON);
 		return worldAsJSON;
 	}
 

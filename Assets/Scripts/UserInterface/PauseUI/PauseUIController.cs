@@ -16,18 +16,22 @@ public class PauseUIController : UIController {
 	[SerializeField]
 	ToggleableUIButton musicToggle;
 	[SerializeField]
-	UISwipeToClose swipeToClosePause;
-
+	UIPanelSwipe swipeToClosePause;
+	CanvasGroup pauseScreenCanvas;
+	bool isPaused {
+		get {
+			return world.IsPaused;
+		}
+	}
 	protected override void SetReferences () {
 		base.SetReferences();
 		if (SettingsUtil.SFXMuted) {
-			sfxToggle.RefreshReferences();
 			sfxToggle.Toggle();
 		}
 		if (SettingsUtil.MusicMuted) {
-			musicToggle.RefreshReferences();
 			musicToggle.Toggle();
 		}
+		pauseScreenCanvas = GetComponentInChildren<CanvasGroup>();
 	}
 
     public void TogglePause () {
@@ -43,17 +47,30 @@ public class PauseUIController : UIController {
 		world = WorldController.Instance;
 		swipeToClosePause.SubscribeToClose(Unpause);
 		swipeToClosePause.SubscribeToClose(TogglePauseScreen);
+		swipeToClosePause.SubscribeToBeginClose(delegate () {
+			if (cheatPanelIsOpen()) {
+				ToggleCheatPanel();	
+			}
+		});
 	}
 
 	public void TogglePauseScreen () {
-		pauseScreen.SetActive(!pauseScreen.activeSelf);
-		if (!pauseScreen.activeSelf) {
+		pauseScreen.SetActive(isPaused);
+		toggleCanvasGroup(pauseScreenCanvas, isPaused);
+		if (isPaused) {
+			swipeToClosePause.RequestOpen();
+		} else {
 			cheatPanel.SetActive(false);
 		}
 	}
 
 	public void ToggleCheatPanel () {
 		cheatPanel.SetActive(!cheatPanel.activeSelf);
+
+	}
+
+	bool cheatPanelIsOpen () {
+		return cheatPanel.activeSelf;
 	}
 
 	public void QuitGame () {

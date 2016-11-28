@@ -39,10 +39,12 @@ public static class EventType {
 	#region Tower Construction
 
 	public const string BuildIlluminationTower = "BuildIllumination";
-	public const string BuildTower = "BuildTower";
+	public const string TowerBuilt = "BuildTower";
 	public const string TowerCannotPlace = "TowerCannotPlace";
 	public const string TowerSold = "TowerSold";
 	public const string CannotPurchase = "CannotPurchase";
+	public const string RefreshTowerPanel = "RefreshTowerPanel";
+	public const string TowerPanelDeselected = "TowerPanelDeselected";
 
 	#endregion
 

@@ -6,6 +6,22 @@
 using UnityEngine;
 
 public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
+	// Simulates delta time while game is paused
+	protected const int INVALID_VALUE = -1;
+	protected const int NONE_VALUE = 0;
+	protected const float DEFAULT_FRAME_RATE = 30f;
+	protected static float FAKE_DELTA_TIME;
+
+	// Static constructor to calculate fake delta time
+	static MannBehaviour () {
+		if (Application.targetFrameRate == INVALID_VALUE) {
+			FAKE_DELTA_TIME = 1f / DEFAULT_FRAME_RATE;
+		} else {
+			FAKE_DELTA_TIME = 1f / Application.targetFrameRate;
+		}
+	}
+
+
 	public delegate void EventAction();
 	public delegate void EventActionInt(int integer);
 	public delegate void EventActionf(float floatingPointNumber);

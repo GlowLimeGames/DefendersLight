@@ -40,6 +40,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 737a40a30835d46c7990227e703c0c18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SwipeTolerance: 0.05
+  MaxPanSpeed: 0.75
+  PanAcceleration: 0.002
+  PinchZoomSpeed: 0.01
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -22,7 +22,7 @@ public class MapController : MannBehaviour, IMapController {
 	[SerializeField]
 	MapTileBehaviour[,] Board;
 	Bounds mapBounds;
-	float zBound = 10f;
+	float zBound = 100f;
 	List<MapTileBehaviour> highlightedTiles = new List<MapTileBehaviour>();
 
 	void GenerateBoard (WorldController world) {
@@ -43,6 +43,10 @@ public class MapController : MannBehaviour, IMapController {
 				highlightedTiles.Add(tile);
 			}
 		}
+	}
+
+	public void HandleTowerNotPlaced (TowerBehaviour tower) {
+		world.HandleTowerNotPlaced(tower);
 	}
 
 	public void UnhighlightValidBuildsTiles () {
@@ -83,14 +87,15 @@ public class MapController : MannBehaviour, IMapController {
 		WorldController.Instance.AddActiveTower(tower);
 	}
 
-	public void Illuminate (MapLocation location, int radius, bool shouldPlaySound = true) {
+	public void Illuminate (MapLocation location, ILightSource light, bool shouldPlaySound = true, bool onTowerPlace = false) {
+		int radius = light.IlluminationRadius;
 		int diameter = radius * 2;
 		int zeroOffset = 1;
 		int startX = Mathf.Clamp(location.X - radius, 0, Stats.Width);
 		int startY = Mathf.Clamp(location.Y - radius, 0, Stats.Height);
 		for (int x = startX; x < startX + diameter + zeroOffset && x < Stats.Width; x++) {
 			for (int y = startY; y < startY + diameter + zeroOffset && y < Stats.Height; y++) {
-				Board[x, y].IlluminateSquare(shouldPlaySound);
+				Board[x, y].IlluminateSquare(light, shouldPlaySound, onTowerPlace);
 			}
 		}
 	}
@@ -205,6 +210,8 @@ public class MapController : MannBehaviour, IMapController {
 	protected override void HandleNamedEvent (string eventName) {
 		if (eventName == EventType.TowerDestroyed || eventName == EventType.TowerSold) {
 			RefreshIlluminations();
+		} else if (eventName == EventType.TowerPanelDeselected) {
+			UnhighlightValidBuildsTiles();
 		}
 	}
 

@@ -90,7 +90,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: com.glowlime.defenders
-  bundleVersion: 0.1.11
+  bundleVersion: 0.2.0
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   metroEnableLowLatencyPresentationAPI: 0
@@ -175,7 +175,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 15639ce9c30bb4deca8ae9625a8efb04, type: 3}
+      m_Icon: {fileID: 2800000, guid: 5944a9ed8d5d944e1b313d544aea532b, type: 3}
       m_Width: 128
       m_Height: 128
   m_BuildTargetBatching:

@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e5dcc32b49348d294a8e9a4a879b67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSprite: 0
   Location:
     X: 0
     Y: 0
@@ -144,6 +145,7 @@ MonoBehaviour:
   Range: 0
   LevelString: Level 0
   AttackDelay: 0
+  isInvulnerable: 0
   AttackType: 0
   hasAttack: 0
   canHeal: 0
@@ -151,7 +153,6 @@ MonoBehaviour:
   debugging: 0
   spriteRenderer: {fileID: 21246020}
   MissilePrefab: {fileID: 0}
-  sellValue: 8
 --- !u!114 &11486420
 MonoBehaviour:
   m_ObjectHideFlags: 1

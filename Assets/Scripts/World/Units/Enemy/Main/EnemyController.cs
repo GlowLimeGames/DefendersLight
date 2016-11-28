@@ -8,8 +8,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System;
+// Abbreviation to specify which Random class we're using: UE.Random == UnityEngine.Random
+using UE = UnityEngine;
 
 public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyController {
+	static bool debugSpawnAllAtWave1 = false;
 	EventActionInt waveAdvance;
 	[SerializeField]
 	GameObject spawnPointPrefab;
@@ -22,12 +26,10 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	public GameObject[] EnemyPrefabs;
 	Dictionary<string, GameObject> orderedEnemyPrefabs = new Dictionary<string, GameObject>();
 	List<EnemySpawnPoint> spawnPoints;
+	EnemySorter enemySorter = new EnemySpawnLevelSorter();
+	List<Enemy> enemiesBySpawnLevel;
 	public static EnemyController Instance;
-	int enemiesAlive {
-		get {
-			return activeEnemies.Count;
-		}
-	}
+	int enemiesAlive = 0;
 	int currentWaveIndex = 1;
 	int spawnPointCount = 1;
 	EnemyWave currentWave = null;
@@ -45,7 +47,12 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 
-	public virtual void Setup (WorldController worldController, DataController dataController, MapController mapController, string unitTemplateJSONPath, MathEquation spawnCountEquation) {
+	public virtual void Setup (
+		WorldController worldController, 
+		DataController dataController, 
+		MapController mapController, 
+		string unitTemplateJSONPath, 
+		MathEquation spawnCountEquation) {
 		base.Setup(worldController, dataController, mapController, unitTemplateJSONPath);
 		if (inGame) {
 			this.spawnCountEquation = spawnCountEquation;
@@ -68,6 +75,23 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 
+	void sortEnemiesBySpawnLevel () {
+		enemiesBySpawnLevel = new List<Enemy>(templateUnits.Values);
+		enemiesBySpawnLevel.Sort(enemySorter.Compare);
+		// Debugging method to test different enemies at Wave 1 (remove for production builds)
+		if (debugSpawnAllAtWave1) {
+			foreach (Enemy e in enemiesBySpawnLevel) {
+				e.WaveSpawnedAt = 1;
+			}
+		}
+	}
+
+	public override void CreateUnitTemplates (string jsonText) {
+		base.CreateUnitTemplates (jsonText);
+		// Used for the spawning algorithm
+		sortEnemiesBySpawnLevel();
+	}
+	
 	EnemySpawnPoint createNewSpawnPoint () {
 		GameObject spawnPoint = Instantiate(spawnPointPrefab) as GameObject;
 		spawnPoint.transform.SetParent(spawnPointParent);
@@ -142,6 +166,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	IEnumerator RunSpawnWave (int waveIndex, float spawnDelay) {
 		int enemiesInWaveCount = GetEnemyCount(waveIndex);
+		enemiesAlive += enemiesInWaveCount;
 		string[] enemyTypes = GetEnemyTypes(waveIndex);
 		for (int i = 0; i < enemiesInWaveCount; i++) {
 			SpawnEnemy(randomSpawnPoint(), (Direction)(i%4), enemyTypes[i]);
@@ -151,7 +176,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	}
 
 	EnemySpawnPoint randomSpawnPoint () {
-		return spawnPoints[Random.Range(0, spawnPoints.Count)];
+		return spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Count)];
 	}
 
 	void updateEnemiesAliveText () {
@@ -160,7 +185,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 
 	int GetEnemyCount (int waveIndex) {
 		// TODO: Implement actual difficulty curve
-		return spawnCountEquation.Calculate(waveIndex);
+		return spawnCountEquation.CalculateAsInt(waveIndex);
 	}
 
     public void setWave(int waveIndex) {
@@ -169,23 +194,42 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
         SpawnWave();
     }
 
-	string[] GetEnemyTypes (int waveIndex) {
-		// TODO: Implement actual enemy type spawning formula
-		string [] enemyKeys = ArrayUtil.Fill(new string[GetEnemyCount(waveIndex)], UNDEAD_KEY);
-		for (int i = 0; i < enemyKeys.Length; i++) {
-			if (i != 0) {
-				if (i % 5 == 0) {
-					enemyKeys[i] = BRUTE_KEY;
-				} else if (i % 7 == 0) {
-					enemyKeys[i] = SHADE_KEY;
-				}
+	string[] GetEnemyTypes (int waveIndex, bool shouldShuffle = true) {
+		int remainingEnemiesToSpawn = spawnCountEquation.CalculateAsInt(waveIndex);
+		List<string> wave = new List<string>();
+		for (int i = enemiesBySpawnLevel.Count - 1; i >= 0; i--) {
+			if (remainingEnemiesToSpawn <= 0) {
+				break;
 			}
+			Enemy enemy = enemiesBySpawnLevel[i];
+			int numberOfType;
+			if (enemy.IsGruntType) {
+				numberOfType = remainingEnemiesToSpawn; 
+			} else {
+				numberOfType = determineEnemyCountInWave(waveIndex, enemy);
+				numberOfType = Mathf.Clamp(numberOfType, 0, remainingEnemiesToSpawn);
+				remainingEnemiesToSpawn -= numberOfType;
+			}
+			wave.AddRange(Enumerable.Repeat(enemy.Type, numberOfType));
 		}
-		return enemyKeys;
+		if (shouldShuffle) {
+			wave.OrderBy(random => Guid.NewGuid());
+		}
+		return wave.ToArray();
+	}
+
+	int determineEnemyCountInWave (int waveIndex, Enemy enemy) {
+		if (waveIndex < enemy.WaveSpawnedAt) {
+			return 0;
+		} else {
+			int range = waveIndex - enemy.WaveSpawnedAt;
+			int zeroOffset = 1;
+			return enemy.Quantity * (range / enemy.Frequency + zeroOffset);
+		}
 	}
 
 	public void SpawnEnemy (EnemySpawnPoint spawnPoint, Direction spawnDirection, string enemyKey) {
-		if (orderedEnemyPrefabs.ContainsKey(enemyKey)) {
+		try {
 			EnemyBehaviour enemyBehaviour = GetEnemyObject(enemyKey, spawnPoint.GetPosition());
 			enemyBehaviour.Setup(this);
 			GameObject enemy = enemyBehaviour.gameObject;
@@ -193,24 +237,42 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
             AddActiveEnemy(enemyBehaviour);
 			enemyBehaviour.SetEnemy(templateUnits[enemyKey]);
 			enemyBehaviour.SetPath(new Queue<MapTileBehaviour>(spawnPoint.CurrentPath));
-			enemyBehaviour.SetOffset(new Vector3(Random.Range(0, 0.2f), 0, Random.Range(0, 0.2f)));
+			enemyBehaviour.SetOffset(new Vector3(UE.Random.Range(0, 0.2f), 0, UE.Random.Range(0, 0.2f)));
 			enemy.transform.SetParent(transform);
 			// Placeholder: because undead is sprite;
 			Quaternion angle = Quaternion.identity;
 			if (enemyKey == UNDEAD_KEY) {
 				angle.eulerAngles = new Vector3(90, 0, 0);
 			} else {
-				float yRotation = DirectionUtil.DegreesToRotate(enemyBehaviour.DirectionFacing, DirectionUtil.OppositeDirection(spawnDirection));
+				enemyBehaviour.DirectionFacing = getDirectionFacing(spawnPoint.GetPosition(), worldController.ICoreOrbInstance.transform.position);
+				float yRotation = DirectionUtil.GetAngleFromDirection(enemyBehaviour.DirectionFacing);
 				angle.eulerAngles = new Vector3(0, yRotation, 0);
 			}
 			enemy.transform.eulerAngles = angle.eulerAngles;
 			enemyBehaviour.OnSpawn();
 			enemyBehaviour.NavigatePath();
-		} else {
+		} catch {
 			Debug.LogErrorFormat("ERROR: No enemy of type {0}", enemyKey);
 		}
 	}
 		
+	Direction getDirectionFacing (Vector3 position, Vector3 coreOrbPosition) {
+		Vector3 difference = position - coreOrbPosition;
+		if (Mathf.Abs(position.x - coreOrbPosition.x) > Mathf.Abs(position.y - coreOrbPosition.y)) {
+			if (difference.x > 0) {
+				return Direction.East;
+			} else {
+				return Direction.West;
+			}
+		} else {
+			if (difference.y > 0) {
+				return Direction.South;
+			} else {
+				return Direction.North;
+			}
+		}
+	}
+
 	EnemyBehaviour GetEnemyObject (string enemyKey, Vector3 startPosition) {
 		ActiveObjectBehaviour behaviour;
 		if (!TryGetActiveObject(enemyKey, startPosition, out behaviour)) {
@@ -257,6 +319,19 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
         }
     }
 
+	// Worth checking so we can end the wave if only shades remain
+	public bool OnlyNonLethalEnemiesAlive () {
+		bool onlyNonLethal = true;
+		foreach (EnemyBehaviour enemy in activeEnemies) {
+			onlyNonLethal &= enemy is ShadeBehaviour;
+			if (!onlyNonLethal) {
+				return false;
+			}
+		}
+		// Will always be true if it reaches this point
+		return onlyNonLethal;
+	}
+
     public void KillAllEnemies() {
         for (int i = 0; i < activeEnemies.Count; i++) {
             activeEnemies.ElementAt(i).Destroy();
@@ -270,6 +345,11 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	}
 
 	void HandleEnemyKilled () {
+		enemiesAlive = Mathf.Clamp(enemiesAlive - 1, 0, int.MaxValue);
+		if (OnlyNonLethalEnemiesAlive()) {
+			// Kills any shades still alive (because otherwise it slows down the gameflow unecessarily
+			KillAllEnemies();
+		}
 		if (enemiesAlive == 0) {
 			transitionToNextWave();
 		}
@@ -312,7 +392,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	}
 
 	MapTileBehaviour chooseTile (MapTileBehaviour currentTile, MapTileBehaviour goalTile, Direction previousDirection) {
-		if (Random.Range(0.0f, 1.0f) >= 0.25f) {
+		if (UE.Random.Range(0.0f, 1.0f) >= 0.25f) {
 			return closerTile(currentTile, goalTile);
 		} else {
 			return sideTile(currentTile, previousDirection);

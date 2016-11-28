@@ -382,7 +382,7 @@ public class AudioController : Controller, IAudioController {
 			try {
 				audioFile.SetClip((AudioClip) request.asset);
 			} catch (Exception e) {
-				Debug.LogError(e + ": " + request.asset + " is not a valid AudioClip");
+				Debug.LogError(e + ": " + audioFile.ToString() + " is not a valid AudioClip");
 			}
 		}
 	}

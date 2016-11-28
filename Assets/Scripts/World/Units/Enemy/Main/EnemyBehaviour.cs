@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class EnemyBehaviour : MobileAgentBehaviour {
+	const float K_SPEED = 0.5f;
 	public Direction DirectionFacing;
 	TowerBehaviour previousTarget;
 	Enemy enemy;
@@ -30,7 +31,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			}
 		}
 	}
-    public int ISpeed{
+    public float ISpeed{
         get{
             return enemy.Speed;
         }
@@ -40,11 +41,9 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			return path != null && path.Count > 0;
 		}
 	}
-	float _placeholderMovementSpeed = 0.5f;
 	float movementSpeed {
 		get {
-			// TODO: Implement actual speed value in JSON
-			return _placeholderMovementSpeed;
+			return K_SPEED / enemy.Speed;
 		}
 	}
 
@@ -63,8 +62,6 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		base.updateCurrentLocation (currentTile);
 	}
 
-	protected override void FetchReferences() {}
-
 	public override void Destroy () {
 		base.Destroy ();
 		EventController.Event(EventType.EnemyDestroyed);
@@ -77,7 +74,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
     protected override void HandleNamedEvent(string eventName) {}
 
 		
-	void ResumeMoving () {
+	protected void resumeMoving () {
 		if (this && WorldController.Instance && WorldController.Instance.ICoreOrbInstance != null) {
 			NavigatePath();
 		}
@@ -140,11 +137,15 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	void OnTriggerEnter (Collider collider) {
-		checkToAttack(collider);
+		if (!collider.isTrigger) {
+			checkToAttack(collider);
+		}
 	}
 
 	void OnTriggerStay (Collider collider) {
-		checkToAttack(collider);
+		if (!collider.isTrigger) {
+			checkToAttack(collider);
+		}
 	}
 
 	void checkToAttack (Collider collider) {
@@ -153,7 +154,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 			Halt();
 			Attack(currentTarget, enemy.AttackDamage);
 			if (previousTarget != currentTarget) {
-				currentTarget.SubscribeToDestruction(ResumeMoving);
+				currentTarget.SubscribeToDestruction(resumeMoving);
 				previousTarget = currentTarget;
 			}
 		}

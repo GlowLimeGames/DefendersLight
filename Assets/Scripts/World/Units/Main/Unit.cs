@@ -7,6 +7,10 @@ using UnityEngine;
 
 [System.Serializable]
 public abstract class Unit : IUnit {
+	protected const string NULL_STRING = "null";
+	protected const int INVALID_VALUE = -1;
+	protected const int NONE_VALUE = 0;
+
 	#region Properties
 
 	protected IWorldController controller;
@@ -72,6 +76,16 @@ public abstract class Unit : IUnit {
 	public string IDescription {
 		get {
 			return this.Description;
+		}
+	}
+	public string Ammo;
+	public string IAmmo {
+		get {
+			if (Ammo == NULL_STRING || string.IsNullOrEmpty(Ammo)) {
+				return null;
+			} else {
+				return Ammo;
+			}
 		}
 	}
 	protected ActiveObjectBehaviour objectLink;
@@ -170,6 +184,7 @@ public abstract class Unit : IUnit {
 	public abstract Sprite GetSprite ();
 		
 	public virtual void Copy (Unit unit) {
+		this.Class = unit.Class;
 		this.Type = unit.Type;
 		this.Health = unit.Health;
 		this.AttackDamage = unit.AttackDamage;
@@ -180,6 +195,7 @@ public abstract class Unit : IUnit {
 		this.Description = unit.Description;
 		this.controller = unit.controller;
 		this._id = unit._id;
+		this.Ammo = unit.IAmmo;
 	}
 
 	public abstract string GetDescription();

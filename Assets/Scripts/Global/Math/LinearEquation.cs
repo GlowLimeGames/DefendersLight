@@ -6,15 +6,15 @@
 [System.Serializable]
 public class LinearEquation : MathEquation {
 	public float Slope;
-	public int YIntercept;
+	public float YIntercept;
 
-	public LinearEquation (float slope, int yIntercept) {
+	public LinearEquation (float slope, float yIntercept) {
 		this.Slope = slope;
 		this.YIntercept = yIntercept;
 	}
 
-	public override int Calculate (int input) {
-		return (int) (Slope * input) + YIntercept;
+	public override float Calculate (float input) {
+		return Slope * input + YIntercept;
 	}
 
 	public static LinearEquation Default {

@@ -7,8 +7,11 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
+	protected float attackDelay = 0;
 	EventActionf onUpdateHealth;
 	protected UnitController unitController;
+	// A child object that represents the enemies range (using a separate collider)
+	RangedAttackBehaviour attackModule = null;
 	public string Name;
 	public int Health;
 	public int BaseDamage;
@@ -16,6 +19,8 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public string LevelString;
 	public float AttackDelay;
 	int _maxHealth = 0;
+	// Makes sure that we don't keep calling events related to a destroyed unit
+	bool hasBeenDestroyed = false;
     public bool isInvulnerable = false;
 	public AttackType AttackType;
 	public virtual float IAttackDelay {
@@ -38,13 +43,24 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 			return Health == IMaxHealth;
 		}
 	}
-	public string IType {
+	public virtual string IType {
 		get {
 			return unit.Type;
 		}
 	}
-	Unit unit;
-
+	public string IAmmo {
+		get {
+			return unit.IAmmo;
+		}
+	}
+	protected Unit unit;
+	protected ActiveObjectBehaviour target;
+	public bool HasTarget {
+		get {
+			// MonoBehaviours autocast to bools for whether they exist in the world (returns false if null)
+			return target;
+		}
+	}
 	EventAction onDestroyed;
 	[SerializeField]
 	protected bool hasAttack;
@@ -83,24 +99,70 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	protected override void SetReferences () {
-		SetStats();
-	}
-
-	protected override void CleanupReferences () {
-		base.CleanupReferences();
+		base.SetReferences ();
+		if (hasAttack) {
+			attackModule = GetComponentInChildren<RangedAttackBehaviour>();
+		}
 	}
 
 	public virtual void Setup (UnitController unitController) {
 		this.unitController = unitController;
 	}
 
-	public virtual void Attack(ActiveObjectBehaviour activeAgent, int damage) {
-		StartCoroutine(AttackCooldown());
-		activeAgent.Damage(damage);
+	protected void clearTarget () {
+		this.target = null;
 	}
 
+	public virtual void Attack(ActiveObjectBehaviour target, int damage) {
+		this.target = target;
+		// Ensures that the same event is not subscribed multiple times
+		target.UnusubscribeFromDestruction(clearTarget);
+		target.SubscribeToDestruction(clearTarget);
+		StartCoroutine(AttackCooldown());
+		if (AttackType == AttackType.Melee) {
+			StartCoroutine(handleMeleeAttack(target, damage));
+		} 
+		// Energy attacks are treated as ranged, however they're specialized because they can damage Shades (only towers with this ability)
+		else if (AttackType == AttackType.Energy || AttackType == AttackType.Projectile) {
+			StartCoroutine(handleRangedAttack(target, damage));
+		}
+	}
+		
+	protected virtual IEnumerator handleMeleeAttack (ActiveObjectBehaviour target, int damage) {
+		yield return new WaitForSeconds(attackDelay);
+		meleeAttack(target, damage);
+	}
+
+	protected virtual void meleeAttack (ActiveObjectBehaviour target, int damage) {
+		target.Damage(damage);
+	}
+
+	protected virtual IEnumerator handleRangedAttack (ActiveObjectBehaviour target, int damage) {
+		yield return new WaitForSeconds(attackDelay);
+		rangedAttack(target, damage);
+	}
+
+	protected virtual ProjectileBehaviour rangedAttack (ActiveObjectBehaviour target, int damage) {
+		ProjectileBehaviour missileBehavior;
+		// Need a superclass ref to reuse the method inside WorldController for the spawn poolsb
+		ActiveObjectBehaviour missileStandIn;
+		if (world && world.TryPullFromSpawnPool(IAmmo, out missileStandIn)) {
+			missileBehavior = missileStandIn as ProjectileBehaviour;
+			missileBehavior.transform.position = transform.position;
+		} else {
+			missileBehavior = Instantiate(unitController.loadProjectilePrefab(IAmmo), transform.position, Quaternion.identity) as ProjectileBehaviour;
+		}
+		missileBehavior.setUnit(this.unit);
+		missileBehavior.SetTarget(target);
+		return missileBehavior;
+	}
+		
 	public virtual void Damage(int damage) {
-        if (!isInvulnerable) {
+		if (hasBeenDestroyed) {
+			return;
+		}
+
+		if (!isInvulnerable) {
             Health -= damage;
 			callUpdateHealth((float) Health / (float) IMaxHealth);
         }
@@ -122,6 +184,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	public virtual void ResetStats () {
 		Health = IMaxHealth;
+		hasBeenDestroyed = false;
 		updateHealthBar();
 	}
 
@@ -150,6 +213,8 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	public virtual void Destroy() {
 		unitController.HandleObjectDestroyed(this);	
+		hasBeenDestroyed = true;
+		ToggleColliders(false);
 		if (onDestroyed != null) {	
 			onDestroyed();
 		}
@@ -177,12 +242,6 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		attackCooldownActive = false;
 	}
 
-	public void ToggleColliders (bool areCollidersEnabled) {
-		foreach (Collider collider in GetComponents<Collider>()) {
-			collider.enabled = areCollidersEnabled;
-		}
-	}
-
 	public void SubscribeToDestruction (EventAction action) {
 		onDestroyed += action;
 	}
@@ -204,6 +263,9 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	protected void setUnit (Unit unit) {
 		this.unit = unit;
 		this.Health = unit.Health;
+		if (attackModule) {
+			attackModule.SetUnit(unit);
+		}
 	}
 
 	public virtual void ToggleActive (bool isActive) {

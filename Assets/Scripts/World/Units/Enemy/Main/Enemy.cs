@@ -12,13 +12,14 @@ public class Enemy : Unit {
 
 	static Dictionary<string, UnityEngine.Sprite> enemySprites = new Dictionary<string, UnityEngine.Sprite>();
 	public const string REWARDS_KEY = "Death Rewards";
+	const string GRUNT_TYPE = "Undead";
 
 	#endregion
 
 	Sprite sprite;
 
 	public RewardAmount DeathReward;
-    public int Speed;
+    public float Speed;
     public int Agression;
 	public int Frequency;
 	public int Quantity;
@@ -33,8 +34,14 @@ public class Enemy : Unit {
 		}
 	}
 
+	public bool IsGruntType {
+		get {
+			return IType == GRUNT_TYPE;
+		}
+	}
+
 	public Enemy (string type, int health, int damage, float cooldown, int range, int attackRadius, MapLocation location, string description, RewardAmount deathReward,
-		IWorldController worldController, int speed, int agro) : 
+		IWorldController worldController, float speed, int agro) : 
 	base(type, health, damage, cooldown, range, attackRadius, location, description, worldController) {
 		this.DeathReward = deathReward;
         this.Speed = speed;
@@ -48,6 +55,14 @@ public class Enemy : Unit {
 		try {
 			Enemy enemyData = (Enemy) unit;
 			this.DeathReward = enemyData.DeathReward;
+			this.Speed = enemyData.Speed;
+			this.Agression = enemyData.Agression;
+			this.Frequency = enemyData.Frequency;
+			this.Quantity = enemyData.Quantity;
+			this.FlavorText = enemyData.FlavorText;
+			this.ManaReward = enemyData.ManaReward;
+			this.XPReward = enemyData.XPReward;
+			this.WaveSpawnedAt = enemyData.WaveSpawnedAt;
 		} catch {
 			UnityEngine.Debug.LogWarningFormat("Unable to fully copy unit. Is not of type {0}", this.GetType());
 		}

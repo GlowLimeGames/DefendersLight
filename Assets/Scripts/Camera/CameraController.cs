@@ -17,9 +17,15 @@ public class CameraController : Controller {
 	MapController map;
 	new Camera camera;
 
-    public void resetCameraPosition(){
+	public void ResetCameraPosition(){
         camera.transform.position = new Vector3(0, 5f, -.45f);
     }
+		
+	public Vector3 Position {
+		get {
+			return transform.position;
+		}
+	}
 
 	public Vector3 ICameraDirection {
 		get {

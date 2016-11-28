@@ -6,16 +6,16 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class TowerBehaviour : StaticAgentBehaviour {
+public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
+	float DEFAULT_TOWER_ATTACK_DELAY = 0.5f;
+	protected TowerController controller;
 	protected Tower tower;
 	[SerializeField]
 	SpriteRenderer spriteRenderer;
 
 	[SerializeField]
 	GameObject MissilePrefab;
-
-	RangedAttackBehaviour attackModule = null;
-
+	protected bool isTrackingTarget;
 	public override float IAttackDelay {
 		get {
 			return tower.AttackCooldown;
@@ -36,14 +36,20 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 			return (float) this.Health / (float) tower.Health;
 		}
 	}
+	public bool HasIllumination {
+		get {
+			if (tower == null) {
+				return false;
+			} else {
+				return tower.HasIllumination;
+			}
+		}
+	}
 
 	public virtual void SetTower (Tower tower) {
 		this.tower = tower;
 		if (spriteRenderer) {
 			spriteRenderer.sprite = tower.GetSprite();
-		}
-		if (attackModule) {
-			attackModule.SetUnit(tower);
 		}
 		setUnit(tower);
 	}
@@ -54,15 +60,38 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		}
 	}
 
+	public int IlluminationRadius {
+		get {
+			// The core orb can be illuminated even if there is nothing else illuminating it
+			if (tower == null || (!(tile.IIsIlluminated || this is CoreOrbBehaviour))) {
+				return NONE_VALUE;
+			} else {
+				if (tower.IlluminationRadiusIsVariable) {
+					return CalculateVariableIlluminationRadius();
+				} else {
+					return tower.IIlluminationRadius;
+				}
+			}
+		}
+	}
+
+	public MapTileBehaviour ITile {
+		get {
+			return this.tile;
+		}
+	}
+
+	int mostRecentIlluminationCount = NONE_VALUE;
+	int mostRecentIlluminationRadius = NONE_VALUE;
+
 	protected override void SetReferences () {
 		base.SetReferences ();
-		attackModule = GetComponentInChildren<RangedAttackBehaviour>();
+		attackDelay = DEFAULT_TOWER_ATTACK_DELAY;
 	}
 
 	protected override void FetchReferences () {
-		if (hasAttack) {
-			attackModule = GetComponentInChildren<RangedAttackBehaviour>();
-		}
+		base.FetchReferences();
+		this.controller = TowerController.Instance;
 	}
 
 	public override void Destroy () {
@@ -71,7 +100,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 			WorldController.Instance.RemoveActiveTower(this);
 		}
 		EventController.Event(EventType.TowerDestroyed);
-
 	}
 
 	protected override void CleanupReferences () {
@@ -86,8 +114,8 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 
 	}
 
-	public virtual void PlayBuildSound () {
-		EventController.Event(EventType.BuildTower);
+	public virtual void CallBuildEvent () {
+		EventController.Event(EventType.TowerBuilt);
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
@@ -101,30 +129,50 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 		EventController.Event(EventType.TowerSold);
 	}
 
-	public override void Attack(ActiveObjectBehaviour activeAgent, int damage) {
+	public override void Attack(ActiveObjectBehaviour target, int damage) {
 		// Tower cannot attack if its square is not illuminated:
 		if (!tile.IIsIlluminated) {
 			return;
 		}
-
-		StartCoroutine(AttackCooldown());
-		ProjectileBehaviour missileBehavior;
-		if (ProjectilePool.Instance && !ProjectilePool.Instance.IsEmpty) {
-			missileBehavior = ProjectilePool.Instance.Take();
-			missileBehavior.transform.position = transform.position;
-		} else {
-			missileBehavior = ((GameObject) Instantiate(MissilePrefab, transform.position, Quaternion.identity)).GetComponent<ProjectileBehaviour>();
+		// Base method updates whether we should be tracking the enemy so should be called first
+		base.Attack(target, damage);
+		if (tower.IRotateToTarget && !isTrackingTarget) {
+			StartCoroutine(trackTarget(target.transform));
 		}
-		missileBehavior.SetTower(tower);
-		missileBehavior.SetTarget(activeAgent);
-		// StartCoroutine(trackMissile(missileBehavior.transform, 1f));
+	}
+// 
+//	protected override ProjectileBehaviour handleRangedAttack (ActiveObjectBehaviour target, int damage) {
+//		ProjectileBehaviour missile = base.handleRangedAttack (target, damage);
+////		if (tower.IRotateToTarget) {
+////		//	StartCoroutine(trackMissile(missile.transform, missile.IMaxLifeSpan));
+////		}
+//		return missile;
+//	}
+
+	IEnumerator trackTarget (Transform targetTransform, bool smoothTransition = true) {
+		isTrackingTarget = true;
+		if (smoothTransition) {
+			Quaternion startingRotation = transform.rotation;
+			float timer = 0;
+			while (HasTarget && timer <= attackDelay) {
+				transform.rotation = Quaternion.Lerp(startingRotation, 
+					Quaternion.LookRotation(targetTransform.position - transform.position), 
+					timer / attackDelay);
+				yield return new WaitForEndOfFrame();
+				timer += Time.deltaTime;
+			}
+		}
+		while (HasTarget) {
+			transform.LookAt(targetTransform);
+			yield return new WaitForEndOfFrame();
+		}
+		isTrackingTarget = false;
 	}
 
 	IEnumerator trackMissile (Transform missileTransform, float time) {
 		float timer = 0;
 		while (timer <= time) {
-			spriteRenderer.transform.LookAt(missileTransform, Vector3.up);
-			spriteRenderer.transform.eulerAngles = new Vector3(90, spriteRenderer.transform.eulerAngles.y, spriteRenderer.transform.eulerAngles.z);
+			transform.LookAt(missileTransform, Vector3.up);
 			timer += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}
@@ -140,6 +188,32 @@ public abstract class TowerBehaviour : StaticAgentBehaviour {
 	public override void HandleColliderStayTrigger (Collider collider)	{
 		base.HandleColliderStayTrigger (collider);
 		checkToAttack(collider);
+	}
+
+	public int UpdateIlluminationRadius () {
+		if (tile) {
+			mostRecentIlluminationCount = tile.IllumninationCount;
+		} else {
+			mostRecentIlluminationCount = NONE_VALUE;
+		}
+		mostRecentIlluminationRadius = IlluminationRadius;
+		return mostRecentIlluminationRadius;
+	}
+		
+	public bool ShouldReculateIllumination () {
+		if (tile) {
+			return mostRecentIlluminationCount != tile.IllumninationCount && mostRecentIlluminationRadius != IlluminationRadius;
+		} else {
+			return false;
+		}
+	}
+
+	public int CalculateVariableIlluminationRadius () {
+		if (tower.IsReflective) {
+			return Mathf.CeilToInt((float)tile.IllumninationCount * tower.IReflectivitiy);
+		} else {
+			return NONE_VALUE;
+		}
 	}
 
 	void checkToAttack (Collider collider) {

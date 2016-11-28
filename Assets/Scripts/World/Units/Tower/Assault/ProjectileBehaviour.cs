@@ -7,10 +7,19 @@ using UnityEngine;
 using System.Collections;
 
 public class ProjectileBehaviour : MobileAgentBehaviour {
+	public override string IType {
+		get {
+			return Name;
+		}
+	}
 	[SerializeField]
 	float maxLifespan = 3.5f;
+	public float IMaxLifeSpan {
+		get {
+			return maxLifespan;
+		}
+	}
 	ActiveObjectBehaviour _target;
-	Tower tower;
 	ActiveObjectBehaviour ITarget {
 		get {
 			return _target;
@@ -23,51 +32,64 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	}
 
 	protected override void FetchReferences() {
-		
+		world = WorldController.Instance;
 	}
 
 	protected override void CleanupReferences () {
-		
+		base.CleanupReferences();
+		checkToUnsubscribeCleanup();
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		
+		// NOTHING
 	}
 
 	public override void MoveTo (MapLocation location) {
 		throw new System.NotImplementedException();
 	}
-
-	// Sets the tower that spawned this projectile
-	public void SetTower (Tower tower) {
-		this.tower = tower;
-		this.setUnit(tower);
-	}
-
 	public void SetTarget (ActiveObjectBehaviour target) {
 		this._target = target;
+		this._target.SubscribeToDestruction(cleanup);
 		StartCoroutine(MoveTo(target.gameObject, 0.5f));
 		StartCoroutine(DelayedAttack(target, 0.5f));
+	}
+
+	void checkToUnsubscribeCleanup () {
+		// Don't try to call the cleanup method if this object has destroyed
+		if (_target) {
+			_target.UnusubscribeFromDestruction(cleanup);
+		}
+	}
+
+	void cleanup () {
+		checkToUnsubscribeCleanup();
+		StopAllCoroutines();
+		tryReclaimInSpawnPool();
+	}
+
+	bool tryReclaimInSpawnPool () {
+		if (world) {
+			world.AddToSpawnPool(this);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	IEnumerator DelayedAttack (ActiveObjectBehaviour target, float waitTime) {
 		yield return new WaitForSeconds(waitTime);
 		if (target) {
-			Attack(target, tower.AttackDamage);
+			Attack(target, unit.AttackDamage);
 		}
-		StartCoroutine(TimedReturnToPool(0.25f));
+		if (isActiveAndEnabled) StartCoroutine(TimedReturnToPool(0.25f));
 	}
 
 	public override void Attack (ActiveObjectBehaviour activeAgent, int damage) {
-		base.Attack (activeAgent, tower.AttackDamage);
+		base.Attack (activeAgent, unit.AttackDamage);
 	}
 		
 	IEnumerator TimedReturnToPool (float waitTime = 0.5f) {
 		yield return new WaitForSeconds(waitTime);
-		if (ProjectilePool.Instance) {
-			ProjectilePool.Instance.Give(this);
-		} else {
-			Destroy(gameObject);
-		}
+		tryReclaimInSpawnPool();
 	}
 }

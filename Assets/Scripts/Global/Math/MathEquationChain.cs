@@ -11,11 +11,11 @@ public class MathEquationChain : MathEquation {
 		this.SubEquations = subEquations;
 	}
 
-	public override int Calculate (int input) {
+	public override float Calculate (float input) {
 		if (SubEquations == null || SubEquations.Length == 0) {
 			return base.Calculate (input);
 		} else {
-			int currentValue = input;
+			float currentValue = input;
 			for (int i = 0; i < SubEquations.Length; i++) {
 				currentValue = SubEquations[i].Calculate(currentValue);
 			}

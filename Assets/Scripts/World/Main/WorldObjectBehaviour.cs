@@ -8,7 +8,14 @@ using System.Collections;
 
 public abstract class WorldObjectBehaviour : MannBehaviour {
 	[SerializeField]
+	protected bool isSprite = false;
+	protected WorldController world;
+	[SerializeField]
 	protected MapLocation Location = new MapLocation(0, 0);
+
+	protected override void FetchReferences () {
+		world = WorldController.Instance;
+	}
 
 	public void SetLocation (int x, int y) {
 		Location.Set(x, y);
@@ -20,6 +27,10 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 
 	public MapLocation GetLocation () {
 		return Location;
+	}
+
+	protected override void SetReferences () {
+		base.SetReferences ();
 	}
 
 	protected IEnumerator MoveTo (GameObject destination, float moveTime = 1.0f) {
@@ -39,12 +50,16 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 				destination.transform.position,
 				timer/moveTime
 			);
-
+			updateRotation(destination);
 			yield return new WaitForEndOfFrame();
 		}
 		if (transform != null && destination != null) {
 			transform.position = destination.transform.position;
 		}
+	}
+
+	protected virtual void updateRotation (GameObject destination) {
+		transform.LookAt(destination.transform);
 	}
 
 	protected IEnumerator TimedDestroy (float delayTime = 0.5f) {
@@ -56,4 +71,11 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 		yield return new WaitForSeconds(delayTime);
 		gameObject.SetActive(isActive);
 	}
+
+	public virtual void ToggleColliders (bool areCollidersEnabled) {
+		foreach (Collider collider in GetComponentsInChildren<Collider>()) {
+			collider.enabled = areCollidersEnabled;
+		}
+	}
+
 }

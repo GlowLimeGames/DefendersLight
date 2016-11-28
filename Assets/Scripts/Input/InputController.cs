@@ -230,13 +230,14 @@ public class InputController : Controller {
 		if (!isDraggingObject) {
 			if (previousSwipingPointer != null && pointer.ID == previousSwipingPointer.ID) {
 				Vector3 deltaPosition = pointer.Position - previousSwipingPointer.Position;
-				if (Math.Abs(Math.Sign(deltaPosition.x) - Math.Sign(swipeDirection.x)) < 2 && 
-					Math.Abs(Math.Sign(deltaPosition.y) - Math.Sign(swipeDirection.y)) < 2) {
+				if (Math.Abs(Math.Sign(deltaPosition.x) - Math.Sign(swipeDirection.x)) == 0 && 
+					Math.Abs(Math.Sign(deltaPosition.y) - Math.Sign(swipeDirection.y)) == 0) {
 					panSpeed += PanAcceleration;
 				} else {
 					panSpeed = 0;
 				}
 				swipeDirection = deltaPosition;
+				panSpeed = Mathf.Clamp(panSpeed, 0, MaxPanSpeed);
 				deltaPosition *= -panSpeed;
 				camera.Pan(new Vector3(deltaPosition.x, 0, deltaPosition.y));
 			}
@@ -261,7 +262,7 @@ public class InputController : Controller {
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-
+		// NOTHING
 	}
 
 	#endregion

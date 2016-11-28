@@ -174,7 +174,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 106030}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 3, z: 1}
@@ -202,6 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 846144f104e0c407289598901190cc1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSprite: 1
   Location:
     X: 0
     Y: 0
@@ -219,7 +220,6 @@ MonoBehaviour:
   debugging: 0
   spriteRenderer: {fileID: 21202822}
   MissilePrefab: {fileID: 185974, guid: 3581d8a813a9e4f2595c1e54cd94244e, type: 2}
-  sellValue: 3
 --- !u!114 &11460012
 MonoBehaviour:
   m_ObjectHideFlags: 1

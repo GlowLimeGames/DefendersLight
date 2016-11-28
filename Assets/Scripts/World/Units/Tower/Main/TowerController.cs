@@ -13,8 +13,9 @@ using UnityEngine.EventSystems;
 using System.Text.RegularExpressions;
 
 public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerController {
+	public static TowerController Instance;
 	public const string TOWER_TAG = "Tower";
-	const float DRAG_HEIGHT_OFFSET = 3f;
+	const float DRAG_HEIGHT_OFFSET = 0.5f;
 	CameraController gameCamera;
 
 	public GameObject CoreOrbPrefab;
@@ -41,6 +42,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		GameObject coreOrb = (GameObject) Instantiate(CoreOrbPrefab);
 		CoreOrbInstance = coreOrb;
 		CoreOrbBehaviour coreOrbBehaviour = coreOrb.GetComponent<CoreOrbBehaviour>();
+		coreOrbBehaviour.Setup(this);
 		coreOrbBehaviour.SetTower(templateUnits[CoreOrbBehaviour.CORE_ORB_KEY]);
 		mapTile.PlaceStaticAgent(coreOrbBehaviour, false);
 	}
@@ -75,9 +77,23 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		if (potentialPurchaseTower != null) {
 			Destroy(potentialPurchaseTower);
 		}
-		Vector3 startPosition = getDragPosition(dragEvent, towerPanel.transform.position);
+		Vector3 startPosition = getDragPosition(dragEvent);
 		this.potentialPurchaseTower = GetTowerBehaviourFromTower(towerPanel.GetTower(), startPosition, false);
+	}
 
+	Vector3 getPointerWorldPosition (PointerEventData pointerEvent) {
+		Vector3 dragPosition = pointerEvent.position;
+		dragPosition.z -= Camera.main.transform.position.z;
+		return Camera.main.ScreenToWorldPoint(dragPosition);
+	}
+
+	Vector3 getTilePosition (Vector3 pointerPosition) {
+		RaycastHit hit;
+		if (Physics.Raycast(pointerPosition, gameCamera.ICameraDirection, out hit)) {
+			return hit.point;
+		} else {
+			return Vector3.zero;
+		}
 	}
 
 	public TowerBehaviour GetTowerBehaviourFromTower (Tower tower, Vector3 startPosition, bool shouldStartActive = false) {
@@ -108,23 +124,20 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		}
 	}
 		
-	public void HandleDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
-		potentialPurchaseTower.transform.position = getDragPosition(dragEvent, towerPanel.transform.position);
-		HighlightSpotToPlace(potentialPurchaseTower.transform.position);
-	}
-
-	Vector3 getDragPosition (PointerEventData pointerEvent, Vector3 panelPosition) {
-		Vector3 dragPosition = pointerEvent.position;
-		dragPosition.z = panelPosition.z - Camera.main.transform.position.z;
-		dragPosition = Camera.main.ScreenToWorldPoint(dragPosition);
-		// dragPosition.y = DRAG_HEIGHT_OFFSET;
+	Vector3 getDragPosition (PointerEventData dragEvent) {
+		Vector3 pointerPosition = getPointerWorldPosition(dragEvent);
+		Vector3 towerPosition = getTilePosition(pointerPosition);
 		float angle = gameCamera.ICameraAngleRad;
 		Vector3 offset = new Vector3(
 			0,
-			-Mathf.Cos(angle) * DRAG_HEIGHT_OFFSET,
-			Mathf.Sin(angle) * DRAG_HEIGHT_OFFSET
+			Mathf.Cos(angle) * DRAG_HEIGHT_OFFSET,
+			-Mathf.Sin(angle) * DRAG_HEIGHT_OFFSET
 		);
-		return dragPosition + offset;
+		return towerPosition + offset;
+	}
+	public void HandleDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
+		potentialPurchaseTower.transform.position = getDragPosition(dragEvent);
+		HighlightSpotToPlace(potentialPurchaseTower.transform.position);
 	}
 
 	void HighlightSpotToPlace (Vector3 dragPosition) {
@@ -158,30 +171,18 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	public void RefreshIlluminations () {
 		foreach (TowerBehaviour tower in activeTowers) {
 			if (tower is IlluminationTowerBehaviour) {
-				worldController.SendIlluminationToMap(tower as IlluminationTowerBehaviour);
+				worldController.SendIlluminationToMap(tower as IlluminationTowerBehaviour, shouldPlaySound:false);
 			}
 		}
 	}
-
-
+		
     public void compareTowerLevels() {
-
-
         foreach (Tower tower in templateUnits.Values) {
-
             if (tower.UnlockLevel == dataController.PlayerLevel) {
-
-
-                TowerUnlockedScreen.towerUnlocked = true;
+				EventController.Event(EventType.TowerUnlocked);
                 TowerUnlockedScreen.textToDisplay = "Tower Unlocked.";
-
-
             }
-
-
-
         }
-
     }
 
     public override void HandleObjectDestroyed (ActiveObjectBehaviour activeObject) {
@@ -194,13 +195,10 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 			previousHighlightedMapTile.PlaceStaticAgent(potentialPurchaseTower);
 			towerPanel.OnPurchased();
 		} else {
-			// TODO: Collect in object pool instead of destroying
-			Destroy(potentialPurchaseTower.gameObject);
+			HandleObjectDestroyed(potentialPurchaseTower);
 		}
 		potentialPurchaseTower = null;
 	}
-
-	public static TowerController Instance;
 
 	public Tower[] GetActive() {
 		throw new System.NotImplementedException ();
@@ -223,12 +221,13 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	}
 
     public void DestroyAllTowers() {
-        foreach (TowerBehaviour tower in activeTowers) {         
-            if (!(tower is CoreOrbBehaviour)) {
-                tower.Destroy();
-            }
-
-        }
+        
+		for (int i = 0; i < activeTowers.Count; i++) {
+			TowerBehaviour tower = activeTowers.ElementAt(i) as TowerBehaviour;
+			if (!(tower is CoreOrbBehaviour)) {
+				tower.Destroy();
+			}
+		}
 		activeTowers.Clear();
 		activeTowers.Add(CoreOrbInstance.GetComponent<CoreOrbBehaviour>());
     }

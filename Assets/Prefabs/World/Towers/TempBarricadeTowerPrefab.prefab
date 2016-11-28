@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3975c535adf14c24287d1bafb559c4f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSprite: 0
   Location:
     X: 0
     Y: 0
@@ -164,7 +165,6 @@ MonoBehaviour:
   debugging: 0
   spriteRenderer: {fileID: 21246714}
   MissilePrefab: {fileID: 0}
-  sellValue: 2
 --- !u!114 &11478236
 MonoBehaviour:
   m_ObjectHideFlags: 1
