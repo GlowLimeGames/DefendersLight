@@ -241,13 +241,9 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			enemy.transform.SetParent(transform);
 			// Placeholder: because undead is sprite;
 			Quaternion angle = Quaternion.identity;
-			if (enemyKey == UNDEAD_KEY) {
-				angle.eulerAngles = new Vector3(90, 0, 0);
-			} else {
-				enemyBehaviour.DirectionFacing = getDirectionFacing(spawnPoint.GetPosition(), worldController.ICoreOrbInstance.transform.position);
-				float yRotation = DirectionUtil.GetAngleFromDirection(enemyBehaviour.DirectionFacing);
-				angle.eulerAngles = new Vector3(0, yRotation, 0);
-			}
+			enemyBehaviour.DirectionFacing = getDirectionFacing(spawnPoint.GetPosition(), worldController.ICoreOrbInstance.transform.position);
+			float yRotation = DirectionUtil.GetAngleFromDirection(enemyBehaviour.DirectionFacing);
+			angle.eulerAngles = new Vector3(0, yRotation, 0);
 			enemy.transform.eulerAngles = angle.eulerAngles;
 			enemyBehaviour.OnSpawn();
 			enemyBehaviour.NavigatePath();

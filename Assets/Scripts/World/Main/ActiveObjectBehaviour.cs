@@ -185,6 +185,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public virtual void ResetStats () {
 		Health = IMaxHealth;
 		hasBeenDestroyed = false;
+		attackCooldownActive = false;
 		updateHealthBar();
 	}
 

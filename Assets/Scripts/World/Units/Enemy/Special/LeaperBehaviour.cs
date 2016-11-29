@@ -5,6 +5,8 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class LeaperBehaviour : EnemyBehaviour {
 	MapTileBehaviour jumpDestinationTile;
@@ -35,7 +37,6 @@ public class LeaperBehaviour : EnemyBehaviour {
 		}
 
 		if (shouldJumpInsteadOfAttacking(target, out jumpDestinationTile)) {
-			Debug.Log("JUMPING");
 			handleJumpOverTower(target, jumpDestinationTile);
 		} else {
 			base.Attack (target, damage);
@@ -62,18 +63,28 @@ public class LeaperBehaviour : EnemyBehaviour {
 		}
 	}
 
+	public override void ResetStats () {
+		base.ResetStats ();
+		_isLeaping = false;
+	}
+
 	void handleJumpOverTower (ActiveObjectBehaviour target, MapTileBehaviour destinationTile) {
 		_isLeaping = true;
-		StartCoroutine(leap(destinationTile.GetWorldPosition(), leapTime));
+		StartCoroutine(leap(destinationTile, leapTime));
 	}
 
 
-	void handleJumpEnded () {
+	void handleJumpEnded (MapTileBehaviour destinationTile) {
 		_isLeaping = false;
+		this.currentTile = destinationTile;
+		List<MapTileBehaviour> editablePath = path.ToList();
+		editablePath.Insert(0, destinationTile);
+		this.path = new Queue<MapTileBehaviour>(editablePath);
 		resumeMoving();
 	}
 		
-	IEnumerator leap (Vector3 targetLocation, float time) {
+	IEnumerator leap (MapTileBehaviour destinationTile, float time) {
+		Vector3 targetLocation = destinationTile.GetWorldPosition();
 		Vector3 startingPosition = transform.position;
 		Vector3 actualScale = transform.localScale;
 		float timer = 0;
@@ -89,6 +100,6 @@ public class LeaperBehaviour : EnemyBehaviour {
 		}
 		transform.position = targetLocation;
 		transform.localScale = actualScale;
-		handleJumpEnded();
+		handleJumpEnded(destinationTile);
 	}
 }

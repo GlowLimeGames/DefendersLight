@@ -10,17 +10,8 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 	protected const int INVALID_VALUE = -1;
 	protected const int NONE_VALUE = 0;
 	protected const float DEFAULT_FRAME_RATE = 30f;
-	protected static float FAKE_DELTA_TIME;
-
-	// Static constructor to calculate fake delta time
-	static MannBehaviour () {
-		if (Application.targetFrameRate == INVALID_VALUE) {
-			FAKE_DELTA_TIME = 1f / DEFAULT_FRAME_RATE;
-		} else {
-			FAKE_DELTA_TIME = 1f / Application.targetFrameRate;
-		}
-	}
-
+	protected static float FAKE_DELTA_TIME = 1f / DEFAULT_FRAME_RATE;
+	static bool fakeDeltaTimeSet = false;
 
 	public delegate void EventAction();
 	public delegate void EventActionInt(int integer);
@@ -30,6 +21,7 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 	protected bool referencesSet {get; private set;}
 
 	void Awake () {
+		checkToSetFakeFrameRate();
 		if (!referencesSet) {
 			SetReferences();
 		}
@@ -44,6 +36,15 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 		CleanupReferences();
 		UnusbscribeEvents();
 		StopAllCoroutines();
+	}
+
+	static void checkToSetFakeFrameRate () {
+		if (!fakeDeltaTimeSet) {
+			if (Application.targetFrameRate != INVALID_VALUE) {
+				FAKE_DELTA_TIME = 1f / Application.targetFrameRate;
+			}
+			fakeDeltaTimeSet = true;
+		}
 	}
 
     // Value should only be null if you're setting a trigger
