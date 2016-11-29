@@ -1,32 +1,26 @@
 fileFormatVersion: 2
-guid: 38bfde91dabfa443b97c4aebf1cda9da
-timeCreated: 1476803677
+guid: d88dbe26661284bbdaaa5baf7c199bf3
+timeCreated: 1480442267
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: camera1
-    100002: pCube1
-    100004: pCube2
-    100006: pCube3
-    100008: pCylinder1
-    100010: pSphere1
-    100012: transform1
-    100014: transform2
-    100016: transform3
-    100018: transform4
-    100020: //RootNode
+    100002: group
+    100004: pCube3
+    100006: pCylinder1
+    100008: pSphere1
+    100010: transform1
+    100012: transform2
+    100014: //RootNode
     400000: camera1
-    400002: pCube1
-    400004: pCube2
-    400006: pCube3
-    400008: pCylinder1
-    400010: pSphere1
-    400012: transform1
-    400014: transform2
-    400016: transform3
-    400018: transform4
-    400020: //RootNode
+    400002: group
+    400004: pCube3
+    400006: pCylinder1
+    400008: pSphere1
+    400010: transform1
+    400012: transform2
+    400014: //RootNode
     2300000: pCube3
     3300000: pCube3
     4300000: pCube3
