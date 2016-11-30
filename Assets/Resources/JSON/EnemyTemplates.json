@@ -24,7 +24,7 @@
     {
       "Type" : "Brute",
       "Health" : 175,
-      "Speed" : 0.25,
+      "Speed" : 0.5,
       "AttackDamage" : 75,
       "AttackCooldown" : 2.5,
       "AttackRange" : 1,
