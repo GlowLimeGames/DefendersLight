@@ -40,9 +40,9 @@ public class Enemy : Unit {
 		}
 	}
 
-	public Enemy (string type, int health, int damage, float cooldown, int range, int attackRadius, MapLocation location, string description, RewardAmount deathReward,
+	public Enemy (string type, int health, int damage, float cooldown, int range, MapLocation location, string description, RewardAmount deathReward,
 		IWorldController worldController, float speed, int agro) : 
-	base(type, health, damage, cooldown, range, attackRadius, location, description, worldController) {
+	base(type, health, damage, cooldown, range, location, description, worldController) {
 		this.DeathReward = deathReward;
         this.Speed = speed;
 		this.Agression = agro;

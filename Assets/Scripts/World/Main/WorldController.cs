@@ -162,6 +162,11 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		_unitsByClass = determineUnitsByClass();
 	}
 
+	public MapTileBehaviour[,] GetTilesInBounds (MapLocation location, int radius) {
+		int diameter = radius * 2;
+		return mapController.GetTilesInBounds(new MapBounds(location.X - radius, location.Y - radius, diameter, diameter));
+	}
+
 	void createRules () {
 		seasons = JsonUtility.FromJson<SeasonList>(dataController.RetrieveJSONFromResources(SEASONS_DATA_FILE_NAME));
 		currentSeason = seasons[0];

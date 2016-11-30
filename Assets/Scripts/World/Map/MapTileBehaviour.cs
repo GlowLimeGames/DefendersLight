@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -20,6 +21,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	static Color standardColor = Color.black;
 	static Color[] tempColors = new Color[]{hightlightColor, cannotBuildColor};
 	HashSet<ILightSource> lightSources = new HashSet<ILightSource>();
+	HashSet<EnemyBehaviour> containedEnemies = new HashSet<EnemyBehaviour>();
 	Color previousColor;
 	public bool IIsIlluminated {
 		get {
@@ -73,8 +75,27 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		}
 	}
 
+	public void EnemyEnterTile (EnemyBehaviour enemy) {
+		containedEnemies.Add(enemy);
+	}
+
+	public void EnemyExitTile (EnemyBehaviour enemy) {
+		containedEnemies.Remove(enemy);
+	}
+
+	public EnemyBehaviour[] GetEnemiesOnTile () {
+		return containedEnemies.ToArray();
+	}
+
 	public Vector3 GetWorldPosition () {
 		return transform.position + Vector3.up;
+	}
+
+	public void DamageEnemiesOnTile (int damage) {
+		EnemyBehaviour[] enemies = GetEnemiesOnTile();
+		foreach (EnemyBehaviour enemy in enemies) {
+			enemy.Damage(damage);
+		}
 	}
 
 	public MapTileBehaviour TileFromDirection (Direction direction) {
@@ -249,6 +270,10 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 
 	public bool HasAgent () {
 		return containedAgent != null;
+	}
+
+	public bool HasEnemies () {
+		return containedEnemies.Count > 0;
 	}
 
 	public void Unhighlight () {

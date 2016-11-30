@@ -12,16 +12,6 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	public Direction DirectionFacing;
 	TowerBehaviour previousTarget;
 	Enemy enemy;
-	public override string IName {
-		get {
-			return enemy.Type;
-		}
-	}
-	public override float IAttackDelay {
-		get {
-			return enemy.AttackCooldown;
-		}
-	}
 	public override int IMaxHealth {
 		get {
 			if (enemy != null) {
@@ -59,7 +49,18 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 		
 	protected override void updateCurrentLocation (MapTileBehaviour currentTile) {
+		if (this.currentTile) {
+			this.currentTile.EnemyExitTile(this);
+		}
 		base.updateCurrentLocation (currentTile);
+		Location = currentTile.GetLocation();
+		this.currentTile.EnemyEnterTile(this);
+	}
+
+	protected override void addSplashDamageTargetsFromTile (MapTileBehaviour tile, List<ActiveObjectBehaviour> targets) {
+		if (tile.HasAgent()) {
+			targets.Add(tile.GetCurrentAgent());
+		}
 	}
 
 	public override void Destroy () {

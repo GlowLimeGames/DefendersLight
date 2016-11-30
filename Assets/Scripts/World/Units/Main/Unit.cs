@@ -11,6 +11,10 @@ public abstract class Unit : IUnit {
 	protected const int INVALID_VALUE = -1;
 	protected const int NONE_VALUE = 0;
 
+	const string MELEE_ATTACK = "Melee";
+	const string PROJECTILE_ATTACK = "Projectile";
+	const string ENERGY_ATTACK = "Energy";
+
 	#region Properties
 
 	protected IWorldController controller;
@@ -60,12 +64,6 @@ public abstract class Unit : IUnit {
 			return this.AttackRange;
 		}
 	}
-	public int AttackRadius;
-	public int IAttackRadius {
-		get {
-			return this.AttackRadius;
-		}
-	}
 	public MapLocation Location = MapLocation.Default;
 	public IMapLocation ILocation {
 		get {
@@ -88,19 +86,46 @@ public abstract class Unit : IUnit {
 			}
 		}
 	}
+	public int SplashDamageRadius;
+	public int ISplashDamageRadius {
+		get {
+			return SplashDamageRadius;
+		}
+	}
+	public bool PassThroughDamage;
+	public bool IPassThroughDamage {
+		get {
+			return PassThroughDamage;
+		}
+	}
+	public string Attack;
+	public AttackType IAttackType {
+		get {
+			switch (Attack) {
+			case PROJECTILE_ATTACK:
+				return AttackType.Projectile;
+			case MELEE_ATTACK:
+				return AttackType.Melee;
+			case ENERGY_ATTACK:
+				return AttackType.Energy;
+			default:
+				return AttackType.None;
+			}
+		}
+	}
+
 	protected ActiveObjectBehaviour objectLink;
 
 	#endregion
 
 	#region Constructors
 
-	public Unit (string type, int health, int damage, float cooldown, int range, int attackRadius, MapLocation location, string description, IWorldController controller) {
+	public Unit (string type, int health, int damage, float cooldown, int range, MapLocation location, string description, IWorldController controller) {
 		this.Type = type;
 		this.Health = health;
 		this.AttackDamage = damage;
 		this.AttackCooldown = cooldown;
 		this.AttackRange = range;
-		this.AttackRadius = attackRadius;
 		if (this.Location != null) {
 			this.Location = location;
 		}
@@ -126,26 +151,6 @@ public abstract class Unit : IUnit {
 
 	protected void SeverLink () {
 		objectLink.SeverLink();
-	}
-
-	#endregion
-
-	#region IUnit Interface
-
-	public void Attack(IUnit unit) {
-
-	}
-
-	public void Damage(int damage) {
-		this.Health -= damage;
-	}
-
-	public void Create() {
-
-	}
-
-	public void Destroy() {
-
 	}
 
 	#endregion
@@ -190,7 +195,6 @@ public abstract class Unit : IUnit {
 		this.AttackDamage = unit.AttackDamage;
 		this.AttackCooldown = unit.AttackCooldown;
 		this.AttackRange = unit.AttackRange;
-		this.AttackRadius = unit.AttackRadius;
 		this.Location = unit.Location;
 		this.Description = unit.Description;
 		this.controller = unit.controller;
