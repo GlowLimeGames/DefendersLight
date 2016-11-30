@@ -6,5 +6,6 @@
 public enum AttackType {
 	Melee,
 	Projectile,
-	Energy
+	Energy,
+	None
 }

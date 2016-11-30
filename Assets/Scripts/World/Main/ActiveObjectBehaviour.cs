@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	protected float attackDelay = 0;
@@ -12,25 +13,19 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	protected UnitController unitController;
 	// A child object that represents the enemies range (using a separate collider)
 	RangedAttackBehaviour attackModule = null;
-	public string Name;
-	public int Health;
-	public int BaseDamage;
-	public int Range;
-	public string LevelString;
-	public float AttackDelay;
+	protected int health;
 	int _maxHealth = 0;
 	// Makes sure that we don't keep calling events related to a destroyed unit
 	bool hasBeenDestroyed = false;
     public bool isInvulnerable = false;
-	public AttackType AttackType;
 	public virtual float IAttackDelay {
 		get {
-			return AttackDelay;
+			return unit.AttackCooldown;
 		}
 	}
 	public virtual string IName {
 		get {
-			return Name;
+			return unit.Type;
 		}
 	}
 	public virtual int IMaxHealth {
@@ -40,7 +35,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 	public bool IAtFullHealth {
 		get {
-			return Health == IMaxHealth;
+			return health == IMaxHealth;
 		}
 	}
 	public virtual string IType {
@@ -51,6 +46,16 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public string IAmmo {
 		get {
 			return unit.IAmmo;
+		}
+	}
+	public virtual AttackType IAttackType {
+		get {
+			return unit.IAttackType;
+		}
+	}
+	public bool IDealsSplashDamage {
+		get {
+			return unit.SplashDamageRadius > 0;
 		}
 	}
 	protected Unit unit;
@@ -119,11 +124,14 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		target.UnusubscribeFromDestruction(clearTarget);
 		target.SubscribeToDestruction(clearTarget);
 		StartCoroutine(AttackCooldown());
-		if (AttackType == AttackType.Melee) {
+		if (IAttackType == AttackType.Melee) {
 			StartCoroutine(handleMeleeAttack(target, damage));
+			if (IDealsSplashDamage) {
+				DealSplashDamage(target, damage);
+			}
 		} 
 		// Energy attacks are treated as ranged, however they're specialized because they can damage Shades (only towers with this ability)
-		else if (AttackType == AttackType.Energy || AttackType == AttackType.Projectile) {
+		else if (IAttackType == AttackType.Energy || IAttackType == AttackType.Projectile) {
 			StartCoroutine(handleRangedAttack(target, damage));
 		}
 	}
@@ -157,16 +165,31 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		return missileBehavior;
 	}
 		
+	public void DealSplashDamage (ActiveObjectBehaviour target, int damage) {
+		MapTileBehaviour[,] tiles = world.GetTilesInBounds(target.Location, unit.ISplashDamageRadius - 1);
+		List<ActiveObjectBehaviour> targets = new List<ActiveObjectBehaviour>();
+		foreach (MapTileBehaviour tile in tiles) {
+			addSplashDamageTargetsFromTile(tile, targets);
+		}
+		foreach (ActiveObjectBehaviour targetUnit in targets) {
+			if (targetUnit != target) {
+				targetUnit.Damage(damage);
+			}
+		}
+	}
+		
+	protected abstract void addSplashDamageTargetsFromTile (MapTileBehaviour tile, List<ActiveObjectBehaviour> targets);
+
 	public virtual void Damage(int damage) {
 		if (hasBeenDestroyed) {
 			return;
 		}
 
 		if (!isInvulnerable) {
-            Health -= damage;
-			callUpdateHealth((float) Health / (float) IMaxHealth);
+            health -= damage;
+			callUpdateHealth((float) health / (float) IMaxHealth);
         }
-		if (Health <= 0) {
+		if (health <= 0) {
 			Destroy();
 		} else {
 			updateHealthBar();
@@ -174,7 +197,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
     
 	public virtual void Heal(int healthPoints) {
-		Health = Mathf.Clamp(Health + healthPoints, 0, IMaxHealth);
+		health = Mathf.Clamp(health + healthPoints, 0, IMaxHealth);
 		updateHealthBar();
 	}
     
@@ -183,7 +206,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	public virtual void ResetStats () {
-		Health = IMaxHealth;
+		health = IMaxHealth;
 		hasBeenDestroyed = false;
 		attackCooldownActive = false;
 		updateHealthBar();
@@ -192,7 +215,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	void updateHealthBar () {
 		if (HealthBar) {
 			HealthBar.SetHealthDisplay(
-				(float) Health /
+				(float) health /
 				(float) IMaxHealth
 			);
 		}
@@ -219,10 +242,6 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		if (onDestroyed != null) {	
 			onDestroyed();
 		}
-	}
-
-	public virtual bool InRange(ActiveObjectBehaviour activeAgent) {
-		return (Range >= MapLocation.Distance(Location, activeAgent.Location));
 	}
 
 	public void ReceiveLink (IUnit unit) {
@@ -261,9 +280,9 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	public virtual void HandleColliderExitTrigger (Collider collider) {}
 
-	protected void setUnit (Unit unit) {
+	protected virtual void setUnit (Unit unit) {
 		this.unit = unit;
-		this.Health = unit.Health;
+		this.health = unit.Health;
 		if (attackModule) {
 			attackModule.SetUnit(unit);
 		}

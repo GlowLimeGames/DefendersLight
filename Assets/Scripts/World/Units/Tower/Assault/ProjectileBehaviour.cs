@@ -5,8 +5,10 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ProjectileBehaviour : MobileAgentBehaviour {
+	public string Name;
 	public override string IType {
 		get {
 			return Name;
@@ -17,6 +19,11 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	public float IMaxLifeSpan {
 		get {
 			return maxLifespan;
+		}
+	}
+	public override AttackType IAttackType {
+		get {
+			return AttackType.Melee;;
 		}
 	}
 	ActiveObjectBehaviour _target;
@@ -52,6 +59,12 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 		this._target.SubscribeToDestruction(cleanup);
 		StartCoroutine(MoveTo(target.gameObject, 0.5f));
 		StartCoroutine(DelayedAttack(target, 0.5f));
+	}
+
+	protected override void addSplashDamageTargetsFromTile (MapTileBehaviour tile, List<ActiveObjectBehaviour> targets) {
+		if (tile && tile.HasEnemies()) {
+			targets.AddRange(tile.GetEnemiesOnTile());
+		}
 	}
 
 	void checkToUnsubscribeCleanup () {

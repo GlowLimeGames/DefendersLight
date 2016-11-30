@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 	float DEFAULT_TOWER_ATTACK_DELAY = 0.5f;
@@ -16,11 +17,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 	[SerializeField]
 	GameObject MissilePrefab;
 	protected bool isTrackingTarget;
-	public override float IAttackDelay {
-		get {
-			return tower.AttackCooldown;
-		}
-	}
 	public override int IMaxHealth {
 		get {
 			return tower.Health;
@@ -33,7 +29,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 	}
 	public float IHealthFraction {
 		get {
-			return (float) this.Health / (float) tower.Health;
+			return (float) this.health / (float) tower.Health;
 		}
 	}
 	public bool HasIllumination {
@@ -52,12 +48,6 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 			spriteRenderer.sprite = tower.GetSprite();
 		}
 		setUnit(tower);
-	}
-
-	public override string IName {
-		get {
-			return tower.Type;
-		}
 	}
 
 	public int IlluminationRadius {
@@ -81,6 +71,12 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 		}
 	}
 
+	protected override void addSplashDamageTargetsFromTile (MapTileBehaviour tile, List<ActiveObjectBehaviour> targets) {
+		if (tile.HasEnemies()) {
+			targets.AddRange(tile.GetEnemiesOnTile());
+		}
+	}
+		
 	int mostRecentIlluminationCount = NONE_VALUE;
 	int mostRecentIlluminationRadius = NONE_VALUE;
 

@@ -136,6 +136,18 @@ public class MapController : MannBehaviour, IMapController {
 		return mapBounds.Contains(worldPosition);
 	}
 
+	public MapTileBehaviour [,] GetTilesInBounds (MapBounds bounds) {
+		MapTileBehaviour[,] tiles = new MapTileBehaviour[bounds.Size.X, bounds.Size.Y];
+		for (int x = bounds.Min.X; x < bounds.Max.X; x++) {
+			for (int y = bounds.Min.Y; y < bounds.Max.Y; y++) {
+				if (inBounds(x, y)) {
+					tiles[x - bounds.Min.X, y - bounds.Min.Y] = Board[x, y];
+				}
+			}
+		}
+		return tiles;
+	}
+
 	MapTileBehaviour SpawnBoardTile (int x, int y) {
 		GameObject tile = (GameObject) Instantiate(BoardTilePrefab, GetBoardTileLocation(x, y), Quaternion.identity);
 		tile.transform.SetParent(transform);

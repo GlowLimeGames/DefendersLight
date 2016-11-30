@@ -17,9 +17,6 @@ public class TowerPanelController : UIController {
 	Text TowerName;
 
 	[SerializeField]
-	Text TowerLevel;
-
-	[SerializeField]
 	Button UpgradeButton;
 
 	[SerializeField]
@@ -51,7 +48,6 @@ public class TowerPanelController : UIController {
 		Tower towerStats = tower.ITower;
 		selectedTower = tower;
 		TowerName.text = tower.IName;
-		TowerLevel.text = tower.LevelString;
 		if (!(tower is CoreOrbBehaviour)) {
 			SellButton.gameObject.SetActive(true);
 			sellValue.text = string.Format(MANA_FORMAT, world.GetTowerSellValue(towerStats));
@@ -72,7 +68,6 @@ public class TowerPanelController : UIController {
 		selectedTower.UnsubscribeUpdateHealth(updateHealthBar);
 		selectedTower = null;
 		TowerName.text = string.Empty;
-		TowerLevel.text = string.Empty;
 		SellButton.gameObject.SetActive(false);
 		towerImage.sprite = null;
 		updateHealthBar(1.0f);

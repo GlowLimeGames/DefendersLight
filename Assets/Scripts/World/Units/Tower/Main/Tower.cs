@@ -13,8 +13,8 @@ public class Tower : Unit {
 	static Dictionary<string, UnityEngine.Sprite> towerSprites = new Dictionary<string, UnityEngine.Sprite>();
 	public Tower (string type, int health, MapLocation location, string description, int cost, int unlockLevel,
 		IWorldController worldController, ITowerController towerController,
-		int damage = 0, float cooldown = 0, int range = 0, int attackRadius = 0, string illuminationRadius = "0") : 
-	base(type, health, damage, cooldown, range, attackRadius, location, description, worldController) {
+		int damage = 0, float cooldown = 0, int range = 0, string illuminationRadius = "0") : 
+	base(type, health, damage, cooldown, range, location, description, worldController) {
 		this.Cost = cost;
 		this.UnlockLevel = unlockLevel;
 		this.IlluminationRadius = illuminationRadius;

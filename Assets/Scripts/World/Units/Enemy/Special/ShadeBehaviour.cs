@@ -47,13 +47,13 @@ public class ShadeBehaviour : EnemyBehaviour {
 		if (!healingIsCoolingDown) {
 			ActiveObjectBehaviour activeObject = collider.GetComponent<ActiveObjectBehaviour>();
 			if (activeObject != null && activeObject != this && canHealTarget(activeObject)) {
-				HealTarget(activeObject, Mathf.Clamp(HealRate, 0, Health));
+				HealTarget(activeObject, Mathf.Clamp(HealRate, 0, health));
 			}
 		}
 	}
 
 	public override bool CanDamage (ActiveObjectBehaviour attacker) {
-		return attacker.AttackType == AttackType.Energy;
+		return attacker.IAttackType == AttackType.Energy;
 	}
 
 	public override void HealTarget (ActiveObjectBehaviour target, int healthPoints) {
