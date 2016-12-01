@@ -142,7 +142,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 
 	void SetTileColor (Color color) {
 		// Only track permanent colors (not highlighting colors)
-		if (!Array.Exists(tempColors, instanceClor => instanceClor == spriteRenderer.color)) {
+		if (!Array.Exists(tempColors, instanceColor => instanceColor == spriteRenderer.color)) {
 			previousColor = spriteRenderer.color;
 		}
 		spriteRenderer.color = color;

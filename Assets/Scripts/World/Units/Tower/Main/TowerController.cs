@@ -196,6 +196,10 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 			towerPanel.OnPurchased();
 		} else {
 			HandleObjectDestroyed(potentialPurchaseTower);
+			if (previousHighlightedMapTile) {
+				previousHighlightedMapTile.Unhighlight();
+				previousHighlightedMapTile = null;
+			}
 		}
 		potentialPurchaseTower = null;
 	}
