@@ -72,8 +72,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	[SerializeField]
 	protected bool canHeal = false;
 
-	[SerializeField]
-	protected HealthBarBehaviour HealthBar;
+	protected HealthBarBehaviour healthBar;
 
 	protected bool attackCooldownActive = false;
 	protected bool isActive = true;
@@ -105,6 +104,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	protected override void SetReferences () {
 		base.SetReferences ();
+		healthBar = GetComponentInChildren<HealthBarBehaviour>();
 		if (hasAttack) {
 			attackModule = GetComponentInChildren<RangedAttackBehaviour>();
 		}
@@ -213,8 +213,8 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	void updateHealthBar () {
-		if (HealthBar) {
-			HealthBar.SetHealthDisplay(
+		if (healthBar) {
+			healthBar.SetHealthDisplay(
 				(float) health /
 				(float) IMaxHealth
 			);
