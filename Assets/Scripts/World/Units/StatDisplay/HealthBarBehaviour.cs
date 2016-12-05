@@ -21,7 +21,7 @@ public class HealthBarBehaviour : MannBehaviour {
 		Vector3 current = healthBarFill.localScale;
 		healthBarFill.localScale = new Vector3(healthFraction, current.y, current.z);
 		healthBarFill.localPosition = healthBarOrigin;;
-		healthBarFill.localPosition += Vector3.left * ((1 - healthFraction)/2f);
+		healthBarFill.localPosition += Vector3.left * ((1 - healthFraction) * 3);
 	}
 
 	protected override void SetReferences() {
