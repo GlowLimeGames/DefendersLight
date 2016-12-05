@@ -1786,7 +1786,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TowerName: {fileID: 1148551706}
-  TowerLevel: {fileID: 582519056}
   UpgradeButton: {fileID: 383236063}
   SellButton: {fileID: 122891402}
   sellValue: {fileID: 279516555}
