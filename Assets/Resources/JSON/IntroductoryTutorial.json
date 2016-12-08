@@ -23,7 +23,7 @@
           },
           {
                "Title" : "Building",
-               "Body" : "Towers may be built any time during a wave and between waves. To build a tower, you select the kind of tower you want to build from the buttons at the bottom of the screen, then either click and drag the tower you want from the menu and place it on the map or click on the tower you want and tap the spot on the map where you want to place it.",
+               "Body" : "Towers may be built any time during a wave and between waves. To build a tower, you select the kind of tower you want to build from the buttons at the bottom of the screen, then either click and drag the tower you want from the menu and place it on the map or click on the tower you want and tap the spot on the map where you want to place it. You can also build multiple towers of the same type by locking the tower you wish to build. Double click the image of the tower you want to build and it will be locked, then you can click and build that tower on as many tiles as you want.",
                "Image" : "Icon/build-tower-button"
           },
           {
