@@ -18,7 +18,7 @@
 			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
-			"Volume": 80
+			"Volume": 70
 		},
 		{
 			"Name":"Defender's Light Soundtrack 2_4",
@@ -28,7 +28,7 @@
 			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
-			"Volume": 80
+			"Volume": 70
 		},
 		{
 			"Name":"Defender's Light Soundtrack 3_3",
@@ -38,7 +38,7 @@
 			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
-			"Volume": 80
+			"Volume": 70
 		},
 		{
 			"Name":"Defender's Light Bass Drone 2",
@@ -48,7 +48,7 @@
 			"Loop":true,
 			"Type": "Ambience",
 			"Channel":2,
-			"Volume": 20
+			"Volume": 15
 		},
 		{
 			"Name":"Defender's Light Ambience 1",
@@ -58,7 +58,7 @@
 			"Loop":true,
 			"Type": "Ambience",
 			"Channel":2,
-			"Volume": 10
+			"Volume": 6
 		},
 
 		{
