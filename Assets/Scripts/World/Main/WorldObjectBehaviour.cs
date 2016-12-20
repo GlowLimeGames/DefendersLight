@@ -7,12 +7,20 @@ using UnityEngine;
 using System.Collections;
 
 public abstract class WorldObjectBehaviour : MannBehaviour {
+	protected const string ATTACK_TRIGGER = "Attack";
 	[SerializeField]
 	protected bool isSprite = false;
 	protected WorldController world;
 	[SerializeField]
 	protected MapLocation Location = new MapLocation(0, 0);
 
+	protected Animator animator;
+	protected bool hasAnimator {
+		get {
+			return animator != null;
+		}
+	}
+		
 	protected override void FetchReferences () {
 		world = WorldController.Instance;
 	}
@@ -31,6 +39,7 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 
 	protected override void SetReferences () {
 		base.SetReferences ();
+		animator = getMainAnimator();
 	}
 
 	protected IEnumerator MoveTo (GameObject destination, float moveTime = 1.0f) {
@@ -70,6 +79,16 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 	protected IEnumerator TimedToggleActive (bool isActive, float delayTime = 0.5f) {
 		yield return new WaitForSeconds(delayTime);
 		gameObject.SetActive(isActive);
+	}
+
+	protected virtual Animator getMainAnimator () {
+		return GetComponentInChildren<Animator>();
+	}
+
+	protected virtual void sendTriggerToAnimator (string trigger) {
+		if (hasAnimator) {
+			animator.SetTrigger(trigger);
+		}
 	}
 
 	public virtual void ToggleColliders (bool areCollidersEnabled) {

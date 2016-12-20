@@ -1,21 +1,46 @@
 fileFormatVersion: 2
-guid: 025560ddf87d54b42b80ba9aa6023a44
-timeCreated: 1480963944
+guid: 06f6bb810ba14434d902d42008d96b46
+timeCreated: 1482241024
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: pCube4
-    100004: Turn_Table
+    100002: FootL
+    100004: FootR
+    100006: GEO
+    100008: HandL
+    100010: HandR
+    100012: Head
+    100014: KneeL
+    100016: KneeR
+    100018: LegL
+    100020: LegR
+    100022: Neck
+    100024: Root
+    100026: ShoulderL
+    100028: ShoulderR
+    100030: Spine
     400000: //RootNode
-    400002: pCube4
-    400004: Turn_Table
-    2300000: pCube4
-    3300000: pCube4
-    4300000: pCube4
+    400002: FootL
+    400004: FootR
+    400006: GEO
+    400008: HandL
+    400010: HandR
+    400012: Head
+    400014: KneeL
+    400016: KneeR
+    400018: LegL
+    400020: LegR
+    400022: Neck
+    400024: Root
+    400026: ShoulderL
+    400028: ShoulderR
+    400030: Spine
+    4300000: GEO
     7400000: Take 001
     9500000: //RootNode
+    13700000: GEO
   materials:
     importMaterials: 1
     materialName: 0
