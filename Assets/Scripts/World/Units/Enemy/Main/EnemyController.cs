@@ -24,7 +24,6 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	const string BRUTE_KEY = "Brute";
 	const string SHADE_KEY = "Shade";
 	public GameObject[] EnemyPrefabs;
-	Dictionary<string, GameObject> orderedEnemyPrefabs = new Dictionary<string, GameObject>();
 	List<EnemySpawnPoint> spawnPoints;
 	EnemySorter enemySorter = new EnemySpawnLevelSorter();
 	List<Enemy> enemiesBySpawnLevel;
@@ -276,7 +275,8 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			if (enemyPrefab) {
 				behaviour = Instantiate(enemyPrefab);
 			} else {
-				behaviour = Instantiate(orderedEnemyPrefabs[enemyKey]).GetComponent<EnemyBehaviour>();
+				Debug.LogErrorFormat("Cannot Find Enemy of Type {0}", enemyKey);
+				return null;
 
 			}
 			behaviour.transform.position = startPosition;
@@ -287,17 +287,9 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	protected override void SetReferences() {
 		if (!SingletonUtil.TryInit(ref Instance, this, gameObject)) {
 			Destroy(gameObject);
-		} else {
-			PopulateOrderedEnemyPrefabs();
 		}
 	}
 
-	void PopulateOrderedEnemyPrefabs () {
-		orderedEnemyPrefabs.Clear();
-		foreach (GameObject enemyPrefab in EnemyPrefabs) {
-			orderedEnemyPrefabs.Add(enemyPrefab.name, enemyPrefab);
-		}
-	}
 	protected override void CleanupReferences () {
 		base.CleanupReferences ();
 		Instance = null;

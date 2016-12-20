@@ -34,7 +34,7 @@
       "Ammo" : "null",
       "ManaReward" : 25,
       "XPReward" : 175,
-      "WaveSpawnedAt" : 5,
+      "WaveSpawnedAt" : 1,
       "Agression" : 2,
       "Frequency" : 3,
       "Quantity" : 1,

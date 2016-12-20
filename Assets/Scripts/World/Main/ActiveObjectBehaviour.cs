@@ -120,6 +120,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	public virtual void Attack(ActiveObjectBehaviour target, int damage) {
 		this.target = target;
+		sendTriggerToAnimator(ATTACK_TRIGGER);
 		// Ensures that the same event is not subscribed multiple times
 		target.UnusubscribeFromDestruction(clearTarget);
 		target.SubscribeToDestruction(clearTarget);
