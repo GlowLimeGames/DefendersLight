@@ -138,7 +138,9 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 		
 	protected virtual IEnumerator handleMeleeAttack (ActiveObjectBehaviour target, int damage) {
-		yield return new WaitForSeconds(attackDelay);
+		if (attackDelay > 0) {
+			yield return new WaitForSeconds(attackDelay);
+		}
 		meleeAttack(target, damage);
 	}
 
