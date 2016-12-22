@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public class DataController : Controller, IDataController {
+	bool _hasDataToSave = true;
 	public TuningController tuning {get; private set;}
 	EventActionInt levelUp;
 	EventActionInt earnXP;
@@ -36,6 +37,11 @@ public class DataController : Controller, IDataController {
 			return currentPlayerData;
 		}
 	}
+	public bool HasSaveData {
+		get {
+			return _hasDataToSave;
+		}
+	}
 
 	WorldState currentWorldState;
 	PlayerData currentPlayerData;
@@ -55,13 +61,16 @@ public class DataController : Controller, IDataController {
 			file.Close();
 		} catch {
 			currentPlayerData = new PlayerData(PlayerDataFilePath);
+			_hasDataToSave = false;
 		}
 		currentPlayerData.SetXPEquation(XPEquation);
 		return currentPlayerData;
 
 	}
 
+
 	public void SavePlayerData () {
+		_hasDataToSave = currentPlayerData.HasDataToSave();
 		SavePlayerData(currentPlayerData);
 	}
 
@@ -278,6 +287,7 @@ public class DataController : Controller, IDataController {
 		CheckSaveDirectory();
 		ResetWorldState();
 		ResetPlayerData();
+		_hasDataToSave = false;
 	}
 
 	public void ResetWorld () {

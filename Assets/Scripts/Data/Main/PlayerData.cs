@@ -5,6 +5,11 @@
 
 [System.Serializable]
 public class PlayerData : IPlayerData {
+
+	const int DEFAULT_XP = 0;
+	const int DEFAULT_LEVEL = 1;
+	const int DEFAULT_HIGHEST_WAVE = 0;
+
 	MathEquation xpEquation;
 
 	int _xp;
@@ -58,11 +63,17 @@ public class PlayerData : IPlayerData {
 	}
 
 	public void Reset () {
-		this._xp = 0;
-		this._level = 1;
-		this._highestWave = 0;
+		this._xp = DEFAULT_XP;
+		this._level = DEFAULT_LEVEL;
+		this._highestWave = DEFAULT_HIGHEST_WAVE;
 	}
 
+	public bool HasDataToSave () {
+		return !(this._xp == DEFAULT_XP &&
+			this._level == DEFAULT_LEVEL &&
+			this._highestWave == DEFAULT_HIGHEST_WAVE);
+	}
+		
 	public void SetXPEquation (MathEquation equation) {
 		this.xpEquation = equation;
 	}

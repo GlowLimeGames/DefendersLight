@@ -5,6 +5,11 @@
 
 [System.Serializable]
 public class WorldState : IWorldState, ISessionData {
+
+	const int DEFAULT_ENEMIES_KILLED = 0;
+	const int DEFAULT_CURRENT_WAVE = 1;
+	const int DEFAULT_XP_EARNED = 0;
+
 	int startingMana;
 	public int Mana;
 	public int EnemiesKilled;
@@ -44,10 +49,17 @@ public class WorldState : IWorldState, ISessionData {
 
 	public void Reset () {
 		Mana = this.startingMana;
-		EnemiesKilled = 0;
-		CurrentWave = 1;
-		XPEarned = 0;
+		EnemiesKilled = DEFAULT_ENEMIES_KILLED;
+		CurrentWave = DEFAULT_CURRENT_WAVE;
+		XPEarned = DEFAULT_XP_EARNED;
 		HighestWaveReachedInSession = false;
+	}
+
+	public bool HasDataToSave () {
+		return !(Mana == this.startingMana &&
+			this.EnemiesKilled == DEFAULT_ENEMIES_KILLED &&
+			this.CurrentWave == DEFAULT_CURRENT_WAVE &&
+			this.XPEarned == DEFAULT_XP_EARNED);
 	}
 
 	public void CollectMana (int mana) {

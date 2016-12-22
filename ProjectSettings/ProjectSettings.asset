@@ -90,7 +90,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: com.glowlime.defenders
-  bundleVersion: 0.2.2
+  bundleVersion: 0.2.3
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   metroEnableLowLatencyPresentationAPI: 0
@@ -338,7 +338,10 @@ PlayerSettings:
   psp2UseDebugIl2cppLibs: 0
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    1: 
+    4: 
+    7: 
   metroPackageName: Defender's Light
   metroPackageVersion: 
   metroCertificatePath: 
