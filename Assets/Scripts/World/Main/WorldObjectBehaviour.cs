@@ -42,7 +42,7 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 		animator = getMainAnimator();
 	}
 
-	protected IEnumerator MoveTo (GameObject destination, float moveTime = 1.0f) {
+	protected IEnumerator MoveTo (GameObject destination, float moveTime = 1.0f, EventAction callback = null) {
 		float timer = 0;
 
 		Vector3 start = transform.position;
@@ -64,6 +64,9 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 		}
 		if (transform != null && destination != null) {
 			transform.position = destination.transform.position;
+		}
+		if (callback != null) {
+			callback();
 		}
 	}
 

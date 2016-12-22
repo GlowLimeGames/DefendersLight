@@ -57,8 +57,8 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 	public void SetTarget (ActiveObjectBehaviour target) {
 		this._target = target;
 		this._target.SubscribeToDestruction(cleanup);
-		StartCoroutine(MoveTo(target.gameObject, 0.5f));
-		StartCoroutine(DelayedAttack(target, 0.5f));
+		gameObject.SetActive(true);
+		StartCoroutine(MoveTo(target.gameObject, 0.5f, tryAttack));
 	}
 
 	protected override void addSplashDamageTargetsFromTile (MapTileBehaviour tile, List<ActiveObjectBehaviour> targets) {
@@ -82,6 +82,7 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 
 	bool tryReclaimInSpawnPool () {
 		if (world) {
+			gameObject.SetActive(false);
 			world.AddToSpawnPool(this);
 			return true;
 		} else {
@@ -89,12 +90,20 @@ public class ProjectileBehaviour : MobileAgentBehaviour {
 		}
 	}
 
-	IEnumerator DelayedAttack (ActiveObjectBehaviour target, float waitTime) {
-		yield return new WaitForSeconds(waitTime);
-		if (target) {
-			Attack(target, unit.AttackDamage);
+	void tryAttack () {
+		if (_target) {
+			Attack(_target, unit.IAttackDamage);
 		}
-		if (isActiveAndEnabled) StartCoroutine(TimedReturnToPool(0.25f));
+		if (!tryReclaimInSpawnPool()) {
+			Destroy(gameObject);
+		}
+	}
+
+	IEnumerator DelayedAttack (ActiveObjectBehaviour target, float waitTime) {
+		if (waitTime > 0) {
+			yield return new WaitForSeconds(waitTime);
+		}
+		tryAttack();
 	}
 
 	public override void Attack (ActiveObjectBehaviour activeAgent, int damage) {
