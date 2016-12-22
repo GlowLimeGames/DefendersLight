@@ -370,7 +370,10 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			while (path.Contains(currentTile)) {
 				currentTile = chooseTile(currentTile, goalTile, previousDirection);
 			}
-			path.Add(currentTile);
+			// Don't add the actual goal tile: the enemy should just walk one square away from it
+			if (currentTile != goalTile) {
+				path.Add(currentTile);
+			}
 			if (currentTile && previousTile) {
 				previousDirection = currentTile.GetDirection(previousTile);
 			}
