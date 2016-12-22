@@ -275,6 +275,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		} else {
 			Pause();
 		}
+		input.ToggleInputEnabled(!isPaused);
 	}
 
 	public void Pause () {
