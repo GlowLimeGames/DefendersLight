@@ -2,7 +2,7 @@
 A tower defense game where you can only build in illuminated portions of the map.
 
 ## Engineers
-- Isaiah Mann 
+- Isaiah Mann (Lead)
 - Ranjini Das
 - Brandon Huici
 - David Santana
