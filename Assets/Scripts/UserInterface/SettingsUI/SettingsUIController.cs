@@ -14,6 +14,8 @@ public class SettingsUIController : UIController {
 	ToggleableUIButton musicToggle;
 	[SerializeField]
 	UIConfirmPanel confirmPanel;
+	[SerializeField]
+	UIButton resetButton;
 
 	protected override void SetReferences () {
 		base.SetReferences ();
@@ -25,6 +27,15 @@ public class SettingsUIController : UIController {
 		}
 	}
 
+	protected override void FetchReferences () {
+		base.FetchReferences ();
+		updateResetButton();
+	}
+
+	void updateResetButton () {
+		resetButton.ToggleInteractable(data.HasSaveData);
+	}
+
 	public void ShowConfirmResetGame () {
 		confirmPanel.SubscribeToConfirm(ResetGame);
 		confirmPanel.SetConfirmTextFromFormat(confirmDeleteDataText);
@@ -33,5 +44,6 @@ public class SettingsUIController : UIController {
 		
 	public void ResetGame () {
 		data.ResetGame();
+		updateResetButton();
 	}
 }

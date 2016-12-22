@@ -1441,6 +1441,7 @@ MonoBehaviour:
   sfxToggle: {fileID: 872098562}
   musicToggle: {fileID: 110556073}
   confirmPanel: {fileID: 1258337620}
+  resetButton: {fileID: 2081616820}
 --- !u!1 &1846111918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1526,6 +1527,7 @@ GameObject:
   - 222: {fileID: 2081616818}
   - 114: {fileID: 2081616817}
   - 114: {fileID: 2081616819}
+  - 114: {fileID: 2081616820}
   m_Layer: 5
   m_Name: ResetData
   m_TagString: Untagged
@@ -1648,6 +1650,17 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2081616820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2081616815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3edccfb4055414354a2281666b53fe1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2093410561
 GameObject:
   m_ObjectHideFlags: 0
