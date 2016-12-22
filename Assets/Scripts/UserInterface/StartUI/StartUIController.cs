@@ -8,15 +8,28 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class StartUIController : UIController {
+	static bool applicationLoad = true;
+
 	[SerializeField]
 	Text highestWave;
 	[SerializeField]
 	Text playerLevel;
 
+	[SerializeField]
+	CanvasGroup splashScreen;
+	[SerializeField]
+	float splashStayTime;
+	[SerializeField]
+	float splashFadeTime;
+
 	protected override void SetReferences () {
 		base.SetReferences ();
 		SceneController.ReportSceneLoadComplete();
 		setText();
+		if (applicationLoad) {
+			StartCoroutine(displaySplashScreen());
+			applicationLoad = false;
+		}
 	}
 
 	void setText () {
@@ -30,6 +43,18 @@ public class StartUIController : UIController {
 	protected override void FetchReferences () {
 		base.FetchReferences ();
 		EventController.Event(EventType.LoadStart);
+	}
+
+	IEnumerator displaySplashScreen () {
+		toggleCanvasGroup(splashScreen, true);
+		yield return new WaitForSeconds(splashStayTime);
+		float timer = 0;
+		while (timer <= splashFadeTime) {
+			splashScreen.alpha = Mathf.Lerp(1, 0, timer / splashFadeTime);
+			timer += Time.deltaTime;
+			yield return new WaitForEndOfFrame();
+		}
+		toggleCanvasGroup(splashScreen, false);
 	}
 }
 
