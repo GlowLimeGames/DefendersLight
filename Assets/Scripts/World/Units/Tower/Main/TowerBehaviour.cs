@@ -136,15 +136,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 			StartCoroutine(trackTarget(target.transform));
 		}
 	}
-// 
-//	protected override ProjectileBehaviour handleRangedAttack (ActiveObjectBehaviour target, int damage) {
-//		ProjectileBehaviour missile = base.handleRangedAttack (target, damage);
-////		if (tower.IRotateToTarget) {
-////		//	StartCoroutine(trackMissile(missile.transform, missile.IMaxLifeSpan));
-////		}
-//		return missile;
-//	}
-
+ 
 	IEnumerator trackTarget (Transform targetTransform, bool smoothTransition = true) {
 		isTrackingTarget = true;
 		if (smoothTransition) {

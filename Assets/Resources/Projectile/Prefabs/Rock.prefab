@@ -75,9 +75,8 @@ MonoBehaviour:
     X: 0
     Y: 0
   isInvulnerable: 0
-  hasAttack: 0
+  hasAttack: 1
   canHeal: 0
-  HealthBar: {fileID: 0}
   debugging: 0
   Name: Rock
   maxLifespan: 3.5

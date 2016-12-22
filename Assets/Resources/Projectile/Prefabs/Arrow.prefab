@@ -70,21 +70,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b510e12b91fb4a669aeaed052c56533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSprite: 0
   Location:
     X: 0
     Y: 0
-  Name: Arrow
-  Health: 0
-  BaseDamage: 50
-  Range: 0
-  LevelString: 
-  AttackDelay: 1
   isInvulnerable: 0
-  AttackType: 0
-  hasAttack: 0
+  hasAttack: 1
   canHeal: 0
-  HealthBar: {fileID: 0}
   debugging: 0
+  Name: Arrow
   maxLifespan: 3.5
 --- !u!212 &21235518
 SpriteRenderer:
