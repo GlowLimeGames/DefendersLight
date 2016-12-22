@@ -39,17 +39,22 @@ public class CameraController : Controller {
 			return (90 - transform.rotation.eulerAngles.x) * Mathf.Deg2Rad;
 		}
 	}
-
+	float cameraSize {
+		get {
+			return currentZoom * zoomToSizeRatio;
+		}
+	}
 	public void Pan (Vector3 panDirection) {
-		if (map.InBounds(transform.position + panDirection)) {
-			transform.position += panDirection;
+		Vector3 panScaledByZoom = panDirection * currentZoom;
+		if (map.InBounds(transform.position + panScaledByZoom)) {
+			transform.position += panScaledByZoom;
 		}
 	}
 
 	public void Zoom (float deltaZoom) {
 		zoomSpeed = Mathf.Clamp(zoomSpeed + ZoomAcceleration, 0, MaxZoomSpeed);
 		currentZoom = Mathf.Clamp(currentZoom + (deltaZoom * zoomSpeed), MinimumZoom, MaximumZoom);
-		camera.orthographicSize = currentZoom * zoomToSizeRatio;
+		camera.orthographicSize = cameraSize;
 	}
 
 	public void EndZoom () {
