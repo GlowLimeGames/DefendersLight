@@ -1027,7 +1027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eda941a8f54c14a80a076cb8790b4609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frameWaitCount: 3
+  frameWaitCount: 1
   defaultTextColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &214442071 stripped
 GameObject:
@@ -8484,7 +8484,7 @@ MonoBehaviour:
   spawnPointParent: {fileID: 78852618}
   EnemyPrefabs:
   - {fileID: 172852, guid: 14cd95061c46148a5ba73e7b0e380f95, type: 2}
-  - {fileID: 128344, guid: 84f722eb810b54803a65483c7b5617e9, type: 2}
+  - {fileID: 0}
   - {fileID: 178702, guid: c5f81430e084c4a06aeff331d2a2f36d, type: 2}
 --- !u!1001 &1736538370
 Prefab:
