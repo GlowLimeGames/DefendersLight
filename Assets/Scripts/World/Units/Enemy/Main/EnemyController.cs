@@ -358,9 +358,14 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 
-	MapTileBehaviour[] createEnemyPath (MapTileBehaviour startingTile) {
+	MapTileBehaviour[] createEnemyPath (MapTileBehaviour startingTile, MapTileBehaviour customDestination = null, bool includeDestinationTile = false) {
 		MapQuadrant startingQudrant = startingTile.Quadrant;
-		MapTileBehaviour goalTile = mapController.GetCenterTile();
+		MapTileBehaviour goalTile;
+		if (customDestination == null) {
+			goalTile = mapController.GetCenterTile();
+		} else {
+			goalTile = customDestination;
+		}
 		MapTileBehaviour currentTile = startingTile;
 		MapTileBehaviour previousTile = null;
 		List<MapTileBehaviour> path = new List<MapTileBehaviour>();
@@ -370,7 +375,10 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			while (path.Contains(currentTile)) {
 				currentTile = chooseTile(currentTile, goalTile, previousDirection);
 			}
-			path.Add(currentTile);
+			// Don't add the actual goal tile: the enemy should just walk one square away from it
+			if (includeDestinationTile || currentTile != goalTile) {
+				path.Add(currentTile);
+			}
 			if (currentTile && previousTile) {
 				previousDirection = currentTile.GetDirection(previousTile);
 			}
