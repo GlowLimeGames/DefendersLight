@@ -30,6 +30,8 @@ public class TutorialController : SingletonController<TutorialController> {
 	Sprite closeIcon;
 	[SerializeField]
 	Sprite arrowIcon;
+	[SerializeField]
+	Button skipButton;
 
 	string[] TutorialKeys = new string[]{INTRO_TUTORIAL_KEY};
 	Dictionary<string, Tutorial> tutorials = new Dictionary<string, Tutorial>();
@@ -52,6 +54,9 @@ public class TutorialController : SingletonController<TutorialController> {
 		stepBody.text = currentStep.Body;
 		previousButton.interactable = tutorial.HasPrevious();
 		nextButtonIcon.sprite = tutorial.HasNext() ? arrowIcon : closeIcon;
+		nextButton.image.color = tutorial.HasNext() ? 
+			previousButton.image.color : skipButton.image.color;
+		skipButton.gameObject.SetActive(tutorial.HasNext());
 	}
 
 	public void PlayTutorial (string key) {

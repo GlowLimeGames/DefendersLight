@@ -237,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6869c7fb7f5d74660a23604143b12f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  autoStartIntroTutorial: 0
+  autoStartIntroTutorial: 1
   stepImage: {fileID: 11411574}
   stepTitle: {fileID: 11420148}
   stepBody: {fileID: 11451068}
@@ -246,6 +246,7 @@ MonoBehaviour:
   nextButtonIcon: {fileID: 11485162}
   closeIcon: {fileID: 21300000, guid: b5d1ddf0763874ec3a2b8263a13622fd, type: 3}
   arrowIcon: {fileID: 21300000, guid: ab4f26befcb42414fb9badeda5780c15, type: 3}
+  skipButton: {fileID: 11443642}
 --- !u!114 &11408364
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -347,12 +348,12 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 26e2c5655f9a149c0b8118c559f33671, type: 3}
-    m_FontSize: 40
+    m_Font: {fileID: 12800000, guid: fe93ee2f1dd00444191b47559e2209dc, type: 3}
+    m_FontSize: 75
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 50
+    m_MaxSize: 75
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -459,12 +460,12 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 722cc96cc7b2d4a92badb5751782c537, type: 3}
-    m_FontSize: 20
+    m_Font: {fileID: 12800000, guid: 26e2c5655f9a149c0b8118c559f33671, type: 3}
+    m_FontSize: 47
     m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 0
+    m_MinSize: 3
+    m_MaxSize: 300
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1

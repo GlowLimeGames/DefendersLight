@@ -411,7 +411,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: fe93ee2f1dd00444191b47559e2209dc, type: 3}
-    m_FontSize: 36
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -731,7 +731,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: fe93ee2f1dd00444191b47559e2209dc, type: 3}
-    m_FontSize: 36
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -1692,6 +1692,18 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22463764, guid: 716932ad8e5214199ae5bb43ff464826, type: 2}
       propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 197352, guid: 716932ad8e5214199ae5bb43ff464826, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22523210, guid: 716932ad8e5214199ae5bb43ff464826, type: 2}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11404358, guid: 716932ad8e5214199ae5bb43ff464826, type: 2}
+      propertyPath: autoStartIntroTutorial
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
