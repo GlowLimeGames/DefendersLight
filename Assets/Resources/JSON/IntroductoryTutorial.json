@@ -12,6 +12,11 @@
                "Image" : "Tower/Sprites/ballistae"
           },
           {
+               "Title" : "Map",
+               "Body" : "You can navigate the map by touching the screen and dragging your finger to go to different sections of the map. You can also use a pinching motion to zoom in and out on the map.",
+               "Image" : "Icon/tutorialHandUI_Click_Here"
+          },
+          {
                "Title" : "Illumination",
                "Body" : "You can illuminate more of the map by building Illumination towers. Illumination towers may only be built in parts of the map which have been illuminated.",
                "Image" : "Tower/Sprites/torchcluster"
