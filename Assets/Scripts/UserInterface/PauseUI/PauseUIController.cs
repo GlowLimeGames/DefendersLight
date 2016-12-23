@@ -17,6 +17,9 @@ public class PauseUIController : UIController {
 	ToggleableUIButton musicToggle;
 	[SerializeField]
 	UIPanelSwipe swipeToClosePause;
+	[SerializeField]
+	ToggleableUIButton pauseButton;
+
 	CanvasGroup pauseScreenCanvas;
 	bool isPaused {
 		get {
@@ -40,6 +43,9 @@ public class PauseUIController : UIController {
 
 	public void Unpause () {
 		world.Resume();
+		if (pauseButton.IsToggled) {
+			pauseButton.Toggle();
+		}
 	}
 
 	protected override void FetchReferences () {
