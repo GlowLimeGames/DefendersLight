@@ -44,6 +44,7 @@ public abstract class MobileAgentBehaviour : ActiveObjectBehaviour {
 			Vector3 targetLocation = currentTile.GetWorldPosition() + offset;
 			if (!isSprite) {
 				transform.rotation = Quaternion.LookRotation(targetLocation - previousLocation);
+				setHealthBarRotation();
 			}
 			float timer = 0;
 			while (timer <= timePerStep) {

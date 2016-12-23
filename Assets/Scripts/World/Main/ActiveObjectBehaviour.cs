@@ -215,6 +215,12 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 		updateHealthBar();
 	}
 
+	protected void setHealthBarRotation () {
+		Quaternion rotation = healthBar.transform.rotation;
+		rotation.eulerAngles = new Vector3(90, 0, 0);
+		healthBar.transform.rotation = rotation;
+	}
+
 	void updateHealthBar () {
 		if (healthBar) {
 			healthBar.SetHealthDisplay(
