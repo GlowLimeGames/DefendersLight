@@ -146,21 +146,24 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 				transform.rotation = Quaternion.Lerp(startingRotation, 
 					Quaternion.LookRotation(targetTransform.position - transform.position), 
 					timer / attackDelay);
+				setHealthBarRotation();
 				yield return new WaitForEndOfFrame();
 				timer += Time.deltaTime;
 			}
 		}
 		while (HasTarget) {
 			transform.LookAt(targetTransform);
+			setHealthBarRotation();
 			yield return new WaitForEndOfFrame();
 		}
 		isTrackingTarget = false;
 	}
-
+		
 	IEnumerator trackMissile (Transform missileTransform, float time) {
 		float timer = 0;
 		while (timer <= time) {
 			transform.LookAt(missileTransform, Vector3.up);
+			setHealthBarRotation();
 			timer += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}
