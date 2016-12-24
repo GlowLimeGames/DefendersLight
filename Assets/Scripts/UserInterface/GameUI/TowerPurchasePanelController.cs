@@ -20,6 +20,35 @@ public class TowerPurchasePanelController : UIController {
 	MapController map;
 	[SerializeField]
 	UIPanelSwipe panelSwipe;
+
+	[SerializeField]
+	Transform secondaryTowerButtonParent;
+	[SerializeField]
+	GameObject primaryTowerButton;
+	[SerializeField]
+	GameObject[] secondaryTowerButtons;
+	IEnumerator buttonAnimation;
+	[SerializeField]
+	float timeToShowButtons = 2.0f;
+	[SerializeField]
+	float timeToHideButtons = 2.0f;
+	bool isRunningButtonAnimation = false;
+	Vector3[] secondaryTowerPositions {
+		get {
+			Vector3[] positions = new Vector3[secondaryTowerButtons.Length];
+			for (int i = 0; i < secondaryTowerButtons.Length; i++) {
+				positions[i] = secondaryTowerButtons[i].transform.position;
+			}
+			return positions;
+		}
+	}
+	bool secondaryButtonsShown = false;
+	Vector3 secondaryButtonlocalCanvasOffset {
+		get {
+			return new Vector3(-Screen.width / 11f, Screen.height / 22f);
+		}
+	}
+
 	TowerType currentTowerType;
 	TowerPurchasePanel mostRecentClickedPanel;
 	float mostRecentTimePanelClicked = float.MinValue;
@@ -32,6 +61,7 @@ public class TowerPurchasePanelController : UIController {
 			return _towerSelectLock;
 		}
 	}
+
 
 	/* 
 	 * A state in which the user may click on an arbitrary number of squares to build the currently selected tower
@@ -181,6 +211,121 @@ public class TowerPurchasePanelController : UIController {
 		towerPage.alpha = isActive ? 1 : 0;
 		towerPage.blocksRaycasts = isActive;
 		towerPage.interactable = isActive;
+	}
+
+	void hideButtons () {
+		toggleButtons(secondaryButtonsShown:false);
+	}
+
+	void showButtons () {
+		toggleButtons(secondaryButtonsShown:true);
+	}
+
+	void toggleButtons (bool secondaryButtonsShown) {
+		TogglePurchaseCanvasVisible(secondaryButtonsShown);
+	}
+
+	void stopCurrentButtonAnimation () {
+		if (buttonAnimation != null) {
+			StopCoroutine(buttonAnimation);
+		}
+	}
+		
+	public void ToggleSecondaryButtons () {
+		// Don't run if an animation is already running
+		if (isRunningButtonAnimation) {
+			return;
+		}
+		if (secondaryButtonsShown) {
+			hideButtonAnimation();
+		} else {
+			showButtonAnimation();
+		}
+		secondaryButtonsShown = !secondaryButtonsShown;
+	}
+
+	void showButtonAnimation () {
+		stopCurrentButtonAnimation();
+		buttonAnimation = towerButtonAnimation(
+			timeToShowButtons, 
+			secondaryTowerPositions,
+			Vector3.zero,
+			secondaryButtonlocalCanvasOffset,
+			showButtons,
+			primaryTowerButton.transform.position);
+		StartCoroutine(buttonAnimation);
+	}
+
+	void hideButtonAnimation () {
+		hideButtons();
+		stopCurrentButtonAnimation();
+		buttonAnimation = towerButtonAnimation(
+			timeToHideButtons, 
+			new Vector3[]{
+				primaryTowerButton.transform.position, 
+				primaryTowerButton.transform.position, 
+				primaryTowerButton.transform.position
+			},
+			secondaryButtonlocalCanvasOffset,
+			Vector3.zero,
+			null,
+			secondaryTowerPositions);
+		StartCoroutine(buttonAnimation);
+	}
+
+	IEnumerator towerButtonAnimation (
+		float animationTime, 
+		Vector3[] destinations, 
+		Vector3 startOffset,
+		Vector3 endOffset,
+		EventAction callback, 
+		params Vector3[] startPositions) {
+		GameObject[] buttonStandins = getButtonStandins(startPositions);
+		// Repurpose the array to hold the start positions:
+		startPositions = new Vector3[buttonStandins.Length];
+		for (int i = 0; i < buttonStandins.Length; i++) {
+			startPositions[i] = buttonStandins[i].transform.position;
+		}
+		float timer = 0;
+		isRunningButtonAnimation = true;
+		while (timer <= animationTime) {
+			float progress = Easing.Quadratic.InOut(timer / animationTime);
+			for (int i = 0; i < buttonStandins.Length; i++) {
+				buttonStandins[i].transform.position = Vector3.Lerp(
+					startPositions[i],
+					destinations[i],
+					progress) +
+					Vector3.Lerp(startOffset, endOffset, Easing.Quadratic.InOut(progress));
+			}
+			timer += Time.deltaTime;
+			yield return new WaitForEndOfFrame();
+		}
+		for (int i = 0; i < buttonStandins.Length; i++) {
+			Destroy(buttonStandins[i]);
+		}
+		isRunningButtonAnimation = false;
+		if (callback != null) callback();
+	}
+
+	GameObject[] getButtonStandins (params Vector3[] positions) {
+		if (positions.Length == 0) {
+			positions = new Vector3[]{Vector3.zero};
+		}
+		GameObject[] buttonStandins = new GameObject[secondaryTowerButtons.Length];
+		int locationIndex = 0;
+		int buttonIndex = 0;
+		foreach (GameObject button in secondaryTowerButtons) {
+			buttonStandins[buttonIndex] = Instantiate(button) as GameObject;
+			buttonStandins[buttonIndex].transform.position = positions[locationIndex];
+			buttonStandins[buttonIndex].SetActive(true);
+			buttonStandins[buttonIndex].transform.SetParent(transform.parent);
+			buttonStandins[buttonIndex].transform.localScale = button.transform.localScale;
+			buttonIndex++;
+			if (locationIndex < positions.Length - 1) {
+				locationIndex++;
+			}
+		}
+		return buttonStandins;
 	}
 
 	public void OpenTowerPage () {
