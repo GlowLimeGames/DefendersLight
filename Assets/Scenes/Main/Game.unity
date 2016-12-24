@@ -1837,7 +1837,7 @@ MonoBehaviour:
   startsClosed: 1
   orientation: 0
   dragDirection: 6
-  autoCloseSpeed: 500
+  autoCloseSpeed: 700
   enterSpeed: 2000
 --- !u!225 &348581782
 CanvasGroup:
@@ -5870,7 +5870,7 @@ MonoBehaviour:
   startsClosed: 1
   orientation: 1
   dragDirection: 4
-  autoCloseSpeed: 200
+  autoCloseSpeed: 700
   enterSpeed: 800
 --- !u!225 &1153773161
 CanvasGroup:
@@ -7102,7 +7102,7 @@ MonoBehaviour:
   startsClosed: 1
   orientation: 0
   dragDirection: 2
-  autoCloseSpeed: 500
+  autoCloseSpeed: 700
   enterSpeed: 2000
 --- !u!1 &1484349564 stripped
 GameObject:
