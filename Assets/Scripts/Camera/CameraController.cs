@@ -14,6 +14,8 @@ public class CameraController : Controller {
 	public float ZoomAcceleration = 0.01f;
 	[SerializeField]
 	float timeToResetPosition = 0.5f;
+	[SerializeField]
+	float panSpeed = 2f;
 	float currentZoom = 1;
 	float zoomSpeed;
 	float zoomToSizeRatio;
@@ -108,7 +110,7 @@ public class CameraController : Controller {
 	}
 
 	public void Pan (Vector3 panDirection) {
-		Vector3 panScaledByZoom = panDirection * currentZoom;
+		Vector3 panScaledByZoom = panDirection * currentZoom * panSpeed;
 		if (map.InBounds(transform.position + panScaledByZoom)) {
 			transform.position += panScaledByZoom;
 		}
