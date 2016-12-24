@@ -301,7 +301,7 @@ GameObject:
   - 224: {fileID: 36564892}
   - 114: {fileID: 36564893}
   m_Layer: 5
-  m_Name: TowerTypeButtons
+  m_Name: SecondaryTowerButtons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5916,7 +5916,7 @@ GameObject:
   - 224: {fileID: 1161679928}
   - 114: {fileID: 1161679929}
   m_Layer: 5
-  m_Name: BuildTowerButton
+  m_Name: PrimaryTowerButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5980,36 +5980,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1924913051}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1924913053}
+        m_MethodName: ToggleSecondaryButtons
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1161679927}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1924913054}
-        m_MethodName: set_alpha
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 1
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -9507,6 +9485,14 @@ MonoBehaviour:
   title: {fileID: 2043032123}
   towerPage: {fileID: 1481821235}
   panelSwipe: {fileID: 1481821236}
+  secondaryTowerButtonParent: {fileID: 36564892}
+  primaryTowerButton: {fileID: 1161679927}
+  secondaryTowerButtons:
+  - {fileID: 682356990}
+  - {fileID: 1624376987}
+  - {fileID: 1958973786}
+  timeToShowButtons: 0.75
+  timeToHideButtons: 0.75
   clickThresholdForTowerLock: 2
   towerLockEnabled: 1
 --- !u!225 &1924913054
