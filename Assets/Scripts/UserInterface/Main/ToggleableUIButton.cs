@@ -18,6 +18,8 @@ public class ToggleableUIButton : UILabledButton {
 	Sprite imageOn;
 	[SerializeField]
 	Sprite imageOff;
+	[SerializeField]
+	bool manuallyControlToggle = false;
 
 	public bool ShowToggle;
 	bool toggled = false;
@@ -40,17 +42,21 @@ public class ToggleableUIButton : UILabledButton {
 	public void Toggle () {
 		toggled = !toggled;
 		if (ShowToggle) {
-			if (toggled) {
-				if (shouldToggleImage) {
-					toggleImage.sprite = imageOn;
-				}
-				buttonImage.color = buttonSelectedColor;
-			} else {
-				if (shouldToggleImage) {
-					toggleImage.sprite = imageOff;
-				}
-				buttonImage.color = buttonUnselectedColor;
+			refreshVisualToggle();
+		}
+	}
+		
+	void refreshVisualToggle () {
+		if (toggled) {
+			if (shouldToggleImage) {
+				toggleImage.sprite = imageOn;
 			}
+			buttonImage.color = buttonSelectedColor;
+		} else {
+			if (shouldToggleImage) {
+				toggleImage.sprite = imageOff;
+			}
+			buttonImage.color = buttonUnselectedColor;
 		}
 	}
 
@@ -59,11 +65,13 @@ public class ToggleableUIButton : UILabledButton {
 	}
 
 	protected override void executeClick () {
-		Toggle();
-		if (toggled) {
-			base.executeClick ();
-		} else {
-			executeToggleOff();
+		if (!manuallyControlToggle) {
+			Toggle();
+			if (toggled) {
+				base.executeClick ();
+			} else {
+				executeToggleOff();
+			}
 		}
 	}
 
