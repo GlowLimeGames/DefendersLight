@@ -33,6 +33,11 @@ public class TowerPurchasePanelController : UIController {
 	[SerializeField]
 	float timeToHideButtons = 2.0f;
 	bool isRunningButtonAnimation = false;
+	Vector3 primaryButtonOffset {
+		get {
+			return primaryTowerButton.transform.position + new Vector3(Screen.width / 12f, -Screen.height / 12f);
+		}
+	}
 	Vector3[] secondaryTowerPositions {
 		get {
 			Vector3[] positions = new Vector3[secondaryTowerButtons.Length];
@@ -43,11 +48,6 @@ public class TowerPurchasePanelController : UIController {
 		}
 	}
 	bool secondaryButtonsShown = false;
-	Vector3 secondaryButtonlocalCanvasOffset {
-		get {
-			return new Vector3(-Screen.width / 11f, Screen.height / 22f);
-		}
-	}
 
 	TowerType currentTowerType;
 	TowerPurchasePanel mostRecentClickedPanel;
@@ -249,25 +249,22 @@ public class TowerPurchasePanelController : UIController {
 		buttonAnimation = towerButtonAnimation(
 			timeToShowButtons, 
 			secondaryTowerPositions,
-			Vector3.zero,
-			secondaryButtonlocalCanvasOffset,
 			showButtons,
-			primaryTowerButton.transform.position);
+			primaryButtonOffset);
 		StartCoroutine(buttonAnimation);
 	}
 
 	void hideButtonAnimation () {
 		hideButtons();
 		stopCurrentButtonAnimation();
+		Vector3 startPosition = primaryButtonOffset;
 		buttonAnimation = towerButtonAnimation(
 			timeToHideButtons, 
 			new Vector3[]{
-				primaryTowerButton.transform.position, 
-				primaryTowerButton.transform.position, 
-				primaryTowerButton.transform.position
+				startPosition,
+				startPosition,
+				startPosition
 			},
-			secondaryButtonlocalCanvasOffset,
-			Vector3.zero,
 			null,
 			secondaryTowerPositions);
 		StartCoroutine(buttonAnimation);
@@ -276,8 +273,6 @@ public class TowerPurchasePanelController : UIController {
 	IEnumerator towerButtonAnimation (
 		float animationTime, 
 		Vector3[] destinations, 
-		Vector3 startOffset,
-		Vector3 endOffset,
 		EventAction callback, 
 		params Vector3[] startPositions) {
 		GameObject[] buttonStandins = getButtonStandins(startPositions);
@@ -294,8 +289,7 @@ public class TowerPurchasePanelController : UIController {
 				buttonStandins[i].transform.position = Vector3.Lerp(
 					startPositions[i],
 					destinations[i],
-					progress) +
-					Vector3.Lerp(startOffset, endOffset, Easing.Quadratic.InOut(progress));
+					progress);
 			}
 			timer += Time.deltaTime;
 			yield return new WaitForEndOfFrame();
