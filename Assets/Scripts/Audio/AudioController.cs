@@ -112,12 +112,22 @@ public class AudioController : Controller, IAudioController {
 			StopAllCoroutines();
 			TeardownTempSFXChannels();
 		}
+		checkMuteOnAllChannels();
 	}
 
 	public void ToggleMusicMute () {
 		SettingsUtil.ToggleMusicMuted (
 			!SettingsUtil.MusicMuted
 		);
+		checkMuteOnAllChannels();
+	}
+
+	void checkMuteOnAllChannels () {
+		foreach (AudioSource source in GetComponents<AudioSource>()) {
+			if (source.clip) {
+				CheckMute(fileList.GetAudioFile(source.clip), source);
+			}
+		}
 	}
 
 	void CheckMute (AudioFile file, AudioSource source) {

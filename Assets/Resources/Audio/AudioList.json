@@ -14,10 +14,10 @@
 			"Name":"Defender's Light SoundTrack 1_1",
 			"Groups":[],
 			"Events":["LoadGame"],
-			"StopEvents":["GameOver"],
+			"StopEvents":["LoadStart", "LoadGameOver"],
 			"Loop":true,
 			"Type": "Music",
-			"Channel":2,
+			"Channel":10,
 			"Volume": 70
 		},
 		{
@@ -46,8 +46,8 @@
 			"Events":["LoadGame"],
 			"StopEvents":[],
 			"Loop":true,
-			"Type": "Ambience",
-			"Channel":2,
+			"Type": "Music",
+			"Channel":3,
 			"Volume": 15
 		},
 		{
@@ -423,7 +423,7 @@
 		{
 			"Name":"Game_Over_2",
 			"Groups":[],
-			"Events":["GameOver"],
+			"Events":["LoadGameOver"],
 			"StopEvents":[],
 			"Loop":false,
 			"Type": "FX",
