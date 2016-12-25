@@ -28,12 +28,12 @@ public static class AudioUtil {
 
 	public static AudioType AudioTypeFromString (string audioType) {
 		switch (audioType) {
-		case "FX":
-		case "Ambience":
+		case AudioFile.SOUND_EFFECT:
+		case AudioFile.AMBIENCE:
 			return AudioType.FX;
-		case "Music":
+		case AudioFile.MUSIC:
 			return AudioType.Music;
-		case "VO":
+		case AudioFile.VOICE_OVER:
 			return AudioType.VO;
 		default:
 			throw new System.Collections.Generic.KeyNotFoundException();

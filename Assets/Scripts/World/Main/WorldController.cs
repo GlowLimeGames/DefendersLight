@@ -302,8 +302,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		towerController.RefreshIlluminations();
 	}
 
-	public void SendIlluminationToMap (IlluminationTowerBehaviour illuminationTower, bool shouldPlaySound = true, bool onTowerPlace = false) {
-		mapController.Illuminate(illuminationTower.GetLocation(), illuminationTower, shouldPlaySound, onTowerPlace);
+	public void SendIlluminationToMap (IlluminationTowerBehaviour illuminationTower, bool onTowerPlace = false) {
+		mapController.Illuminate(illuminationTower.GetLocation(), illuminationTower, onTowerPlace);
 	}
 
 	// Cleans up/destroys the world

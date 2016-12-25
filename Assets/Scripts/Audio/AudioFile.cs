@@ -10,6 +10,23 @@ using System.Collections;
 
 [System.Serializable]
 public class AudioFile : AudioData, IAudioFile {
+	public const string SOUND_EFFECT = "FX";
+	public const string AMBIENCE = "Ambience";
+	public const string MUSIC = "Music";
+	public const string VOICE_OVER = "VO";
+
+	public static AudioFile Default {
+		get {
+			AudioFile file = new AudioFile();
+			file.Name = "None";
+			file.Type = "FX";
+			file.Volume = 0;
+			file.Groups = new string[0];
+			file.Events = new string[0];
+			file.StopEvents = new string[0];
+			return file;
+		}
+	}
 	public delegate void ClipRequestAction (AudioFile file);
 	public event ClipRequestAction OnClipRequest;
 	public string[] Groups;

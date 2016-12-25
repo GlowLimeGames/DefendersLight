@@ -171,7 +171,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	public void RefreshIlluminations () {
 		foreach (TowerBehaviour tower in activeTowers) {
 			if (tower is IlluminationTowerBehaviour) {
-				worldController.SendIlluminationToMap(tower as IlluminationTowerBehaviour, shouldPlaySound:false);
+				worldController.SendIlluminationToMap(tower as IlluminationTowerBehaviour);
 			}
 		}
 	}

@@ -24,6 +24,5 @@ public class GameOverUIController : UIController {
 			newHighestWave.SetActive(data.HighestWaveReachedInSession);
 			data.ResetWorld();
 		}
-		EventController.Event(EventType.LoadGameOver);
 	}
 }

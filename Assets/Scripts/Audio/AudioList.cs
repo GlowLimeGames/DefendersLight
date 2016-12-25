@@ -54,8 +54,17 @@ public class AudioList {
 		}
 	}
 
+	public AudioFile GetAudioFile (AudioClip fromClip) {
+		AudioFile toFile;
+		if (clipToFileDictionary.TryGetValue(fromClip, out toFile)) {
+			return toFile;
+		} else {
+			return AudioFile.Default;
+		}
+	}
+
 	public AudioType GetAudioType (AudioClip clip) {
-		return AudioUtil.AudioTypeFromString(clipToFileDictionary[clip].Type);
+		return GetAudioFile(fromClip:clip).TypeAsEnum;
 	}
 
 	void ProcessAudioFileAccess (AudioFile file) {

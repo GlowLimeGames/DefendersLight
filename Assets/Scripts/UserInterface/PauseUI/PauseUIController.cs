@@ -37,22 +37,10 @@ public class PauseUIController : UIController {
 		pauseScreenCanvas = GetComponentInChildren<CanvasGroup>();
 	}
 
-    public void TogglePause () {
-		world.TogglePause();	
-	}
-
-	public void Unpause () {
-		world.Resume();
-		if (pauseButton.IsToggled) {
-			pauseButton.Toggle();
-		}
-	}
-
 	protected override void FetchReferences () {
 		base.FetchReferences ();
 		world = WorldController.Instance;
-		swipeToClosePause.SubscribeToClose(Unpause);
-		swipeToClosePause.SubscribeToClose(TogglePauseScreen);
+		swipeToClosePause.SubscribeToClose(TogglePause);
 		swipeToClosePause.SubscribeToBeginClose(delegate () {
 			if (cheatPanelIsOpen()) {
 				ToggleCheatPanel();	
@@ -60,7 +48,21 @@ public class PauseUIController : UIController {
 		});
 	}
 
+    public void TogglePause () {
+		world.TogglePause();	
+		TogglePauseScreen();
+	}
+
+	public void Unpause () {
+		world.Resume();
+	}
+
+	void updatePauseButtonToggle () {
+		pauseButton.Toggle();
+	}
+
 	public void TogglePauseScreen () {
+		updatePauseButtonToggle();
 		pauseScreen.SetActive(isPaused);
 		toggleCanvasGroup(pauseScreenCanvas, isPaused);
 		if (isPaused) {

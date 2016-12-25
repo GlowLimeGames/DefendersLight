@@ -1928,19 +1928,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1282894674}
-        m_MethodName: TogglePause
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1965056667}
-        m_MethodName: TogglePauseScreen
+        m_MethodName: TogglePause
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2011,6 +2000,7 @@ MonoBehaviour:
   toggleImage: {fileID: 99921436}
   imageOn: {fileID: 21300000, guid: 06a3d0b2e917a405a881a1de7f433d68, type: 3}
   imageOff: {fileID: 21300000, guid: b6748a76dce1b4dcd9e1902c529d4de3, type: 3}
+  manuallyControlToggle: 1
   ShowToggle: 1
 --- !u!114 &370429777
 MonoBehaviour:
@@ -3874,17 +3864,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1965056667}
-        m_MethodName: TogglePauseScreen
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1965056667}
         m_MethodName: TogglePause
         m_Mode: 1
         m_Arguments:
@@ -4829,6 +4808,7 @@ MonoBehaviour:
   toggleImage: {fileID: 1324959552}
   imageOn: {fileID: 21300000, guid: ec0ed21d0f54b48fd91a7e40003666e5, type: 3}
   imageOff: {fileID: 21300000, guid: 6618e8cbfceff4f41ac8775cad85c0e0, type: 3}
+  manuallyControlToggle: 0
   ShowToggle: 1
 --- !u!114 &991877512
 MonoBehaviour:
@@ -8244,6 +8224,7 @@ MonoBehaviour:
   toggleImage: {fileID: 2078888419}
   imageOn: {fileID: 21300000, guid: b30c9ad2efc58416286b0e6e91626e83, type: 3}
   imageOff: {fileID: 21300000, guid: 64c4fc8ee4c6246f494748ce77f36171, type: 3}
+  manuallyControlToggle: 0
   ShowToggle: 1
 --- !u!114 &1642440543
 MonoBehaviour:

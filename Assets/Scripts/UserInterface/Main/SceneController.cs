@@ -26,6 +26,7 @@ public class SceneController : MannBehaviour {
 
 	public static void LoadGameOver () {
 		cleanupInGameReferences();
+		EventController.Event(EventType.LoadGameOver);
 		LoadScene(GAME_OVER_SCENE_NAME);
 	}
 
