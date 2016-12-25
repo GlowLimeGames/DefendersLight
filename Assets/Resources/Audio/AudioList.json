@@ -44,7 +44,7 @@
 			"Name":"Defender's Light Bass Drone 2",
 			"Groups":[],
 			"Events":["LoadGame"],
-			"StopEvents":[],
+			"StopEvents":["LoadStart", "LoadGameOver"],
 			"Loop":true,
 			"Type": "Music",
 			"Channel":3,
@@ -54,10 +54,10 @@
 			"Name":"Defender's Light Ambience 1",
 			"Groups":[],
 			"Events":["LoadGame"],
-			"StopEvents":[],
+			"StopEvents":["LoadStart", "LoadGameOver"],
 			"Loop":true,
 			"Type": "Ambience",
-			"Channel":2,
+			"Channel":15,
 			"Volume": 6
 		},
 

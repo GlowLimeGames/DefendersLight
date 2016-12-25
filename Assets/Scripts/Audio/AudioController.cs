@@ -83,9 +83,8 @@ public class AudioController : Controller, IAudioController {
 		bool shouldResumeClip = false;
 		float clipTime = 0;
 		if (file.TypeAsEnum == AudioType.FX) {
-			if (source.clip != null && source.isPlaying) { 
+			if (source.clip != null && source.isPlaying && getClipType(source.clip) == AudioType.FX && !source.loop) { 
 				if (!AudioUtil.IsMuted(AudioType.FX)) {
-					source.clip = file.Clip;
 					StartCoroutine(CompleteOnTempChannel(source.clip, source.time, source.volume));
 				}
 			}
@@ -138,6 +137,10 @@ public class AudioController : Controller, IAudioController {
 				CheckMute(fileList.GetAudioFile(source.clip), source);
 			}
 		}
+	}
+
+	AudioType getClipType (AudioClip clip) {
+		return fileList.GetAudioType(clip);
 	}
 
 	void CheckMute (AudioFile file, AudioSource source) {
