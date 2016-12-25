@@ -102,7 +102,7 @@
       "Frequency" : 5,
       "Quantity" : 2,
       "Notes" : "",
-      "FlavorText" : "These horrifying amalgamations of insect like limbs and a flower like head impale their prey with a barb shot from its gaping mouth. ",
+      "FlavorText" : "These horrifying amalgamations of insect like limbs and a flower like head impale their prey with a barb shot from its gaping mouth.",
       "Description" : "These demons are slow and only deal low damage, but have an even greater range than the Lancers, allowing them to attack well out of some tower's ranges."
     },
     {
@@ -123,7 +123,7 @@
       "Frequency" : 3,
       "Quantity" : 1,
       "Notes" : "",
-      "FlavorText" : "While very little is known about these ghastly shadows of the night, it is shown that they posses incorporeal bodies. ",
+      "FlavorText" : "While very little is known about these ghastly shadows of the night, it is shown that they posses incorporeal bodies.",
       "Description" : "Shades cannot attack directly, but rather, provide their comrades with vitality. While they are merely healers, there incorporeal form allows them to evade all physical attacks. They cannot be hit directly unless with fire and lightning weapons. However, their vitality drains overtime time and eventually their presence will evaporate."
     },
     {
@@ -144,7 +144,7 @@
       "Frequency" : 5,
       "Quantity" : 2,
       "Notes" : "",
-      "FlavorText" : "Another wretch of the night, alongside with its cowardly brethren the Rushers. ",
+      "FlavorText" : "Another wretch of the night, alongside with its cowardly brethren the Rushers.",
       "Description" : "These creatures of the dark are the fastest among their brethren.They love to flank strongholds and have the ability to leap over a single tower."
     }
   ]}

@@ -17,7 +17,7 @@ public class LeaperBehaviour : EnemyBehaviour {
 	[SerializeField]
 	bool simulatePerspective = true; // Simulates perspective when in orthographic mode (no indication of relative distance from camera)
 	QuadraticEquation jumpHeightEquation;
-	bool _isLeaping;
+	bool _isLeaping = false;
 	public bool IsLeaping {
 		get {
 			return _isLeaping;

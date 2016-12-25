@@ -358,7 +358,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 
-	MapTileBehaviour[] createEnemyPath (MapTileBehaviour startingTile, MapTileBehaviour customDestination = null, bool includeDestinationTile = false) {
+	MapTileBehaviour[] createEnemyPath (MapTileBehaviour startingTile, MapTileBehaviour customDestination = null, bool includeDestinationTile = true) {
 		MapQuadrant startingQudrant = startingTile.Quadrant;
 		MapTileBehaviour goalTile;
 		if (customDestination == null) {

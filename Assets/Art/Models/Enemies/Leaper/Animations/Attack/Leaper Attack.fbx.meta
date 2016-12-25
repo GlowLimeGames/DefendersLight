@@ -1,72 +1,50 @@
 fileFormatVersion: 2
-guid: 89a9cbf9ecfe24c65a56f1202b109ab5
-timeCreated: 1482633095
+guid: cbce7b997eeac4a03a84ccc1bb92785a
+timeCreated: 1482633690
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: back
-    100002: Foot
-    100004: Foot 1
-    100006: Foot 2
-    100008: Foot 3
-    100010: Foot 4
-    100012: Foot 5
-    100014: Geo
-    100016: Jaw_Bot
-    100018: Jaw_Top
-    100020: Knee
-    100022: Knee 1
-    100024: Knee 2
-    100026: Knee 3
-    100028: Knee 4
-    100030: Knee 5
-    100032: left
-    100034: Leg_B_L
-    100036: Leg_B_R
-    100038: Leg_F_L
-    100040: Leg_F_R
-    100042: Leg_M_L
-    100044: Leg_M_R
-    100046: Neck
-    100048: //RootNode
-    100050: Root
-    100052: Tail_Base
-    100054: Tail_Bot
-    100056: Tail_Mid
-    400000: back
-    400002: Foot
-    400004: Foot 1
-    400006: Foot 2
-    400008: Foot 3
-    400010: Foot 4
-    400012: Foot 5
-    400014: Geo
-    400016: Jaw_Bot
-    400018: Jaw_Top
-    400020: Knee
-    400022: Knee 1
-    400024: Knee 2
-    400026: Knee 3
-    400028: Knee 4
-    400030: Knee 5
-    400032: left
-    400034: Leg_B_L
-    400036: Leg_B_R
-    400038: Leg_F_L
-    400040: Leg_F_R
-    400042: Leg_M_L
-    400044: Leg_M_R
-    400046: Neck
-    400048: //RootNode
-    400050: Root
-    400052: Tail_Base
-    400054: Tail_Bot
-    400056: Tail_Mid
-    4300000: Geo
-    7400000: Lancer Attack
+    100000: Elbo_L
+    100002: Elbo_R
+    100004: Foot_L
+    100006: Foot_R
+    100008: GEO1
+    100010: Hand_L
+    100012: Hand_R
+    100014: Head
+    100016: Hip_L
+    100018: Hip_R
+    100020: Knee_L
+    100022: Knee_R
+    100024: //RootNode
+    100026: Neck
+    100028: Root
+    100030: Shoulder_L
+    100032: Shoulder_R
+    100034: Spine_Base
+    400000: Elbo_L
+    400002: Elbo_R
+    400004: Foot_L
+    400006: Foot_R
+    400008: GEO1
+    400010: Hand_L
+    400012: Hand_R
+    400014: Head
+    400016: Hip_L
+    400018: Hip_R
+    400020: Knee_L
+    400022: Knee_R
+    400024: //RootNode
+    400026: Neck
+    400028: Root
+    400030: Shoulder_L
+    400032: Shoulder_R
+    400034: Spine_Base
+    4300000: GEO1
+    7400000: Leaper Attack
     9500000: //RootNode
-    13700000: Geo
+    13700000: GEO1
   materials:
     importMaterials: 1
     materialName: 0
@@ -89,10 +67,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: Lancer Attack
+      name: Leaper Attack
       takeName: Take 001
       firstFrame: 1
-      lastFrame: 20
+      lastFrame: 25
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -115,61 +93,39 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: back
-        weight: 1
-      - path: Geo
-        weight: 1
-      - path: left
+      - path: GEO1
         weight: 1
       - path: Root
         weight: 1
-      - path: Root/Leg_B_L
+      - path: Root/Hip_L
         weight: 1
-      - path: Root/Leg_B_L/Knee
+      - path: Root/Hip_L/Knee_L
         weight: 1
-      - path: Root/Leg_B_L/Knee/Foot
+      - path: Root/Hip_L/Knee_L/Foot_L
         weight: 1
-      - path: Root/Leg_B_R
+      - path: Root/Hip_R
         weight: 1
-      - path: Root/Leg_B_R/Knee 1
+      - path: Root/Hip_R/Knee_R
         weight: 1
-      - path: Root/Leg_B_R/Knee 1/Foot 1
+      - path: Root/Hip_R/Knee_R/Foot_R
         weight: 1
-      - path: Root/Leg_F_L
+      - path: Root/Spine_Base
         weight: 1
-      - path: Root/Leg_F_L/Knee 2
+      - path: Root/Spine_Base/Neck
         weight: 1
-      - path: Root/Leg_F_L/Knee 2/Foot 2
+      - path: Root/Spine_Base/Neck/Head
         weight: 1
-      - path: Root/Leg_F_R
+      - path: Root/Spine_Base/Neck/Shoulder_L
         weight: 1
-      - path: Root/Leg_F_R/Knee 3
+      - path: Root/Spine_Base/Neck/Shoulder_L/Elbo_L
         weight: 1
-      - path: Root/Leg_F_R/Knee 3/Foot 3
+      - path: Root/Spine_Base/Neck/Shoulder_L/Elbo_L/Hand_L
         weight: 1
-      - path: Root/Leg_M_L
+      - path: Root/Spine_Base/Neck/Shoulder_R
         weight: 1
-      - path: Root/Leg_M_L/Knee 4
+      - path: Root/Spine_Base/Neck/Shoulder_R/Elbo_R
         weight: 1
-      - path: Root/Leg_M_L/Knee 4/Foot 4
-        weight: 1
-      - path: Root/Leg_M_R
-        weight: 1
-      - path: Root/Leg_M_R/Knee 5
-        weight: 1
-      - path: Root/Leg_M_R/Knee 5/Foot 5
-        weight: 1
-      - path: Root/Neck
-        weight: 1
-      - path: Root/Neck/Jaw_Bot
-        weight: 1
-      - path: Root/Neck/Jaw_Top
-        weight: 1
-      - path: Root/Tail_Base
-        weight: 1
-      - path: Root/Tail_Base/Tail_Mid
-        weight: 1
-      - path: Root/Tail_Base/Tail_Mid/Tail_Bot
+      - path: Root/Spine_Base/Neck/Shoulder_R/Elbo_R/Hand_R
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
