@@ -13,6 +13,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	public static WorldController Instance;
 	bool isPaused;
+	bool loadedFromSave = false;
 	public GameObject TowerPrefab;
 	public GameObject AssaulTowerPrefab;
 	public GameObject BarricadeTowerPrefab;
@@ -156,10 +157,12 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 		SetupUnitControllers();
 		if (inGame) {
-			PlaceCoreOrb();
 			setupUnitControllerCallbacks();
 			if (dataController.HasWorldState) {
 				dataController.SetWorldFromSave(this);
+				loadedFromSave = true;
+			} else {
+				PlaceCoreOrb();
 			}
 		}
 		_unitsByClass = determineUnitsByClass();
@@ -171,12 +174,11 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void LoadFromSave (WorldState saveState) {
-		Debug.Log(saveState.ActiveTowers.Length);
-		foreach (Enemy enemy in saveState.ActiveEnemies) {
-			enemyController.SpawnEnemy(enemy);
-		}
 		foreach (Tower tower in saveState.ActiveTowers) {
 			towerController.SpawnTower(tower);
+		}
+		foreach (Enemy enemy in saveState.ActiveEnemies) {
+			enemyController.SpawnEnemy(enemy);
 		}
 	}
 
@@ -445,7 +447,9 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 		Create();
 		if (inGame) {
-			StartWave();
+			if (!loadedFromSave) {
+				StartWave();
+			}
 			EventController.Event(EventType.LoadGame);
 		}
 	}

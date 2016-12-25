@@ -10,6 +10,7 @@ public class Tower : Unit {
 	const string ILLUMINATION = "Illumination";
 	const string ASSAULT = "Assault";
 	const string BARRICADE = "Barricade";
+	public const string CORE_ORB = "Core Orb";
 	static Dictionary<string, UnityEngine.Sprite> towerSprites = new Dictionary<string, UnityEngine.Sprite>();
 	public Tower (string type, int health, MapLocation location, string description, int cost, int unlockLevel,
 		IWorldController worldController, ITowerController towerController,
@@ -126,6 +127,8 @@ public class Tower : Unit {
 			this.UnlockLevel = towerData.UnlockLevel;
 			this.IlluminationRadius = towerData.IlluminationRadius;
 			this.Reflectivitiy = towerData.Reflectivitiy;
+			this.AlmanacFlavorText = towerData.AlmanacFlavorText;
+			this.AlmanacStatDescriptions = towerData.IAlmanacStatDescriptions;
 		} catch {
 			UnityEngine.Debug.LogWarningFormat("Unable to fully copy unit. Is not of type {0}", this.GetType());
 		}

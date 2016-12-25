@@ -32,6 +32,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	int currentWaveIndex = 1;
 	int spawnPointCount = 1;
 	EnemyWave currentWave = null;
+	StatsPanelController overlay;
 	public EnemyWave ICurrentWave {
 		get {
 			return this.currentWave;
@@ -44,6 +45,11 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		get {
 			return currentWaveIndex;
 		}
+	}
+
+	protected override void FetchReferences () {
+		base.FetchReferences ();
+		overlay = StatsPanelController.Instance;
 	}
 
 	public virtual void Setup (
@@ -227,30 +233,30 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		}
 	}
 	public void SpawnEnemy (Enemy enemy) {
-		try {
-			MapTileBehaviour tile = mapController.GetTileFromLocation(enemy.Location);
-			EnemyBehaviour enemyBehaviour = GetEnemyObject(enemy.Type, tile.GetWorldPosition());
-			enemyBehaviour.Setup(this);
-			GameObject enemyObject = enemyBehaviour.gameObject;
-			enemyBehaviour.ToggleColliders(true);
-			enemyBehaviour.SetEnemy(enemy);
-			enemyBehaviour.SetPath(new Queue<MapTileBehaviour>(createEnemyPath(tile)));
-			enemyBehaviour.SetOffset(new Vector3(UE.Random.Range(0, 0.2f), 0, UE.Random.Range(0, 0.2f)));
-			enemyObject.transform.SetParent(transform);
-			// Placeholder: because undead is sprite;
-			Quaternion angle = Quaternion.identity;
-			enemyBehaviour.DirectionFacing = getDirectionFacing(
-				mapController.GetTileFromLocation(enemy.Location).GetWorldPosition(),
-				worldController.ICoreOrbInstance.transform.position);
-			float yRotation = DirectionUtil.GetAngleFromDirection(enemyBehaviour.DirectionFacing);
-			angle.eulerAngles = new Vector3(0, yRotation, 0);
-			enemyObject.transform.eulerAngles = angle.eulerAngles;
-			enemyBehaviour.OnSpawn();
-			enemyBehaviour.NavigatePath();
-			AddActiveEnemy(enemyBehaviour);
-		} catch {
-			Debug.LogErrorFormat("ERROR: No enemy of type {0}", enemy.Type);
-		}
+		enemy.SetController(worldController);
+		MapTileBehaviour tile = mapController.GetTileFromLocation(enemy.Location);
+		EnemyBehaviour enemyBehaviour = GetEnemyObject(enemy.Type, tile.GetWorldPosition());
+		enemyBehaviour.Setup(this);
+		GameObject enemyObject = enemyBehaviour.gameObject;
+		enemyBehaviour.ToggleColliders(true);
+		enemyBehaviour.SetEnemy(enemy);
+		enemyBehaviour.SetPath(new Queue<MapTileBehaviour>(createEnemyPath(tile)));
+		enemyBehaviour.SetOffset(new Vector3(UE.Random.Range(0, 0.2f), 0, UE.Random.Range(0, 0.2f)));
+		enemyObject.transform.SetParent(transform);
+		// Placeholder: because undead is sprite;
+		Quaternion angle = Quaternion.identity;
+		enemyBehaviour.DirectionFacing = getDirectionFacing(
+			mapController.GetTileFromLocation(enemy.Location).GetWorldPosition(),
+			worldController.ICoreOrbInstance.transform.position);
+		float yRotation = DirectionUtil.GetAngleFromDirection(enemyBehaviour.DirectionFacing);
+		angle.eulerAngles = new Vector3(0, yRotation, 0);
+		enemyObject.transform.eulerAngles = angle.eulerAngles;
+		enemyBehaviour.ToggleActive(true);
+		enemyBehaviour.OnSpawn();
+		enemyBehaviour.NavigatePath();
+		enemyBehaviour.SetLocation(tile.GetLocation());
+		overlay.SetEnemies(++enemiesAlive);
+		AddActiveEnemy(enemyBehaviour);
 	}
 
 	public void SpawnEnemy (EnemySpawnPoint spawnPoint, Direction spawnDirection, string enemyKey) {

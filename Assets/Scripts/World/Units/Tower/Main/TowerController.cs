@@ -105,10 +105,14 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		potentialPurchaseTower.SetTower(towerClone);
 		potentialPurchaseTower.ToggleActive(shouldStartActive);
 		potentialPurchaseTower.OnSpawn();
+		if (towerClone.Type.Equals(Tower.CORE_ORB)) {
+			CoreOrbInstance = potentialPurchaseTower.gameObject;
+		}
 		return potentialPurchaseTower;
 	}
 
 	public void SpawnTower (Tower tower) {
+		tower.SetController(worldController);
 		MapTileBehaviour tile = mapController.GetTileFromLocation(tower.Location);
 		TowerBehaviour towerBehaviour = GetTowerBehaviourFromTower(tower, tile.GetWorldPosition(), shouldStartActive:true);
 		tile.PlaceStaticAgent(towerBehaviour, shouldPlaySound:false);
