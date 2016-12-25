@@ -42,7 +42,7 @@ public class CheatController : Controller, ICheatController {
     }
 
     public void setWave(int waveIndex) {
-		world.setWave(waveIndex);
+		world.SetWave(waveIndex);
     }
 
     public void DestroyAllTowers() {

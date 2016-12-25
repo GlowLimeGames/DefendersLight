@@ -38,6 +38,22 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		worldController.OnSellTower(tower);
 	}
 
+	protected override void SubscribeEvents () {
+		base.SubscribeEvents ();
+		EventController.OnUnitEvent += HandleUnitEvent;
+	}
+
+	protected override void UnusbscribeEvents () {
+		base.UnusbscribeEvents ();
+		EventController.OnUnitEvent -= HandleUnitEvent;
+	}
+
+	protected void HandleUnitEvent (string eventName, Unit unit) {
+		if (eventName == EventType.TowerDestroyed) {
+			_activeUnits.Remove(unit as Tower);
+		}
+	}
+		
 	public void PlaceCoreOrb (MapTileBehaviour mapTile) {
 		GameObject coreOrb = (GameObject) Instantiate(CoreOrbPrefab);
 		CoreOrbInstance = coreOrb;

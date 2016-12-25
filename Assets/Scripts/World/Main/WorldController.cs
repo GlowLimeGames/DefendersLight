@@ -174,6 +174,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void LoadFromSave (WorldState saveState) {
+		enemyController.SetWave(saveState.CurrentWave, onResume:true);
 		foreach (Tower tower in saveState.ActiveTowers) {
 			towerController.SpawnTower(tower);
 		}
@@ -204,7 +205,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			changeSeason(currentSeason.Index + 1);
 			increaseSpawnPoints();
 		} else if (waveIndex > currentSeason.MiddleWave) {
-			// TODO: Implement behaviour if the wave has passed the midway point (increased spawn points)
 			increaseSpawnPoints();
 		}
 	}
@@ -366,8 +366,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
         towerController.ToggleGodMode();
     }
 
-    public void setWave(int waveIndex) {
-        enemyController.setWave(waveIndex);
+    public void SetWave(int waveIndex) {
+		enemyController.SetWave(waveIndex, onResume:false);
     }
 		
 	public void AddObject(IWorldObject element) {

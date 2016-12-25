@@ -52,6 +52,16 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		overlay = StatsPanelController.Instance;
 	}
 
+	protected override void SubscribeEvents () {
+		base.SubscribeEvents ();
+		EventController.OnUnitEvent += HandleUnitEvent;
+	}
+
+	protected override void UnusbscribeEvents () {
+		base.UnusbscribeEvents ();
+		EventController.OnUnitEvent -= HandleUnitEvent;
+	}
+
 	public virtual void Setup (
 		WorldController worldController, 
 		DataController dataController, 
@@ -193,10 +203,12 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 		return spawnCountEquation.CalculateAsInt(waveIndex);
 	}
 
-    public void setWave(int waveIndex) {
+	public void SetWave(int waveIndex, bool onResume) {
         currentWaveIndex = waveIndex;
-        KillAllEnemies();
-        SpawnWave();
+		if (!onResume) {
+			KillAllEnemies();
+	        SpawnWave();
+		}
     }
 
 	string[] GetEnemyTypes (int waveIndex, bool shouldShuffle = true) {
@@ -392,6 +404,12 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			HandleEnemyKilled();
 		} else {
 			base.HandleNamedEvent (eventName);
+		}
+	}
+
+	protected void HandleUnitEvent (string eventName, Unit unit) {
+		if (eventName == EventType.EnemyDestroyed) {
+			_activeUnits.Remove(unit as Enemy);
 		}
 	}
 

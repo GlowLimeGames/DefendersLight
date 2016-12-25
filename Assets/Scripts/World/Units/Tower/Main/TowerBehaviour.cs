@@ -100,6 +100,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 			WorldController.Instance.RemoveActiveTower(this);
 		}
 		CallDestroyEvent();
+		EventController.Event(EventType.TowerDestroyed, this.unit);
 	}
 
 	protected override void CleanupReferences () {
