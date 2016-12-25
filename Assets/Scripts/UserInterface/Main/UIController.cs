@@ -11,6 +11,11 @@ public abstract class UIController : MannBehaviour {
 		SceneController.LoadStart();
 	}
 
+	public void NewGame () {
+		data.ResetWorld();
+		SceneController.LoadGame();
+	}
+
 	public void LoadGame (bool isPlayAgain) {
 		SceneController.LoadGame(isPlayAgain);
 	}
@@ -33,6 +38,10 @@ public abstract class UIController : MannBehaviour {
 
 	public void LoadPreviousScene () {
 		SceneController.LoadPreviousScene();
+	}
+
+	public void SaveGame () {
+		data.SaveGame();
 	}
 
 	protected override void FetchReferences () {

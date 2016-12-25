@@ -22,6 +22,9 @@ public class StartUIController : UIController {
 	[SerializeField]
 	float splashFadeTime;
 
+	[SerializeField]
+	UIButton newGameButton;
+
 	protected override void SetReferences () {
 		base.SetReferences ();
 		SceneController.ReportSceneLoadComplete();
@@ -43,6 +46,9 @@ public class StartUIController : UIController {
 	protected override void FetchReferences () {
 		base.FetchReferences ();
 		EventController.Event(EventType.LoadStart);
+		if (data.HasWorldState) {
+			newGameButton.Show();
+		}
 	}
 
 	IEnumerator displaySplashScreen () {

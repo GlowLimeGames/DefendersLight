@@ -23,6 +23,8 @@ public class Tower : Unit {
 
 	public Tower (string jsonText):base(jsonText){}
 
+	public Tower (Tower fromClone):base(fromClone){}
+
 	public TowerType TowerType {
 		get {
 			switch (Class) {

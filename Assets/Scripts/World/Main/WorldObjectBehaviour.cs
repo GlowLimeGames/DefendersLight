@@ -26,10 +26,10 @@ public abstract class WorldObjectBehaviour : MannBehaviour {
 	}
 
 	public void SetLocation (int x, int y) {
-		Location.Set(x, y);
+		this.SetLocation(new MapLocation(x, y));
 	}
 
-	public void SetLocation (MapLocation location) {
+	public virtual void SetLocation (MapLocation location) {
 		this.Location.Set(location);
 	}
 

@@ -39,6 +39,12 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 
 	protected Queue<MapTileBehaviour> path = null;
 
+	public Enemy IEnemy {
+		get {
+			return enemy;
+		}
+	}
+
 	public void SetEnemy (Enemy enemy) {
 		this.enemy = enemy;
 		setUnit(enemy);

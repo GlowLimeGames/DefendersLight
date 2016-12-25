@@ -94,6 +94,11 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	void SetStats () {
 	}
 
+	public override void SetLocation (MapLocation location) {
+		base.SetLocation (location);
+		unit.Location = location;
+	}
+
 	public void SubscribeUpdateHealth (EventActionf eventAction) {
 		onUpdateHealth += eventAction;
 	}

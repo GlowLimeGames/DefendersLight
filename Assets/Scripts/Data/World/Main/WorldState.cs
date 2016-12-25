@@ -16,7 +16,8 @@ public class WorldState : IWorldState, ISessionData {
 	public int CurrentWave;
 	public int XPEarned;
 	public bool HighestWaveReachedInSession;
-
+	public Enemy[] ActiveEnemies;
+	public Tower[] ActiveTowers;
 	string filePath;
 	public string IFilePath {
 		get {
@@ -47,12 +48,29 @@ public class WorldState : IWorldState, ISessionData {
 		Reset();
 	}
 
+	public WorldState (string filePath, 
+		int mana, 
+		int enemiesKilled, 
+		int wave, 
+		int xpEarned, 
+		Enemy[] activeEnemies, 
+		Tower[] activeTowers) {
+		this.Mana = mana;
+		this.EnemiesKilled = enemiesKilled;
+		this.CurrentWave = wave;
+		this.XPEarned = xpEarned;
+		this.ActiveEnemies = activeEnemies;
+		this.ActiveTowers = activeTowers;
+	}
+
 	public void Reset () {
 		Mana = this.startingMana;
 		EnemiesKilled = DEFAULT_ENEMIES_KILLED;
 		CurrentWave = DEFAULT_CURRENT_WAVE;
 		XPEarned = DEFAULT_XP_EARNED;
 		HighestWaveReachedInSession = false;
+		this.ActiveEnemies = new Enemy[0];
+		this.ActiveTowers = new Tower[0];
 	}
 
 	public bool HasDataToSave () {

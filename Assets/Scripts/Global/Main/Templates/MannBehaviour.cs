@@ -42,6 +42,10 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 		HandleSceneLoad(level);
 	}
 		
+	void OnApplicationPause(bool isPaused) {
+		HandleApplicationPause(isPaused);
+	}
+
 	static void checkToSetFakeFrameRate () {
 		if (!fakeDeltaTimeSet) {
 			if (Application.targetFrameRate != INVALID_VALUE) {
@@ -89,6 +93,10 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
             return true;
         }
     }
+
+	protected virtual void HandleApplicationPause (bool isPaused) {
+		// NOTHING
+	}
 
 	protected virtual void HandleSceneLoad (int sceneIndex) {
 		// NOTHING

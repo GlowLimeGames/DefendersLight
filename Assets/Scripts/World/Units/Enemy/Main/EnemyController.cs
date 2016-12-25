@@ -226,6 +226,32 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			return enemy.Quantity * (range / enemy.Frequency + zeroOffset);
 		}
 	}
+	public void SpawnEnemy (Enemy enemy) {
+		try {
+			MapTileBehaviour tile = mapController.GetTileFromLocation(enemy.Location);
+			EnemyBehaviour enemyBehaviour = GetEnemyObject(enemy.Type, tile.GetWorldPosition());
+			enemyBehaviour.Setup(this);
+			GameObject enemyObject = enemyBehaviour.gameObject;
+			enemyBehaviour.ToggleColliders(true);
+			enemyBehaviour.SetEnemy(enemy);
+			enemyBehaviour.SetPath(new Queue<MapTileBehaviour>(createEnemyPath(tile)));
+			enemyBehaviour.SetOffset(new Vector3(UE.Random.Range(0, 0.2f), 0, UE.Random.Range(0, 0.2f)));
+			enemyObject.transform.SetParent(transform);
+			// Placeholder: because undead is sprite;
+			Quaternion angle = Quaternion.identity;
+			enemyBehaviour.DirectionFacing = getDirectionFacing(
+				mapController.GetTileFromLocation(enemy.Location).GetWorldPosition(),
+				worldController.ICoreOrbInstance.transform.position);
+			float yRotation = DirectionUtil.GetAngleFromDirection(enemyBehaviour.DirectionFacing);
+			angle.eulerAngles = new Vector3(0, yRotation, 0);
+			enemyObject.transform.eulerAngles = angle.eulerAngles;
+			enemyBehaviour.OnSpawn();
+			enemyBehaviour.NavigatePath();
+			AddActiveEnemy(enemyBehaviour);
+		} catch {
+			Debug.LogErrorFormat("ERROR: No enemy of type {0}", enemy.Type);
+		}
+	}
 
 	public void SpawnEnemy (EnemySpawnPoint spawnPoint, Direction spawnDirection, string enemyKey) {
 		try {
@@ -233,8 +259,8 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			enemyBehaviour.Setup(this);
 			GameObject enemy = enemyBehaviour.gameObject;
 			enemyBehaviour.ToggleColliders(true);
-            AddActiveEnemy(enemyBehaviour);
-			enemyBehaviour.SetEnemy(templateUnits[enemyKey]);
+			Enemy enemyClone = new Enemy(templateUnits[enemyKey]);
+			enemyBehaviour.SetEnemy(enemyClone);
 			enemyBehaviour.SetPath(new Queue<MapTileBehaviour>(spawnPoint.CurrentPath));
 			enemyBehaviour.SetOffset(new Vector3(UE.Random.Range(0, 0.2f), 0, UE.Random.Range(0, 0.2f)));
 			enemy.transform.SetParent(transform);
@@ -246,6 +272,7 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 			enemy.transform.eulerAngles = angle.eulerAngles;
 			enemyBehaviour.OnSpawn();
 			enemyBehaviour.NavigatePath();
+			AddActiveEnemy(enemyBehaviour);
 		} catch {
 			Debug.LogErrorFormat("ERROR: No enemy of type {0}", enemyKey);
 		}
@@ -285,7 +312,9 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
 	}
 
 	protected override void SetReferences() {
-		if (!SingletonUtil.TryInit(ref Instance, this, gameObject)) {
+		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
+			_activeUnits = new List<Enemy>();
+		} else {
 			Destroy(gameObject);
 		}
 	}
@@ -298,12 +327,14 @@ public class EnemyController : UnitController<IEnemy, Enemy, EnemyList>, IEnemyC
     public void AddActiveEnemy(EnemyBehaviour enemy) {
         if (!activeEnemies.Contains(enemy)) {
             activeEnemies.Add(enemy);
+			_activeUnits.Add(enemy.IEnemy);
         }
     }
 
     public void RemoveActiveEnemy(EnemyBehaviour enemy) {
         if (activeEnemies.Contains(enemy)) {
             activeEnemies.Remove(enemy);
+			_activeUnits.Remove(enemy.IEnemy);
         }
     }
 

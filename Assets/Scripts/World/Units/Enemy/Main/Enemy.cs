@@ -16,6 +16,7 @@ public class Enemy : Unit {
 
 	#endregion
 
+	[System.NonSerialized]
 	Sprite sprite;
 
 	public RewardAmount DeathReward;
@@ -49,6 +50,8 @@ public class Enemy : Unit {
 	}
 
 	public Enemy (string jsonText):base(jsonText){}
+
+	public Enemy (Enemy fromClone):base(fromClone){}
 
 	public override void Copy (Unit unit) {
 		base.Copy(unit);
