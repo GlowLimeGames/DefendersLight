@@ -41,7 +41,11 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 			}
 		}
 	}
-
+	public bool IsReflective {
+		get {
+			return tower.IsReflective;
+		}
+	}
 	public virtual void SetTower (Tower tower) {
 		this.tower = tower;
 		if (spriteRenderer) {

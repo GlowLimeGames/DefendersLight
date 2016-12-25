@@ -302,7 +302,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		towerController.RefreshIlluminations();
 	}
 
-	public void SendIlluminationToMap (IlluminationTowerBehaviour illuminationTower, bool onTowerPlace = false) {
+	public void SendIlluminationToMap (TowerBehaviour illuminationTower, bool onTowerPlace = false) {
 		mapController.Illuminate(illuminationTower.GetLocation(), illuminationTower, onTowerPlace);
 	}
 

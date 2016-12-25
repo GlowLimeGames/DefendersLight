@@ -169,10 +169,18 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	}
 
 	public void RefreshIlluminations () {
+		// These need to be calculated last (after getting all the other lights
+		List<TowerBehaviour> reflectiveTowers = new List<TowerBehaviour>();
 		foreach (TowerBehaviour tower in activeTowers) {
-			if (tower is IlluminationTowerBehaviour) {
+			if (tower.IsReflective) {
+				reflectiveTowers.Add(tower);
+			}
+			else if (tower is IlluminationTowerBehaviour) {
 				worldController.SendIlluminationToMap(tower as IlluminationTowerBehaviour);
 			}
+		}
+		foreach (TowerBehaviour tower in reflectiveTowers) {
+			worldController.SendIlluminationToMap(tower);
 		}
 	}
 		
