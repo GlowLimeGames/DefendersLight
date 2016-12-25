@@ -36,6 +36,15 @@ public class MapController : MannBehaviour, IMapController {
 		mapBounds = new Bounds(GetCenterTile().GetWorldPosition(), new Vector3(Stats.Width * Stats.TileSize, zBound, Stats.Height * Stats.TileSize));
 	}
 
+	// Returns Zero Vector if invalid location
+	public Vector3 MapToWorldPosition (MapLocation location) {
+		if (inBounds(location)) {
+			return GetTileFromLocation(location).GetWorldPosition();
+		} else {
+			return Vector3.zero;
+		}
+	}
+
 	public void HighlightValidBuildTiles () {
 		foreach (MapTileBehaviour tile in Board) {
 			if (tile.CanPlaceTower()) {

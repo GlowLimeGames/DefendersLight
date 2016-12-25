@@ -43,7 +43,8 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		CoreOrbInstance = coreOrb;
 		CoreOrbBehaviour coreOrbBehaviour = coreOrb.GetComponent<CoreOrbBehaviour>();
 		coreOrbBehaviour.Setup(this);
-		coreOrbBehaviour.SetTower(templateUnits[CoreOrbBehaviour.CORE_ORB_KEY]);
+		Tower coreOrbClone = new Tower(templateUnits[CoreOrbBehaviour.CORE_ORB_KEY]);
+		coreOrbBehaviour.SetTower(coreOrbClone);
 		mapTile.PlaceStaticAgent(coreOrbBehaviour, false);
 	}
 
@@ -100,10 +101,18 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		TowerBehaviour potentialPurchaseTower = SpawnTower(tower, startPosition);
 		potentialPurchaseTower.Setup(this);
 		potentialPurchaseTower.ToggleColliders(shouldStartActive);
-		potentialPurchaseTower.SetTower(tower);
+		Tower towerClone = new Tower(tower);
+		potentialPurchaseTower.SetTower(towerClone);
 		potentialPurchaseTower.ToggleActive(shouldStartActive);
 		potentialPurchaseTower.OnSpawn();
 		return potentialPurchaseTower;
+	}
+
+	public void SpawnTower (Tower tower) {
+		MapTileBehaviour tile = mapController.GetTileFromLocation(tower.Location);
+		TowerBehaviour towerBehaviour = GetTowerBehaviourFromTower(tower, tile.GetWorldPosition(), shouldStartActive:true);
+		tile.PlaceStaticAgent(towerBehaviour, shouldPlaySound:false);
+		towerBehaviour.ToggleActive(true);
 	}
 
 	public TowerBehaviour GetPrefab (Tower tower) {
@@ -159,12 +168,14 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	public void AddActiveTower (TowerBehaviour tower) {
 		if (!activeTowers.Contains(tower)) {
 			activeTowers.Add(tower);
+			_activeUnits.Add(tower.ITower);
 		}
 	}
 
 	public void RemoveActiveTower (TowerBehaviour tower) {
 		if (activeTowers.Contains(tower)) {
 			activeTowers.Remove(tower);
+			_activeUnits.Remove(tower.ITower);
 		}
 	}
 
@@ -255,7 +266,9 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	}
 
 	protected override void SetReferences() {
-		if (!SingletonUtil.TryInit(ref Instance, this, gameObject)) {
+		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
+			_activeUnits = new List<Tower>();
+		} else {
 			Destroy(gameObject);
 		}
 	}

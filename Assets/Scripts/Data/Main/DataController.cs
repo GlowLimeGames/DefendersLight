@@ -15,8 +15,8 @@ public class DataController : Controller, IDataController {
 	public int StartingMana = 100;
 	const string JSON_DIRECTORY = "JSON";
 	const string SAVE_DIRECTORY = "Save";
-	const string WORLD_STATE_FILE_NAME = "WorldState.dat";
-	const string PLAYER_DATA_FILE_NAME = "PlayerData.dat";
+	public const string WORLD_STATE_FILE_NAME = "WorldState.dat";
+	public const string PLAYER_DATA_FILE_NAME = "PlayerData.dat";
 	static string SaveDirectory {
 		get {
 			return Path.Combine(Application.persistentDataPath, SAVE_DIRECTORY);
@@ -40,6 +40,11 @@ public class DataController : Controller, IDataController {
 	public bool HasSaveData {
 		get {
 			return _hasDataToSave;
+		}
+	}
+	public bool HasWorldState {
+		get {
+			return currentWorldState.HasDataToSave();
 		}
 	}
 
@@ -155,7 +160,7 @@ public class DataController : Controller, IDataController {
 	public void UnsubscribeFromOnXPEarned (EventActionInt onXPEarned) {
 		earnXP -= onXPEarned;
 	}
-
+		
 	void callOnXPEarned (int xpEarned) {
 		if (this.earnXP != null) {
 			this.earnXP(xpEarned);
@@ -215,11 +220,11 @@ public class DataController : Controller, IDataController {
 		}
 	}
 
-	public void SaveWorldState () {
-		SaveWorldState(currentWorldState);
+	public void SetWorldFromSave (WorldController world) {
+		world.LoadFromSave(currentWorldState);
 	}
 
-	void SaveWorldState (WorldState worldState) {
+	void SaveWorldState (bool onReset = false) {
 		BinaryFormatter binaryFormatter = new BinaryFormatter();
 		FileStream file;
 		try {
@@ -227,8 +232,11 @@ public class DataController : Controller, IDataController {
 		} catch {
 			file = File.Create(WorldStateFilePath);
 		}
-		if (currentWorldState == null) {
-			currentWorldState = new WorldState(WorldStateFilePath, StartingMana);
+		if (onReset) {
+			currentWorldState.Reset();
+		} else {
+			currentWorldState = world.GetWorldState();
+			Debug.Log(currentWorldState.ActiveTowers.Length);
 		}
 		binaryFormatter.Serialize(file, currentWorldState);
 		file.Close();
@@ -306,15 +314,17 @@ public class DataController : Controller, IDataController {
 		callOnLevelUp(PlayerLevel);
 	}
 
-	public void SaveGame () {
+	public void SaveGame (bool onReset = false) {
 		CheckSaveDirectory();
-		SaveWorldState();
+		if (world || onReset) {
+			SaveWorldState();
+		}
 		SavePlayerData();
 	}
 
 	void ResetWorldState () {
 		currentWorldState = new WorldState(WorldStateFilePath, StartingMana);
-		SaveWorldState();
+		SaveWorldState(onReset:true);
 	}
 
 	public void ResetPlayerData () {
@@ -345,7 +355,7 @@ public class DataController : Controller, IDataController {
 	}
 
 	protected override void FetchReferences () {
-
+		base.FetchReferences();
 	}
 
 	protected override void CleanupReferences () {
@@ -353,8 +363,11 @@ public class DataController : Controller, IDataController {
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		if (eventName == EventType.LoadStart) {
-			ResetWorldState();
-		}
+		// NOTHING
+	}
+
+	protected override void HandleApplicationPause (bool isPaused) {
+		base.HandleApplicationPause(isPaused);
+		SaveGame();
 	}
 }

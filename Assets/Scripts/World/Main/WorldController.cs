@@ -158,6 +158,9 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		if (inGame) {
 			PlaceCoreOrb();
 			setupUnitControllerCallbacks();
+			if (dataController.HasWorldState) {
+				dataController.SetWorldFromSave(this);
+			}
 		}
 		_unitsByClass = determineUnitsByClass();
 	}
@@ -167,11 +170,33 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		return mapController.GetTilesInBounds(new MapBounds(location.X - radius, location.Y - radius, diameter, diameter));
 	}
 
+	public void LoadFromSave (WorldState saveState) {
+		Debug.Log(saveState.ActiveTowers.Length);
+		foreach (Enemy enemy in saveState.ActiveEnemies) {
+			enemyController.SpawnEnemy(enemy);
+		}
+		foreach (Tower tower in saveState.ActiveTowers) {
+			towerController.SpawnTower(tower);
+		}
+	}
+
+	public WorldState GetWorldState () {
+		return new WorldState(
+			DataController.WORLD_STATE_FILE_NAME,
+			dataController.Mana,
+			dataController.EnemiesKilled,
+			dataController.WavesSurvivied,
+			dataController.XP,
+			enemyController.ActiveUnits,
+			towerController.ActiveUnits
+		);
+	}
+
 	void createRules () {
 		seasons = JsonUtility.FromJson<SeasonList>(dataController.RetrieveJSONFromResources(SEASONS_DATA_FILE_NAME));
 		currentSeason = seasons[0];
 	}
-
+		
 	void checkForSeasonAdvance (int waveIndex) {
 		if (waveIndex > currentSeason.EndingWave) {
 			changeSeason(currentSeason.Index + 1);

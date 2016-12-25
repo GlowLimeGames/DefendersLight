@@ -16,7 +16,7 @@ public abstract class Unit : IUnit {
 	const string ENERGY_ATTACK = "Energy";
 
 	#region Properties
-
+	[System.NonSerialized]
 	protected IWorldController controller;
 	protected string _id;
 	public string ID {
@@ -113,7 +113,7 @@ public abstract class Unit : IUnit {
 			}
 		}
 	}
-
+	[System.NonSerialized]
 	protected ActiveObjectBehaviour objectLink;
 
 	#endregion
@@ -138,6 +138,10 @@ public abstract class Unit : IUnit {
 		
 	public Unit (string jsonText) {
 		DeserializeFromJSON(jsonText);
+	}
+
+	public Unit (Unit fromClone) {
+		this.Copy(fromClone);
 	}
 
 	protected void SetupLink (GameObject instance) {

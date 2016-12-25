@@ -14,6 +14,12 @@ public abstract class Controller : MannBehaviour {
 		world = WorldController.Instance;
 		data = DataController.Instance;
 	}
+		
+	protected override void HandleSceneLoad (int sceneIndex) {
+		base.HandleSceneLoad (sceneIndex);
+		// This needs to be refreshed each time the game reloads:
+		world = WorldController.Instance;
+	}
 
 	protected void toggleCanvasGroup (CanvasGroup canvas, bool isActive) {
 		canvas.alpha = isActive ? 1 : 0;
