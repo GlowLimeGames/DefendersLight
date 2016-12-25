@@ -38,6 +38,10 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
 		StopAllCoroutines();
 	}
 
+	void OnLevelWasLoaded (int level) {
+		HandleSceneLoad(level);
+	}
+		
 	static void checkToSetFakeFrameRate () {
 		if (!fakeDeltaTimeSet) {
 			if (Application.targetFrameRate != INVALID_VALUE) {
@@ -85,6 +89,10 @@ public abstract class MannBehaviour : MonoBehaviour, System.IComparable {
             return true;
         }
     }
+
+	protected virtual void HandleSceneLoad (int sceneIndex) {
+		// NOTHING
+	}
 
 	protected virtual void SubscribeEvents () {
 		EventController.OnNamedEvent += HandleNamedEvent;

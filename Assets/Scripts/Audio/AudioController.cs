@@ -69,14 +69,23 @@ public class AudioController : Controller, IAudioController {
 		}
 	}
 
+	protected override void HandleSceneLoad (int sceneIndex) {
+		base.HandleSceneLoad (sceneIndex);
+		checkMuteOnAllChannels();
+	}
+
 	public void Play (AudioFile file) {
+		if (file.TypeAsEnum == AudioType.Music) {
+//			Debug.Log(file.Name);
+		}
+
 		AudioSource source = GetChannel(file.Channel);
-		CheckMute(file, source);
 		bool shouldResumeClip = false;
 		float clipTime = 0;
 		if (file.TypeAsEnum == AudioType.FX) {
 			if (source.clip != null && source.isPlaying) { 
 				if (!AudioUtil.IsMuted(AudioType.FX)) {
+					source.clip = file.Clip;
 					StartCoroutine(CompleteOnTempChannel(source.clip, source.time, source.volume));
 				}
 			}
@@ -93,6 +102,7 @@ public class AudioController : Controller, IAudioController {
 			source.time = clipTime;
 		}
 		source.Play();
+		CheckMute(file, source);
 	}
 
 	public void Stop (AudioFile file) {
@@ -145,6 +155,7 @@ public class AudioController : Controller, IAudioController {
 		} else {
 			// Adds a new audiosource if channel is not present in dictionary
 			AudioSource newSource = gameObject.AddComponent<AudioSource>();
+			newSource.playOnAwake = false;
 			channels.Add(channelNumber, newSource);
 			return newSource;
 		}
@@ -168,8 +179,6 @@ public class AudioController : Controller, IAudioController {
 				AddAudioListener();
 			}
 			PreloadFiles(fileList.Files);
-			// TODO: Enable after tracks have been delivered
-			// initCyclingAudio();
 		}
 	}
 

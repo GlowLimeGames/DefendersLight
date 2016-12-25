@@ -4,7 +4,7 @@
 			"Name":"Warlock WAV",
 			"Groups":[],
 			"Events":["LoadStart", "LoadGameOver"],
-			"StopEvents":[],
+			"StopEvents":["LoadGame"],
 			"Loop":true,
 			"Type": "Music",
 			"Channel":2,
@@ -118,7 +118,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 75
 		},
 		{
 			"Name":"Build_Illumination_A2",
@@ -128,7 +128,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 75
 		},
 		{
 			"Name":"Build_Illumination_B2",
@@ -138,7 +138,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 75
 		},
 		{
 			"Name":"Build_Tower_A2",
@@ -148,7 +148,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 75
 		},
 		{
 			"Name":"Build_Tower_B2",
@@ -158,7 +158,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 75
 		},
 		{
 			"Name":"Brute_Death_A",
@@ -248,7 +248,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 75
 		},
 		{
 			"Name":"Destroy_Tower_B",
@@ -258,7 +258,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 75
 		},
 		{
 			"Name":"Destroy_Tower_C",
@@ -268,7 +268,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 75
 		},
 		{
 			"Name":"Enemies_Approaching_2",
@@ -278,7 +278,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 80
+			"Volume": 50
 		},
 		{
 			"Name":"Enemies_DealDamage_A",
@@ -488,7 +488,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 50
 		},
 		{
 			"Name":"InGame_Reward",

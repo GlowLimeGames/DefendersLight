@@ -210,8 +210,8 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		}
 	}
 
-	void handleIllumination (ILightSource light, bool shoudPlaySound, bool onTowerPlace = true) {
-		controller.Illuminate(this.Location, light, shoudPlaySound, onTowerPlace);
+	void handleIllumination (ILightSource light, bool onTowerPlace = true) {
+		controller.Illuminate(this.Location, light, onTowerPlace);
 	}
 
 	bool checkToUpdateIllumination (ILightSource light) {
@@ -220,7 +220,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 			TowerBehaviour tower = light as TowerBehaviour;
 			if (tower.ShouldReculateIllumination()) {
 				tower.UpdateIlluminationRadius();
-				handleIllumination(tower, shoudPlaySound:false);
+				handleIllumination(tower);
 			}
 			return true;
 		} else {
@@ -228,7 +228,7 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		}
 	}
 
-	public void IlluminateSquare (ILightSource light, bool shouldPlaySound = true, bool onTowerPlace = false) {
+	public void IlluminateSquare (ILightSource light, bool onTowerPlace = false) {
 		// Terminates if the light is already counted
 		if (lightSources.Contains(light)) {
 			return;
@@ -238,9 +238,6 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 
 		if (!isIlluminated) {
 			SetTileColor(illuminatedColor);
-			if (shouldPlaySound) {
-				EventController.Event(EventType.IlluminationOn);
-			}
 		}
 		_illuminationSourceCount++;
 		if (!(light == null || light as StaticAgentBehaviour == containedAgent || onTowerPlace)) {
@@ -248,14 +245,11 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		}
 	}
 
-	public void DelluminateSquare (bool shouldPlaySound = true) {
+	public void DelluminateSquare () {
 		if (isIlluminated) {
 			_illuminationSourceCount = 0;
 			lightSources.Clear();
 			SetTileColor(standardColor);
-			if (shouldPlaySound) {
-				EventController.Event(EventType.IlluminationOff);
-			}
 		}
 		checkToUpdateIllumination(null);
 	}
