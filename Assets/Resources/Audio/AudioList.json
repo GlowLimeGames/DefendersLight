@@ -438,7 +438,7 @@
 			"Loop":false,
 			"Type": "FX",
 			"Channel":1,
-			"Volume": 100
+			"Volume": 50
 		},
 		{
 			"Name":"HailfireArrows_Attack_A2",

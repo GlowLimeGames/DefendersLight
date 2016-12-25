@@ -301,11 +301,11 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	}
 
 	public bool TryPlaceSelectedTower () {
-		if (CanPlaceTower() && world.HasTowerToPlace) {		
+		if (world.HasTowerToPlace && CanPlaceTower()) {		
 			PlaceStaticAgent(world.GetPurchaseTowerToPlace(transform.position));
 			return true;
 		} else {
-			if (!world.HasTowerToPlace) {
+			if (world.HasTowerToPlace && !CanPlaceTower()) {
 				EventController.Event(EventType.TowerCannotPlace);
 			}
 			return false;
