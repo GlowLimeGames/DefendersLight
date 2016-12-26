@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragHandler {
+public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler {
 	EventAction onBeginCloseCallback;
 	EventAction onCloseCallback;
 	CanvasGroup canvas;
@@ -79,6 +79,14 @@ public class UIPanelSwipe : UIModule, IBeginDragHandler, IDragHandler, IEndDragH
 		if (!closed) {
 			callOnBeginClose();
 		}
+	}
+
+	public void OnPointerEnter (PointerEventData pointerEvent) {
+		input.BlockWorldInput();
+	}
+
+	public void OnPointerExit (PointerEventData pointerEvent) {
+		input.UnblockWorldInput();
 	}
 
 	void callOnBeginClose () {

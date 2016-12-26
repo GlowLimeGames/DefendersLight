@@ -156,7 +156,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	void OnTriggerExit (Collider collider) {
-		if (!isMoving) {
+		if (!isMoving && !collider.isTrigger && isTower(collider)) {
 			resumeMoving();
 		}
 	}
@@ -164,9 +164,9 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	void checkToAttack (Collider collider) {
 		if (CanAttack(collider)) {
 			TowerBehaviour currentTarget = collider.GetComponent<TowerBehaviour>();
-			Halt();
 			Attack(currentTarget, enemy.AttackDamage);
 			if (previousTarget != currentTarget) {
+				Halt();
 				currentTarget.SubscribeToDestruction(resumeMoving);
 				previousTarget = currentTarget;
 			}
@@ -174,9 +174,12 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 		
 	bool CanAttack (Collider unit) {
-		return !attackCooldownActive && unit.tag == TowerController.TOWER_TAG;
+		return !attackCooldownActive && isTower(unit);
 	}
 
+	protected bool isTower (Collider collider) {
+		return collider.tag.Equals(TowerController.TOWER_TAG);
+	}
 	protected bool isEnemy (ActiveObjectBehaviour activeObject) {
 		return activeObject.gameObject.tag.Equals(EnemyController.ENEMY_TAG);
 	}

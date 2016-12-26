@@ -25,6 +25,12 @@ public class InputController : Controller {
 	float? previousPointerDistance = null;
 	Vector3 swipeDirection;
 	bool isZooming;
+	int worldInputBlockers = 0;
+	bool worldInputBlocked {
+		get {
+			return worldInputBlockers > 0;
+		}
+	}
 	new CameraController camera;
 
 	void Update () {
@@ -37,6 +43,14 @@ public class InputController : Controller {
 		this.inputEnabled = inputEnabled;
 	}
 
+	public void BlockWorldInput () {
+		worldInputBlockers++;
+	}
+
+	public void UnblockWorldInput () {
+		worldInputBlockers = Mathf.Clamp(worldInputBlockers - 1, 0, int.MaxValue);
+	}
+		
 	public void ToggleDraggingObject (bool isDragging) {
 		this.isDraggingObject = isDragging;
 	}
@@ -60,6 +74,10 @@ public class InputController : Controller {
 
 
 	void HandlePointersDown (InputPointer[] pointers) {
+		if (worldInputBlocked) {
+			return;
+		}
+
 		InputPointer swipingPointer;
 		if (PointerPressed()) {			
 			HandlePointerPressed(pointers);
