@@ -70,6 +70,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	}
 
 	public override void Destroy () {
+		unsubscribeFromPreviousTarget();
 		base.Destroy ();
 		EventController.Event(EventType.EnemyDestroyed);
 		EventController.Event(EventType.EnemyDestroyed, enemy);
@@ -131,7 +132,7 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		base.Damage (damage);
 		EventController.Event(EventType.EnemiesTakeDamage);
 	}
-
+		
 	IEnumerator MoveTowardsTarget (GameObject target) {
 		float stop = Random.Range(0.1f, 0.5f);
 		while (target != null && Vector3.Distance(transform.position, target.transform.position) > stop) {
@@ -158,19 +159,31 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 	void checkToAttack (Collider collider) {
 		if (CanAttack(collider)) {
 			TowerBehaviour currentTarget = collider.GetComponent<TowerBehaviour>();
-			Halt();
 			Attack(currentTarget, enemy.AttackDamage);
 			if (previousTarget != currentTarget) {
+				if (isMoving) {
+					Halt();
+				}
+				unsubscribeFromPreviousTarget();
 				currentTarget.SubscribeToDestruction(resumeMoving);
 				previousTarget = currentTarget;
 			}
 		}
 	}
-		
-	bool CanAttack (Collider unit) {
-		return !attackCooldownActive && unit.tag == TowerController.TOWER_TAG;
+
+	void unsubscribeFromPreviousTarget () {
+		if (previousTarget) {
+			previousTarget.UnusubscribeFromDestruction(resumeMoving);
+		}
 	}
 
+	bool CanAttack (Collider unit) {
+		return !attackCooldownActive && isTower(unit);
+	}
+
+	protected bool isTower (Collider collider) {
+		return collider.tag.Equals(TowerController.TOWER_TAG);
+	}
 	protected bool isEnemy (ActiveObjectBehaviour activeObject) {
 		return activeObject.gameObject.tag.Equals(EnemyController.ENEMY_TAG);
 	}

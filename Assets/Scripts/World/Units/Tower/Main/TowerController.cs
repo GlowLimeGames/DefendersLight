@@ -38,12 +38,29 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		worldController.OnSellTower(tower);
 	}
 
+	protected override void SubscribeEvents () {
+		base.SubscribeEvents ();
+		EventController.OnUnitEvent += HandleUnitEvent;
+	}
+
+	protected override void UnusbscribeEvents () {
+		base.UnusbscribeEvents ();
+		EventController.OnUnitEvent -= HandleUnitEvent;
+	}
+
+	protected void HandleUnitEvent (string eventName, Unit unit) {
+		if (eventName == EventType.TowerDestroyed) {
+			_activeUnits.Remove(unit as Tower);
+		}
+	}
+		
 	public void PlaceCoreOrb (MapTileBehaviour mapTile) {
 		GameObject coreOrb = (GameObject) Instantiate(CoreOrbPrefab);
 		CoreOrbInstance = coreOrb;
 		CoreOrbBehaviour coreOrbBehaviour = coreOrb.GetComponent<CoreOrbBehaviour>();
 		coreOrbBehaviour.Setup(this);
 		Tower coreOrbClone = new Tower(templateUnits[CoreOrbBehaviour.CORE_ORB_KEY]);
+		coreOrbClone.ResetHealth();
 		coreOrbBehaviour.SetTower(coreOrbClone);
 		mapTile.PlaceStaticAgent(coreOrbBehaviour, false);
 	}
@@ -105,10 +122,14 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		potentialPurchaseTower.SetTower(towerClone);
 		potentialPurchaseTower.ToggleActive(shouldStartActive);
 		potentialPurchaseTower.OnSpawn();
+		if (towerClone.Type.Equals(Tower.CORE_ORB)) {
+			CoreOrbInstance = potentialPurchaseTower.gameObject;
+		}
 		return potentialPurchaseTower;
 	}
 
 	public void SpawnTower (Tower tower) {
+		tower.SetController(worldController);
 		MapTileBehaviour tile = mapController.GetTileFromLocation(tower.Location);
 		TowerBehaviour towerBehaviour = GetTowerBehaviourFromTower(tower, tile.GetWorldPosition(), shouldStartActive:true);
 		tile.PlaceStaticAgent(towerBehaviour, shouldPlaySound:false);
@@ -144,6 +165,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		);
 		return towerPosition + offset;
 	}
+
 	public void HandleDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		potentialPurchaseTower.transform.position = getDragPosition(dragEvent);
 		HighlightSpotToPlace(potentialPurchaseTower.transform.position);
@@ -180,18 +202,18 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	}
 
 	public void RefreshIlluminations () {
-		// These need to be calculated last (after getting all the other lights
+		// These need to be calculated last (after getting all the other lights)
 		List<TowerBehaviour> reflectiveTowers = new List<TowerBehaviour>();
 		foreach (TowerBehaviour tower in activeTowers) {
 			if (tower.IsReflective) {
 				reflectiveTowers.Add(tower);
 			}
-			else if (tower is IlluminationTowerBehaviour) {
-				worldController.SendIlluminationToMap(tower as IlluminationTowerBehaviour);
+			else if (tower.HasIllumination) {
+				worldController.SendIlluminationToMap(tower, onTowerPlace:true);
 			}
 		}
 		foreach (TowerBehaviour tower in reflectiveTowers) {
-			worldController.SendIlluminationToMap(tower);
+			worldController.SendIlluminationToMap(tower, onTowerPlace:true);
 		}
 	}
 		
@@ -221,18 +243,6 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 			}
 		}
 		potentialPurchaseTower = null;
-	}
-
-	public Tower[] GetActive() {
-		throw new System.NotImplementedException ();
-	}
-
-	public void Create(Tower unit) {
-		throw new System.NotImplementedException();
-	}
-
-	public void Destroy(Tower unit) {
-		throw new System.NotImplementedException();
 	}
 
 	public void HealAllTowers (){

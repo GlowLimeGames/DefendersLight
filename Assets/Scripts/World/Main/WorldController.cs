@@ -8,11 +8,14 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class WorldController : MannBehaviour, IWorldController, IObjectPool<GameObject> {
+	const float MAX_WORLD_BOUNDS = 100f;
+	Vector3 spawnPoolLocation = Vector3.one * MAX_WORLD_BOUNDS;
 	[SerializeField]
 	bool inGame = true;
 
 	public static WorldController Instance;
 	bool isPaused;
+	bool loadedFromSave = false;
 	public GameObject TowerPrefab;
 	public GameObject AssaulTowerPrefab;
 	public GameObject BarricadeTowerPrefab;
@@ -121,6 +124,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	public void AddToSpawnPool (ActiveObjectBehaviour activeObject) {
 		Stack<ActiveObjectBehaviour> pool;
+		// Physically move objects away from the game world so they do not interfere
+		activeObject.transform.position = spawnPoolLocation;
 		if (spawnPools.TryGetValue(activeObject.IType, out pool)) {
 			pool.Push(activeObject);
 		} else {
@@ -156,10 +161,12 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 		SetupUnitControllers();
 		if (inGame) {
-			PlaceCoreOrb();
 			setupUnitControllerCallbacks();
 			if (dataController.HasWorldState) {
 				dataController.SetWorldFromSave(this);
+				loadedFromSave = true;
+			} else {
+				PlaceCoreOrb();
 			}
 		}
 		_unitsByClass = determineUnitsByClass();
@@ -171,12 +178,13 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 	}
 
 	public void LoadFromSave (WorldState saveState) {
-		Debug.Log(saveState.ActiveTowers.Length);
-		foreach (Enemy enemy in saveState.ActiveEnemies) {
-			enemyController.SpawnEnemy(enemy);
-		}
+		enemyController.SetWave(saveState.CurrentWave, onResume:true);
+		statsPanel.SetWave(saveState.CurrentWave);
 		foreach (Tower tower in saveState.ActiveTowers) {
 			towerController.SpawnTower(tower);
+		}
+		foreach (Enemy enemy in saveState.ActiveEnemies) {
+			enemyController.SpawnEnemy(enemy);
 		}
 	}
 
@@ -202,7 +210,6 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 			changeSeason(currentSeason.Index + 1);
 			increaseSpawnPoints();
 		} else if (waveIndex > currentSeason.MiddleWave) {
-			// TODO: Implement behaviour if the wave has passed the midway point (increased spawn points)
 			increaseSpawnPoints();
 		}
 	}
@@ -327,7 +334,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		towerController.RefreshIlluminations();
 	}
 
-	public void SendIlluminationToMap (TowerBehaviour illuminationTower, bool onTowerPlace = false) {
+	public void SendIlluminationToMap (TowerBehaviour illuminationTower, bool onTowerPlace) {
 		mapController.Illuminate(illuminationTower.GetLocation(), illuminationTower, onTowerPlace);
 	}
 
@@ -364,8 +371,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
         towerController.ToggleGodMode();
     }
 
-    public void setWave(int waveIndex) {
-        enemyController.setWave(waveIndex);
+    public void SetWave(int waveIndex) {
+		enemyController.SetWave(waveIndex, onResume:false);
     }
 		
 	public void AddObject(IWorldObject element) {
@@ -445,7 +452,9 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		}
 		Create();
 		if (inGame) {
-			StartWave();
+			if (!loadedFromSave) {
+				StartWave();
+			}
 			EventController.Event(EventType.LoadGame);
 		}
 	}

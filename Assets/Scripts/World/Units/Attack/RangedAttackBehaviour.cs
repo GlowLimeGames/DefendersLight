@@ -26,7 +26,8 @@ public class RangedAttackBehaviour : AttackBehaviour {
 	}
 		
 	public void SetRange (int range) {
-		rangeCollider.size = new Vector3(range, rangeCollider.size.y, range);
+		Vector3 parentScale = parentObject.transform.localScale;
+		rangeCollider.size = new Vector3(range / parentScale.x, rangeCollider.size.y, range / parentScale.z);
 	}
 
 	public override void SetUnit (Unit unit) {

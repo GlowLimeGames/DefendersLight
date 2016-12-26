@@ -13,7 +13,6 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	protected UnitController unitController;
 	// A child object that represents the enemies range (using a separate collider)
 	RangedAttackBehaviour attackModule = null;
-	protected int health;
 	int _maxHealth = 0;
 	// Makes sure that we don't keep calling events related to a destroyed unit
 	bool hasBeenDestroyed = false;
@@ -35,7 +34,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 	public bool IAtFullHealth {
 		get {
-			return health == IMaxHealth;
+			return unit.AtMaxHealth;
 		}
 	}
 	public virtual string IType {
@@ -56,6 +55,14 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	public bool IDealsSplashDamage {
 		get {
 			return unit.SplashDamageRadius > 0;
+		}
+	}
+	protected int health {
+		get {
+			return unit.RemainingHealth;
+		}
+		set {
+			unit.RemainingHealth = value;
 		}
 	}
 	protected Unit unit;
@@ -150,6 +157,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	protected virtual void meleeAttack (ActiveObjectBehaviour target, int damage) {
+		transform.LookAt(target.transform.position);
 		target.Damage(damage);
 	}
 
@@ -296,7 +304,6 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 
 	protected virtual void setUnit (Unit unit) {
 		this.unit = unit;
-		this.health = unit.Health;
 		if (attackModule) {
 			attackModule.SetUnit(unit);
 		}

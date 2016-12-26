@@ -90,6 +90,8 @@ public abstract class UnitController<IUnitType, UnitType, UnitList> : UnitContro
 		templateUnits = new Dictionary<string, UnitType>();
 		foreach (UnitType unit in tempUnitTemplates.Units) {
 			if (!string.IsNullOrEmpty(unit.IType)) {
+				// Template units should be at full health:
+				unit.ResetHealth();
 				templateUnits.Add(unit.IType, unit);
 			}
 		}

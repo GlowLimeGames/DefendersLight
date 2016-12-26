@@ -35,6 +35,7 @@ public abstract class MobileAgentBehaviour : ActiveObjectBehaviour {
 	protected virtual void updateCurrentLocation (MapTileBehaviour currentTile) {
 		this.currentTile = currentTile;
 		transform.position = currentTile.GetWorldPosition() + offset;
+		SetLocation(currentTile.GetLocation());
 	}
 
 	IEnumerator runPathNavigation (Queue<MapTileBehaviour> path, float timePerStep) {

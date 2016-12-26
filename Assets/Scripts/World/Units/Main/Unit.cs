@@ -6,6 +6,7 @@
 using UnityEngine;
 
 [System.Serializable]
+
 public abstract class Unit : IUnit {
 	protected const string NULL_STRING = "null";
 	protected const int INVALID_VALUE = -1;
@@ -40,12 +41,25 @@ public abstract class Unit : IUnit {
 			return Type;
 		}
 	}
+	// Max Health Value
 	public int Health;
 	public int IHealth {
 		get {
 			return Health;
 		}
 	}
+	public int RemainingHealth;
+	public float HealthFraction {
+		get {
+			return (float) this.RemainingHealth / (float) this.Health;
+		}
+	}
+	public bool AtMaxHealth {
+		get {
+			return this.RemainingHealth >= this.Health;
+		}
+	}
+
 	public int AttackDamage;
 	public int IAttackDamage {
 		get {
@@ -144,6 +158,10 @@ public abstract class Unit : IUnit {
 		this.Copy(fromClone);
 	}
 
+	public void ResetHealth () {
+		this.RemainingHealth = this.Health;
+	}
+
 	protected void SetupLink (GameObject instance) {
 		WorldController.AttachBehaviourScript(this.GetType(), instance);
 		SendLink();
@@ -155,6 +173,10 @@ public abstract class Unit : IUnit {
 
 	protected void SeverLink () {
 		objectLink.SeverLink();
+	}
+
+	public void SetController (WorldController world) {
+		this.controller = world;
 	}
 
 	#endregion
@@ -196,6 +218,7 @@ public abstract class Unit : IUnit {
 		this.Class = unit.Class;
 		this.Type = unit.Type;
 		this.Health = unit.Health;
+		this.Attack = unit.Attack;
 		this.AttackDamage = unit.AttackDamage;
 		this.AttackCooldown = unit.AttackCooldown;
 		this.AttackRange = unit.AttackRange;
@@ -204,6 +227,7 @@ public abstract class Unit : IUnit {
 		this.controller = unit.controller;
 		this._id = unit._id;
 		this.Ammo = unit.IAmmo;
+		this.SplashDamageRadius = unit.ISplashDamageRadius;
 	}
 
 	public abstract string GetDescription();

@@ -236,7 +236,6 @@ public class DataController : Controller, IDataController {
 			currentWorldState.Reset();
 		} else {
 			currentWorldState = world.GetWorldState();
-			Debug.Log(currentWorldState.ActiveTowers.Length);
 		}
 		binaryFormatter.Serialize(file, currentWorldState);
 		file.Close();
