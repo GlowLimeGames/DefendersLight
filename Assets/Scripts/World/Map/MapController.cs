@@ -96,7 +96,7 @@ public class MapController : MannBehaviour, IMapController {
 		WorldController.Instance.AddActiveTower(tower);
 	}
 
-	public void Illuminate (MapLocation location, ILightSource light, bool onTowerPlace = false) {
+	public void Illuminate (MapLocation location, ILightSource light, bool onTowerPlace) {
 		int radius = light.IlluminationRadius;
 		int diameter = radius * 2;
 		int zeroOffset = 1;
@@ -104,7 +104,9 @@ public class MapController : MannBehaviour, IMapController {
 		int startY = Mathf.Clamp(location.Y - radius, 0, Stats.Height);
 		for (int x = startX; x < startX + diameter + zeroOffset && x < Stats.Width; x++) {
 			for (int y = startY; y < startY + diameter + zeroOffset && y < Stats.Height; y++) {
-				Board[x, y].IlluminateSquare(light, onTowerPlace);
+				if (!(x == location.X && y == location.Y)) {
+					Board[x, y].IlluminateSquare(light, onTowerPlace);
+				}
 			}
 		}
 	}
@@ -120,6 +122,7 @@ public class MapController : MannBehaviour, IMapController {
 	public void RefreshIlluminations () {
 		DeilluminateAll();
 		WorldController.Instance.RefreshIlluminations();
+		GetCenterTile().IlluminateSquare(null);
 	}
 
 	public MapTileBehaviour GetClosest (Vector3 toPosition) {
@@ -226,6 +229,16 @@ public class MapController : MannBehaviour, IMapController {
 	protected override void SetReferences () {
 		if (SingletonUtil.TryInit(ref Instance, this, gameObject)) {
 		}
+	}
+
+	protected override void SubscribeEvents () {
+		base.SubscribeEvents ();
+		EventController.OnUnitEvent += HandleUnitEvent;
+	}
+
+	protected override void UnusbscribeEvents () {
+		base.UnusbscribeEvents ();
+		EventController.OnUnitEvent -= HandleUnitEvent;
 	}
 
 	protected override void HandleNamedEvent (string eventName) {

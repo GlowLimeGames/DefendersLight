@@ -20,6 +20,11 @@ public class CoreOrbBehaviour : IlluminationTowerBehaviour {
 		}
 	}
 
+	// Core orb can attack, even when not illuminated
+	protected override bool canAttack () {
+		return true;
+	}
+
 	public override void Attack (ActiveObjectBehaviour activeAgent, int damage) {
 		base.Attack (activeAgent, damage);
 		EventController.Event(EventType.CoreOrbAttack);

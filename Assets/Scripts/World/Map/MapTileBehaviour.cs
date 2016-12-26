@@ -212,7 +212,10 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 
 	bool checkToUpdateIllumination (ILightSource light) {
 		TowerBehaviour myTower = this.containedAgent as TowerBehaviour;
-		if (light == null && myTower && myTower.HasIllumination) light = myTower;
+		if (light == null && myTower && myTower.HasIllumination) {
+			light = myTower;
+			_illuminationSourceCount++;
+		};
 		if (light is TowerBehaviour) {
 			TowerBehaviour tower = light as TowerBehaviour;
 			if (tower.ShouldReculateIllumination()) {
@@ -232,13 +235,12 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		if (lightSources.Contains(light)) {
 			return;
 		} else {
+			_illuminationSourceCount++;
 			lightSources.Add(light);
 		}
-
-		if (!isIlluminated) {
+		if (isIlluminated) {
 			SetTileColor(illuminatedColor);
 		}
-		_illuminationSourceCount++;
 		if (!(light == null || light as StaticAgentBehaviour == containedAgent || onTowerPlace)) {
 			checkToUpdateIllumination(light);
 		}

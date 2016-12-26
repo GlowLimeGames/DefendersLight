@@ -57,7 +57,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 	public int IlluminationRadius {
 		get {
 			// The core orb can be illuminated even if there is nothing else illuminating it
-			if (tower == null || (!(tile.IIsIlluminated || this is CoreOrbBehaviour))) {
+			if (tower == null || (!(tile.IIsIlluminated || this.IType == Tower.CORE_ORB))) {
 				return NONE_VALUE;
 			} else {
 				if (tower.IlluminationRadiusIsVariable) {
@@ -135,9 +135,13 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 		EventController.Event(EventType.TowerSold, tower);
 	}
 
+	protected virtual bool canAttack () {
+		return tile.IIsIlluminated;
+	}
+
 	public override void Attack(ActiveObjectBehaviour target, int damage) {
 		// Tower cannot attack if its square is not illuminated:
-		if (!tile.IIsIlluminated) {
+		if (!canAttack()) {
 			return;
 		}
 		// Base method updates whether we should be tracking the enemy so should be called first

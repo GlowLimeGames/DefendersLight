@@ -165,6 +165,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		);
 		return towerPosition + offset;
 	}
+
 	public void HandleDragPurchase (PointerEventData dragEvent, TowerPurchasePanel towerPanel) {
 		potentialPurchaseTower.transform.position = getDragPosition(dragEvent);
 		HighlightSpotToPlace(potentialPurchaseTower.transform.position);
@@ -205,15 +206,14 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		List<TowerBehaviour> reflectiveTowers = new List<TowerBehaviour>();
 		foreach (TowerBehaviour tower in activeTowers) {
 			if (tower.IsReflective) {
-				Debug.Log(tower.IType + " REFLECTIVE");
 				reflectiveTowers.Add(tower);
 			}
 			else if (tower.HasIllumination) {
-				worldController.SendIlluminationToMap(tower);
+				worldController.SendIlluminationToMap(tower, onTowerPlace:true);
 			}
 		}
 		foreach (TowerBehaviour tower in reflectiveTowers) {
-			worldController.SendIlluminationToMap(tower);
+			worldController.SendIlluminationToMap(tower, onTowerPlace:true);
 		}
 	}
 		
@@ -243,18 +243,6 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 			}
 		}
 		potentialPurchaseTower = null;
-	}
-
-	public Tower[] GetActive() {
-		throw new System.NotImplementedException ();
-	}
-
-	public void Create(Tower unit) {
-		throw new System.NotImplementedException();
-	}
-
-	public void Destroy(Tower unit) {
-		throw new System.NotImplementedException();
 	}
 
 	public void HealAllTowers (){

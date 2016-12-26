@@ -147,7 +147,12 @@ public class TowerPurchasePanelController : UIController {
 			}
 			purchaseCanvas = GetComponent<CanvasGroup>();
 			panelSwipe.SubscribeToClose(CloseTowerPage);
+			panelSwipe.SubscribeToClose(simpleDeselectPanel);
 		}
+	}
+
+	void simpleDeselectPanel () {
+		TryDeselectSelectedPanel(true, true, false);
 	}
 
 	protected override void FetchReferences () {

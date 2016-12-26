@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class WorldController : MannBehaviour, IWorldController, IObjectPool<GameObject> {
+	const float MAX_WORLD_BOUNDS = 100f;
+	Vector3 spawnPoolLocation = Vector3.one * MAX_WORLD_BOUNDS;
 	[SerializeField]
 	bool inGame = true;
 
@@ -122,6 +124,8 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	public void AddToSpawnPool (ActiveObjectBehaviour activeObject) {
 		Stack<ActiveObjectBehaviour> pool;
+		// Physically move objects away from the game world so they do not interfere
+		activeObject.transform.position = spawnPoolLocation;
 		if (spawnPools.TryGetValue(activeObject.IType, out pool)) {
 			pool.Push(activeObject);
 		} else {
@@ -175,6 +179,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 
 	public void LoadFromSave (WorldState saveState) {
 		enemyController.SetWave(saveState.CurrentWave, onResume:true);
+		statsPanel.SetWave(saveState.CurrentWave);
 		foreach (Tower tower in saveState.ActiveTowers) {
 			towerController.SpawnTower(tower);
 		}
@@ -329,7 +334,7 @@ public class WorldController : MannBehaviour, IWorldController, IObjectPool<Game
 		towerController.RefreshIlluminations();
 	}
 
-	public void SendIlluminationToMap (TowerBehaviour illuminationTower, bool onTowerPlace = false) {
+	public void SendIlluminationToMap (TowerBehaviour illuminationTower, bool onTowerPlace) {
 		mapController.Illuminate(illuminationTower.GetLocation(), illuminationTower, onTowerPlace);
 	}
 
