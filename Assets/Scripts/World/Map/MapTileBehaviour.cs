@@ -245,11 +245,9 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	}
 
 	public void DelluminateSquare () {
-		if (isIlluminated) {
-			_illuminationSourceCount = 0;
-			lightSources.Clear();
-			SetTileColor(standardColor);
-		}
+		_illuminationSourceCount = 0;
+		lightSources.Clear();
+		SetTileColor(standardColor);
 		checkToUpdateIllumination(null);
 	}
 

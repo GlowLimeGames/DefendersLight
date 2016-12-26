@@ -132,6 +132,7 @@ public abstract class TowerBehaviour : StaticAgentBehaviour, ILightSource {
 		unitController.HandleObjectDestroyed(this);
 		tile.RemoveAgent();
 		EventController.Event(EventType.TowerSold);
+		EventController.Event(EventType.TowerSold, tower);
 	}
 
 	public override void Attack(ActiveObjectBehaviour target, int damage) {

@@ -229,10 +229,17 @@ public class MapController : MannBehaviour, IMapController {
 	}
 
 	protected override void HandleNamedEvent (string eventName) {
-		if (eventName == EventType.TowerDestroyed || eventName == EventType.TowerSold) {
-			RefreshIlluminations();
-		} else if (eventName == EventType.TowerPanelDeselected) {
+		if (eventName == EventType.TowerPanelDeselected) {
 			UnhighlightValidBuildsTiles();
+		}
+	}
+
+	protected virtual void HandleUnitEvent (string eventName, Unit unit) {
+		if (eventName == EventType.TowerDestroyed || eventName == EventType.TowerSold) {
+			Tower tower = unit as Tower;
+			if (tower != null && tower.HasIllumination) {
+				RefreshIlluminations();
+			}
 		}
 	}
 
