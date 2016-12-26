@@ -199,15 +199,11 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 		Unhighlight();
 	}
 		
-	void handlePlaceTower (TowerBehaviour tower, bool shouldPlaySound) {
+	void handlePlaceTower (TowerBehaviour tower, bool onTowerPlace) {
 		if (tower.HasIllumination) {
-			handleIllumination(tower, shouldPlaySound);
+			handleIllumination(tower, onTowerPlace);
 		}
 		MapController.Instance.AddActiveTower(tower);
-		// Should be called last in order for illumination to refresh correctly
-		if (shouldPlaySound) {
-			tower.CallBuildEvent();
-		}
 	}
 
 	void handleIllumination (ILightSource light, bool onTowerPlace = true) {
@@ -215,14 +211,17 @@ public class MapTileBehaviour : EnvironmentalObjectBehaviour {
 	}
 
 	bool checkToUpdateIllumination (ILightSource light) {
-		if (light == null && this.containedAgent is TowerBehaviour) light = this.containedAgent as TowerBehaviour;
+		TowerBehaviour myTower = this.containedAgent as TowerBehaviour;
+		if (light == null && myTower && myTower.HasIllumination) light = myTower;
 		if (light is TowerBehaviour) {
 			TowerBehaviour tower = light as TowerBehaviour;
 			if (tower.ShouldReculateIllumination()) {
 				tower.UpdateIlluminationRadius();
 				handleIllumination(tower);
+				return true;
+			} else {
+				return false;
 			}
-			return true;
 		} else {
 			return false;
 		}

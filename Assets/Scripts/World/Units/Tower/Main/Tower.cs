@@ -129,6 +129,7 @@ public class Tower : Unit {
 			this.Reflectivitiy = towerData.Reflectivitiy;
 			this.AlmanacFlavorText = towerData.AlmanacFlavorText;
 			this.AlmanacStatDescriptions = towerData.IAlmanacStatDescriptions;
+			this.RotateToTarget = towerData.RotateToTarget;
 		} catch {
 			UnityEngine.Debug.LogWarningFormat("Unable to fully copy unit. Is not of type {0}", this.GetType());
 		}

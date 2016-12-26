@@ -60,6 +60,7 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 		CoreOrbBehaviour coreOrbBehaviour = coreOrb.GetComponent<CoreOrbBehaviour>();
 		coreOrbBehaviour.Setup(this);
 		Tower coreOrbClone = new Tower(templateUnits[CoreOrbBehaviour.CORE_ORB_KEY]);
+		coreOrbClone.ResetHealth();
 		coreOrbBehaviour.SetTower(coreOrbClone);
 		mapTile.PlaceStaticAgent(coreOrbBehaviour, false);
 	}
@@ -200,14 +201,15 @@ public class TowerController : UnitController<ITower, Tower, TowerList>, ITowerC
 	}
 
 	public void RefreshIlluminations () {
-		// These need to be calculated last (after getting all the other lights
+		// These need to be calculated last (after getting all the other lights)
 		List<TowerBehaviour> reflectiveTowers = new List<TowerBehaviour>();
 		foreach (TowerBehaviour tower in activeTowers) {
 			if (tower.IsReflective) {
+				Debug.Log(tower.IType + " REFLECTIVE");
 				reflectiveTowers.Add(tower);
 			}
-			else if (tower is IlluminationTowerBehaviour) {
-				worldController.SendIlluminationToMap(tower as IlluminationTowerBehaviour);
+			else if (tower.HasIllumination) {
+				worldController.SendIlluminationToMap(tower);
 			}
 		}
 		foreach (TowerBehaviour tower in reflectiveTowers) {
