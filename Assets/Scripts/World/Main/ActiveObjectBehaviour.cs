@@ -157,6 +157,7 @@ public abstract class ActiveObjectBehaviour : WorldObjectBehaviour {
 	}
 
 	protected virtual void meleeAttack (ActiveObjectBehaviour target, int damage) {
+		transform.LookAt(target.transform.position);
 		target.Damage(damage);
 	}
 

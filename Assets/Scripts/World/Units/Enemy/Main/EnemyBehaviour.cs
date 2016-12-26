@@ -155,6 +155,12 @@ public class EnemyBehaviour : MobileAgentBehaviour {
 		}
 	}
 
+	void OnTriggerExit (Collider collider) {
+		if (!isMoving) {
+			resumeMoving();
+		}
+	}
+
 	void checkToAttack (Collider collider) {
 		if (CanAttack(collider)) {
 			TowerBehaviour currentTarget = collider.GetComponent<TowerBehaviour>();
