@@ -3,7 +3,7 @@ A tower defense game where you can only build in illuminated portions of the map
 
 ## Engineers
 - [Isaiah Mann](http://isaiahmann.com/) (Lead)
-- [Ranjini Das](http://ranjinidas.me/)
+- [Ranjini Das](https://www.linkedin.com/in/ranjinidas/)
 - Brandon Huici
 - David Santana
 
